@@ -1,0 +1,106 @@
+package org.mgd.gmel.javafx.service;
+
+import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import org.mgd.gmel.coeur.commun.Mesure;
+import org.mgd.gmel.coeur.objet.Epicerie;
+import org.mgd.gmel.coeur.objet.Produit;
+import org.mgd.gmel.coeur.objet.ProduitQuantifier;
+import org.mgd.gmel.coeur.objet.Quantite;
+import org.mgd.gmel.coeur.persistence.ProduitJao;
+import org.mgd.gmel.coeur.persistence.ProduitQuantifierJao;
+import org.mgd.gmel.coeur.persistence.QuantiteJao;
+import org.mgd.gmel.javafx.GmelSingletons;
+import org.mgd.gmel.javafx.composant.exception.ComposantException;
+import org.mgd.gmel.javafx.persistence.exception.ConnectionException;
+import org.mgd.gmel.javafx.service.exception.ServiceException;
+import org.mgd.jab.persistence.exception.JaoExecutionException;
+import org.mgd.jab.persistence.exception.JaoParseException;
+
+import java.io.IOException;
+import java.util.Optional;
+
+public class EpicerieService extends Service {
+    private static final EpicerieService instance;
+
+    static {
+        try {
+            instance = new EpicerieService();
+        } catch (ConnectionException | JaoExecutionException | IOException | JaoParseException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    private final SimpleObjectProperty<Epicerie> epicerie = new SimpleObjectProperty<>(this, "épicerie");
+    private final SimpleListProperty<Produit> produits = new SimpleListProperty<>(this, "produits", FXCollections.observableArrayList());
+    private final SimpleObjectProperty<Produit> produit = new SimpleObjectProperty<>(this, "produit");
+    private final SimpleStringProperty produitNom = new SimpleStringProperty(this, "produit-nom");
+
+    private final ListChangeListener<Produit> produitListChangeListener = getListChangeListener(() -> epicerie.get().getProduits());
+
+    private EpicerieService() throws ConnectionException, JaoExecutionException, IOException, JaoParseException {
+        epicerie.addListener((observable, ancienne, nouvelle) -> {
+            produits.removeListener(produitListChangeListener);
+            produits.clear();
+            if (nouvelle != null) {
+                produits.addAll(nouvelle.getProduits());
+                produits.addListener(produitListChangeListener);
+            }
+        });
+        produitNom.addListener((observable, ancien, nouveau) -> Optional.ofNullable(produit.get()).ifPresent(produitAModifier -> produitAModifier.setNom(nouveau)));
+
+        GmelSingletons.connexion().ouvrir();
+        epicerie.set(GmelSingletons.connexion().getJabm().epicerie());
+    }
+
+    public static EpicerieService getInstance() {
+        return instance;
+    }
+
+    public void creerNouveauProduit() throws JaoExecutionException {
+        produits.add(new ProduitJao().nouveau(nouveauProduit -> nouveauProduit.setNom("Produit " + (produits.size() + 1))));
+    }
+
+    public ProduitQuantifier creerNouveauProduitQuantifier() throws JaoExecutionException {
+        return new ProduitQuantifierJao().nouveau((nouveauProduitQuantifier, autresJos) -> {
+                    nouveauProduitQuantifier.setProduit((Produit) autresJos[0]);
+                    nouveauProduitQuantifier.setQuantite((Quantite) autresJos[1]);
+                },
+                produits.stream()
+                        .findFirst()
+                        .orElseThrow(() -> new ComposantException("Impossible d'ajouter un produit depuis une épicerie vide.")),
+                new QuantiteJao().nouveau(nouvelleQuantite -> {
+                            nouvelleQuantite.setValeur(0L);
+                            nouvelleQuantite.setMesure(Mesure.MASSE);
+                        }
+                )
+
+        );
+    }
+
+    public ProduitQuantifier creerNouveauProduitQuantifier(Produit produit, Long valeur, Mesure mesure) throws JaoExecutionException {
+        return new ProduitQuantifierJao().nouveau((nouveauProduitQuantifier, autresJos) -> {
+                    nouveauProduitQuantifier.setProduit(produit);
+                    nouveauProduitQuantifier.setQuantite((Quantite) autresJos[0]);
+                },
+                new QuantiteJao().nouveau(nouvelleQuantite -> {
+                    nouvelleQuantite.setValeur(valeur);
+                    nouvelleQuantite.setMesure(mesure);
+                }));
+    }
+
+    public SimpleListProperty<Produit> produitsProperty() {
+        return produits;
+    }
+
+    public SimpleObjectProperty<Produit> produitProperty() {
+        return produit;
+    }
+
+    public SimpleStringProperty produitNomProperty() {
+        return produitNom;
+    }
+}

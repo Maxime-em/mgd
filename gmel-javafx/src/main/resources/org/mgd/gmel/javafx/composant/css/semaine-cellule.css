@@ -1,0 +1,20 @@
+.semaine-cellule {
+    -fx-border-color: transparent transparent transparent -bordure-entete-couleur;
+    -fx-alignment: bottom-center;
+}
+
+.semaine-cellule.paire {
+    -fx-background-color: -fond-entete-couleur-paire;
+}
+
+.semaine-cellule.impaire {
+    -fx-background-color: -fond-entete-couleur-impaire;
+}
+
+.semaine-cellule #formulesVBox {
+    -fx-alignment: top-center
+}
+
+.semaine-cellule #toolBarHBox {
+    -fx-alignment: bottom-right;
+}

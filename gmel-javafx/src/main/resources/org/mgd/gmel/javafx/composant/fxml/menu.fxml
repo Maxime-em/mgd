@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.mgd.gmel.javafx.composant.FormuleComposant?>
+<?import org.mgd.gmel.javafx.composant.MenuComposant?>
+<?import org.mgd.gmel.javafx.composant.SemaineComposant?>
+<fx:root xmlns:fx="http://javafx.com/fxml"
+         type="org.mgd.gmel.javafx.composant.MenuComposant"
+         stylesheets="@../css/menu.css"
+>
+    <ToolBar GridPane.columnSpan="2">
+        <Button text="Précédent" onMouseClicked="#onMouseClickedPrecedent"/>
+        <Button text="Aujourd'hui" onMouseClicked="#onMouseClickedAujourdhui"/>
+        <Button text="Suivant" onMouseClicked="#onMouseClickedSuivant"/>
+    </ToolBar>
+    <SemaineComposant GridPane.rowIndex="1"/>
+    <FormuleComposant GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+    <ToolBar GridPane.rowIndex="2" GridPane.columnSpan="2">
+        <Button text="Ajouter" onAction="#onActionAjouterFormule"/>
+        <Label text="une formule le"/>
+        <ChoiceBox fx:id="jourChoiceBox"/>
+        <Label text="au"/>
+        <ChoiceBox fx:id="typeRepasChoiceBox"/>
+    </ToolBar>
+
+    <rowConstraints>
+        <RowConstraints percentHeight="5"/>
+        <RowConstraints percentHeight="90"/>
+        <RowConstraints percentHeight="5"/>
+    </rowConstraints>
+
+    <columnConstraints>
+        <ColumnConstraints percentWidth="80"/>
+        <ColumnConstraints percentWidth="20"/>
+    </columnConstraints>
+</fx:root>

@@ -1,0 +1,104 @@
+{
+  "identifiant": "3202c9e1-ae19-4a8c-aab2-aeae0e9f6e77",
+  "livresCuisine": [
+    {
+      "identifiant": "7cb21251-d5db-41ce-ae84-1934e63411a1",
+      "nom": "Livre de cuisine 1",
+      "recettes": [
+        {
+          "identifiant": "f1a7f4c8-8b8b-456d-956d-9ba580f64be6",
+          "nom": "Recette 1",
+          "nombrePersonnes": 1,
+          "produitsQuantifier": [
+            {
+              "identifiant": "16c89cf4-725f-483d-a98f-e9ca50d470ae",
+              "produit": {
+                "identifiant": "56b4ee41-d325-4ea1-85d8-4b3acd8f976a",
+                "nom": "Produit 1.2"
+              },
+              "quantite": {
+                "identifiant": "794d971f-2e23-4657-8b67-8c8a09800d5b",
+                "valeur": 10,
+                "mesure": "VOLUME"
+              }
+            },
+            {
+              "identifiant": "1f4011e5-e7c9-433f-bf3a-7111975782f8",
+              "produit": {
+                "identifiant": "9fbae530-2a42-4d8a-a0ba-6f84f1f4250b",
+                "nom": "Produit 1.1"
+              },
+              "quantite": {
+                "identifiant": "6bf679b5-1188-4ac2-99c5-a11aa36dfc41",
+                "valeur": 20,
+                "mesure": "MASSE"
+              }
+            }
+          ]
+        },
+        {
+          "identifiant": "c9e8b622-3b84-442e-956a-34ebc2638ac3",
+          "nom": "Recette 2",
+          "nombrePersonnes": 2,
+          "produitsQuantifier": [
+            {
+              "identifiant": "3eb0787e-6736-42e0-adb9-c8d0ee55b3b8",
+              "produit": {
+                "identifiant": "d1665596-31e4-4671-8ffe-8b111e87fde0",
+                "nom": "Produit 2.1"
+              },
+              "quantite": {
+                "identifiant": "dc7f7747-a0bf-4a29-a3c5-564b101c9e01",
+                "valeur": 100,
+                "mesure": "VOLUME"
+              }
+            },
+            {
+              "identifiant": "63a4e729-3112-4695-8a14-eaec68c87513",
+              "produit": {
+                "identifiant": "087e379f-afb4-40ea-b92e-89b1a4a99312",
+                "nom": "Produit 2.2"
+              },
+              "quantite": {
+                "identifiant": "24aa3df9-60f1-415c-8e01-8e0cff6f3ff2",
+                "valeur": 200,
+                "mesure": "VOLUME"
+              }
+            },
+            {
+              "identifiant": "4b910191-462f-4de1-9541-afc5ddfc122f",
+              "produit": {
+                "identifiant": "8e6d8e98-a01b-433f-87d1-fdcc471499b4",
+                "nom": "Produit 2.3"
+              },
+              "quantite": {
+                "identifiant": "5c51517d-c5fd-4126-a036-8fdc24f7eab4",
+                "valeur": 300,
+                "mesure": "VOLUME"
+              }
+            }
+          ]
+        },
+        {
+          "identifiant": "19446c18-6286-452b-b2e3-278ca941b1e3",
+          "nom": "Recette 3",
+          "nombrePersonnes": 3,
+          "produitsQuantifier": [
+            {
+              "identifiant": "a5d87745-d0b8-4387-bfee-bf6d97af0dba",
+              "produit": {
+                "identifiant": "584c0e94-3bc6-4867-bad9-bb9321c31e15",
+                "nom": "Produit 3.1"
+              },
+              "quantite": {
+                "identifiant": "f49ee008-74ad-4ccc-ab50-ca822637cd36",
+                "valeur": 1000,
+                "mesure": "MASSE"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import org.mgd.gmel.javafx.composant.ProduitsComposant?>
+<fx:root xmlns:fx="http://javafx.com/fxml" type="org.mgd.gmel.javafx.composant.ProduitsComposant">
+    <columns>
+        <TableColumn fx:id="colonne" text="Produits"/>
+    </columns>
+</fx:root>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<?import org.mgd.gmel.javafx.composant.FormuleComposant?>
+<fx:root xmlns:fx="http://javafx.com/fxml"
+         type="org.mgd.gmel.javafx.composant.FormuleComposant"
+         disable="true"
+         stylesheets="@../css/formule.css"
+>
+    <VBox>
+
+        <Label text="Livre de cuisine"/>
+
+        <ChoiceBox fx:id="livreCuisineChoiceBox"/>
+    </VBox>
+    <VBox>
+        <Label text="Recette"/>
+        <ChoiceBox fx:id="recetteChoiceBox"/>
+    </VBox>
+    <VBox>
+        <Label text="Taille de la période"/>
+        <Spinner fx:id="taillePeriodeSpinner" editable="true"/>
+    </VBox>
+    <VBox>
+        <Label text="Nombre de personnes"/>
+        <Spinner fx:id="nombreConvivesSpinner" editable="true"/>
+    </VBox>
+</fx:root>

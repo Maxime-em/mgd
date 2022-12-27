@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.mgd.gmel.javafx.composant.*?>
+<fx:root xmlns:fx="http://javafx.com/fxml"
+         type="org.mgd.gmel.javafx.composant.BibliothequeComposant"
+         stylesheets="@../css/biblioheque.css"
+>
+    <LivresCuisineComposant editable="true"/>
+    <RecettesComposant editable="true" GridPane.columnIndex="1"/>
+    <RecetteComposant GridPane.columnIndex="2"/>
+    <ToolBar GridPane.rowIndex="1" GridPane.columnSpan="3">
+        <Button fx:id="ajouterLivreButton" onAction="#onActionAjouterLivreCuisine" text="Ajouter un livre de cuisine"/>
+        <Button fx:id="ajouterRecetteButton" disable="true" onAction="#onActionAjouterRecette"
+                text="Ajouter une recette"/>
+        <Button fx:id="ajouterProduitButton" disable="true" onAction="#onActionAjouterProduit"
+                text="Ajouter un produit"/>
+    </ToolBar>
+    <ToolBar GridPane.rowIndex="2" GridPane.columnSpan="3">
+        <Button fx:id="deplacerRecetteButton" disable="true" onAction="#onActionDeplacerRecette"
+                text="Déplacer la recette vers"/>
+        <ChoiceBox fx:id="livreCuisineCibleChoiceBox"/>
+    </ToolBar>
+
+    <rowConstraints>
+        <RowConstraints percentHeight="90"/>
+        <RowConstraints percentHeight="5"/>
+        <RowConstraints percentHeight="5"/>
+    </rowConstraints>
+
+    <columnConstraints>
+        <ColumnConstraints percentWidth="25"/>
+        <ColumnConstraints percentWidth="25"/>
+        <ColumnConstraints percentWidth="50"/>
+    </columnConstraints>
+</fx:root>

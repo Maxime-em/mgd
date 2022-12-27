@@ -1,0 +1,17 @@
+{
+  "identifiant": "35a6a780-e6d2-4ef9-b2e2-aba5312110a0",
+  "produits": [
+    {
+      "identifiant": "eee19e2d-2796-4082-b8cc-218d3a14e955",
+      "nom": "Produit 1"
+    },
+    {
+      "identifiant": "7fc2e02a-fca9-4693-a2b7-9d8464f38bb7",
+      "nom": "Produit 2"
+    },
+    {
+      "identifiant": "6da29b2f-a8e4-42ba-ab26-2df048fa67df",
+      "nom": "Produit 3"
+    }
+  ]
+}

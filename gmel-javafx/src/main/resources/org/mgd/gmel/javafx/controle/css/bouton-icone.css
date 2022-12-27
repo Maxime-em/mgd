@@ -1,0 +1,52 @@
+* {
+    -couleur-fond-icone: black;
+    -opacite-bouton: 10%;
+    -opacite-bouton-survoler: 100%;
+    -opacite-bouton-presser: 20%;
+    -taille-icone-normale: 20;
+    -taille-icone-petit: 15;
+}
+
+.bouton-icone {
+    -fx-opacity: -opacite-bouton;
+    -fx-background-radius: 5;
+    -fx-padding: 6;
+}
+
+.bouton-icone:hover {
+    -fx-opacity: -opacite-bouton-survoler;
+}
+
+.bouton-icone:pressed {
+    -fx-opacity: -opacite-bouton-presser;
+}
+
+.bouton-icone .icone {
+    -fx-background-color: -couleur-fond-icone;
+}
+
+.bouton-icone.normale .icone {
+    -fx-min-height: -taille-icone-normale;
+    -fx-min-width: -taille-icone-normale;
+    -fx-max-height: -taille-icone-normale;
+    -fx-max-width: -taille-icone-normale;
+}
+
+.bouton-icone.petite .icone {
+    -fx-min-height: -taille-icone-petit;
+    -fx-min-width: -taille-icone-petit;
+    -fx-max-height: -taille-icone-petit;
+    -fx-max-width: -taille-icone-petit;
+}
+
+.bouton-icone.forme-ajouter .icone {
+    -fx-shape: "M0 80 h30 a10 10 0 0 1 10 -10 h30 v-30 a10 10 0 0 1 20 0 v30 h30 a10 10 0 0 1 0 20 h-30 v30 a10 10 0 0 1 -20,0 v-30 h-30 a10 10 0 0 1 -10 -10 h-30 a80 80 0 1 0 160 0 a80 80 0 1 0 -160 0 z";
+}
+
+.bouton-icone.forme-supprimer .icone {
+    -fx-shape: "M0 80 h30 a10 10 0 0 1 10 -10 h80 a10 10 0 0 1 0 20 h-80 a10 10 0 0 1 -10 -10 h-30 a80 80 0 1 0 160 0 a80 80 0 1 0 -160 0 z";
+}
+
+.bouton-icone.forme-avertir .icone {
+    -fx-shape: "M0 80 H68 L62 42 A18.22 18.22 0 1 1 98 42 L92 80 L90 100 A10.04988 10.04988 0 1 1 70 100 L68 80 H0 A80 80 0 0 0 80 160 V140 A10 10 0 1 1 80 120 A10 10 0 1 1 80 140 V160 A80 80 0 0 0 160 80 A80 80 0 1 0 0 80 z";
+}

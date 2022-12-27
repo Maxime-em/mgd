@@ -1,0 +1,7 @@
+* {
+    -bordure-entete-couleur: grey;
+    -bordure-entete-couleur-aujourdhui: rgb(232, 77, 62);
+    -fond-entete-couleur-aujourdhui: rgba(232, 77, 62, 0.1);
+    -fond-entete-couleur-paire: transparent;
+    -fond-entete-couleur-impaire: rgba(128, 128, 128, 0.1);
+}

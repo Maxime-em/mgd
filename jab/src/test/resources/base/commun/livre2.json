@@ -1,0 +1,26 @@
+{
+  "identifiant": "97583a9e-c48d-11ed-afa1-0242ac120002",
+  "nom": "livre2",
+  "chapitres": [
+    [
+      {
+        "identifiant": "e6428919-c48d-11ed-afa1-0242ac120002",
+        "nom": "chapitre21"
+      },
+      {
+        "identifiant": "a1db0abe-c48d-11ed-afa1-0242ac120002",
+        "age": 12
+      }
+    ],
+    [
+      {
+        "identifiant": "60d4a435-c48d-11ed-afa1-0242ac120002",
+        "nom": "chapitre22"
+      },
+      {
+        "identifiant": "a1db0abe-c48d-11ed-afa1-0242ac120002",
+        "age": 12
+      }
+    ]
+  ]
+}

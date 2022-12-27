@@ -1,0 +1,59 @@
+{
+  "paquets": [
+    [
+      {
+        "identifiant": "549c3eea-d12d-4428-aa32-dc600f7381ab",
+        "nom": "Produit"
+      },
+      {
+        "produitsQuantifier": [
+          {
+            "identifiant": "d4a31317-e70a-4cdb-9527-78a5ae10c4a0",
+            "produit": {
+              "identifiant": "549c3eea-d12d-4428-aa32-dc600f7381ab",
+              "nom": "Produit"
+            },
+            "quantite": {
+              "identifiant": "66a118e3-27f6-487e-8b0f-f345821cb149",
+              "valeur": 200,
+              "mesure": "MASSE"
+            }
+          }
+        ],
+        "formules": [
+          [
+            {
+              "identifiant": "d4a31317-e70a-4cdb-9527-78a5ae10c4a0",
+              "produit": {
+                "identifiant": "549c3eea-d12d-4428-aa32-dc600f7381ab",
+                "nom": "Produit"
+              },
+              "quantite": {
+                "identifiant": "66a118e3-27f6-487e-8b0f-f345821cb149",
+                "valeur": 200,
+                "mesure": "MASSE"
+              }
+            },
+            {
+              "identifiant": "98a1b523-c599-46cf-b0ab-443f28aeeb86",
+              "recette": {
+                "identifiant": "7a2f76bc-5aba-4f3d-b094-7875f9a6ea2a",
+                "nom": "Recette",
+                "nombrePersonnes": 1,
+                "produitsQuantifier": []
+              },
+              "periode": {
+                "identifiant": "46fa0eb8-8e68-4760-8215-8b0dcec306c9",
+                "repas": "2000-01-01#DEJEUNER",
+                "taille": 5
+              },
+              "nombreConvives": 1
+            }
+          ]
+        ],
+        "identifiant": "c92fda14-4b64-4dc5-9604-6ca133645dbd"
+      }
+    ]
+  ],
+  "identifiant": "0b17d203-1bfa-4a1b-9aed-bc6c43ee066b"
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import org.mgd.gmel.javafx.composant.ImprimerieComposant?>
+<?import org.mgd.gmel.javafx.composant.InventaireComposant?>
+<?import org.mgd.gmel.javafx.composant.MenusComposant?>
+<fx:root xmlns:fx="http://javafx.com/fxml" type="org.mgd.gmel.javafx.composant.ImprimerieComposant">
+    <ToolBar GridPane.columnSpan="3">
+        <Label text="Début"/>
+        <DatePicker fx:id="debutDatePicker"/>
+        <Label text="Fin"/>
+        <DatePicker fx:id="finDatePicker"/>
+        <Button text="Charger les menus" onAction="#majAgenda"/>
+    </ToolBar>
+
+    <MenusComposant GridPane.rowIndex="1"/>
+    <InventaireComposant GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+    <ToolBar GridPane.rowIndex="2" GridPane.columnSpan="3">
+        <Label text="Type de document"/>
+        <ChoiceBox fx:id="typeDocumentChoiceBox"/>
+        <Button text="Générer le PDF" onAction="#onActionGenererPdf"/>
+    </ToolBar>
+
+    <rowConstraints>
+        <RowConstraints percentHeight="5"/>
+        <RowConstraints percentHeight="90"/>
+        <RowConstraints percentHeight="5"/>
+    </rowConstraints>
+
+    <columnConstraints>
+        <ColumnConstraints percentWidth="50"/>
+        <ColumnConstraints percentWidth="50"/>
+    </columnConstraints>
+</fx:root>

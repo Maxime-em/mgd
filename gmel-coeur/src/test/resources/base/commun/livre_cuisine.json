@@ -1,0 +1,24 @@
+{
+  "identifiant": "7cb21251-d5db-41ce-ae84-1934e63411a1",
+  "nom": "Livre de cuisine 1",
+  "recettes": [
+    {
+      "identifiant": "f1a7f4c8-8b8b-456d-956d-9ba580f64be6",
+      "nom": "Recette 1",
+      "nombrePersonnes": 1,
+      "produitsQuantifier": []
+    },
+    {
+      "identifiant": "c9e8b622-3b84-442e-956a-34ebc2638ac3",
+      "nom": "Recette 2",
+      "nombrePersonnes": 2,
+      "produitsQuantifier": []
+    },
+    {
+      "identifiant": "19446c18-6286-452b-b2e3-278ca941b1e3",
+      "nom": "Recette 3",
+      "nombrePersonnes": 3,
+      "produitsQuantifier": []
+    }
+  ]
+}

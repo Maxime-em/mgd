@@ -1,0 +1,21 @@
+{
+  "identifiant": "426093b0-c48d-11ed-afa1-0242ac120002",
+  "jeux": [
+    {
+      "identifiant": "7b056a2a-c48c-11ed-afa1-0242ac120002",
+      "nom": "jeu",
+      "type": "JEU_DE_ROLES",
+      "annee": 2000,
+      "semaine": 1
+    },
+    {
+      "identifiant": "105b6dea-c48d-11ed-afa1-0242ac120002",
+      "nom": "jeu",
+      "type": "JEU_DE_ROLES",
+      "annee": 2000,
+      "semaine": 1
+    }
+  ],
+  "livres": [],
+  "scroe": 500
+}

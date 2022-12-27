@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import org.mgd.gmel.javafx.composant.CompositionComposant?>
+<fx:root xmlns:fx="http://javafx.com/fxml"
+         type="org.mgd.gmel.javafx.composant.CompositionComposant"
+         stylesheets="@../css/composition.css"
+         editable="true"
+>
+    <columns>
+        <TableColumn fx:id="iconeSupprimerColonne" text="Produits quantifiés"/>
+        <TableColumn fx:id="nomColonne" text="Nom"/>
+        <TableColumn fx:id="quantiteColonne" text="Quantité"/>
+        <TableColumn fx:id="mesureColonne" text="Mesure"/>
+    </columns>
+</fx:root>

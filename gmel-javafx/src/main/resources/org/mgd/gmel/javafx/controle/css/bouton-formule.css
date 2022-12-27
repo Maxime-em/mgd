@@ -1,0 +1,19 @@
+.bouton-formule {
+    -fx-padding: 5;
+}
+
+.bouton-formule .volet {
+    -fx-padding: 8;
+    -fx-alignment: center;
+}
+
+.bouton-formule .texte {
+    -fx-translate-x: 8;
+}
+
+.bouton-formule:selected {
+    -fx-padding: 0;
+    -fx-border-width: 5;
+    -fx-border-color: darkgray;
+    -fx-border-radius: 13;
+}

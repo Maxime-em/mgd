@@ -1,0 +1,99 @@
+{
+  "identifiant": "0134cc77-8cda-4541-9525-355d66c93f51",
+  "annee": 2000,
+  "semaine": 1,
+  "formules": [
+    {
+      "identifiant": "819ceb5f-8885-405f-be67-ae8f8c00e5ed",
+      "recette": {
+        "identifiant": "f1a7f4c8-8b8b-456d-956d-9ba580f64be6",
+        "nom": "Recette 1",
+        "nombrePersonnes": 1,
+        "produitsQuantifier": [
+          {
+            "produit": {
+              "nom": "Produit 1.2",
+              "identifiant": "56b4ee41-d325-4ea1-85d8-4b3acd8f976a"
+            },
+            "quantite": {
+              "valeur": 10,
+              "mesure": "VOLUME",
+              "identifiant": "794d971f-2e23-4657-8b67-8c8a09800d5b"
+            },
+            "identifiant": "16c89cf4-725f-483d-a98f-e9ca50d470ae"
+          },
+          {
+            "produit": {
+              "nom": "Produit 1.1",
+              "identifiant": "9fbae530-2a42-4d8a-a0ba-6f84f1f4250b"
+            },
+            "quantite": {
+              "valeur": 20,
+              "mesure": "MASSE",
+              "identifiant": "6bf679b5-1188-4ac2-99c5-a11aa36dfc41"
+            },
+            "identifiant": "1f4011e5-e7c9-433f-bf3a-7111975782f8"
+          }
+        ]
+      },
+      "periode": {
+        "identifiant": "6266444f-f45a-4579-a4e1-bdd58b329c2b",
+        "repas": "2000-01-03#DEJEUNER",
+        "taille": 5
+      },
+      "nombreConvives": 2
+    },
+    {
+      "identifiant": "31ac44e4-36dd-4c52-93a5-a0b9456b8575",
+      "recette": {
+        "identifiant": "c9e8b622-3b84-442e-956a-34ebc2638ac3",
+        "nom": "Recette 2",
+        "nombrePersonnes": 2,
+        "produitsQuantifier": [
+          {
+            "produit": {
+              "nom": "Produit 2.1",
+              "identifiant": "d1665596-31e4-4671-8ffe-8b111e87fde0"
+            },
+            "quantite": {
+              "valeur": 100,
+              "mesure": "VOLUME",
+              "identifiant": "dc7f7747-a0bf-4a29-a3c5-564b101c9e01"
+            },
+            "identifiant": "3eb0787e-6736-42e0-adb9-c8d0ee55b3b8"
+          },
+          {
+            "produit": {
+              "nom": "Produit 2.3",
+              "identifiant": "8e6d8e98-a01b-433f-87d1-fdcc471499b4"
+            },
+            "quantite": {
+              "valeur": 300,
+              "mesure": "VOLUME",
+              "identifiant": "5c51517d-c5fd-4126-a036-8fdc24f7eab4"
+            },
+            "identifiant": "4b910191-462f-4de1-9541-afc5ddfc122f"
+          },
+          {
+            "produit": {
+              "nom": "Produit 2.2",
+              "identifiant": "087e379f-afb4-40ea-b92e-89b1a4a99312"
+            },
+            "quantite": {
+              "valeur": 200,
+              "mesure": "VOLUME",
+              "identifiant": "24aa3df9-60f1-415c-8e01-8e0cff6f3ff2"
+            },
+            "identifiant": "63a4e729-3112-4695-8a14-eaec68c87513"
+          }
+        ]
+      },
+      "periode": {
+        "identifiant": "74a59cb3-9f92-415e-b88c-5fe47ad57e20",
+        "repas": "2000-01-05#DEJEUNER",
+        "taille": 2
+      },
+      "nombreConvives": 5
+    }
+  ]
+}

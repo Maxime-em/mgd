@@ -1,0 +1,17 @@
+.semaine-cellule-entete .label {
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+.semaine-cellule-entete-colonne {
+    -fx-border-color: transparent transparent -bordure-entete-couleur -bordure-entete-couleur;
+}
+
+.semaine-cellule-entete-titre {
+    -fx-border-color: transparent transparent -bordure-entete-couleur transparent;
+}
+
+.semaine-cellule-entete-ligne.aujourdhui {
+    -fx-background-color: -fond-entete-couleur-aujourdhui;
+    -fx-border-color: transparent -bordure-entete-couleur-aujourdhui transparent transparent;
+}

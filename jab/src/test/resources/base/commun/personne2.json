@@ -1,0 +1,48 @@
+{
+  "identifiant": "5f2a5aa8-c48d-11ed-afa1-0242ac120002",
+  "jeux": [
+    {
+      "identifiant": "7b056a2a-c48c-11ed-afa1-0242ac120002",
+      "nom": "jeu1",
+      "type": "JEU_DE_ROLES",
+      "annee": 2000,
+      "semaine": 1
+    },
+    {
+      "identifiant": "105b6dea-c48d-11ed-afa1-0242ac120002",
+      "nom": "jeu2",
+      "type": "JEU_DE_ROLES",
+      "annee": 2000,
+      "semaine": 1
+    }
+  ],
+  "livres": {
+    "1": {
+      "identifiant": "ef53d929-c48d-11ed-afa1-0242ac120002",
+      "nom": "livre3",
+      "chapitres": [
+        [
+          {
+            "identifiant": "6a7d6fbc-c48d-11ed-afa1-0242ac120002",
+            "nom": "chapitre31"
+          },
+          {
+            "identifiant": "a1db0abe-c48d-11ed-afa1-0242ac120002",
+            "age": 12
+          }
+        ],
+        [
+          {
+            "identifiant": "93fa7649-c48d-11ed-afa1-0242ac120002",
+            "nom": "chapitre32"
+          },
+          {
+            "identifiant": "a1db0abe-c48d-11ed-afa1-0242ac120002",
+            "age": 12
+          }
+        ]
+      ]
+    }
+  },
+  "score": 500
+}

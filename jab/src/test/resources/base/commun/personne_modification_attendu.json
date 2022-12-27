@@ -1,0 +1,31 @@
+{
+  "jeux": [
+    {
+      "type": "JEU_DE_ROLES",
+      "nom": "jeumodi1",
+      "annee": 2000,
+      "semaine": 1,
+      "identifiant": "a1cf6f58-c4ef-11ed-afa1-0242ac120002"
+    }
+  ],
+  "livres": {
+    "1": {
+      "nom": "livremodi1",
+      "chapitres": [
+        [
+          {
+            "nom": "chapitremodi11",
+            "identifiant": "ccd61697-c4ef-11ed-afa1-0242ac120002"
+          },
+          {
+            "identifiant": "a1db0abe-c48d-11ed-afa1-0242ac120002",
+            "age": 12
+          }
+        ]
+      ],
+      "identifiant": "a8696dc8-c4ef-11ed-afa1-0242ac120002"
+    }
+  },
+  "score": 600,
+  "identifiant": "b86e9ebe-c4ef-11ed-afa1-0242ac120002"
+}

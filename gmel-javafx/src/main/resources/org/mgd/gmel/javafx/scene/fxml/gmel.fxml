@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import org.mgd.gmel.javafx.composant.BibliothequeComposant?>
+<?import org.mgd.gmel.javafx.composant.EpicerieComposant?>
+<?import org.mgd.gmel.javafx.composant.ImprimerieComposant?>
+<?import org.mgd.gmel.javafx.composant.MenuComposant?>
+<?import org.mgd.gmel.javafx.scene.GmelScene?>
+<fx:root xmlns:fx="http://javafx.com/fxml" type="org.mgd.gmel.javafx.scene.GmelScene">
+    <TabPane>
+        <Tab text="Menu">
+            <MenuComposant/>
+        </Tab>
+        <Tab text="Bibliothèque">
+            <BibliothequeComposant/>
+        </Tab>
+        <Tab text="Épicerie">
+            <EpicerieComposant/>
+        </Tab>
+        <Tab text="Imprimerie">
+            <ImprimerieComposant/>
+        </Tab>
+    </TabPane>
+</fx:root>

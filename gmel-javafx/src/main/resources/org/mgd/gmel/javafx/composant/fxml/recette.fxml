@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.layout.VBox?>
+<?import org.mgd.gmel.javafx.composant.CompositionComposant?>
+<?import org.mgd.gmel.javafx.composant.RecetteComposant?>
+<fx:root xmlns:fx="http://javafx.com/fxml"
+         type="org.mgd.gmel.javafx.composant.RecetteComposant"
+         spacing="5"
+         stylesheets="@../css/recette.css"
+>
+    <VBox>
+        <Label text="Nombre de personnes"/>
+        <Spinner fx:id="nombrePersonnesSpinner" editable="true"/>
+    </VBox>
+    <VBox>
+        <Label text="Ingrédients"/>
+        <CompositionComposant/>
+    </VBox>
+</fx:root>

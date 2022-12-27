@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import org.mgd.gmel.javafx.composant.*?>
+<fx:root xmlns:fx="http://javafx.com/fxml"
+         type="org.mgd.gmel.javafx.composant.SemaineComposant"
+         stylesheets="@../css/semaine.css"
+>
+    <SemaineCelluleTitre fx:id="titre"/>
+
+    <SemaineCelluleEnteteRepas typeRepas="DEJEUNER" GridPane.columnIndex="1"/>
+    <SemaineCelluleEnteteRepas typeRepas="DINER" GridPane.columnIndex="2"/>
+
+    <SemaineCelluleEnteteJournee fx:id="lundi" jourDeSemaine="MONDAY" GridPane.rowIndex="1"/>
+    <SemaineCelluleEnteteJournee fx:id="mardi" jourDeSemaine="TUESDAY" GridPane.rowIndex="2"/>
+    <SemaineCelluleEnteteJournee fx:id="mercredi" jourDeSemaine="WEDNESDAY" GridPane.rowIndex="3"/>
+    <SemaineCelluleEnteteJournee fx:id="jeudi" jourDeSemaine="THURSDAY" GridPane.rowIndex="4"/>
+    <SemaineCelluleEnteteJournee fx:id="vendredi" jourDeSemaine="FRIDAY" GridPane.rowIndex="5"/>
+    <SemaineCelluleEnteteJournee fx:id="samedi" jourDeSemaine="SATURDAY" GridPane.rowIndex="6"/>
+    <SemaineCelluleEnteteJournee fx:id="dimanche" jourDeSemaine="SUNDAY" GridPane.rowIndex="7"/>
+
+    <SemaineCellule fx:id="lundiDejeuner" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+    <SemaineCellule fx:id="lundiDiner" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+    <SemaineCellule fx:id="mardiDejeuner" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+    <SemaineCellule fx:id="mardiDiner" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+    <SemaineCellule fx:id="mercrediDejeuner" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+    <SemaineCellule fx:id="mercrediDiner" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
+    <SemaineCellule fx:id="jeudiDejeuner" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+    <SemaineCellule fx:id="jeudiDiner" GridPane.rowIndex="4" GridPane.columnIndex="2"/>
+    <SemaineCellule fx:id="vendrediDejeuner" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+    <SemaineCellule fx:id="vendrediDiner" GridPane.rowIndex="5" GridPane.columnIndex="2"/>
+    <SemaineCellule fx:id="samediDejeuner" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+    <SemaineCellule fx:id="samediDiner" GridPane.rowIndex="6" GridPane.columnIndex="2"/>
+    <SemaineCellule fx:id="dimancheDejeuner" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+    <SemaineCellule fx:id="dimancheDiner" GridPane.rowIndex="7" GridPane.columnIndex="2"/>
+
+    <rowConstraints>
+        <RowConstraints percentHeight="9"/>
+        <RowConstraints percentHeight="13"/>
+        <RowConstraints percentHeight="13"/>
+        <RowConstraints percentHeight="13"/>
+        <RowConstraints percentHeight="13"/>
+        <RowConstraints percentHeight="13"/>
+        <RowConstraints percentHeight="13"/>
+        <RowConstraints percentHeight="13"/>
+    </rowConstraints>
+
+    <columnConstraints>
+        <ColumnConstraints percentWidth="10"/>
+        <ColumnConstraints percentWidth="45"/>
+        <ColumnConstraints percentWidth="45"/>
+    </columnConstraints>
+</fx:root>
