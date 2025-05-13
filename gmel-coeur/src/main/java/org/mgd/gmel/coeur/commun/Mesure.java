@@ -12,7 +12,16 @@ import org.mgd.gmel.coeur.objet.Quantite;
 public enum Mesure {
     VOLUME("litre", "millilitres"),
     MASSE("gramme", "grammes"),
-    UNITE("unité", "unités");
+    UNITE("unité", "unités"),
+    BOITE("boîte", "boîtes"),
+    BRIQUE("brique", "briques"),
+    CONSERVE("conserve", "conserves"),
+    POT("pot", "pots"),
+    SACHET("sachet", "sachets"),
+    TRANCHE("tranche", "tranches"),
+    BLOQUE("bloque", "bloques"),
+    PORTION("portion", "portions"),
+    BARQUETTE("barquette", "barquettes");
 
     private final String uniteSingulier;
     private final String unitePluriel;
