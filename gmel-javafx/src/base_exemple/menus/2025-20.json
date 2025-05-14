@@ -1,0 +1,639 @@
+{
+  "annee": 2025,
+  "semaine": 20,
+  "formules": [
+    {
+      "recette": {
+        "nom": "Croziflette",
+        "nombrePersonnes": 6,
+        "produitsQuantifier": [
+          {
+            "produit": {
+              "nom": "Crozet",
+              "identifiant": "c7e5cfdb-d3a5-436d-bbe0-fa7f15b3c4a1"
+            },
+            "quantite": {
+              "valeur": 1,
+              "mesure": "BOITE",
+              "identifiant": "5790389f-12ca-43b0-813a-f46c7f3e923a"
+            },
+            "identifiant": "c5f9cc25-9350-46e7-b060-4796e6fd5b97"
+          },
+          {
+            "produit": {
+              "nom": "Crozet au sarrasin",
+              "identifiant": "1b76b18e-1c0b-4b62-bac8-b45a33ae36fc"
+            },
+            "quantite": {
+              "valeur": 1,
+              "mesure": "BOITE",
+              "identifiant": "9185d243-0f30-405e-b022-8e8a447cbce6"
+            },
+            "identifiant": "a8f5b110-ba4e-4823-b9b6-1f7fcce3c628"
+          },
+          {
+            "produit": {
+              "nom": "Crème épaisse",
+              "identifiant": "3aac0b6a-5adb-43fc-9060-26cfb19b7f51"
+            },
+            "quantite": {
+              "valeur": 6,
+              "mesure": "CUILLERE_A_SOUPE",
+              "identifiant": "07dad2b4-447b-4dd5-b654-f2eaa80406f4"
+            },
+            "identifiant": "6ebaa956-6db1-459b-9e80-9f87da8bf5b8"
+          },
+          {
+            "produit": {
+              "nom": "Jambon cru",
+              "identifiant": "95a3f838-11e6-48b6-92f3-59704d2f27c8"
+            },
+            "quantite": {
+              "valeur": 6,
+              "mesure": "TRANCHE",
+              "identifiant": "3bba0332-d8ac-4646-96b5-0aa31be436ec"
+            },
+            "identifiant": "a3928a86-c806-460f-b19b-63afeb21a9ac"
+          },
+          {
+            "produit": {
+              "nom": "Reblochon",
+              "identifiant": "5ab2f0b5-ae20-485d-b331-124796f7b2ef"
+            },
+            "quantite": {
+              "valeur": 1,
+              "mesure": "UNITE",
+              "identifiant": "999a4e6a-5168-4412-b97c-32494873d687"
+            },
+            "identifiant": "b1fb5aa6-df0a-4655-9bd8-6f6a9ca6e45b"
+          }
+        ],
+        "identifiant": "6cfa27e1-79eb-4fb7-8488-1dbc5e989477"
+      },
+      "periode": {
+        "repas": "2025-05-12#DEJEUNER",
+        "taille": 2,
+        "identifiant": "e7a2deb5-c1cd-455c-9dca-3995e6a67ec9"
+      },
+      "nombreConvives": 3,
+      "identifiant": "f8bb71bc-09b4-482f-8db6-dee67bb05481"
+    },
+    {
+      "recette": {
+        "nom": "Potée de choux",
+        "nombrePersonnes": 12,
+        "produitsQuantifier": [
+          {
+            "produit": {
+              "nom": "Carotte",
+              "identifiant": "53438087-49a4-4d13-b49c-172aed103780"
+            },
+            "quantite": {
+              "valeur": 8,
+              "mesure": "UNITE",
+              "identifiant": "2d92b3ce-3007-4730-9f91-d1d0c88bb42a"
+            },
+            "identifiant": "3ccbabe9-8c83-4c43-8cfe-32abd3bc5c83"
+          },
+          {
+            "produit": {
+              "nom": "Choux vert",
+              "identifiant": "e82067c3-6f8c-4c2d-a189-c8968d0dc5b2"
+            },
+            "quantite": {
+              "valeur": 1,
+              "mesure": "UNITE",
+              "identifiant": "12ecd337-21d6-4231-b0a3-e9e87c79814e"
+            },
+            "identifiant": "0eb1bf3e-4441-4a63-9684-94590d3fa5e5"
+          },
+          {
+            "produit": {
+              "nom": "Lard fumé",
+              "identifiant": "310df246-df79-41f9-9dbc-91ef7109952c"
+            },
+            "quantite": {
+              "valeur": 2,
+              "mesure": "BLOQUE",
+              "identifiant": "ea6a0aa0-7b5d-4acc-8e0a-c9c560359c8b"
+            },
+            "identifiant": "556858a2-ee56-415b-86d6-1ba1a68ba01d"
+          },
+          {
+            "produit": {
+              "nom": "Pomme de terre",
+              "identifiant": "5b68621d-355b-45f7-b94f-e58c4567b0a0"
+            },
+            "quantite": {
+              "valeur": 12,
+              "mesure": "UNITE",
+              "identifiant": "6a147daf-a5b2-4fb2-b0b9-9c25b406e18a"
+            },
+            "identifiant": "62bec50e-a695-4867-a827-7c309621ef8b"
+          },
+          {
+            "produit": {
+              "nom": "Roti salé",
+              "identifiant": "9f5a8fde-cdb1-4778-93ea-e0e664709148"
+            },
+            "quantite": {
+              "valeur": 2,
+              "mesure": "UNITE",
+              "identifiant": "8cdfcbfe-1ee7-4959-b059-f9e824f15103"
+            },
+            "identifiant": "5e9d1b64-860f-410a-a978-7cf9f53eef36"
+          },
+          {
+            "produit": {
+              "nom": "Saucisse à cuire",
+              "identifiant": "c45f6e43-bf75-4379-9485-7a8c64c4659a"
+            },
+            "quantite": {
+              "valeur": 12,
+              "mesure": "UNITE",
+              "identifiant": "efd783ab-3fb2-4f20-ada7-837e92872395"
+            },
+            "identifiant": "22103aef-6a09-4ccc-915b-ec930d9fbedf"
+          }
+        ],
+        "identifiant": "611882f8-9fa6-4ee0-9c07-b0b6c8b33753"
+      },
+      "periode": {
+        "repas": "2025-05-13#DEJEUNER",
+        "taille": 3,
+        "identifiant": "b69b9a1c-5ffa-41ef-a2b4-6600a42c10b9"
+      },
+      "nombreConvives": 3,
+      "identifiant": "8d6cfe38-661e-4fd1-9e11-3a84637870c0"
+    },
+    {
+      "recette": {
+        "nom": "Raclette",
+        "nombrePersonnes": 6,
+        "produitsQuantifier": [
+          {
+            "produit": {
+              "nom": "Dés de jambon",
+              "identifiant": "3076f04e-fa0c-41b6-8dc8-9fe4c53e88c5"
+            },
+            "quantite": {
+              "valeur": 1,
+              "mesure": "BOITE",
+              "identifiant": "b1d775ba-2a1b-4358-9090-320c2b3f3b4e"
+            },
+            "identifiant": "462cbf04-967c-41da-a362-d3b259ef34db"
+          },
+          {
+            "produit": {
+              "nom": "Fromage à raclette",
+              "identifiant": "ec829c24-3006-41f7-846e-32af83be14b5"
+            },
+            "quantite": {
+              "valeur": 2,
+              "mesure": "BARQUETTE",
+              "identifiant": "3906becd-2cfc-43a6-b323-40957fe6ace2"
+            },
+            "identifiant": "869a6087-b6d4-4db0-9e22-4360a0a55f55"
+          },
+          {
+            "produit": {
+              "nom": "Lardon",
+              "identifiant": "e2dc2d05-79b4-4da7-a4ee-14d49758b361"
+            },
+            "quantite": {
+              "valeur": 1,
+              "mesure": "BOITE",
+              "identifiant": "8899fc30-217a-498a-a4b5-d2c2dd056e51"
+            },
+            "identifiant": "1f707be2-b609-4afe-87dd-18fc732b0a66"
+          },
+          {
+            "produit": {
+              "nom": "Plateau de charcuteries",
+              "identifiant": "5dff0799-764f-4846-b2be-d9810a66eeef"
+            },
+            "quantite": {
+              "valeur": 1,
+              "mesure": "UNITE",
+              "identifiant": "6230d16f-7217-49ba-bb56-c336f84256ac"
+            },
+            "identifiant": "f66dc229-4e83-4828-abb7-2cb3985f0d7a"
+          }
+        ],
+        "identifiant": "8e4d4715-d2ad-4ac9-9f36-8628a5a60f3a"
+      },
+      "periode": {
+        "repas": "2025-05-14#DINER",
+        "taille": 1,
+        "identifiant": "43739e77-3d47-43b3-9807-2a0153179667"
+      },
+      "nombreConvives": 3,
+      "identifiant": "09dcacbe-2357-4e9c-afe1-5925d0505bfd"
+    },
+    {
+      "recette": {
+        "nom": "Crêpe",
+        "nombrePersonnes": 8,
+        "produitsQuantifier": [
+          {
+            "produit": {
+              "nom": "Beurre",
+              "identifiant": "7e406583-ee08-4968-8a13-47ef598cb127"
+            },
+            "quantite": {
+              "valeur": 2,
+              "mesure": "CUILLERE_A_SOUPE",
+              "identifiant": "4b659cd4-ecd0-49a1-aa95-efca415cff49"
+            },
+            "identifiant": "eb3f9d82-050a-4f2b-84cc-fc99fd36835e"
+          },
+          {
+            "produit": {
+              "nom": "Farine",
+              "identifiant": "6404b882-1c89-42f2-b4a7-1155496a4198"
+            },
+            "quantite": {
+              "valeur": 500,
+              "mesure": "MASSE",
+              "identifiant": "bf90a759-d24e-476b-98c0-5d44a4e5780a"
+            },
+            "identifiant": "9c17116c-1f9c-40f9-9959-311598260cf4"
+          },
+          {
+            "produit": {
+              "nom": "Lait",
+              "identifiant": "a6635339-0d59-49df-9702-071f81c8d4f9"
+            },
+            "quantite": {
+              "valeur": 500,
+              "mesure": "VOLUME",
+              "identifiant": "23d1ecdc-105c-4dc3-a1e6-e59ebd02f396"
+            },
+            "identifiant": "be0e3dc5-8658-4a67-9e3d-08616def1fe7"
+          },
+          {
+            "produit": {
+              "nom": "Oeuf",
+              "identifiant": "80ac8281-2629-43dc-853a-6b35b22f547f"
+            },
+            "quantite": {
+              "valeur": 4,
+              "mesure": "UNITE",
+              "identifiant": "331a5b95-2b18-4f14-ba90-0d1cf64f3a03"
+            },
+            "identifiant": "3139ed15-aa8e-453c-9dca-2ca52540b0d2"
+          },
+          {
+            "produit": {
+              "nom": "Sel",
+              "identifiant": "8ca5e3f1-013e-4d56-b7fd-8b4a679bf25a"
+            },
+            "quantite": {
+              "valeur": 5,
+              "mesure": "MASSE",
+              "identifiant": "f289a10f-89fb-424f-8255-56269ca4ee5c"
+            },
+            "identifiant": "5e7cac33-73c4-4d6f-a134-1d78281d03ce"
+          }
+        ],
+        "identifiant": "6b7a4c8c-7d9b-419d-a5dc-b19a6785cb0b"
+      },
+      "periode": {
+        "repas": "2025-05-15#DEJEUNER",
+        "taille": 1,
+        "identifiant": "3231696d-8829-4c78-a834-4ba4dca162d1"
+      },
+      "nombreConvives": 4,
+      "identifiant": "f5326e4f-76e4-471d-943a-2dd3708c1c2f"
+    },
+    {
+      "recette": {
+        "nom": "Couscous végétarien",
+        "nombrePersonnes": 6,
+        "produitsQuantifier": [
+          {
+            "produit": {
+              "nom": "Carotte",
+              "identifiant": "53438087-49a4-4d13-b49c-172aed103780"
+            },
+            "quantite": {
+              "valeur": 7,
+              "mesure": "UNITE",
+              "identifiant": "7428dfc0-3909-4c2f-a8e6-367f15d0c2d1"
+            },
+            "identifiant": "7f9bbf46-a13d-4279-99ac-fb5af17e5277"
+          },
+          {
+            "produit": {
+              "nom": "Concassé de tomates",
+              "identifiant": "4615f5c4-6122-41b5-ae71-ddd12ce31d99"
+            },
+            "quantite": {
+              "valeur": 3,
+              "mesure": "BOITE",
+              "identifiant": "ee95a5f7-ba02-4825-91f5-595934498e2e"
+            },
+            "identifiant": "acf154c1-28d0-4ffd-b109-a4768b6c0e0c"
+          },
+          {
+            "produit": {
+              "nom": "Courgette",
+              "identifiant": "66081893-ae7e-4c8b-a912-b9311afdaf89"
+            },
+            "quantite": {
+              "valeur": 3,
+              "mesure": "UNITE",
+              "identifiant": "bf9b95fe-c23b-4e15-9caf-35ab064a0f8a"
+            },
+            "identifiant": "d1ecc0a5-7a74-4ab0-b2b8-008c12a081cc"
+          },
+          {
+            "produit": {
+              "nom": "Cube de bouillon de légumes",
+              "identifiant": "07876a0c-8b18-4d0b-9244-bfbb3deea8d3"
+            },
+            "quantite": {
+              "valeur": 2,
+              "mesure": "UNITE",
+              "identifiant": "bfa1fbb1-b033-45b6-89f7-4bb4e5818f0f"
+            },
+            "identifiant": "893ba913-9b0b-48cb-88c2-825145ce0365"
+          },
+          {
+            "produit": {
+              "nom": "Epice à couscous",
+              "identifiant": "89fcdf81-aa0e-4ec0-8d80-6fac7ee6f3dd"
+            },
+            "quantite": {
+              "valeur": 4,
+              "mesure": "CUILLERE_A_SOUPE",
+              "identifiant": "33f06a21-7a2c-474f-a38a-704f9faf98f2"
+            },
+            "identifiant": "93238296-7249-4f4f-a40c-160ab5663375"
+          },
+          {
+            "produit": {
+              "nom": "Navet",
+              "identifiant": "50a7b5af-4f31-4e6f-a9f6-ed493ae7e7ee"
+            },
+            "quantite": {
+              "valeur": 10,
+              "mesure": "UNITE",
+              "identifiant": "507e9a19-6825-4132-8250-6170d3eeeae1"
+            },
+            "identifiant": "08262876-82b6-4a79-aa51-b4a528e6c71a"
+          },
+          {
+            "produit": {
+              "nom": "Poi chiche",
+              "identifiant": "e0e93553-3474-4e14-9a2f-cdd5543d3757"
+            },
+            "quantite": {
+              "valeur": 600,
+              "mesure": "MASSE",
+              "identifiant": "e200a3a6-3943-4f14-9cff-b06b1edf502a"
+            },
+            "identifiant": "13d0c038-c392-47e8-8293-51101b1eeabd"
+          },
+          {
+            "produit": {
+              "nom": "Semoule",
+              "identifiant": "5cadd858-3a5e-481a-8f57-c201747c83c8"
+            },
+            "quantite": {
+              "valeur": 500,
+              "mesure": "MASSE",
+              "identifiant": "28069acc-3c72-4a8a-a584-a5925624e32b"
+            },
+            "identifiant": "b831d9a1-2d2d-4749-b593-bc8111bfe42a"
+          },
+          {
+            "produit": {
+              "nom": "Tomate",
+              "identifiant": "f7b3bdd0-71f8-4899-88b0-ee104c439c40"
+            },
+            "quantite": {
+              "valeur": 4,
+              "mesure": "UNITE",
+              "identifiant": "6f636394-035b-4299-8e97-0d2a2d6e9e1e"
+            },
+            "identifiant": "8e894a86-70f6-4c97-a936-4e0499345f0a"
+          }
+        ],
+        "identifiant": "b8430c1c-0067-44d1-a38b-2665555a8586"
+      },
+      "periode": {
+        "repas": "2025-05-15#DINER",
+        "taille": 2,
+        "identifiant": "ea92f8cb-293a-4930-9f4e-f19531d9c141"
+      },
+      "nombreConvives": 3,
+      "identifiant": "992faafe-1dcf-4a40-927b-622c184fa0ec"
+    },
+    {
+      "recette": {
+        "nom": "Chili con carné",
+        "nombrePersonnes": 1,
+        "produitsQuantifier": [
+          {
+            "produit": {
+              "nom": "Coulis de tomates",
+              "identifiant": "2a9e6fc6-8ce9-456f-a662-bbadae3a5322"
+            },
+            "quantite": {
+              "valeur": 1,
+              "mesure": "BRIQUE",
+              "identifiant": "c0c2201a-a395-4aab-bcd6-7f385699350b"
+            },
+            "identifiant": "19ce9bae-ab13-42df-bcb2-c27ab88eef4c"
+          },
+          {
+            "produit": {
+              "nom": "Haricot rouge",
+              "identifiant": "84a53dd2-0efc-42eb-b682-74f76b3099f7"
+            },
+            "quantite": {
+              "valeur": 2,
+              "mesure": "BOITE",
+              "identifiant": "6187e507-8d0a-41ae-8930-1c9b4e36d012"
+            },
+            "identifiant": "c064e01a-f265-47db-8cde-9c158bd56812"
+          },
+          {
+            "produit": {
+              "nom": "Maïs",
+              "identifiant": "2e0fe615-7189-40a7-a743-7f968dfdfbcb"
+            },
+            "quantite": {
+              "valeur": 1,
+              "mesure": "BOITE",
+              "identifiant": "b3f78a6d-f5cb-4d7d-8b02-a1c9b4f61d6d"
+            },
+            "identifiant": "e43494a9-8001-4406-90f4-8a2f2faf631c"
+          },
+          {
+            "produit": {
+              "nom": "Riz",
+              "identifiant": "a63338f6-1a3f-41f3-9ad5-da9d020ac008"
+            },
+            "quantite": {
+              "valeur": 500,
+              "mesure": "MASSE",
+              "identifiant": "5b8dffe0-da91-4453-bff5-b33bf39e75a2"
+            },
+            "identifiant": "7c43000a-16f8-4ca2-987e-ea81cb028159"
+          },
+          {
+            "produit": {
+              "nom": "Sauce chili",
+              "identifiant": "5ac6f67e-1079-4846-bb87-2d9eea0eaa83"
+            },
+            "quantite": {
+              "valeur": 3,
+              "mesure": "CUILLERE_A_SOUPE",
+              "identifiant": "6628ad73-9de2-44f5-b084-dd0310680c0a"
+            },
+            "identifiant": "1985bfb4-0bb7-4fea-9d32-4abe9de1704a"
+          },
+          {
+            "produit": {
+              "nom": "Viande hachée",
+              "identifiant": "7f4e4a0c-94d9-4ad1-93f0-416020c03983"
+            },
+            "quantite": {
+              "valeur": 1000,
+              "mesure": "MASSE",
+              "identifiant": "d624015f-8894-49a5-9c58-a7d07a897dcd"
+            },
+            "identifiant": "26255905-ec20-4f97-a4e8-b3d0c14535d7"
+          }
+        ],
+        "identifiant": "2c2f5d24-65bf-412a-9572-72df48d218c3"
+      },
+      "periode": {
+        "repas": "2025-05-16#DINER",
+        "taille": 2,
+        "identifiant": "c119068b-c7d2-43f6-8000-d153d055c93d"
+      },
+      "nombreConvives": 3,
+      "identifiant": "3ab4d8f3-9512-4456-b065-1a68c5f8ca6f"
+    },
+    {
+      "recette": {
+        "nom": "Hachis parmentier de poisson",
+        "nombrePersonnes": 6,
+        "produitsQuantifier": [
+          {
+            "produit": {
+              "nom": "Beurre",
+              "identifiant": "7e406583-ee08-4968-8a13-47ef598cb127"
+            },
+            "quantite": {
+              "valeur": 100,
+              "mesure": "MASSE",
+              "identifiant": "f50313c9-075f-4f74-b03b-e809fabcf845"
+            },
+            "identifiant": "263f29b3-8917-4c3a-988b-70193920ca58"
+          },
+          {
+            "produit": {
+              "nom": "Colin d\u0027Alaska",
+              "identifiant": "46d36a8a-c7d2-4776-9ec3-673070c54460"
+            },
+            "quantite": {
+              "valeur": 1000,
+              "mesure": "MASSE",
+              "identifiant": "cbf7b2a9-2ffd-4be2-b272-46533f601c01"
+            },
+            "identifiant": "f5460145-2c48-4e46-8b4c-fcc3b0985f82"
+          },
+          {
+            "produit": {
+              "nom": "Lait",
+              "identifiant": "a6635339-0d59-49df-9702-071f81c8d4f9"
+            },
+            "quantite": {
+              "valeur": 1000,
+              "mesure": "VOLUME",
+              "identifiant": "dc4d813b-35e8-45a4-9beb-5ac13c1f530e"
+            },
+            "identifiant": "ddb968e0-9683-4903-95c4-dd77a8d28d40"
+          },
+          {
+            "produit": {
+              "nom": "Pomme de terre",
+              "identifiant": "5b68621d-355b-45f7-b94f-e58c4567b0a0"
+            },
+            "quantite": {
+              "valeur": 1500,
+              "mesure": "MASSE",
+              "identifiant": "d715e84e-b407-4824-a6c1-3edc98135abe"
+            },
+            "identifiant": "a089b36e-cb54-456b-bef1-ca09eaca9788"
+          }
+        ],
+        "identifiant": "3c73144e-077f-4910-a1a0-8c7649dfa69e"
+      },
+      "periode": {
+        "repas": "2025-05-17#DINER",
+        "taille": 2,
+        "identifiant": "668dd0e3-b104-453a-b56e-40716ab59cd3"
+      },
+      "nombreConvives": 3,
+      "identifiant": "49d87927-38f9-48e0-b312-a7d5f0c0f88a"
+    },
+    {
+      "recette": {
+        "nom": "Croque monsieur",
+        "nombrePersonnes": 2,
+        "produitsQuantifier": [
+          {
+            "produit": {
+              "nom": "Gruyère",
+              "identifiant": "eb0d591e-82fc-4db7-aa1a-3b95229af574"
+            },
+            "quantite": {
+              "valeur": 2,
+              "mesure": "TRANCHE",
+              "identifiant": "93782cf5-8880-44e7-941e-eee2d0222294"
+            },
+            "identifiant": "2e9b759f-a0b3-4398-8bfa-7d6f4b33743e"
+          },
+          {
+            "produit": {
+              "nom": "Jambon",
+              "identifiant": "3319f835-d241-4125-ae8d-dc6504ccd2e4"
+            },
+            "quantite": {
+              "valeur": 2,
+              "mesure": "TRANCHE",
+              "identifiant": "3ad258a1-a8aa-4e19-81b5-ac572dbd1a5b"
+            },
+            "identifiant": "aa90007a-93a3-400b-8679-a75e1f90a878"
+          },
+          {
+            "produit": {
+              "nom": "Pain de mie",
+              "identifiant": "f6192d69-71ac-499f-a459-461b00c9439b"
+            },
+            "quantite": {
+              "valeur": 4,
+              "mesure": "TRANCHE",
+              "identifiant": "1c35ea0b-f69c-4605-8e1a-0a4c591a830a"
+            },
+            "identifiant": "f128073a-5bab-4a8b-a698-c5f5f932d972"
+          }
+        ],
+        "identifiant": "cb1bda62-1b0b-4081-a4c1-bd6678ac7972"
+      },
+      "periode": {
+        "repas": "2025-05-18#DINER",
+        "taille": 1,
+        "identifiant": "115bea7a-360e-4932-8bb6-16146fe204d2"
+      },
+      "nombreConvives": 1,
+      "identifiant": "1f96e960-3041-4aeb-a5b6-fc3b7a57073e"
+    }
+  ],
+  "identifiant": "233005d1-dafc-4780-b8db-32bd63c1d1d3"
+}

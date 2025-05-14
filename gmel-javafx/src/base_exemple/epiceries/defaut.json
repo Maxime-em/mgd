@@ -1,0 +1,513 @@
+{
+  "produits": [
+    {
+      "nom": "Aubergine",
+      "identifiant": "a5e306fe-69f0-4898-b085-5f00bbbe3ddb"
+    },
+    {
+      "nom": "Bacon",
+      "identifiant": "f49352e4-b644-4b10-b72a-533f8815b044"
+    },
+    {
+      "nom": "Beurre",
+      "identifiant": "7e406583-ee08-4968-8a13-47ef598cb127"
+    },
+    {
+      "nom": "Boeuf",
+      "identifiant": "e811f610-c2b3-4d17-a3b9-cdfa7d129895"
+    },
+    {
+      "nom": "Boulette de viande",
+      "identifiant": "0349933a-2468-4a5c-a13f-66bad1139f12"
+    },
+    {
+      "nom": "Branche de céleri",
+      "identifiant": "a25e2a37-7794-4ce5-b98e-e859d25037cb"
+    },
+    {
+      "nom": "Butternut",
+      "identifiant": "60121bce-2aec-42c8-9026-5b6ae69a1d3b"
+    },
+    {
+      "nom": "Cancoillotte",
+      "identifiant": "61b5ea67-d833-4dfc-a197-730aa66b79b2"
+    },
+    {
+      "nom": "Carotte",
+      "identifiant": "53438087-49a4-4d13-b49c-172aed103780"
+    },
+    {
+      "nom": "Cervelas",
+      "identifiant": "a2fd9d34-5a60-4a1c-9d6d-31407c7d1e4c"
+    },
+    {
+      "nom": "Champignon",
+      "identifiant": "8f6fd32a-9b27-4763-878f-12eb1867d14d"
+    },
+    {
+      "nom": "Cheddar",
+      "identifiant": "698856dc-83a5-4683-b907-69e659bf8302"
+    },
+    {
+      "nom": "Chorizo doux",
+      "identifiant": "3caed30c-b3ff-46c1-839b-791ca0808998"
+    },
+    {
+      "nom": "Chorizo fort",
+      "identifiant": "d1fbff07-5998-4406-b66c-4e44fadb40af"
+    },
+    {
+      "nom": "Choux vert",
+      "identifiant": "e82067c3-6f8c-4c2d-a189-c8968d0dc5b2"
+    },
+    {
+      "nom": "Choux-fleur",
+      "identifiant": "baca24a1-0154-4e89-8307-40abee5065f3"
+    },
+    {
+      "nom": "Colin d\u0027Alaska",
+      "identifiant": "46d36a8a-c7d2-4776-9ec3-673070c54460"
+    },
+    {
+      "nom": "Comté",
+      "identifiant": "b078ce95-2551-4f28-9872-cb78b45cd7ca"
+    },
+    {
+      "nom": "Concassé de tomates",
+      "identifiant": "4615f5c4-6122-41b5-ae71-ddd12ce31d99"
+    },
+    {
+      "nom": "Concentré de tomates",
+      "identifiant": "627bd951-cd49-4eec-8646-d34eeec3b826"
+    },
+    {
+      "nom": "Cordon bleu",
+      "identifiant": "7eabfe6a-ee37-401f-bc00-ef55035ef50b"
+    },
+    {
+      "nom": "Cornichons",
+      "identifiant": "6ff5a661-1aa0-44f2-ad48-181895becabc"
+    },
+    {
+      "nom": "Cornichons salé",
+      "identifiant": "1bac6eb9-e426-476a-a2a2-2c9240e706bf"
+    },
+    {
+      "nom": "Coulis de tomates",
+      "identifiant": "2a9e6fc6-8ce9-456f-a662-bbadae3a5322"
+    },
+    {
+      "nom": "Courgette",
+      "identifiant": "66081893-ae7e-4c8b-a912-b9311afdaf89"
+    },
+    {
+      "nom": "Crevette",
+      "identifiant": "0c9c8c8f-ce36-46db-82d8-1b417ea7ceac"
+    },
+    {
+      "nom": "Crozet",
+      "identifiant": "c7e5cfdb-d3a5-436d-bbe0-fa7f15b3c4a1"
+    },
+    {
+      "nom": "Crozet au sarrasin",
+      "identifiant": "1b76b18e-1c0b-4b62-bac8-b45a33ae36fc"
+    },
+    {
+      "nom": "Crème",
+      "identifiant": "262e30e9-fae7-4e63-a883-3cbaedb9dd8c"
+    },
+    {
+      "nom": "Crème liquide",
+      "identifiant": "f66b737a-29f2-43b2-81c2-92f2c2ada18f"
+    },
+    {
+      "nom": "Crème liquide entière",
+      "identifiant": "93016f79-c2be-4316-8836-ff5b1d0257d2"
+    },
+    {
+      "nom": "Crème épaisse",
+      "identifiant": "3aac0b6a-5adb-43fc-9060-26cfb19b7f51"
+    },
+    {
+      "nom": "Cube de bouillon de boeuf",
+      "identifiant": "333a7554-8494-4eeb-ad42-ae567d82fa2a"
+    },
+    {
+      "nom": "Cube de bouillon de légumes",
+      "identifiant": "07876a0c-8b18-4d0b-9244-bfbb3deea8d3"
+    },
+    {
+      "nom": "Cube de bouillon de poule",
+      "identifiant": "693f0748-91cb-4c98-a84e-f6a31355fa94"
+    },
+    {
+      "nom": "Cube de bouillon de volaille",
+      "identifiant": "47f1e465-33d4-4ff3-8161-db684b40f0a2"
+    },
+    {
+      "nom": "Cumin",
+      "identifiant": "4d42e9d0-29c6-47ef-89e5-650e9d650321"
+    },
+    {
+      "nom": "Curcuma",
+      "identifiant": "9aa8247e-f76b-49f9-aaa4-2cf268c9aa5e"
+    },
+    {
+      "nom": "Curry",
+      "identifiant": "30bce719-0dac-42a9-add3-ef112a54d702"
+    },
+    {
+      "nom": "Dés de jambon",
+      "identifiant": "3076f04e-fa0c-41b6-8dc8-9fe4c53e88c5"
+    },
+    {
+      "nom": "Eau",
+      "identifiant": "57675275-c06a-4641-b054-09d3e43ccc9c"
+    },
+    {
+      "nom": "Emmental",
+      "identifiant": "f213761e-4523-4e66-8e47-8010597cbe95"
+    },
+    {
+      "nom": "Epautre",
+      "identifiant": "a8997c41-3ff7-442b-92c5-4b666362b87d"
+    },
+    {
+      "nom": "Epice à couscous",
+      "identifiant": "89fcdf81-aa0e-4ec0-8d80-6fac7ee6f3dd"
+    },
+    {
+      "nom": "Epice à tajine",
+      "identifiant": "8eceb3c2-cfc2-42a0-b893-028394e264ca"
+    },
+    {
+      "nom": "Epinard",
+      "identifiant": "0bc6656e-4a8e-45ff-88f8-1b22250526b2"
+    },
+    {
+      "nom": "Farine",
+      "identifiant": "6404b882-1c89-42f2-b4a7-1155496a4198"
+    },
+    {
+      "nom": "Fricadelle",
+      "identifiant": "24a58037-51ac-4170-aa0b-c2e5b0f47b7d"
+    },
+    {
+      "nom": "Frite",
+      "identifiant": "1ba410ca-dd21-4b0e-96f9-5abf96e8c37f"
+    },
+    {
+      "nom": "Fromage",
+      "identifiant": "3c86d556-ac83-4407-ad15-d1db7d0b5b1d"
+    },
+    {
+      "nom": "Fromage blanc",
+      "identifiant": "40823c6a-9450-4d21-af91-bbb804393c6a"
+    },
+    {
+      "nom": "Fromage bleu",
+      "identifiant": "c278af63-e57f-4ee3-9dd5-d1168b744dbb"
+    },
+    {
+      "nom": "Fromage fondu",
+      "identifiant": "d703a8aa-f433-4180-a2a2-6de3cc590f94"
+    },
+    {
+      "nom": "Fromage râpé",
+      "identifiant": "c9bd2c6c-7c7b-4511-b4be-cb53582d5288"
+    },
+    {
+      "nom": "Fromage à raclette",
+      "identifiant": "ec829c24-3006-41f7-846e-32af83be14b5"
+    },
+    {
+      "nom": "Fruit de mer",
+      "identifiant": "0237c2f6-9d7c-4145-9267-3fa7346e0ecf"
+    },
+    {
+      "nom": "Fécule de maïs",
+      "identifiant": "3d2c8bd2-f8e8-463b-85df-32b74463c67f"
+    },
+    {
+      "nom": "Gnocchi",
+      "identifiant": "2d7e6a3d-89f1-4097-aa0d-a9b6ae9dfd7b"
+    },
+    {
+      "nom": "Gorgonzola mascarpome",
+      "identifiant": "6bb3ad21-f85d-4b97-b9da-81c87557081c"
+    },
+    {
+      "nom": "Gousse d\u0027ail",
+      "identifiant": "ee2ec60f-9cd3-4e1d-8a26-0a2c0d7040d2"
+    },
+    {
+      "nom": "Gruyère",
+      "identifiant": "eb0d591e-82fc-4db7-aa1a-3b95229af574"
+    },
+    {
+      "nom": "Gruyère râpé",
+      "identifiant": "32e78393-9631-4700-9aeb-9c73b2b10d80"
+    },
+    {
+      "nom": "Haricot rouge",
+      "identifiant": "84a53dd2-0efc-42eb-b682-74f76b3099f7"
+    },
+    {
+      "nom": "Haricot vert",
+      "identifiant": "eb7dbb12-5d91-4ba5-9b75-fd5fa5fcd850"
+    },
+    {
+      "nom": "Jambon",
+      "identifiant": "3319f835-d241-4125-ae8d-dc6504ccd2e4"
+    },
+    {
+      "nom": "Jambon cru",
+      "identifiant": "95a3f838-11e6-48b6-92f3-59704d2f27c8"
+    },
+    {
+      "nom": "Knack",
+      "identifiant": "2d5734d3-ab83-4533-b7ef-4dd120d154c1"
+    },
+    {
+      "nom": "Lait",
+      "identifiant": "a6635339-0d59-49df-9702-071f81c8d4f9"
+    },
+    {
+      "nom": "Lard fumé",
+      "identifiant": "310df246-df79-41f9-9dbc-91ef7109952c"
+    },
+    {
+      "nom": "Lardon",
+      "identifiant": "e2dc2d05-79b4-4da7-a4ee-14d49758b361"
+    },
+    {
+      "nom": "Laurier",
+      "identifiant": "0d233032-df60-4a1b-a494-c953ab99e378"
+    },
+    {
+      "nom": "Levure chimique fraîche",
+      "identifiant": "20db2344-f24c-40a4-ae70-7192a033bc4f"
+    },
+    {
+      "nom": "Levure déshydratée",
+      "identifiant": "070dbf99-a256-4467-a798-bb46e8772cbb"
+    },
+    {
+      "nom": "Maïs",
+      "identifiant": "2e0fe615-7189-40a7-a743-7f968dfdfbcb"
+    },
+    {
+      "nom": "Munster",
+      "identifiant": "7c8a3c99-17f5-4c07-822e-035cb587d62b"
+    },
+    {
+      "nom": "Navet",
+      "identifiant": "50a7b5af-4f31-4e6f-a9f6-ed493ae7e7ee"
+    },
+    {
+      "nom": "Noc mam",
+      "identifiant": "2611d335-6ae5-4dd7-b402-d7ece576e0f1"
+    },
+    {
+      "nom": "Nouilles chinoise",
+      "identifiant": "ee78deec-670e-4d54-9c9c-0c6fdf73bb8e"
+    },
+    {
+      "nom": "Nouilles chinoise aromatisées",
+      "identifiant": "806814fc-53b2-4672-909a-caa934cb1afc"
+    },
+    {
+      "nom": "Nouilles sautées",
+      "identifiant": "b3983c9f-9538-46c0-bb0c-bb751012a1c6"
+    },
+    {
+      "nom": "Oeuf",
+      "identifiant": "80ac8281-2629-43dc-853a-6b35b22f547f"
+    },
+    {
+      "nom": "Oignon",
+      "identifiant": "7819ec61-d437-422d-8680-4e71952a2f3a"
+    },
+    {
+      "nom": "Olive",
+      "identifiant": "e10213aa-a34d-4169-a844-152fd42a36ea"
+    },
+    {
+      "nom": "Pain de mie",
+      "identifiant": "f6192d69-71ac-499f-a459-461b00c9439b"
+    },
+    {
+      "nom": "Pain à hot-dog",
+      "identifiant": "1b662f8a-5042-4ea0-a60f-8ff275690aa4"
+    },
+    {
+      "nom": "Pains à burger",
+      "identifiant": "09480801-6cef-4af6-912f-b4513f2873e3"
+    },
+    {
+      "nom": "Pains à hot dog",
+      "identifiant": "46a7728d-b8ee-478c-8d47-d9c78b25437d"
+    },
+    {
+      "nom": "Pains à panini",
+      "identifiant": "25155a82-b21d-4c5f-bcc2-15ddc5a26062"
+    },
+    {
+      "nom": "Parmesan",
+      "identifiant": "9b7a6f24-fb2d-4e6b-8470-ec24916751e2"
+    },
+    {
+      "nom": "Pavé savoyard",
+      "identifiant": "17092a06-578c-4c17-837a-555e934dee19"
+    },
+    {
+      "nom": "Pesto",
+      "identifiant": "7f7734ea-a086-4fd2-8ac2-895c64a02b1f"
+    },
+    {
+      "nom": "Pesto vert",
+      "identifiant": "72850dea-89d2-40f3-8088-ed7c34648f95"
+    },
+    {
+      "nom": "Petit pois",
+      "identifiant": "5a6f792e-2b75-412f-9b4a-d57db6f4667a"
+    },
+    {
+      "nom": "Petit pois et carotte",
+      "identifiant": "69d11215-1d55-48a9-9d3d-4e1fc22f8545"
+    },
+    {
+      "nom": "Plateau de charcuteries",
+      "identifiant": "5dff0799-764f-4846-b2be-d9810a66eeef"
+    },
+    {
+      "nom": "Poi chiche",
+      "identifiant": "e0e93553-3474-4e14-9a2f-cdd5543d3757"
+    },
+    {
+      "nom": "Poireau",
+      "identifiant": "eabcbb43-26c7-4c84-8e2a-3f9d413a812d"
+    },
+    {
+      "nom": "Poissons panés",
+      "identifiant": "c2a630e9-84a6-47e6-8a44-5c6146074cfc"
+    },
+    {
+      "nom": "Poivre",
+      "identifiant": "81888d04-0570-461d-bb11-d1332f4c66e4"
+    },
+    {
+      "nom": "Poivron",
+      "identifiant": "ba592197-0590-4dfb-b2f9-01c218e9d49c"
+    },
+    {
+      "nom": "Polenta",
+      "identifiant": "915cac1c-a791-4cb2-8857-beae6903df43"
+    },
+    {
+      "nom": "Pomme de terre",
+      "identifiant": "5b68621d-355b-45f7-b94f-e58c4567b0a0"
+    },
+    {
+      "nom": "Pommes",
+      "identifiant": "1f2620cb-3992-43f5-9a1e-467bb3f170ab"
+    },
+    {
+      "nom": "Porc",
+      "identifiant": "b6b9e74f-78e1-4f5f-b346-5638e4a38268"
+    },
+    {
+      "nom": "Poulet",
+      "identifiant": "43368fa4-4193-49a6-adc3-39ca06e0f5a4"
+    },
+    {
+      "nom": "Pousses de soja",
+      "identifiant": "8f1935e6-4248-4a55-b329-abd5ee353d22"
+    },
+    {
+      "nom": "Pâte",
+      "identifiant": "f33f8458-349a-4c01-b535-a45a0017b12d"
+    },
+    {
+      "nom": "Pâte brisé",
+      "identifiant": "9c98e2ed-d58a-4929-a682-d31f3ed36294"
+    },
+    {
+      "nom": "Pâte feuilletée",
+      "identifiant": "aaced113-aa6d-40d5-9d77-cd5b8f42932a"
+    },
+    {
+      "nom": "Pâte à lasagnes",
+      "identifiant": "a8fa3d05-8920-4da3-a3fd-c1253790b456"
+    },
+    {
+      "nom": "Reblochon",
+      "identifiant": "5ab2f0b5-ae20-485d-b331-124796f7b2ef"
+    },
+    {
+      "nom": "Riz",
+      "identifiant": "a63338f6-1a3f-41f3-9ad5-da9d020ac008"
+    },
+    {
+      "nom": "Riz à risotto",
+      "identifiant": "59407c70-3fe4-41bb-ac6c-384adcb3582c"
+    },
+    {
+      "nom": "Roti salé",
+      "identifiant": "9f5a8fde-cdb1-4778-93ea-e0e664709148"
+    },
+    {
+      "nom": "Salade",
+      "identifiant": "0108a9ab-0b0d-4030-b518-1b530373aa61"
+    },
+    {
+      "nom": "Sauce chili",
+      "identifiant": "5ac6f67e-1079-4846-bb87-2d9eea0eaa83"
+    },
+    {
+      "nom": "Saucisse",
+      "identifiant": "c128ea63-3bee-43cf-a2af-fe4d0d4a5a61"
+    },
+    {
+      "nom": "Saucisse à cuire",
+      "identifiant": "c45f6e43-bf75-4379-9485-7a8c64c4659a"
+    },
+    {
+      "nom": "Sel",
+      "identifiant": "8ca5e3f1-013e-4d56-b7fd-8b4a679bf25a"
+    },
+    {
+      "nom": "Semoule",
+      "identifiant": "5cadd858-3a5e-481a-8f57-c201747c83c8"
+    },
+    {
+      "nom": "Spaghetti",
+      "identifiant": "59250650-b30d-46f1-9b95-0af66b241655"
+    },
+    {
+      "nom": "Steack haché",
+      "identifiant": "b04ecd9a-acb0-4daa-9c5c-9406f7a7459c"
+    },
+    {
+      "nom": "Sucre roux",
+      "identifiant": "70e53b94-a39b-438b-9184-c29db1047978"
+    },
+    {
+      "nom": "Sucre terriaky",
+      "identifiant": "564f8d1a-96eb-4d0a-a22e-9acb83752344"
+    },
+    {
+      "nom": "Tomate",
+      "identifiant": "f7b3bdd0-71f8-4899-88b0-ee104c439c40"
+    },
+    {
+      "nom": "Viande hachée",
+      "identifiant": "7f4e4a0c-94d9-4ad1-93f0-416020c03983"
+    },
+    {
+      "nom": "Vin blanc",
+      "identifiant": "3e9afcc0-da19-45c6-a03e-8b611b54d243"
+    }
+  ],
+  "identifiant": "2f90e7c8-5caf-4200-8ef7-3b2f7e9e63ef"
+}

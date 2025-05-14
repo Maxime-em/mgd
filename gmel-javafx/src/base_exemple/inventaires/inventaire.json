@@ -1,0 +1,485 @@
+{
+  "produitsQuantifier": [
+    {
+      "produit": {
+        "nom": "Beurre",
+        "identifiant": "7e406583-ee08-4968-8a13-47ef598cb127"
+      },
+      "quantite": {
+        "valeur": 100,
+        "mesure": "MASSE",
+        "identifiant": "7285b163-613e-4eb0-bf2a-35f52a2727a7"
+      },
+      "identifiant": "94fcd28b-0029-4fb8-a97c-371a5974ecb6"
+    },
+    {
+      "produit": {
+        "nom": "Beurre",
+        "identifiant": "7e406583-ee08-4968-8a13-47ef598cb127"
+      },
+      "quantite": {
+        "valeur": 1,
+        "mesure": "CUILLERE_A_SOUPE",
+        "identifiant": "33fd7b2f-23fb-418e-8de2-f125d8f2990b"
+      },
+      "identifiant": "55eb913e-8bf3-4db1-bcf2-e2918975dc6d"
+    },
+    {
+      "produit": {
+        "nom": "Carotte",
+        "identifiant": "53438087-49a4-4d13-b49c-172aed103780"
+      },
+      "quantite": {
+        "valeur": 13,
+        "mesure": "UNITE",
+        "identifiant": "97236cdc-0d33-4efd-a2e1-ed607164cccd"
+      },
+      "identifiant": "3976851b-27cb-4e77-a6ec-c642ef26a57e"
+    },
+    {
+      "produit": {
+        "nom": "Choux vert",
+        "identifiant": "e82067c3-6f8c-4c2d-a189-c8968d0dc5b2"
+      },
+      "quantite": {
+        "valeur": 1,
+        "mesure": "UNITE",
+        "identifiant": "9268a704-8cb9-4844-a94e-cc76cf158ceb"
+      },
+      "identifiant": "5beda27c-3306-4bad-95fa-dc05a8b1cb5d"
+    },
+    {
+      "produit": {
+        "nom": "Colin d\u0027Alaska",
+        "identifiant": "46d36a8a-c7d2-4776-9ec3-673070c54460"
+      },
+      "quantite": {
+        "valeur": 1000,
+        "mesure": "MASSE",
+        "identifiant": "76115f5d-7977-43fe-a445-df742d14bfe5"
+      },
+      "identifiant": "7e9b24ed-308f-4645-9d9e-1b038ff8f257"
+    },
+    {
+      "produit": {
+        "nom": "Concassé de tomates",
+        "identifiant": "4615f5c4-6122-41b5-ae71-ddd12ce31d99"
+      },
+      "quantite": {
+        "valeur": 3,
+        "mesure": "BOITE",
+        "identifiant": "e8c85269-d74d-49b9-a2bf-03f07666f108"
+      },
+      "identifiant": "7c07bf71-add0-421f-b254-8573580e3799"
+    },
+    {
+      "produit": {
+        "nom": "Coulis de tomates",
+        "identifiant": "2a9e6fc6-8ce9-456f-a662-bbadae3a5322"
+      },
+      "quantite": {
+        "valeur": 6,
+        "mesure": "BRIQUE",
+        "identifiant": "2f88ce6f-79e3-47dc-91e3-dd2f106de27e"
+      },
+      "identifiant": "79b9a7a7-1287-41bd-afa2-12ff6c3a08ff"
+    },
+    {
+      "produit": {
+        "nom": "Courgette",
+        "identifiant": "66081893-ae7e-4c8b-a912-b9311afdaf89"
+      },
+      "quantite": {
+        "valeur": 3,
+        "mesure": "UNITE",
+        "identifiant": "6ebaeb82-3bfb-4ffa-a2d5-d006bf967c23"
+      },
+      "identifiant": "0cf8477c-8bee-4b18-98cd-e2a178313a01"
+    },
+    {
+      "produit": {
+        "nom": "Crozet",
+        "identifiant": "c7e5cfdb-d3a5-436d-bbe0-fa7f15b3c4a1"
+      },
+      "quantite": {
+        "valeur": 1,
+        "mesure": "BOITE",
+        "identifiant": "1a1ae057-b2d8-4f5b-8940-93d57f21e65d"
+      },
+      "identifiant": "52d11171-df06-4cac-a41e-1e04f5c9b593"
+    },
+    {
+      "produit": {
+        "nom": "Crozet au sarrasin",
+        "identifiant": "1b76b18e-1c0b-4b62-bac8-b45a33ae36fc"
+      },
+      "quantite": {
+        "valeur": 1,
+        "mesure": "BOITE",
+        "identifiant": "1bade0b0-3cc4-4247-a6c8-83af883020eb"
+      },
+      "identifiant": "59086692-fe1a-41e3-8644-a17c113a209b"
+    },
+    {
+      "produit": {
+        "nom": "Crème épaisse",
+        "identifiant": "3aac0b6a-5adb-43fc-9060-26cfb19b7f51"
+      },
+      "quantite": {
+        "valeur": 6,
+        "mesure": "CUILLERE_A_SOUPE",
+        "identifiant": "421940b6-5913-4d46-b085-3c55291934e9"
+      },
+      "identifiant": "71bcf5aa-2de5-49f9-ad70-9485060f50a3"
+    },
+    {
+      "produit": {
+        "nom": "Cube de bouillon de légumes",
+        "identifiant": "07876a0c-8b18-4d0b-9244-bfbb3deea8d3"
+      },
+      "quantite": {
+        "valeur": 2,
+        "mesure": "UNITE",
+        "identifiant": "682af37b-e65a-4919-aa88-826cbdbfd6d4"
+      },
+      "identifiant": "17d89986-1be6-4560-b8a6-1c442664d972"
+    },
+    {
+      "produit": {
+        "nom": "Dés de jambon",
+        "identifiant": "3076f04e-fa0c-41b6-8dc8-9fe4c53e88c5"
+      },
+      "quantite": {
+        "valeur": 1,
+        "mesure": "BOITE",
+        "identifiant": "e39c050e-2a05-46f2-b28f-4d39df439a3d"
+      },
+      "identifiant": "6099e0aa-fdba-4e8a-92f3-933d83f57ed7"
+    },
+    {
+      "produit": {
+        "nom": "Epice à couscous",
+        "identifiant": "89fcdf81-aa0e-4ec0-8d80-6fac7ee6f3dd"
+      },
+      "quantite": {
+        "valeur": 4,
+        "mesure": "CUILLERE_A_SOUPE",
+        "identifiant": "80adb828-43f7-419a-a56d-86051e1a9914"
+      },
+      "identifiant": "2d5fa9c3-f4ca-4b9f-9831-71c8d1db761e"
+    },
+    {
+      "produit": {
+        "nom": "Farine",
+        "identifiant": "6404b882-1c89-42f2-b4a7-1155496a4198"
+      },
+      "quantite": {
+        "valeur": 250,
+        "mesure": "MASSE",
+        "identifiant": "69ff9c00-d4a2-42ba-95e9-4b8d535f603f"
+      },
+      "identifiant": "c7b011a0-e332-4c01-909b-ebf291f85db8"
+    },
+    {
+      "produit": {
+        "nom": "Fromage à raclette",
+        "identifiant": "ec829c24-3006-41f7-846e-32af83be14b5"
+      },
+      "quantite": {
+        "valeur": 1,
+        "mesure": "BARQUETTE",
+        "identifiant": "3f659f53-8e80-48b1-bf83-eff42b439761"
+      },
+      "identifiant": "702b2426-6651-4599-ac8a-d3b8503dd854"
+    },
+    {
+      "produit": {
+        "nom": "Gruyère",
+        "identifiant": "eb0d591e-82fc-4db7-aa1a-3b95229af574"
+      },
+      "quantite": {
+        "valeur": 1,
+        "mesure": "TRANCHE",
+        "identifiant": "79947e52-9406-4981-a1ba-e0fa1ef25d50"
+      },
+      "identifiant": "f0538b39-d4a0-4e7b-b497-96fca6adcef4"
+    },
+    {
+      "produit": {
+        "nom": "Haricot rouge",
+        "identifiant": "84a53dd2-0efc-42eb-b682-74f76b3099f7"
+      },
+      "quantite": {
+        "valeur": 12,
+        "mesure": "BOITE",
+        "identifiant": "229df5be-89dc-4849-bd9d-81e6031dbc78"
+      },
+      "identifiant": "857f3e83-8574-487d-b307-6f7338878900"
+    },
+    {
+      "produit": {
+        "nom": "Jambon",
+        "identifiant": "3319f835-d241-4125-ae8d-dc6504ccd2e4"
+      },
+      "quantite": {
+        "valeur": 1,
+        "mesure": "TRANCHE",
+        "identifiant": "5433c242-d7f0-42fd-a796-cce19632b50a"
+      },
+      "identifiant": "90650792-b80b-443b-8cbf-590de3f96e4a"
+    },
+    {
+      "produit": {
+        "nom": "Jambon cru",
+        "identifiant": "95a3f838-11e6-48b6-92f3-59704d2f27c8"
+      },
+      "quantite": {
+        "valeur": 6,
+        "mesure": "TRANCHE",
+        "identifiant": "45bfa665-c254-48c4-adf0-43fcc92589f4"
+      },
+      "identifiant": "2b7dcd07-0391-4fda-851f-d1915eb295b2"
+    },
+    {
+      "produit": {
+        "nom": "Lait",
+        "identifiant": "a6635339-0d59-49df-9702-071f81c8d4f9"
+      },
+      "quantite": {
+        "valeur": 1250,
+        "mesure": "VOLUME",
+        "identifiant": "7a14917b-be07-4558-a50e-7acfa782df5e"
+      },
+      "identifiant": "24e1f93a-036a-4dc4-942a-bbf69421727d"
+    },
+    {
+      "produit": {
+        "nom": "Lard fumé",
+        "identifiant": "310df246-df79-41f9-9dbc-91ef7109952c"
+      },
+      "quantite": {
+        "valeur": 2,
+        "mesure": "BLOQUE",
+        "identifiant": "016685b5-fd39-466b-98b5-25f6dfdbcc31"
+      },
+      "identifiant": "1b5fe591-3e03-4b77-9567-902f43758edf"
+    },
+    {
+      "produit": {
+        "nom": "Lardon",
+        "identifiant": "e2dc2d05-79b4-4da7-a4ee-14d49758b361"
+      },
+      "quantite": {
+        "valeur": 1,
+        "mesure": "BOITE",
+        "identifiant": "8758ca4f-9514-4e87-8d71-fd9afc08e824"
+      },
+      "identifiant": "c227a2d2-8360-4317-88ab-e6099692b295"
+    },
+    {
+      "produit": {
+        "nom": "Maïs",
+        "identifiant": "2e0fe615-7189-40a7-a743-7f968dfdfbcb"
+      },
+      "quantite": {
+        "valeur": 6,
+        "mesure": "BOITE",
+        "identifiant": "7570c8dd-7660-4e68-9474-3c3f568f123e"
+      },
+      "identifiant": "2f90195f-f5db-4d6c-b281-19985a470772"
+    },
+    {
+      "produit": {
+        "nom": "Navet",
+        "identifiant": "50a7b5af-4f31-4e6f-a9f6-ed493ae7e7ee"
+      },
+      "quantite": {
+        "valeur": 10,
+        "mesure": "UNITE",
+        "identifiant": "945a54b7-edfe-4fd8-b026-e8ead9bb2857"
+      },
+      "identifiant": "2841978e-f8b6-49fa-aa80-7b465826519f"
+    },
+    {
+      "produit": {
+        "nom": "Oeuf",
+        "identifiant": "80ac8281-2629-43dc-853a-6b35b22f547f"
+      },
+      "quantite": {
+        "valeur": 2,
+        "mesure": "UNITE",
+        "identifiant": "c8cb924a-2d41-495d-87cf-efd60687f539"
+      },
+      "identifiant": "4b353db9-53b5-4806-8092-5baa022ea59a"
+    },
+    {
+      "produit": {
+        "nom": "Pain de mie",
+        "identifiant": "f6192d69-71ac-499f-a459-461b00c9439b"
+      },
+      "quantite": {
+        "valeur": 2,
+        "mesure": "TRANCHE",
+        "identifiant": "7879283e-2d10-4bdf-a492-456eea2b4891"
+      },
+      "identifiant": "13c42c64-ea3c-4150-8c71-bf4a6f8f894a"
+    },
+    {
+      "produit": {
+        "nom": "Plateau de charcuteries",
+        "identifiant": "5dff0799-764f-4846-b2be-d9810a66eeef"
+      },
+      "quantite": {
+        "valeur": 1,
+        "mesure": "UNITE",
+        "identifiant": "33f034c9-4be6-4ac1-b679-1b7fad2ffa85"
+      },
+      "identifiant": "59a6fe4c-b6df-4ff1-b98c-9f56e1d6b6f6"
+    },
+    {
+      "produit": {
+        "nom": "Poi chiche",
+        "identifiant": "e0e93553-3474-4e14-9a2f-cdd5543d3757"
+      },
+      "quantite": {
+        "valeur": 600,
+        "mesure": "MASSE",
+        "identifiant": "b9af21af-7c3c-4ae4-bd04-f0bb3ddfc387"
+      },
+      "identifiant": "0f9ba3c9-2715-4056-853e-84879745a239"
+    },
+    {
+      "produit": {
+        "nom": "Pomme de terre",
+        "identifiant": "5b68621d-355b-45f7-b94f-e58c4567b0a0"
+      },
+      "quantite": {
+        "valeur": 1500,
+        "mesure": "MASSE",
+        "identifiant": "15a8f1cf-965d-4cde-8cb2-c61e5b93a5bc"
+      },
+      "identifiant": "e1c258ed-f170-46ed-84a1-7bd0d6f291d7"
+    },
+    {
+      "produit": {
+        "nom": "Pomme de terre",
+        "identifiant": "5b68621d-355b-45f7-b94f-e58c4567b0a0"
+      },
+      "quantite": {
+        "valeur": 9,
+        "mesure": "UNITE",
+        "identifiant": "aaf26fd9-f980-4d3b-9a9e-8074ab167158"
+      },
+      "identifiant": "cf63ff10-4f6e-4050-8783-acfa6dae7f1d"
+    },
+    {
+      "produit": {
+        "nom": "Reblochon",
+        "identifiant": "5ab2f0b5-ae20-485d-b331-124796f7b2ef"
+      },
+      "quantite": {
+        "valeur": 1,
+        "mesure": "UNITE",
+        "identifiant": "e952472b-3808-4c99-8791-d41291282a8a"
+      },
+      "identifiant": "c31a9f5d-8f01-4e0c-aae1-921556e2ff0a"
+    },
+    {
+      "produit": {
+        "nom": "Riz",
+        "identifiant": "a63338f6-1a3f-41f3-9ad5-da9d020ac008"
+      },
+      "quantite": {
+        "valeur": 3000,
+        "mesure": "MASSE",
+        "identifiant": "7383ad78-6ee2-4911-a019-aa7dae4cc4bc"
+      },
+      "identifiant": "a6b0423d-0172-479a-ba7d-03f43c8574f7"
+    },
+    {
+      "produit": {
+        "nom": "Roti salé",
+        "identifiant": "9f5a8fde-cdb1-4778-93ea-e0e664709148"
+      },
+      "quantite": {
+        "valeur": 2,
+        "mesure": "UNITE",
+        "identifiant": "e58ad037-8ebf-43b9-93ca-c441622b8391"
+      },
+      "identifiant": "5af8b848-7b7e-46ae-bd65-684927b3044e"
+    },
+    {
+      "produit": {
+        "nom": "Sauce chili",
+        "identifiant": "5ac6f67e-1079-4846-bb87-2d9eea0eaa83"
+      },
+      "quantite": {
+        "valeur": 18,
+        "mesure": "CUILLERE_A_SOUPE",
+        "identifiant": "6f32b2ee-0ef0-4a02-82d6-0246bd520062"
+      },
+      "identifiant": "27556ed9-09c6-4b4f-a514-0dd7b4d299c4"
+    },
+    {
+      "produit": {
+        "nom": "Saucisse à cuire",
+        "identifiant": "c45f6e43-bf75-4379-9485-7a8c64c4659a"
+      },
+      "quantite": {
+        "valeur": 9,
+        "mesure": "UNITE",
+        "identifiant": "a3c28fe8-bda3-4b91-a0c9-3f075cf11482"
+      },
+      "identifiant": "d6c0f2bc-2dab-446e-98e1-67f70a9f2837"
+    },
+    {
+      "produit": {
+        "nom": "Sel",
+        "identifiant": "8ca5e3f1-013e-4d56-b7fd-8b4a679bf25a"
+      },
+      "quantite": {
+        "valeur": 3,
+        "mesure": "MASSE",
+        "identifiant": "01c7f405-a7d3-4f3a-9062-a268f35d775c"
+      },
+      "identifiant": "2aadc489-237a-4301-b752-618a3a3f78b3"
+    },
+    {
+      "produit": {
+        "nom": "Semoule",
+        "identifiant": "5cadd858-3a5e-481a-8f57-c201747c83c8"
+      },
+      "quantite": {
+        "valeur": 500,
+        "mesure": "MASSE",
+        "identifiant": "c9c0a731-0c96-474c-b159-31c696209301"
+      },
+      "identifiant": "7765374a-1b94-4ec7-88a1-136a50aaf4ef"
+    },
+    {
+      "produit": {
+        "nom": "Tomate",
+        "identifiant": "f7b3bdd0-71f8-4899-88b0-ee104c439c40"
+      },
+      "quantite": {
+        "valeur": 4,
+        "mesure": "UNITE",
+        "identifiant": "3d3d9bee-8ec2-416a-a952-303980500244"
+      },
+      "identifiant": "16ef2af1-fca3-4735-8f51-d2bfe635f14a"
+    },
+    {
+      "produit": {
+        "nom": "Viande hachée",
+        "identifiant": "7f4e4a0c-94d9-4ad1-93f0-416020c03983"
+      },
+      "quantite": {
+        "valeur": 6000,
+        "mesure": "MASSE",
+        "identifiant": "c903008f-b931-46c6-a85d-1454cb90f78f"
+      },
+      "identifiant": "3397a315-0a36-4155-8e9e-667879fea582"
+    }
+  ],
+  "identifiant": "ee4aa569-2373-420e-9850-bb89a1796694"
+}
