@@ -20,7 +20,7 @@ import java.util.Objects;
 public class BoutonFormule extends Bouton {
     private static final String DEFAULT_STYLE_CLASS = "bouton-formule";
     private static final PseudoClass PSEUDO_CLASS_SELECTED = PseudoClass.getPseudoClass("selected");
-    public static final String PATTERN_TEXTE = "{0} pour {1} personnes sur {2} repas";
+    public static final String PATTERN_TEXTE = "{0} pour {1} personnes";
 
     private final MenuService menuService = MenuService.getInstance();
     private final BibliothequeService bibliothequeService = BibliothequeService.getInstance();
@@ -79,7 +79,7 @@ public class BoutonFormule extends Bouton {
     }
 
     private void majTexte() {
-        this.texte.set(MessageFormat.format(PATTERN_TEXTE, formule.get().getRecette().getNom(), formule.get().getNombreConvives(), formule.get().getPeriode().getTaille()));
+        this.texte.set(MessageFormat.format(PATTERN_TEXTE, formule.get().getRecette().getNom(), formule.get().getNombreConvives()));
     }
 
     public StringProperty textProperty() {
