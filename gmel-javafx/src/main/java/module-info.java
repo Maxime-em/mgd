@@ -11,7 +11,6 @@ module org.mgd.gmel.javafx {
     opens org.mgd.gmel.javafx to javafx.fxml, javafx.graphics;
     opens org.mgd.gmel.javafx.composant to javafx.fxml, javafx.graphics;
     opens org.mgd.gmel.javafx.composant.cellule to javafx.fxml;
-    opens org.mgd.gmel.javafx.composant.champ to javafx.fxml;
     opens org.mgd.gmel.javafx.controle to javafx.fxml, javafx.graphics;
     opens org.mgd.gmel.javafx.scene to javafx.fxml, javafx.graphics;
 

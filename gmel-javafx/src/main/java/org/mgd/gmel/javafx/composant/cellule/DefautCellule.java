@@ -19,7 +19,6 @@ import org.mgd.jab.objet.Jo;
 
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 @SuppressWarnings("java:S110")
 public class DefautCellule<S, T> extends Cellule<S, T> {
@@ -59,11 +58,6 @@ public class DefautCellule<S, T> extends Cellule<S, T> {
             stringProperty.set(evenement.getNewValue());
             evenement.consume();
         });
-    }
-
-    public static <D extends Dto, O extends Jo<D>> void colonneNomParDefaut(TableColumn<O, String> colonne, Supplier<ObservableValue<String>> obtenirObservableLibelle) {
-        colonne.setCellValueFactory(features -> obtenirObservableLibelle.get());
-        colonne.setCellFactory(cellule -> new DefautCellule<>(new DefaultStringConverter(), new BoutonIcone(BoutonIconeType.SUPPRIMER, BoutonIconeTaille.PETITE)));
     }
 
     @Override

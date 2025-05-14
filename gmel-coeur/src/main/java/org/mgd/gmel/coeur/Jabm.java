@@ -51,10 +51,6 @@ public class Jabm extends Jab {
         return (ProduitJao) jaos.get("produit");
     }
 
-    public ProduitQuantifierJao produitQuantifierJao() {
-        return (ProduitQuantifierJao) jaos.get("produit_quantifier");
-    }
-
     public LivreCuisineJao livreCuisineJao() {
         return (LivreCuisineJao) jaos.get("livre_cuisine");
     }

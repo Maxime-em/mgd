@@ -2,7 +2,7 @@
 
 <?import javafx.scene.control.TableColumn?>
 <?import org.mgd.gmel.javafx.composant.MenusComposant?>
-<fx:root xmlns:fx="http://javafx.com/fxml" type="MenusComposant">
+<fx:root xmlns:fx="http://javafx.com/fxml" type="org.mgd.gmel.javafx.composant.MenusComposant">
     <columns>
         <TableColumn fx:id="colonne" text="Menus"/>
     </columns>

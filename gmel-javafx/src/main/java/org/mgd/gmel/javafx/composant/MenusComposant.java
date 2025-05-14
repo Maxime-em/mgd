@@ -27,7 +27,7 @@ public class MenusComposant extends TableView<Menu> implements Initializable {
     public MenusComposant() throws IOException {
         super();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/agenda.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/menus.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         fxmlLoader.load();
