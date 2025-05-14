@@ -21,7 +21,9 @@ public enum Mesure {
     TRANCHE("tranche", "tranches"),
     BLOQUE("bloque", "bloques"),
     PORTION("portion", "portions"),
-    BARQUETTE("barquette", "barquettes");
+    BARQUETTE("barquette", "barquettes"),
+    CUILLERE("cuillère", "cuillères"),
+    CUILLERE_A_SOUPE("cuillère à soupe", "cuillères à soupe");
 
     private final String uniteSingulier;
     private final String unitePluriel;
