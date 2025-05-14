@@ -14,7 +14,9 @@
         <Button text="Aujourd'hui" onMouseClicked="#onMouseClickedAujourdhui"/>
         <Button text="Suivant" onMouseClicked="#onMouseClickedSuivant"/>
     </ToolBar>
-    <SemaineComposant GridPane.rowIndex="1"/>
+    <ScrollPane fitToHeight="true" fitToWidth="true" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+        <SemaineComposant/>
+    </ScrollPane>
     <FormuleComposant GridPane.rowIndex="1" GridPane.columnIndex="1"/>
     <ToolBar GridPane.rowIndex="2" GridPane.columnSpan="2">
         <Button text="Ajouter" onAction="#onActionAjouterFormule"/>
@@ -23,12 +25,6 @@
         <Label text="au"/>
         <ChoiceBox fx:id="typeRepasChoiceBox"/>
     </ToolBar>
-
-    <rowConstraints>
-        <RowConstraints percentHeight="5"/>
-        <RowConstraints percentHeight="90"/>
-        <RowConstraints percentHeight="5"/>
-    </rowConstraints>
 
     <columnConstraints>
         <ColumnConstraints percentWidth="80"/>
