@@ -36,6 +36,7 @@
         <mgd.jab.version>1.0-SNAPSHOT</mgd.jab.version>
         <mgd.pab.version>1.0-SNAPSHOT</mgd.pab.version>
         <pdfbox.version>3.0.3</pdfbox.version>
+        <log4j.version>2.24.3</log4j.version>
     </properties>
 
     <dependencies>

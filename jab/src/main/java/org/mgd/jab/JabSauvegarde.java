@@ -2,6 +2,8 @@ package org.mgd.jab;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mgd.jab.dto.Dto;
 import org.mgd.jab.dto.adapter.LocalDateTypeAdapter;
 import org.mgd.jab.objet.Jo;
@@ -10,6 +12,7 @@ import org.mgd.jab.persistence.Jao;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +25,8 @@ import java.util.concurrent.*;
  * @author Maxime
  */
 public class JabSauvegarde {
+    private static final Logger LOGGER = LogManager.getLogger(JabSauvegarde.class);
+
     public final Gson gsonSauvegarde = new GsonBuilder().enableComplexMapKeySerialization().registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter()).create();
     private final Moniteur moniteur = new Moniteur();
     private final JabCreation creation;
@@ -64,8 +69,9 @@ public class JabSauvegarde {
     }
 
     public <D extends Dto> void demarrer(Jo<D> objet) {
-        // TODO Logger avec option mode debug
-        System.out.println("Demarrer la sauvegarde de " + objet);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug(MessageFormat.format("Démarrage de la sauvegarde de l''objet {0}", objet));
+        }
         if (objet.getIdentifiant() != null && creation.getFichiers().containsKey(objet.getIdentifiant())) {
             sources.put(creation.getFichiers().get(objet.getIdentifiant()), gsonSauvegarde.toJson(objet.dto()));
         }
@@ -78,13 +84,15 @@ public class JabSauvegarde {
     }
 
     public synchronized void ecrire() {
-        // TODO Logger avec option mode debug
-        System.out.println("Ecrire les fichiers " + sources.keySet());
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug(MessageFormat.format("Écriture des fichiers {0}", sources.keySet()));
+        }
         sources.forEach((chemin, contenu) -> {
             try {
                 Files.writeString(chemin, contenu);
             } catch (IOException e) {
                 // TODO rollback
+                LOGGER.error(e);
             }
         });
         sources.clear();

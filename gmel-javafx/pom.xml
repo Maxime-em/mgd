@@ -41,6 +41,16 @@
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -71,6 +81,7 @@
                             <mainClass>org.mgd.gmel.javafx/org.mgd.gmel.javafx.GmelApplication</mainClass>
                             <options>
                                 <option>-Dapplication.configuration="..\\conf"</option>
+                                <option>-Dlog4j2.configurationFile="..\\conf\\log4j.xml"</option>
                                 <arg>--add-exports</arg>
                                 <arg>javafx.controls/com.sun.javafx.scene.control.behavior=org.mgd.gmel.javafx</arg>
                                 <arg>--add-exports</arg>

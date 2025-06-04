@@ -10,6 +10,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.util.converter.LongStringConverter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mgd.gmel.coeur.commun.Mesure;
 import org.mgd.gmel.coeur.objet.Produit;
 import org.mgd.gmel.coeur.objet.ProduitQuantifier;
@@ -32,6 +34,8 @@ import java.util.ResourceBundle;
 // TODO prévoir un bouton recharger
 @SuppressWarnings("java:S110")
 public class CompositionComposant extends TableView<ProduitQuantifier> implements Initializable {
+    private static final Logger LOGGER = LogManager.getLogger(CompositionComposant.class);
+
     private final BibliothequeService bibliothequeService = BibliothequeService.getInstance();
     private final EpicerieService epicerieService = EpicerieService.getInstance();
 
@@ -107,10 +111,7 @@ public class CompositionComposant extends TableView<ProduitQuantifier> implement
         mesureColonne.setOnEditCommit(evenement -> evenement.getRowValue().getQuantite().setMesure(evenement.getNewValue()));
 
         addEventHandler(CelluleEvent.<ProduitQuantifier>noeudSupprimerEvenementType(), evenement -> getItems().remove(evenement.getElement()));
-        addEventHandler(CelluleEvent.<ProduitQuantifier>noeudAvertirEvenementType(), evenement -> {
-            // TODO fenêtre expliquant l'avertissement
-            System.out.println("Avertissement");
-        });
+        addEventHandler(CelluleEvent.<ProduitQuantifier>noeudAvertirEvenementType(), evenement -> LOGGER.warn("Avertissement"));
 
         epicerieService.produitsProperty().addListener((InvalidationListener) observable -> refresh());
     }
