@@ -8,7 +8,7 @@
          editable="true"
 >
     <columns>
-        <TableColumn fx:id="iconeSupprimerColonne" text="Produits quantifiés"/>
+        <TableColumn fx:id="actionColonne" text="Produits quantifiés"/>
         <TableColumn fx:id="nomColonne" text="Nom"/>
         <TableColumn fx:id="quantiteColonne" text="Quantité"/>
         <TableColumn fx:id="mesureColonne" text="Mesure"/>

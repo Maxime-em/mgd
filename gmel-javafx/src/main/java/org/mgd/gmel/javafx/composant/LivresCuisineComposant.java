@@ -44,7 +44,7 @@ public class LivresCuisineComposant extends TableView<LivreCuisine> implements I
         DefautCellule.colonneNomParDefaut(colonne, livreCuisine -> new SimpleStringProperty(livreCuisine.getNom()), bibliothequeService.livreCuisineNomProperty());
         bibliothequeService.livreCuisineProperty().bind(getSelectionModel().selectedItemProperty());
 
-        addEventHandler(CelluleEvent.<LivreCuisine>noeudRelacherEvenementType(), evenement -> getItems().remove(evenement.getElement()));
+        addEventHandler(CelluleEvent.<LivreCuisine>noeudSupprimerEvenementType(), evenement -> getItems().remove(evenement.getElement()));
     }
 
     private class Ligne extends TableRow<LivreCuisine> {

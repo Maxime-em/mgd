@@ -44,6 +44,6 @@ public class MenusComposant extends TableView<Menu> implements Initializable {
         });
         colonne.setCellFactory(colonneDeCellule -> new DefautCellule<>(new DefaultStringConverter()));
 
-        addEventHandler(CelluleEvent.<Menu>noeudRelacherEvenementType(), evenement -> getItems().remove(evenement.getElement()));
+        addEventHandler(CelluleEvent.<Menu>noeudSupprimerEvenementType(), evenement -> getItems().remove(evenement.getElement()));
     }
 }

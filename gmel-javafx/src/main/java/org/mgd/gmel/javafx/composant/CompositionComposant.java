@@ -1,5 +1,7 @@
 package org.mgd.gmel.javafx.composant;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +15,7 @@ import org.mgd.gmel.coeur.objet.Produit;
 import org.mgd.gmel.coeur.objet.ProduitQuantifier;
 import org.mgd.gmel.javafx.composant.cellule.DefautCellule;
 import org.mgd.gmel.javafx.composant.cellule.FormatteurTextuelNombre;
-import org.mgd.gmel.javafx.composant.cellule.VoidCellule;
+import org.mgd.gmel.javafx.composant.cellule.SimpleCellule;
 import org.mgd.gmel.javafx.composant.evenement.CelluleEvent;
 import org.mgd.gmel.javafx.controle.BoutonIcone;
 import org.mgd.gmel.javafx.controle.BoutonIconeTaille;
@@ -34,7 +36,7 @@ public class CompositionComposant extends TableView<ProduitQuantifier> implement
     private final EpicerieService epicerieService = EpicerieService.getInstance();
 
     @FXML
-    private TableColumn<ProduitQuantifier, Void> iconeSupprimerColonne;
+    private TableColumn<ProduitQuantifier, Boolean> actionColonne;
     @FXML
     private TableColumn<ProduitQuantifier, Produit> nomColonne;
     @FXML
@@ -56,12 +58,16 @@ public class CompositionComposant extends TableView<ProduitQuantifier> implement
         setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         setItems(bibliothequeService.recetteProduitsQuantifierProperty());
 
-        // TODO icône avertissement lorsque le produit n'existe plus dans l'épicerie
-        iconeSupprimerColonne.setCellValueFactory(param -> null);
-        iconeSupprimerColonne.setCellFactory(param -> new VoidCellule<>(new BoutonIcone(BoutonIconeType.SUPPRIMER, BoutonIconeTaille.PETITE)));
+        actionColonne.setCellValueFactory(param -> Bindings.createBooleanBinding(() -> epicerieService.produitsProperty().stream().anyMatch(element -> element.equals(param.getValue().getProduit()))));
+        actionColonne.setCellFactory(param -> new SimpleCellule<>(new BoutonIcone(BoutonIconeType.SUPPRIMER, BoutonIconeTaille.PETITE), new BoutonIcone(BoutonIconeType.AVERTIR, BoutonIconeTaille.PETITE)) {
+            @Override
+            public void updateItem(Boolean existeDansEpicerie, boolean empty) {
+                super.updateItem(existeDansEpicerie, empty);
+                boutons.stream().filter(bouton -> bouton.getType() == BoutonIconeType.AVERTIR).findFirst().ifPresent(bouton -> bouton.setVisible(!empty && !existeDansEpicerie));
+            }
+        });
         nomColonne.setCellValueFactory(param -> new SimpleObjectProperty<>(this, "produit", param.getValue().getProduit()));
-        nomColonne.setCellFactory(param -> new ChoiceBoxTableCell<>(new ProduitStringConvertisseur(epicerieService.produitsProperty()),
-                epicerieService.produitsProperty()) {
+        nomColonne.setCellFactory(param -> new ChoiceBoxTableCell<>(new ProduitStringConvertisseur(epicerieService.produitsProperty()), epicerieService.produitsProperty()) {
             @Override
             public void updateItem(Produit produit, boolean empty) {
                 super.updateItem(produit, empty);
@@ -72,6 +78,12 @@ public class CompositionComposant extends TableView<ProduitQuantifier> implement
                 } else {
                     setText(produit.getNom());
                 }
+            }
+
+            @Override
+            public void commitEdit(Produit produit) {
+                super.commitEdit(produit);
+                refresh();
             }
         });
         nomColonne.setOnEditCommit(evenement -> evenement.getRowValue().setProduit(evenement.getNewValue()));
@@ -94,6 +106,12 @@ public class CompositionComposant extends TableView<ProduitQuantifier> implement
         });
         mesureColonne.setOnEditCommit(evenement -> evenement.getRowValue().getQuantite().setMesure(evenement.getNewValue()));
 
-        addEventHandler(CelluleEvent.<ProduitQuantifier>noeudRelacherEvenementType(), evenement -> getItems().remove(evenement.getElement()));
+        addEventHandler(CelluleEvent.<ProduitQuantifier>noeudSupprimerEvenementType(), evenement -> getItems().remove(evenement.getElement()));
+        addEventHandler(CelluleEvent.<ProduitQuantifier>noeudAvertirEvenementType(), evenement -> {
+            // TODO fenêtre expliquant l'avertissement
+            System.out.println("Avertissement");
+        });
+
+        epicerieService.produitsProperty().addListener((InvalidationListener) observable -> refresh());
     }
 }

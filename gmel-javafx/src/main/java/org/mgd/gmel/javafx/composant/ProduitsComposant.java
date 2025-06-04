@@ -39,6 +39,6 @@ public class ProduitsComposant extends TableView<Produit> implements Initializab
         DefautCellule.colonneNomParDefaut(colonne, produit -> new SimpleStringProperty(produit.getNom()), epicerieService.produitNomProperty());
         epicerieService.produitProperty().bind(getSelectionModel().selectedItemProperty());
 
-        addEventHandler(CelluleEvent.<Produit>noeudRelacherEvenementType(), evenement -> getItems().remove(evenement.getElement()));
+        addEventHandler(CelluleEvent.<Produit>noeudSupprimerEvenementType(), evenement -> getItems().remove(evenement.getElement()));
     }
 }

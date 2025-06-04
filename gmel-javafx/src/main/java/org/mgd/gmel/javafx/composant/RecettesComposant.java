@@ -44,7 +44,7 @@ public class RecettesComposant extends TableView<Recette> implements Initializab
 
         bibliothequeService.recetteProperty().bind(getSelectionModel().selectedItemProperty());
 
-        addEventHandler(CelluleEvent.<Recette>noeudRelacherEvenementType(), evenement -> getItems().remove(evenement.getElement()));
+        addEventHandler(CelluleEvent.<Recette>noeudSupprimerEvenementType(), evenement -> getItems().remove(evenement.getElement()));
     }
 
     private static class Ligne extends TableRow<Recette> {

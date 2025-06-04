@@ -34,4 +34,8 @@ public class BoutonIcone extends Bouton {
     public String getUserAgentStylesheet() {
         return Objects.requireNonNull(getClass().getResource("css/bouton-icone.css")).toExternalForm();
     }
+
+    public BoutonIconeType getType() {
+        return type;
+    }
 }
