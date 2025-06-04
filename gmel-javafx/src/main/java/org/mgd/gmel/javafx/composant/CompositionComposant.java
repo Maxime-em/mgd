@@ -22,6 +22,7 @@ import org.mgd.gmel.javafx.composant.evenement.CelluleEvent;
 import org.mgd.gmel.javafx.controle.BoutonIcone;
 import org.mgd.gmel.javafx.controle.BoutonIconeTaille;
 import org.mgd.gmel.javafx.controle.BoutonIconeType;
+import org.mgd.gmel.javafx.convertisseur.MesureConvertisseur;
 import org.mgd.gmel.javafx.convertisseur.ProduitStringConvertisseur;
 import org.mgd.gmel.javafx.service.BibliothequeService;
 import org.mgd.gmel.javafx.service.EpicerieService;
@@ -30,7 +31,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-// TODO on voit la nom de la mesure lors de la sélection
 // TODO prévoir un bouton recharger
 @SuppressWarnings("java:S110")
 public class CompositionComposant extends TableView<ProduitQuantifier> implements Initializable {
@@ -95,7 +95,7 @@ public class CompositionComposant extends TableView<ProduitQuantifier> implement
         quantiteColonne.setCellFactory(colonne -> new DefautCellule<>(new LongStringConverter(), new FormatteurTextuelNombre<>()));
         quantiteColonne.setOnEditCommit(evenement -> evenement.getRowValue().getQuantite().setValeur(evenement.getNewValue()));
         mesureColonne.setCellValueFactory(param -> new SimpleObjectProperty<>(this, "quantite-mesure", param.getValue().getQuantite().getMesure()));
-        mesureColonne.setCellFactory(colonne -> new ChoiceBoxTableCell<>(Mesure.values()) {
+        mesureColonne.setCellFactory(colonne -> new ChoiceBoxTableCell<>(new MesureConvertisseur(), Mesure.values()) {
             @Override
             public void updateItem(Mesure mesure, boolean empty) {
                 super.updateItem(mesure, empty);
