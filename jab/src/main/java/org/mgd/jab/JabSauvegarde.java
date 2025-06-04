@@ -91,7 +91,6 @@ public class JabSauvegarde {
             try {
                 Files.writeString(chemin, contenu);
             } catch (IOException e) {
-                // TODO rollback
                 LOGGER.error(e);
             }
         });
@@ -132,7 +131,8 @@ public class JabSauvegarde {
                 try {
                     scheduledFuture.get();
                 } catch (InterruptedException | ExecutionException e) {
-                    // TODO rollback
+                    LOGGER.warn(e);
+                    Thread.currentThread().interrupt();
                 }
             });
         }
