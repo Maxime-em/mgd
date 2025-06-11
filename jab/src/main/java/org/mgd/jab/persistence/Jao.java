@@ -50,7 +50,7 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
         try {
             return JabSingletons.sauvegarde().gsonSauvegarde.fromJson(Files.newBufferedReader(fichier), classeDto);
         } catch (IOException e) {
-            throw new JaoParseException(MessageFormat.format("Impossible de charger le fichier {0}", fichier), e);
+            throw new JaoParseException(MessageFormat.format("Impossible de charger le fichier {0}.", fichier), e);
         }
     }
 
@@ -163,7 +163,7 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
 
     public <P extends Dto> O charger(D dto, Jo<P> parent) throws JaoParseException, JaoExecutionException {
         if (dto == null) {
-            throw new JaoParseException("Objet inconnu");
+            throw new JaoParseException("Objet inconnu.");
         } else {
             try {
                 UUID identifiant = dto.getIdentifiant() != null ? UUID.fromString(dto.getIdentifiant()) : UUID.randomUUID();

@@ -10,7 +10,7 @@ public class Dates {
     private static final TemporalField champJourSemaine = WeekFields.of(Locale.FRANCE).dayOfWeek();
 
     private Dates() {
-        throw new IllegalStateException("Classe utilitaire");
+        throw new IllegalStateException("Classe utilitaire.");
     }
 
     public static LocalDate decaler(LocalDate source, DayOfWeek cible) {

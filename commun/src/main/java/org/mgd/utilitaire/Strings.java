@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 public class Strings {
     private Strings() {
-        throw new IllegalStateException("Classe utilitaire");
+        throw new IllegalStateException("Classe utilitaire.");
     }
 
     public static String premierCaractereMajuscule(String str) {

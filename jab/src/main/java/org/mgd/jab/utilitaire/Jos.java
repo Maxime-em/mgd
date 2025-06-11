@@ -5,7 +5,7 @@ import org.mgd.jab.objet.Joc;
 
 public class Jos {
     private Jos() {
-        throw new IllegalStateException("Classe utilitaire");
+        throw new IllegalStateException("Classe utilitaire.");
     }
 
     public static boolean idem(Object a, Object b) {

@@ -100,7 +100,7 @@ public class BibliothequeService extends Service {
         return livresCuisine.stream()
                 .filter(element -> !element.getRecettes().isEmpty())
                 .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("Impossible d'ajouter une formule à partir d'une bibliothèque dont tous les livres de cuisines sont sans recette"));
+                .orElseThrow(() -> new NoSuchElementException("Impossible d'ajouter une formule à partir d'une bibliothèque dont tous les livres de cuisines sont sans recette."));
     }
 
     public LivreCuisine obtenirPremierLivreCuisineContenant(Recette recette) {

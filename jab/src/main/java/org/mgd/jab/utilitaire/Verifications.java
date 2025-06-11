@@ -11,7 +11,7 @@ import java.util.function.BiPredicate;
 
 public class Verifications {
     private Verifications() {
-        throw new IllegalStateException("Classe utilitaire");
+        throw new IllegalStateException("Classe utilitaire.");
     }
 
     public static void nonNull(Object objet, String message, Object... objects) throws VerificationException {
