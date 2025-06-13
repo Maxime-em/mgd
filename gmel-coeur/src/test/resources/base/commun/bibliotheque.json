@@ -13,8 +13,9 @@
             {
               "identifiant": "16c89cf4-725f-483d-a98f-e9ca50d470ae",
               "produit": {
-                "identifiant": "56b4ee41-d325-4ea1-85d8-4b3acd8f976a",
-                "nom": "Produit 1.2"
+                "identifiant": "eee19e2d-2796-4082-b8cc-218d3a14e955",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-coeur\\src\\test\\resources\\base\\commun\\epicerie.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao"
               },
               "quantite": {
                 "identifiant": "794d971f-2e23-4657-8b67-8c8a09800d5b",
@@ -25,8 +26,9 @@
             {
               "identifiant": "1f4011e5-e7c9-433f-bf3a-7111975782f8",
               "produit": {
-                "identifiant": "9fbae530-2a42-4d8a-a0ba-6f84f1f4250b",
-                "nom": "Produit 1.1"
+                "identifiant": "7fc2e02a-fca9-4693-a2b7-9d8464f38bb7",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-coeur\\src\\test\\resources\\base\\commun\\epicerie.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao"
               },
               "quantite": {
                 "identifiant": "6bf679b5-1188-4ac2-99c5-a11aa36dfc41",
@@ -44,8 +46,9 @@
             {
               "identifiant": "3eb0787e-6736-42e0-adb9-c8d0ee55b3b8",
               "produit": {
-                "identifiant": "d1665596-31e4-4671-8ffe-8b111e87fde0",
-                "nom": "Produit 2.1"
+                "identifiant": "eee19e2d-2796-4082-b8cc-218d3a14e955",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-coeur\\src\\test\\resources\\base\\commun\\epicerie.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao"
               },
               "quantite": {
                 "identifiant": "dc7f7747-a0bf-4a29-a3c5-564b101c9e01",
@@ -56,8 +59,9 @@
             {
               "identifiant": "63a4e729-3112-4695-8a14-eaec68c87513",
               "produit": {
-                "identifiant": "087e379f-afb4-40ea-b92e-89b1a4a99312",
-                "nom": "Produit 2.2"
+                "identifiant": "7fc2e02a-fca9-4693-a2b7-9d8464f38bb7",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-coeur\\src\\test\\resources\\base\\commun\\epicerie.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao"
               },
               "quantite": {
                 "identifiant": "24aa3df9-60f1-415c-8e01-8e0cff6f3ff2",
@@ -68,8 +72,9 @@
             {
               "identifiant": "4b910191-462f-4de1-9541-afc5ddfc122f",
               "produit": {
-                "identifiant": "8e6d8e98-a01b-433f-87d1-fdcc471499b4",
-                "nom": "Produit 2.3"
+                "identifiant": "6da29b2f-a8e4-42ba-ab26-2df048fa67df",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-coeur\\src\\test\\resources\\base\\commun\\epicerie.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao"
               },
               "quantite": {
                 "identifiant": "5c51517d-c5fd-4126-a036-8fdc24f7eab4",
@@ -87,8 +92,9 @@
             {
               "identifiant": "a5d87745-d0b8-4387-bfee-bf6d97af0dba",
               "produit": {
-                "identifiant": "584c0e94-3bc6-4867-bad9-bb9321c31e15",
-                "nom": "Produit 3.1"
+                "identifiant": "56b4ee41-d325-4ea1-85d8-4b3acd8f976a",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-coeur\\src\\test\\resources\\base\\commun\\epicerie.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao"
               },
               "quantite": {
                 "identifiant": "f49ee008-74ad-4ccc-ab50-ca822637cd36",

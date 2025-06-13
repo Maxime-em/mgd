@@ -1,5 +1,6 @@
 package org.mgd.jab.objet;
 
+import org.mgd.jab.JabCreation;
 import org.mgd.jab.JabSauvegarde;
 import org.mgd.jab.JabSingletons;
 import org.mgd.jab.dto.Dto;
@@ -9,6 +10,8 @@ import org.mgd.jab.persistence.exception.JaoParseException;
 import org.mgd.jab.utilitaire.exception.VerificationException;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Classe de base des objets métiers utilisés par les {@link Jao}.
@@ -23,6 +26,7 @@ public abstract class Jo<D extends Dto> {
     private final SortedSet<Jo<? extends Dto>> parents;
     private final SortedSet<Jo<? extends Dto>> enfants;
     private final JabSauvegarde sauvegarde;
+    private final JabCreation creation;
     private UUID identifiant;
     private boolean detache;
 
@@ -30,6 +34,7 @@ public abstract class Jo<D extends Dto> {
         this.parents = new TreeSet<>(Comparator.comparing(objet -> objet.identifiant));
         this.enfants = new TreeSet<>(Comparator.comparing(objet -> objet.identifiant));
         this.sauvegarde = JabSingletons.sauvegarde();
+        this.creation = JabSingletons.creation();
         this.detache = true;
     }
 
@@ -72,6 +77,14 @@ public abstract class Jo<D extends Dto> {
 
     public <P extends Dto> boolean estParentDe(Jo<P> enfant) {
         return enfants.contains(enfant);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <P extends Dto, Q extends Jo<P>> Set<Q> racines(Class<Q> classe) {
+        Stream<Q> racines = parents.stream().flatMap(parent -> parent.racines(classe).stream());
+        return classe.isInstance(this) && creation.getFichiers().containsKey(identifiant)
+                ? Stream.concat(Stream.of((Q) this), racines).collect(Collectors.toSet())
+                : racines.collect(Collectors.toSet());
     }
 
     public UUID getIdentifiant() {

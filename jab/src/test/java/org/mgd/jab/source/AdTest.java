@@ -1,5 +1,6 @@
 package org.mgd.jab.source;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -8,7 +9,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mgd.jab.JabSingletons;
 import org.mgd.jab.objet.Adresse;
+import org.mgd.jab.objet.Commune;
 import org.mgd.jab.objet.Voie;
+import org.mgd.jab.persistence.CommunauteJao;
 import org.mgd.jab.persistence.exception.JaoExecutionException;
 import org.mgd.jab.persistence.exception.JaoParseException;
 
@@ -69,50 +72,71 @@ class AdTest {
 
         AdresseAd adresseAd = new AdresseAd(ressourcesSupprimable);
 
-        AdresseAf adresseAf = adresseAd.access("adresse_prorietaires_null");
+        AdresseAf adresseAf = adresseAd.access("adresse_vide");
         Assertions.assertThrows(JaoParseException.class, adresseAf::jo);
 
-        adresseAf = adresseAd.access("adresse.json", "{\"proprietaires\":[],\"voie\":{}}");
+        String referenceFrance = "\"pays\": {\"identifiant\": \"6377eaef-bd5c-4bb1-b4f4-2d93e8040a52\",\"chemin\": \"E:\\\\IdeaProjects\\\\mgd\\\\jab\\\\src\\\\test\\\\resources\\\\base\\\\commun\\\\monde1.json\",\"classeFournisseur\": \"org.mgd.jab.persistence.MondeJao\"}";
+
+        adresseAf = adresseAd.access("adresse_proprietaires_null", "{\"voie\":{}," + referenceFrance + "}");
+        Assertions.assertThrows(JaoParseException.class, adresseAf::jo);
+
+        adresseAf = adresseAd.access("adresse_voie_null", "{\"proprietaires\":[]," + referenceFrance + "}");
+        Assertions.assertThrows(JaoParseException.class, adresseAf::jo);
+
+        adresseAf = adresseAd.access("adresse_pays_null", "{\"proprietaires\":[]," + referenceFrance + "}");
+        Assertions.assertThrows(JaoParseException.class, adresseAf::jo);
+
+        adresseAf = adresseAd.access("adresse", "{\"proprietaires\":[],\"voie\":{}," + referenceFrance + "}");
         Adresse adresse = adresseAf.jo();
         Assertions.assertAll(
                 () -> Assertions.assertNotNull(adresse.getProprietaires()),
-                () -> Assertions.assertEquals(0, adresse.getProprietaires().size())
+                () -> Assertions.assertEquals(0, adresse.getProprietaires().size()),
+                () -> Assertions.assertNotNull(adresse.getVoie()),
+                () -> Assertions.assertNull(adresse.getCommune()),
+                () -> Assertions.assertNotNull(adresse.getPays())
         );
     }
 
     @Test
     void creationSurFichierExistant() throws IOException, JaoParseException, JaoExecutionException {
+        Path fichierAdresse = ressourcesCommun.resolve("adresse1.json");
+        Path fichierCommunaute = ressourcesCommun.resolve("communaute1.json");
+        Assertions.assertAll(
+                () -> Assertions.assertTrue(Files.isRegularFile(fichierAdresse)),
+                () -> Assertions.assertTrue(Files.isRegularFile(fichierCommunaute))
+        );
+
         AdresseAd adresseAd = new AdresseAd(ressourcesCommun);
-        Adresse adresse = adresseAd.access("adresse").jo();
+        Adresse adresse = adresseAd.access("adresse1").jo();
+        Voie voie = adresse.getVoie();
+        Commune commune = adresse.getCommune();
 
-        Path fichier = ressourcesCommun.resolve("adresse.json");
-        Assertions.assertTrue(Files.isRegularFile(fichier));
-
-        JsonElement elementActuel = JsonParser.parseReader(Files.newBufferedReader(fichier));
-        Assertions.assertTrue(elementActuel.isJsonObject());
-
+        JsonElement elementActuel = JsonParser.parseReader(Files.newBufferedReader(fichierAdresse));
         JsonObject adresseActuel = elementActuel.getAsJsonObject();
+        JsonObject voieActuel = adresseActuel.getAsJsonObject("voie");
+        JsonObject referenceCommuneActuel = adresseActuel.getAsJsonObject("commune");
         Assertions.assertAll(
-                () -> Assertions.assertEquals(3, adresseActuel.keySet().size()),
-                () -> Assertions.assertTrue(adresseActuel.has("identifiant")),
-                () -> Assertions.assertTrue(adresseActuel.getAsJsonPrimitive("identifiant").isString()),
-                () -> Assertions.assertTrue(adresseActuel.has("proprietaires")),
-                () -> Assertions.assertTrue(adresseActuel.getAsJsonArray("proprietaires").isJsonArray()),
-                () -> Assertions.assertTrue(adresseActuel.has("voie")),
-                () -> Assertions.assertTrue(adresseActuel.getAsJsonObject("voie").isJsonObject())
+                () -> Assertions.assertEquals(adresseActuel.getAsJsonPrimitive("identifiant").getAsString(), adresse.getIdentifiant().toString()),
+                () -> Assertions.assertEquals(voieActuel.getAsJsonPrimitive("identifiant").getAsString(), voie.getIdentifiant().toString()),
+                () -> Assertions.assertEquals(voieActuel.getAsJsonPrimitive("numero").getAsInt(), voie.getNumero()),
+                () -> Assertions.assertEquals(voieActuel.getAsJsonPrimitive("libelle").getAsString(), voie.getLibelle()),
+                () -> Assertions.assertEquals(referenceCommuneActuel.getAsJsonPrimitive("identifiant").getAsString(), commune.getIdentifiant().toString()),
+                () -> Assertions.assertEquals(referenceCommuneActuel.getAsJsonPrimitive("chemin").getAsString(), fichierCommunaute.toAbsolutePath().toString()),
+                () -> Assertions.assertEquals(referenceCommuneActuel.getAsJsonPrimitive("classeFournisseur").getAsString(), CommunauteJao.class.getName())
         );
 
-        JsonObject voieActuel = adresseActuel.getAsJsonObject("voie");
-        Assertions.assertAll(
-                () -> Assertions.assertEquals(3, voieActuel.keySet().size()),
-                () -> Assertions.assertTrue(voieActuel.has("identifiant")),
-                () -> Assertions.assertTrue(voieActuel.getAsJsonPrimitive("identifiant").isString()),
-                () -> Assertions.assertTrue(voieActuel.has("numero")),
-                () -> Assertions.assertTrue(voieActuel.getAsJsonPrimitive("numero").isNumber()),
-                () -> Assertions.assertEquals(voieActuel.getAsJsonPrimitive("numero").getAsInt(), adresse.getVoie().getNumero()),
-                () -> Assertions.assertTrue(voieActuel.has("libelle")),
-                () -> Assertions.assertTrue(voieActuel.getAsJsonPrimitive("libelle").isString()),
-                () -> Assertions.assertEquals(voieActuel.getAsJsonPrimitive("libelle").getAsString(), adresse.getVoie().getLibelle())
-        );
+        JsonObject communauteActuel = JsonParser.parseReader(Files.newBufferedReader(fichierCommunaute)).getAsJsonObject();
+        JsonArray communesActuel = communauteActuel.getAsJsonArray("communes");
+        for (JsonElement element : communesActuel) {
+            JsonObject communeActuel = element.getAsJsonObject();
+            if (communeActuel.getAsJsonPrimitive("identifiant").equals(referenceCommuneActuel.getAsJsonPrimitive("identifiant"))) {
+                Assertions.assertAll(
+                        () -> Assertions.assertEquals(communeActuel.getAsJsonPrimitive("identifiant").getAsString(), commune.getIdentifiant().toString()),
+                        () -> Assertions.assertEquals(communeActuel.getAsJsonPrimitive("nom").getAsString(), commune.getNom()),
+                        () -> Assertions.assertEquals(communeActuel.getAsJsonPrimitive("code").getAsString(), commune.getCode())
+                );
+                break;
+            }
+        }
     }
 }

@@ -1,0 +1,47 @@
+{
+  "jeux": [
+    {
+      "type": "CARTES",
+      "nom": "jeusauv",
+      "annee": 2000,
+      "semaine": 1,
+      "identifiant": "56cf7de6-afb4-4b9f-a0e0-0dcd49d702bb"
+    }
+  ],
+  "livres": {
+    "1": {
+      "nom": "livresauv1",
+      "chapitres": [
+        [
+          {
+            "nom": "chapitresauv11",
+            "identifiant": "9d2bc6d4-d6e6-4f40-9402-892350a67ea4"
+          },
+          {
+            "age": 12,
+            "identifiant": "a1db0abe-c48d-11ed-afa1-0242ac120002"
+          }
+        ]
+      ],
+      "identifiant": "a6ef6ffd-b277-4c14-a17c-af24cbda3d97"
+    },
+    "2": {
+      "nom": "livresauv2",
+      "chapitres": [
+        [
+          {
+            "nom": "chapitresauv21",
+            "identifiant": "318ce741-99e3-47db-9f34-eaf557efc494"
+          },
+          {
+            "age": 12,
+            "identifiant": "a1db0abe-c48d-11ed-afa1-0242ac120002"
+          }
+        ]
+      ],
+      "identifiant": "888d617a-c27e-4247-a6d9-0f041d272bc4"
+    }
+  },
+  "score": 700,
+  "identifiant": "1bc6e106-9cc6-43e5-9761-d7e8eb1f6466"
+}

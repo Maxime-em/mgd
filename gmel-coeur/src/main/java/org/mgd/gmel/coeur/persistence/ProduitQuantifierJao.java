@@ -1,6 +1,7 @@
 package org.mgd.gmel.coeur.persistence;
 
 import org.mgd.gmel.coeur.dto.ProduitQuantifierDto;
+import org.mgd.gmel.coeur.objet.Epicerie;
 import org.mgd.gmel.coeur.objet.ProduitQuantifier;
 import org.mgd.jab.persistence.Jao;
 import org.mgd.jab.persistence.exception.JaoExecutionException;
@@ -19,7 +20,7 @@ public class ProduitQuantifierJao extends Jao<ProduitQuantifierDto, ProduitQuant
     @Override
     protected ProduitQuantifierDto to(ProduitQuantifier produitQuantifier) {
         ProduitQuantifierDto produitQuantifierDto = new ProduitQuantifierDto();
-        produitQuantifierDto.setProduit(new ProduitJao().decharger(produitQuantifier.getProduit()));
+        produitQuantifierDto.setProduit(new ProduitJao().dechargerVersReference(produitQuantifier.getProduit(), Epicerie.class, EpicerieJao.class));
         produitQuantifierDto.setQuantite(new QuantiteJao().decharger(produitQuantifier.getQuantite()));
 
         return produitQuantifierDto;

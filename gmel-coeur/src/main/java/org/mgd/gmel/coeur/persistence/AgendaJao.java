@@ -2,6 +2,7 @@ package org.mgd.gmel.coeur.persistence;
 
 import org.mgd.gmel.coeur.dto.AgendaDto;
 import org.mgd.gmel.coeur.objet.Agenda;
+import org.mgd.gmel.coeur.objet.Menu;
 import org.mgd.jab.persistence.Jao;
 import org.mgd.jab.persistence.exception.JaoExecutionException;
 
@@ -19,7 +20,7 @@ public class AgendaJao extends Jao<AgendaDto, Agenda> {
     @Override
     protected AgendaDto to(Agenda agenda) {
         AgendaDto agendaDto = new AgendaDto();
-        agendaDto.setMenus(new MenuJao().decharger(agenda.getMenus()));
+        agendaDto.setMenus(new MenuJao().dechargerVersReferences(agenda.getMenus(), Menu.class, MenuJao.class));
 
         return agendaDto;
     }

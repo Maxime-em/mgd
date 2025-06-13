@@ -4,8 +4,6 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import org.mgd.jab.JabSauvegarde;
-import org.mgd.jab.persistence.Jao;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -13,9 +11,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 /**
- * Adaptateur utilisé notamment dans {@link Jao} et {@link JabSauvegarde}.
+ * Adaptateur utilisé notamment dans par {@link org.mgd.jab.JabSauvegarde#gsonSauvegarde}.
+ *
+ * @author Maxime
  */
-public class LocalDateTypeAdapter extends TypeAdapter<LocalDate> {
+public class LocalDateAdapter extends TypeAdapter<LocalDate> {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
     @Override

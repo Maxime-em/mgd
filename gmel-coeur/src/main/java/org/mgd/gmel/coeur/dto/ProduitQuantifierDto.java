@@ -1,7 +1,10 @@
 package org.mgd.gmel.coeur.dto;
 
+import org.mgd.gmel.coeur.objet.Epicerie;
 import org.mgd.gmel.coeur.objet.ProduitQuantifier;
+import org.mgd.gmel.coeur.persistence.EpicerieJao;
 import org.mgd.jab.dto.Dto;
+import org.mgd.jab.dto.ReferenceDto;
 
 /**
  * Classe de transformation vers l'objet métier {@link ProduitQuantifier} provenant d'un
@@ -10,14 +13,14 @@ import org.mgd.jab.dto.Dto;
  * @author Maxime
  */
 public class ProduitQuantifierDto extends Dto {
-    private ProduitDto produit;
+    private ReferenceDto<EpicerieDto, Epicerie, EpicerieJao> produit;
     private QuantiteDto quantite;
 
-    public ProduitDto getProduit() {
+    public ReferenceDto<EpicerieDto, Epicerie, EpicerieJao> getProduit() {
         return produit;
     }
 
-    public void setProduit(ProduitDto produit) {
+    public void setProduit(ReferenceDto<EpicerieDto, Epicerie, EpicerieJao> produit) {
         this.produit = produit;
     }
 

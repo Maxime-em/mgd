@@ -1,8 +1,9 @@
 {
   "identifiant": "d4a31317-e70a-4cdb-9527-78a5ae10c4a0",
   "produit": {
-    "identifiant": "549c3eea-d12d-4428-aa32-dc600f7381ab",
-    "nom": "Produit"
+    "identifiant": "eee19e2d-2796-4082-b8cc-218d3a14e955",
+    "chemin": "E:\\IdeaProjects\\mgd\\gmel-coeur\\src\\test\\resources\\base\\commun\\epicerie.json",
+    "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao"
   },
   "quantite": {
     "identifiant": "66a118e3-27f6-487e-8b0f-f345821cb149",

@@ -49,7 +49,7 @@ public class ProduitQuantifier extends Jo<ProduitQuantifierDto> implements Compa
         Verifications.nonNull(dto.getProduit(), "Un produit quantifié doit contenir un produit");
         Verifications.nonNull(dto.getQuantite(), "Un produit quantifié doit contenir une quantité");
 
-        setProduit(new ProduitJao().charger(dto.getProduit(), this));
+        setProduit(new ProduitJao().chargerParReference(dto.getProduit()));
         setQuantite(new QuantiteJao().charger(dto.getQuantite(), this));
     }
 

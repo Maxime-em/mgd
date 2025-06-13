@@ -19,9 +19,9 @@ import java.util.UUID;
 class ProduitQuantifierJaoTest extends AbstractMetierTest<ProduitQuantifierDto, ProduitQuantifier, ProduitQuantifierAf, ProduitQuantifierAd> {
     @Override
     protected ProduitQuantifier construire() {
-        Produit produit = new Produit();
-        produit.setIdentifiant(UUID.fromString("549c3eea-d12d-4428-aa32-dc600f7381ab"));
-        produit.setNom("Produit");
+        Produit produit1 = new Produit();
+        produit1.setIdentifiant(UUID.fromString("eee19e2d-2796-4082-b8cc-218d3a14e955"));
+        produit1.setNom("Produit 1");
 
         Quantite quantite = new Quantite();
         quantite.setIdentifiant(UUID.fromString("66a118e3-27f6-487e-8b0f-f345821cb149"));
@@ -30,7 +30,7 @@ class ProduitQuantifierJaoTest extends AbstractMetierTest<ProduitQuantifierDto, 
 
         ProduitQuantifier produitQuantifier = new ProduitQuantifier();
         produitQuantifier.setIdentifiant(UUID.fromString("d4a31317-e70a-4cdb-9527-78a5ae10c4a0"));
-        produitQuantifier.setProduit(produit);
+        produitQuantifier.setProduit(produit1);
         produitQuantifier.setQuantite(quantite);
 
         return produitQuantifier;
@@ -53,11 +53,14 @@ class ProduitQuantifierJaoTest extends AbstractMetierTest<ProduitQuantifierDto, 
 
     @Test
     void depuisFichierInexistant() throws IOException, JaoExecutionException, JaoParseException {
-        ProduitQuantifier produitQuantifierActuel = adSupprimable.produitQuantifier("produit_quantifier");
+        ProduitQuantifier produitQuantifierActuel = adSupprimable.produitQuantifier(
+                "produit_quantifier",
+                UUID.fromString("eee19e2d-2796-4082-b8cc-218d3a14e955"),
+                ressourcesObjets.resolve("epicerie.json"), EpicerieJao.class);
         Assertions.assertAll(
                 () -> Assertions.assertNotNull(produitQuantifierActuel),
                 () -> Assertions.assertNotNull(produitQuantifierActuel.getProduit()),
-                () -> Assertions.assertEquals("produit", produitQuantifierActuel.getProduit().getNom()),
+                () -> Assertions.assertEquals("Produit 1", produitQuantifierActuel.getProduit().getNom()),
                 () -> Assertions.assertNotNull(produitQuantifierActuel.getQuantite()),
                 () -> Assertions.assertEquals(1, produitQuantifierActuel.getQuantite().getValeur()),
                 () -> Assertions.assertEquals(Mesure.MASSE, produitQuantifierActuel.getQuantite().getMesure())

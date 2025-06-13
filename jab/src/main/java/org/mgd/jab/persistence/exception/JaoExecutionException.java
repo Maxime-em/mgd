@@ -10,6 +10,14 @@ import org.mgd.jab.persistence.Jao;
  * @author Maxime
  */
 public class JaoExecutionException extends Exception {
+    public JaoExecutionException(String message) {
+        super(message);
+    }
+
+    public JaoExecutionException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     public JaoExecutionException(Throwable cause) {
         super(cause);
     }

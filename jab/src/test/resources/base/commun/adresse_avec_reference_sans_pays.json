@@ -1,0 +1,14 @@
+{
+  "proprietaires": [],
+  "voie": {
+    "numero": 1,
+    "libelle": "Libellé de la voie 1",
+    "identifiant": "9f8ce4e2-d1c4-47f4-8fb4-ded8663d39fc"
+  },
+  "commune": {
+    "identifiant": "0cc0ad92-8bc4-4d0d-a682-31c5280fe972",
+    "chemin": "E:\\IdeaProjects\\mgd\\jab\\src\\test\\resources\\base\\commun\\communaute1.json",
+    "classeFournisseur": "org.mgd.jab.persistence.CommunauteJao"
+  },
+  "identifiant": "201940f6-a2fc-48c5-bee8-33c2acc39676"
+}

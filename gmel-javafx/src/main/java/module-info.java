@@ -8,7 +8,6 @@ module org.mgd.gmel.javafx {
     requires gmel.pdf;
     requires java.desktop;
     requires org.apache.logging.log4j;
-    requires org.apache.logging.log4j.core;
 
     opens org.mgd.gmel.javafx to javafx.fxml, javafx.graphics;
     opens org.mgd.gmel.javafx.composant to javafx.fxml, javafx.graphics;

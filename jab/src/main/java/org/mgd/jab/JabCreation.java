@@ -32,7 +32,7 @@ public class JabCreation {
     }
 
     public void ajouter(Path fichier, UUID identifiant) {
-        germes.put(fichier, identifiant);
-        fichiers.put(identifiant, fichier);
+        germes.put(fichier.toAbsolutePath(), identifiant);
+        fichiers.put(identifiant, fichier.toAbsolutePath());
     }
 }

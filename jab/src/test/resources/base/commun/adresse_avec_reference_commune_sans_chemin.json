@@ -1,0 +1,29 @@
+{
+  "proprietaires": [
+    {
+      "identifiant": "5896fac0-c48d-11ed-afa1-0242ac120002",
+      "chemin": "E:\\IdeaProjects\\mgd\\jab\\src\\test\\resources\\base\\commun\\personne1.json",
+      "classeFournisseur": "org.mgd.jab.persistence.PersonneJao"
+    },
+    {
+      "identifiant": "5f2a5aa8-c48d-11ed-afa1-0242ac120002",
+      "chemin": "E:\\IdeaProjects\\mgd\\jab\\src\\test\\resources\\base\\commun\\personne2.json",
+      "classeFournisseur": "org.mgd.jab.persistence.PersonneJao"
+    }
+  ],
+  "voie": {
+    "numero": 1,
+    "libelle": "Libellé de la voie 1",
+    "identifiant": "9f8ce4e2-d1c4-47f4-8fb4-ded8663d39fc"
+  },
+  "commune": {
+    "identifiant": "3e398def-4b5b-46d5-9ca0-9c8a2034e094",
+    "classeFournisseur": "org.mgd.jab.persistence.CommunauteJao"
+  },
+  "pays": {
+    "identifiant": "6377eaef-bd5c-4bb1-b4f4-2d93e8040a52",
+    "chemin": "E:\\IdeaProjects\\mgd\\jab\\src\\test\\resources\\base\\commun\\monde1.json",
+    "classeFournisseur": "org.mgd.jab.persistence.MondeJao"
+  },
+  "identifiant": "5f1d74d0-9ec0-49fd-ad26-1931557ea122"
+}

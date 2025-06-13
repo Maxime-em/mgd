@@ -1,19 +1,19 @@
 package org.mgd.jab.objet;
 
 import org.mgd.jab.dto.AdresseDto;
-import org.mgd.jab.persistence.AdresseJao;
-import org.mgd.jab.persistence.VoieJao;
+import org.mgd.jab.persistence.*;
 import org.mgd.jab.persistence.exception.JaoExecutionException;
 import org.mgd.jab.persistence.exception.JaoParseException;
 import org.mgd.jab.utilitaire.Verifications;
 import org.mgd.jab.utilitaire.exception.VerificationException;
 
 import java.util.List;
-import java.util.Objects;
 
 public class Adresse extends Jo<AdresseDto> {
-    private final JocArrayList<Personne> proprietaires = new JocArrayList<>(this);
+    private final List<Personne> proprietaires = new JocArrayList<>(this);
     private final Joc<Voie> voie = new Joc<>(this);
+    private final Joc<Commune> commune = new Joc<>(this);
+    private final Joc<Pays> pays = new Joc<>(this);
 
     public List<Personne> getProprietaires() {
         return this.proprietaires;
@@ -27,6 +27,22 @@ public class Adresse extends Jo<AdresseDto> {
         this.voie.set(voie);
     }
 
+    public Commune getCommune() {
+        return commune.get();
+    }
+
+    public void setCommune(Commune commune) {
+        this.commune.set(commune);
+    }
+
+    public Pays getPays() {
+        return pays.get();
+    }
+
+    public void setPays(Pays pays) {
+        this.pays.set(pays);
+    }
+
     @Override
     public AdresseDto dto() {
         return new AdresseJao().decharger(this);
@@ -37,13 +53,20 @@ public class Adresse extends Jo<AdresseDto> {
         Verifications.nonNull(dto.getProprietaires(), "La liste des propriétaires dans une adresse devrait être une liste éventuellement vide");
         Verifications.nonNull(dto.getVoie(), "La voie dans une adresse devrait être non null");
 
+        getProprietaires().addAll(new PersonneJao().chargerParReferences(dto.getProprietaires()));
         setVoie(new VoieJao().charger(dto.getVoie(), this));
+
+        if (dto.getCommune() != null) {
+            setCommune(new CommuneJao().chargerParReference(dto.getCommune()));
+        }
+
+        setPays(new PaysJao().chargerParReference(dto.getPays()));
     }
 
     @Override
     public boolean idem(Object objet) {
         if (this == objet) return true;
         if (!(objet instanceof Adresse adresse)) return false;
-        return Objects.equals(voie, adresse.voie);
+        return ((JocArrayList<Personne>) proprietaires).idem(adresse.getProprietaires()) && voie.idem(adresse.voie) && commune.idem(adresse.commune);
     }
 }

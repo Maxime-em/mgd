@@ -1,10 +1,9 @@
 {
   "identifiant": "98a1b523-c599-46cf-b0ab-443f28aeeb86",
   "recette": {
-    "identifiant": "7a2f76bc-5aba-4f3d-b094-7875f9a6ea2a",
-    "nom": "Recette",
-    "nombrePersonnes": 1,
-    "produitsQuantifier": []
+    "identifiant": "f1a7f4c8-8b8b-456d-956d-9ba580f64be6",
+    "chemin": "E:\\IdeaProjects\\mgd\\gmel-coeur\\src\\test\\resources\\base\\commun\\bibliotheque.json",
+    "classeFournisseur": "org.mgd.gmel.coeur.persistence.BibliothequeJao"
   },
   "periode": {
     "identifiant": "46fa0eb8-8e68-4760-8215-8b0dcec306c9",

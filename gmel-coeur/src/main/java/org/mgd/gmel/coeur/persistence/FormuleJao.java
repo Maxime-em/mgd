@@ -1,6 +1,7 @@
 package org.mgd.gmel.coeur.persistence;
 
 import org.mgd.gmel.coeur.dto.FormuleDto;
+import org.mgd.gmel.coeur.objet.Bibliotheque;
 import org.mgd.gmel.coeur.objet.Formule;
 import org.mgd.jab.persistence.Jao;
 import org.mgd.jab.persistence.exception.JaoExecutionException;
@@ -13,7 +14,7 @@ public class FormuleJao extends Jao<FormuleDto, Formule> {
     @Override
     protected FormuleDto to(Formule formule) {
         FormuleDto formuleDto = new FormuleDto();
-        formuleDto.setRecette(new RecetteJao().decharger(formule.getRecette()));
+        formuleDto.setRecette(new RecetteJao().dechargerVersReference(formule.getRecette(), Bibliotheque.class, BibliothequeJao.class));
         formuleDto.setPeriode(new PeriodeJao().decharger(formule.getPeriode()));
         formuleDto.setNombreConvives(formule.getNombreConvives());
 

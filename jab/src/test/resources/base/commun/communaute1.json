@@ -1,0 +1,15 @@
+{
+  "communes": [
+    {
+      "nom": "Nancy",
+      "code": "54000",
+      "identifiant": "0cc0ad92-8bc4-4d0d-a682-31c5280fe972"
+    },
+    {
+      "nom": "Metz",
+      "code": "57000",
+      "identifiant": "b94fe67e-dbf1-4a1b-95fc-b2f87694e4d6"
+    }
+  ],
+  "identifiant": "79995788-6f16-4ff7-b558-6716c845a394"
+}

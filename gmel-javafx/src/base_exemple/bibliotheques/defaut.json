@@ -9,19 +9,21 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Beurre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7e406583-ee08-4968-8a13-47ef598cb127"
               },
               "quantite": {
                 "valeur": 100,
                 "mesure": "MASSE",
-                "identifiant": "0b8a81c8-b6a6-4bfe-8037-7b82ea8c221c"
+                "identifiant": "e78056cb-69de-4044-9f48-9c3f481733f2"
               },
-              "identifiant": "a93ec927-7eb3-4eb4-ab41-9f615aad634d"
+              "identifiant": "22ae0972-332f-4919-b725-9f3cd3211f15"
             },
             {
               "produit": {
-                "nom": "Farine",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "6404b882-1c89-42f2-b4a7-1155496a4198"
               },
               "quantite": {
@@ -33,7 +35,8 @@
             },
             {
               "produit": {
-                "nom": "Lait",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a6635339-0d59-49df-9702-071f81c8d4f9"
               },
               "quantite": {
@@ -45,7 +48,8 @@
             },
             {
               "produit": {
-                "nom": "Levure déshydratée",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "070dbf99-a256-4467-a798-bb46e8772cbb"
               },
               "quantite": {
@@ -64,7 +68,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Gruyère",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "eb0d591e-82fc-4db7-aa1a-3b95229af574"
               },
               "quantite": {
@@ -76,7 +81,8 @@
             },
             {
               "produit": {
-                "nom": "Jambon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "3319f835-d241-4125-ae8d-dc6504ccd2e4"
               },
               "quantite": {
@@ -88,7 +94,8 @@
             },
             {
               "produit": {
-                "nom": "Pain de mie",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "f6192d69-71ac-499f-a459-461b00c9439b"
               },
               "quantite": {
@@ -107,7 +114,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Cornichons",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "6ff5a661-1aa0-44f2-ad48-181895becabc"
               },
               "quantite": {
@@ -119,7 +127,8 @@
             },
             {
               "produit": {
-                "nom": "Fromage",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "3c86d556-ac83-4407-ad15-d1db7d0b5b1d"
               },
               "quantite": {
@@ -131,7 +140,8 @@
             },
             {
               "produit": {
-                "nom": "Pains à burger",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "09480801-6cef-4af6-912f-b4513f2873e3"
               },
               "quantite": {
@@ -143,7 +153,8 @@
             },
             {
               "produit": {
-                "nom": "Steack haché",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "b04ecd9a-acb0-4daa-9c5c-9406f7a7459c"
               },
               "quantite": {
@@ -155,7 +166,8 @@
             },
             {
               "produit": {
-                "nom": "Tomate",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "f7b3bdd0-71f8-4899-88b0-ee104c439c40"
               },
               "quantite": {
@@ -174,7 +186,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Cheddar",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "698856dc-83a5-4683-b907-69e659bf8302"
               },
               "quantite": {
@@ -186,7 +199,8 @@
             },
             {
               "produit": {
-                "nom": "Knack",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "2d5734d3-ab83-4533-b7ef-4dd120d154c1"
               },
               "quantite": {
@@ -198,7 +212,8 @@
             },
             {
               "produit": {
-                "nom": "Pain à hot-dog",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "1b662f8a-5042-4ea0-a60f-8ff275690aa4"
               },
               "quantite": {
@@ -217,7 +232,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Gruyère",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "eb0d591e-82fc-4db7-aa1a-3b95229af574"
               },
               "quantite": {
@@ -229,7 +245,8 @@
             },
             {
               "produit": {
-                "nom": "Jambon cru",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "95a3f838-11e6-48b6-92f3-59704d2f27c8"
               },
               "quantite": {
@@ -241,7 +258,8 @@
             },
             {
               "produit": {
-                "nom": "Pains à panini",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "25155a82-b21d-4c5f-bcc2-15ddc5a26062"
               },
               "quantite": {
@@ -253,7 +271,8 @@
             },
             {
               "produit": {
-                "nom": "Pesto vert",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "72850dea-89d2-40f3-8088-ed7c34648f95"
               },
               "quantite": {
@@ -278,7 +297,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Beurre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7e406583-ee08-4968-8a13-47ef598cb127"
               },
               "quantite": {
@@ -290,7 +310,8 @@
             },
             {
               "produit": {
-                "nom": "Farine",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "6404b882-1c89-42f2-b4a7-1155496a4198"
               },
               "quantite": {
@@ -302,7 +323,8 @@
             },
             {
               "produit": {
-                "nom": "Lait",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a6635339-0d59-49df-9702-071f81c8d4f9"
               },
               "quantite": {
@@ -314,7 +336,8 @@
             },
             {
               "produit": {
-                "nom": "Oeuf",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "80ac8281-2629-43dc-853a-6b35b22f547f"
               },
               "quantite": {
@@ -326,7 +349,8 @@
             },
             {
               "produit": {
-                "nom": "Sel",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "8ca5e3f1-013e-4d56-b7fd-8b4a679bf25a"
               },
               "quantite": {
@@ -342,7 +366,21 @@
         {
           "nom": "Crêpe au jambon",
           "nombrePersonnes": 1,
-          "produitsQuantifier": [],
+          "produitsQuantifier": [
+            {
+              "produit": {
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
+                "identifiant": "6ff5a661-1aa0-44f2-ad48-181895becabc"
+              },
+              "quantite": {
+                "valeur": 0,
+                "mesure": "MASSE",
+                "identifiant": "d4072bb6-46b4-4076-abbd-44b39acef645"
+              },
+              "identifiant": "6ea1dc9d-97eb-4574-b355-c4b05f05a7a5"
+            }
+          ],
           "identifiant": "303b9e55-6e41-441b-aef9-db9abe2084c9"
         },
         {
@@ -363,7 +401,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Oeuf",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "80ac8281-2629-43dc-853a-6b35b22f547f"
               },
               "quantite": {
@@ -394,7 +433,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Boeuf",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "e811f610-c2b3-4d17-a3b9-cdfa7d129895"
               },
               "quantite": {
@@ -406,7 +446,8 @@
             },
             {
               "produit": {
-                "nom": "Gruyère",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "eb0d591e-82fc-4db7-aa1a-3b95229af574"
               },
               "quantite": {
@@ -418,7 +459,8 @@
             },
             {
               "produit": {
-                "nom": "Lardon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "e2dc2d05-79b4-4da7-a4ee-14d49758b361"
               },
               "quantite": {
@@ -430,7 +472,8 @@
             },
             {
               "produit": {
-                "nom": "Pâte brisé",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "9c98e2ed-d58a-4929-a682-d31f3ed36294"
               },
               "quantite": {
@@ -455,7 +498,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Bacon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "f49352e4-b644-4b10-b72a-533f8815b044"
               },
               "quantite": {
@@ -467,7 +511,8 @@
             },
             {
               "produit": {
-                "nom": "Beurre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7e406583-ee08-4968-8a13-47ef598cb127"
               },
               "quantite": {
@@ -479,7 +524,8 @@
             },
             {
               "produit": {
-                "nom": "Butternut",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "60121bce-2aec-42c8-9026-5b6ae69a1d3b"
               },
               "quantite": {
@@ -491,7 +537,8 @@
             },
             {
               "produit": {
-                "nom": "Comté",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "b078ce95-2551-4f28-9872-cb78b45cd7ca"
               },
               "quantite": {
@@ -503,7 +550,8 @@
             },
             {
               "produit": {
-                "nom": "Pâte feuilletée",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "aaced113-aa6d-40d5-9d77-cd5b8f42932a"
               },
               "quantite": {
@@ -528,7 +576,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Beurre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7e406583-ee08-4968-8a13-47ef598cb127"
               },
               "quantite": {
@@ -540,7 +589,8 @@
             },
             {
               "produit": {
-                "nom": "Colin d\u0027Alaska",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "46d36a8a-c7d2-4776-9ec3-673070c54460"
               },
               "quantite": {
@@ -552,7 +602,8 @@
             },
             {
               "produit": {
-                "nom": "Lait",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a6635339-0d59-49df-9702-071f81c8d4f9"
               },
               "quantite": {
@@ -564,7 +615,8 @@
             },
             {
               "produit": {
-                "nom": "Pomme de terre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "5b68621d-355b-45f7-b94f-e58c4567b0a0"
               },
               "quantite": {
@@ -601,43 +653,21 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Jambon cru",
-                "identifiant": "95a3f838-11e6-48b6-92f3-59704d2f27c8"
-              },
-              "quantite": {
-                "valeur": 6,
-                "mesure": "TRANCHE",
-                "identifiant": "3bba0332-d8ac-4646-96b5-0aa31be436ec"
-              },
-              "identifiant": "a3928a86-c806-460f-b19b-63afeb21a9ac"
-            },
-            {
-              "produit": {
-                "nom": "Crème épaisse",
-                "identifiant": "3aac0b6a-5adb-43fc-9060-26cfb19b7f51"
-              },
-              "quantite": {
-                "valeur": 6,
-                "mesure": "CUILLERE_A_SOUPE",
-                "identifiant": "07dad2b4-447b-4dd5-b654-f2eaa80406f4"
-              },
-              "identifiant": "6ebaa956-6db1-459b-9e80-9f87da8bf5b8"
-            },
-            {
-              "produit": {
-                "nom": "Reblochon",
-                "identifiant": "5ab2f0b5-ae20-485d-b331-124796f7b2ef"
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
+                "identifiant": "c7e5cfdb-d3a5-436d-bbe0-fa7f15b3c4a1"
               },
               "quantite": {
                 "valeur": 1,
-                "mesure": "UNITE",
-                "identifiant": "999a4e6a-5168-4412-b97c-32494873d687"
+                "mesure": "BOITE",
+                "identifiant": "5790389f-12ca-43b0-813a-f46c7f3e923a"
               },
-              "identifiant": "b1fb5aa6-df0a-4655-9bd8-6f6a9ca6e45b"
+              "identifiant": "c5f9cc25-9350-46e7-b060-4796e6fd5b97"
             },
             {
               "produit": {
-                "nom": "Crozet au sarrasin",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "1b76b18e-1c0b-4b62-bac8-b45a33ae36fc"
               },
               "quantite": {
@@ -649,15 +679,42 @@
             },
             {
               "produit": {
-                "nom": "Crozet",
-                "identifiant": "c7e5cfdb-d3a5-436d-bbe0-fa7f15b3c4a1"
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
+                "identifiant": "3aac0b6a-5adb-43fc-9060-26cfb19b7f51"
+              },
+              "quantite": {
+                "valeur": 6,
+                "mesure": "CUILLERE_A_SOUPE",
+                "identifiant": "07dad2b4-447b-4dd5-b654-f2eaa80406f4"
+              },
+              "identifiant": "6ebaa956-6db1-459b-9e80-9f87da8bf5b8"
+            },
+            {
+              "produit": {
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
+                "identifiant": "95a3f838-11e6-48b6-92f3-59704d2f27c8"
+              },
+              "quantite": {
+                "valeur": 6,
+                "mesure": "TRANCHE",
+                "identifiant": "3bba0332-d8ac-4646-96b5-0aa31be436ec"
+              },
+              "identifiant": "a3928a86-c806-460f-b19b-63afeb21a9ac"
+            },
+            {
+              "produit": {
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
+                "identifiant": "5ab2f0b5-ae20-485d-b331-124796f7b2ef"
               },
               "quantite": {
                 "valeur": 1,
-                "mesure": "BOITE",
-                "identifiant": "5790389f-12ca-43b0-813a-f46c7f3e923a"
+                "mesure": "UNITE",
+                "identifiant": "999a4e6a-5168-4412-b97c-32494873d687"
               },
-              "identifiant": "c5f9cc25-9350-46e7-b060-4796e6fd5b97"
+              "identifiant": "b1fb5aa6-df0a-4655-9bd8-6f6a9ca6e45b"
             }
           ],
           "identifiant": "6cfa27e1-79eb-4fb7-8488-1dbc5e989477"
@@ -680,7 +737,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Crème liquide",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "f66b737a-29f2-43b2-81c2-92f2c2ada18f"
               },
               "quantite": {
@@ -692,7 +750,8 @@
             },
             {
               "produit": {
-                "nom": "Gnocchi",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "2d7e6a3d-89f1-4097-aa0d-a9b6ae9dfd7b"
               },
               "quantite": {
@@ -704,7 +763,8 @@
             },
             {
               "produit": {
-                "nom": "Munster",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7c8a3c99-17f5-4c07-822e-035cb587d62b"
               },
               "quantite": {
@@ -741,7 +801,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Dés de jambon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "3076f04e-fa0c-41b6-8dc8-9fe4c53e88c5"
               },
               "quantite": {
@@ -753,7 +814,8 @@
             },
             {
               "produit": {
-                "nom": "Fromage à raclette",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "ec829c24-3006-41f7-846e-32af83be14b5"
               },
               "quantite": {
@@ -765,7 +827,8 @@
             },
             {
               "produit": {
-                "nom": "Lardon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "e2dc2d05-79b4-4da7-a4ee-14d49758b361"
               },
               "quantite": {
@@ -777,7 +840,8 @@
             },
             {
               "produit": {
-                "nom": "Plateau de charcuteries",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "5dff0799-764f-4846-b2be-d9810a66eeef"
               },
               "quantite": {
@@ -796,7 +860,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Champignon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "8f6fd32a-9b27-4763-878f-12eb1867d14d"
               },
               "quantite": {
@@ -808,7 +873,8 @@
             },
             {
               "produit": {
-                "nom": "Crème liquide",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "f66b737a-29f2-43b2-81c2-92f2c2ada18f"
               },
               "quantite": {
@@ -820,7 +886,8 @@
             },
             {
               "produit": {
-                "nom": "Semoule",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "5cadd858-3a5e-481a-8f57-c201747c83c8"
               },
               "quantite": {
@@ -839,7 +906,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Lardon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "e2dc2d05-79b4-4da7-a4ee-14d49758b361"
               },
               "quantite": {
@@ -851,19 +919,8 @@
             },
             {
               "produit": {
-                "nom": "Reblochon",
-                "identifiant": "5ab2f0b5-ae20-485d-b331-124796f7b2ef"
-              },
-              "quantite": {
-                "valeur": 2,
-                "mesure": "UNITE",
-                "identifiant": "679f283e-a216-42da-a444-d0dc330dd091"
-              },
-              "identifiant": "4b9cea26-c2f3-477b-b5de-e237ca4f92bd"
-            },
-            {
-              "produit": {
-                "nom": "Pomme de terre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "5b68621d-355b-45f7-b94f-e58c4567b0a0"
               },
               "quantite": {
@@ -872,6 +929,19 @@
                 "identifiant": "c75e8449-f5bf-4b21-ad0a-32c289cfcbb7"
               },
               "identifiant": "97516c34-7a35-4a73-bde4-a6b10c5eeb3b"
+            },
+            {
+              "produit": {
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
+                "identifiant": "5ab2f0b5-ae20-485d-b331-124796f7b2ef"
+              },
+              "quantite": {
+                "valeur": 2,
+                "mesure": "UNITE",
+                "identifiant": "679f283e-a216-42da-a444-d0dc330dd091"
+              },
+              "identifiant": "4b9cea26-c2f3-477b-b5de-e237ca4f92bd"
             }
           ],
           "identifiant": "f9f1862d-3388-4032-9ccf-8cd937233753"
@@ -894,7 +964,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Crème liquide entière",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "93016f79-c2be-4316-8836-ff5b1d0257d2"
               },
               "quantite": {
@@ -906,7 +977,8 @@
             },
             {
               "produit": {
-                "nom": "Emmental",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "f213761e-4523-4e66-8e47-8010597cbe95"
               },
               "quantite": {
@@ -918,7 +990,8 @@
             },
             {
               "produit": {
-                "nom": "Fécule de maïs",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "3d2c8bd2-f8e8-463b-85df-32b74463c67f"
               },
               "quantite": {
@@ -930,7 +1003,8 @@
             },
             {
               "produit": {
-                "nom": "Oeuf",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "80ac8281-2629-43dc-853a-6b35b22f547f"
               },
               "quantite": {
@@ -942,7 +1016,8 @@
             },
             {
               "produit": {
-                "nom": "Poivre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "81888d04-0570-461d-bb11-d1332f4c66e4"
               },
               "quantite": {
@@ -954,7 +1029,8 @@
             },
             {
               "produit": {
-                "nom": "Pomme de terre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "5b68621d-355b-45f7-b94f-e58c4567b0a0"
               },
               "quantite": {
@@ -966,7 +1042,8 @@
             },
             {
               "produit": {
-                "nom": "Sel",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "8ca5e3f1-013e-4d56-b7fd-8b4a679bf25a"
               },
               "quantite": {
@@ -985,7 +1062,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Choux-fleur",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "baca24a1-0154-4e89-8307-40abee5065f3"
               },
               "quantite": {
@@ -997,7 +1075,8 @@
             },
             {
               "produit": {
-                "nom": "Dés de jambon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "3076f04e-fa0c-41b6-8dc8-9fe4c53e88c5"
               },
               "quantite": {
@@ -1009,7 +1088,8 @@
             },
             {
               "produit": {
-                "nom": "Fromage à raclette",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "ec829c24-3006-41f7-846e-32af83be14b5"
               },
               "quantite": {
@@ -1021,7 +1101,8 @@
             },
             {
               "produit": {
-                "nom": "Pomme de terre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "5b68621d-355b-45f7-b94f-e58c4567b0a0"
               },
               "quantite": {
@@ -1046,7 +1127,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Beurre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7e406583-ee08-4968-8a13-47ef598cb127"
               },
               "quantite": {
@@ -1058,7 +1140,8 @@
             },
             {
               "produit": {
-                "nom": "Dés de jambon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "3076f04e-fa0c-41b6-8dc8-9fe4c53e88c5"
               },
               "quantite": {
@@ -1070,7 +1153,8 @@
             },
             {
               "produit": {
-                "nom": "Farine",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "6404b882-1c89-42f2-b4a7-1155496a4198"
               },
               "quantite": {
@@ -1082,7 +1166,8 @@
             },
             {
               "produit": {
-                "nom": "Lait",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a6635339-0d59-49df-9702-071f81c8d4f9"
               },
               "quantite": {
@@ -1094,7 +1179,8 @@
             },
             {
               "produit": {
-                "nom": "Poireau",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "eabcbb43-26c7-4c84-8e2a-3f9d413a812d"
               },
               "quantite": {
@@ -1113,7 +1199,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Carotte",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "53438087-49a4-4d13-b49c-172aed103780"
               },
               "quantite": {
@@ -1125,7 +1212,8 @@
             },
             {
               "produit": {
-                "nom": "Choux vert",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "e82067c3-6f8c-4c2d-a189-c8968d0dc5b2"
               },
               "quantite": {
@@ -1137,7 +1225,8 @@
             },
             {
               "produit": {
-                "nom": "Lard fumé",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "310df246-df79-41f9-9dbc-91ef7109952c"
               },
               "quantite": {
@@ -1149,7 +1238,8 @@
             },
             {
               "produit": {
-                "nom": "Pomme de terre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "5b68621d-355b-45f7-b94f-e58c4567b0a0"
               },
               "quantite": {
@@ -1161,7 +1251,8 @@
             },
             {
               "produit": {
-                "nom": "Roti salé",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "9f5a8fde-cdb1-4778-93ea-e0e664709148"
               },
               "quantite": {
@@ -1173,7 +1264,8 @@
             },
             {
               "produit": {
-                "nom": "Saucisse à cuire",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "c45f6e43-bf75-4379-9485-7a8c64c4659a"
               },
               "quantite": {
@@ -1198,7 +1290,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Cornichons salé",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "1bac6eb9-e426-476a-a2a2-2c9240e706bf"
               },
               "quantite": {
@@ -1210,7 +1303,8 @@
             },
             {
               "produit": {
-                "nom": "Coulis de tomates",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "2a9e6fc6-8ce9-456f-a662-bbadae3a5322"
               },
               "quantite": {
@@ -1222,7 +1316,8 @@
             },
             {
               "produit": {
-                "nom": "Fricadelle",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "24a58037-51ac-4170-aa0b-c2e5b0f47b7d"
               },
               "quantite": {
@@ -1234,7 +1329,8 @@
             },
             {
               "produit": {
-                "nom": "Semoule",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "5cadd858-3a5e-481a-8f57-c201747c83c8"
               },
               "quantite": {
@@ -1259,7 +1355,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Carotte",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "53438087-49a4-4d13-b49c-172aed103780"
               },
               "quantite": {
@@ -1271,7 +1368,8 @@
             },
             {
               "produit": {
-                "nom": "Concassé de tomates",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "4615f5c4-6122-41b5-ae71-ddd12ce31d99"
               },
               "quantite": {
@@ -1283,7 +1381,8 @@
             },
             {
               "produit": {
-                "nom": "Courgette",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "66081893-ae7e-4c8b-a912-b9311afdaf89"
               },
               "quantite": {
@@ -1295,7 +1394,8 @@
             },
             {
               "produit": {
-                "nom": "Cube de bouillon de poule",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "693f0748-91cb-4c98-a84e-f6a31355fa94"
               },
               "quantite": {
@@ -1307,7 +1407,8 @@
             },
             {
               "produit": {
-                "nom": "Epice à couscous",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "89fcdf81-aa0e-4ec0-8d80-6fac7ee6f3dd"
               },
               "quantite": {
@@ -1319,7 +1420,8 @@
             },
             {
               "produit": {
-                "nom": "Navet",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "50a7b5af-4f31-4e6f-a9f6-ed493ae7e7ee"
               },
               "quantite": {
@@ -1331,7 +1433,8 @@
             },
             {
               "produit": {
-                "nom": "Poulet",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "43368fa4-4193-49a6-adc3-39ca06e0f5a4"
               },
               "quantite": {
@@ -1343,7 +1446,8 @@
             },
             {
               "produit": {
-                "nom": "Saucisse",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "c128ea63-3bee-43cf-a2af-fe4d0d4a5a61"
               },
               "quantite": {
@@ -1355,7 +1459,8 @@
             },
             {
               "produit": {
-                "nom": "Semoule",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "5cadd858-3a5e-481a-8f57-c201747c83c8"
               },
               "quantite": {
@@ -1367,7 +1472,8 @@
             },
             {
               "produit": {
-                "nom": "Tomate",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "f7b3bdd0-71f8-4899-88b0-ee104c439c40"
               },
               "quantite": {
@@ -1386,7 +1492,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Carotte",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "53438087-49a4-4d13-b49c-172aed103780"
               },
               "quantite": {
@@ -1398,7 +1505,8 @@
             },
             {
               "produit": {
-                "nom": "Concassé de tomates",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "4615f5c4-6122-41b5-ae71-ddd12ce31d99"
               },
               "quantite": {
@@ -1410,7 +1518,8 @@
             },
             {
               "produit": {
-                "nom": "Courgette",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "66081893-ae7e-4c8b-a912-b9311afdaf89"
               },
               "quantite": {
@@ -1422,7 +1531,8 @@
             },
             {
               "produit": {
-                "nom": "Cube de bouillon de boeuf",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "333a7554-8494-4eeb-ad42-ae567d82fa2a"
               },
               "quantite": {
@@ -1434,7 +1544,8 @@
             },
             {
               "produit": {
-                "nom": "Epice à couscous",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "89fcdf81-aa0e-4ec0-8d80-6fac7ee6f3dd"
               },
               "quantite": {
@@ -1446,7 +1557,8 @@
             },
             {
               "produit": {
-                "nom": "Navet",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "50a7b5af-4f31-4e6f-a9f6-ed493ae7e7ee"
               },
               "quantite": {
@@ -1458,7 +1570,8 @@
             },
             {
               "produit": {
-                "nom": "Semoule",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "5cadd858-3a5e-481a-8f57-c201747c83c8"
               },
               "quantite": {
@@ -1470,7 +1583,8 @@
             },
             {
               "produit": {
-                "nom": "Tomate",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "f7b3bdd0-71f8-4899-88b0-ee104c439c40"
               },
               "quantite": {
@@ -1489,7 +1603,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Carotte",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "53438087-49a4-4d13-b49c-172aed103780"
               },
               "quantite": {
@@ -1501,7 +1616,8 @@
             },
             {
               "produit": {
-                "nom": "Concassé de tomates",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "4615f5c4-6122-41b5-ae71-ddd12ce31d99"
               },
               "quantite": {
@@ -1513,7 +1629,8 @@
             },
             {
               "produit": {
-                "nom": "Courgette",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "66081893-ae7e-4c8b-a912-b9311afdaf89"
               },
               "quantite": {
@@ -1525,7 +1642,8 @@
             },
             {
               "produit": {
-                "nom": "Cube de bouillon de légumes",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "07876a0c-8b18-4d0b-9244-bfbb3deea8d3"
               },
               "quantite": {
@@ -1537,7 +1655,8 @@
             },
             {
               "produit": {
-                "nom": "Epice à couscous",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "89fcdf81-aa0e-4ec0-8d80-6fac7ee6f3dd"
               },
               "quantite": {
@@ -1549,7 +1668,8 @@
             },
             {
               "produit": {
-                "nom": "Navet",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "50a7b5af-4f31-4e6f-a9f6-ed493ae7e7ee"
               },
               "quantite": {
@@ -1561,7 +1681,8 @@
             },
             {
               "produit": {
-                "nom": "Poi chiche",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "e0e93553-3474-4e14-9a2f-cdd5543d3757"
               },
               "quantite": {
@@ -1573,7 +1694,8 @@
             },
             {
               "produit": {
-                "nom": "Semoule",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "5cadd858-3a5e-481a-8f57-c201747c83c8"
               },
               "quantite": {
@@ -1585,7 +1707,8 @@
             },
             {
               "produit": {
-                "nom": "Tomate",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "f7b3bdd0-71f8-4899-88b0-ee104c439c40"
               },
               "quantite": {
@@ -1604,7 +1727,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Chorizo doux",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "3caed30c-b3ff-46c1-839b-791ca0808998"
               },
               "quantite": {
@@ -1616,7 +1740,8 @@
             },
             {
               "produit": {
-                "nom": "Chorizo fort",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "d1fbff07-5998-4406-b66c-4e44fadb40af"
               },
               "quantite": {
@@ -1628,7 +1753,8 @@
             },
             {
               "produit": {
-                "nom": "Coulis de tomates",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "2a9e6fc6-8ce9-456f-a662-bbadae3a5322"
               },
               "quantite": {
@@ -1640,7 +1766,8 @@
             },
             {
               "produit": {
-                "nom": "Courgette",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "66081893-ae7e-4c8b-a912-b9311afdaf89"
               },
               "quantite": {
@@ -1652,7 +1779,8 @@
             },
             {
               "produit": {
-                "nom": "Dés de jambon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "3076f04e-fa0c-41b6-8dc8-9fe4c53e88c5"
               },
               "quantite": {
@@ -1664,7 +1792,8 @@
             },
             {
               "produit": {
-                "nom": "Poivron",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "ba592197-0590-4dfb-b2f9-01c218e9d49c"
               },
               "quantite": {
@@ -1676,7 +1805,8 @@
             },
             {
               "produit": {
-                "nom": "Poulet",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "43368fa4-4193-49a6-adc3-39ca06e0f5a4"
               },
               "quantite": {
@@ -1688,7 +1818,8 @@
             },
             {
               "produit": {
-                "nom": "Riz",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a63338f6-1a3f-41f3-9ad5-da9d020ac008"
               },
               "quantite": {
@@ -1707,31 +1838,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Gruyère râpé",
-                "identifiant": "32e78393-9631-4700-9aeb-9c73b2b10d80"
-              },
-              "quantite": {
-                "valeur": 500,
-                "mesure": "MASSE",
-                "identifiant": "b2600b54-71ea-4b7c-9f94-7a87fe4c6d6a"
-              },
-              "identifiant": "708e9cd0-9b64-4095-ac8c-2fad1064db8a"
-            },
-            {
-              "produit": {
-                "nom": "Viande hachée",
-                "identifiant": "7f4e4a0c-94d9-4ad1-93f0-416020c03983"
-              },
-              "quantite": {
-                "valeur": 2000,
-                "mesure": "MASSE",
-                "identifiant": "29ecf387-e5af-4160-b452-6303ba1dc19f"
-              },
-              "identifiant": "606b17cd-3370-40b6-b2f8-d0ca6b0e720e"
-            },
-            {
-              "produit": {
-                "nom": "Coulis de tomates",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "2a9e6fc6-8ce9-456f-a662-bbadae3a5322"
               },
               "quantite": {
@@ -1743,7 +1851,21 @@
             },
             {
               "produit": {
-                "nom": "Pâte à lasagnes",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
+                "identifiant": "32e78393-9631-4700-9aeb-9c73b2b10d80"
+              },
+              "quantite": {
+                "valeur": 500,
+                "mesure": "MASSE",
+                "identifiant": "b2600b54-71ea-4b7c-9f94-7a87fe4c6d6a"
+              },
+              "identifiant": "708e9cd0-9b64-4095-ac8c-2fad1064db8a"
+            },
+            {
+              "produit": {
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a8fa3d05-8920-4da3-a3fd-c1253790b456"
               },
               "quantite": {
@@ -1752,6 +1874,19 @@
                 "identifiant": "cb960822-3d94-412d-b930-0aa5a807d1eb"
               },
               "identifiant": "222e8bca-1e4a-4b8b-a006-f4baf4bca52f"
+            },
+            {
+              "produit": {
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
+                "identifiant": "7f4e4a0c-94d9-4ad1-93f0-416020c03983"
+              },
+              "quantite": {
+                "valeur": 2000,
+                "mesure": "MASSE",
+                "identifiant": "29ecf387-e5af-4160-b452-6303ba1dc19f"
+              },
+              "identifiant": "606b17cd-3370-40b6-b2f8-d0ca6b0e720e"
             }
           ],
           "identifiant": "4375e066-6308-4aeb-90de-7b3c21c04d71"
@@ -1774,7 +1909,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Chorizo doux",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "3caed30c-b3ff-46c1-839b-791ca0808998"
               },
               "quantite": {
@@ -1786,7 +1922,8 @@
             },
             {
               "produit": {
-                "nom": "Chorizo fort",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "d1fbff07-5998-4406-b66c-4e44fadb40af"
               },
               "quantite": {
@@ -1798,7 +1935,8 @@
             },
             {
               "produit": {
-                "nom": "Coulis de tomates",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "2a9e6fc6-8ce9-456f-a662-bbadae3a5322"
               },
               "quantite": {
@@ -1810,7 +1948,8 @@
             },
             {
               "produit": {
-                "nom": "Cube de bouillon de volaille",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "47f1e465-33d4-4ff3-8161-db684b40f0a2"
               },
               "quantite": {
@@ -1822,7 +1961,8 @@
             },
             {
               "produit": {
-                "nom": "Fruit de mer",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "0237c2f6-9d7c-4145-9267-3fa7346e0ecf"
               },
               "quantite": {
@@ -1834,7 +1974,8 @@
             },
             {
               "produit": {
-                "nom": "Oignon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7819ec61-d437-422d-8680-4e71952a2f3a"
               },
               "quantite": {
@@ -1846,7 +1987,8 @@
             },
             {
               "produit": {
-                "nom": "Poivron",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "ba592197-0590-4dfb-b2f9-01c218e9d49c"
               },
               "quantite": {
@@ -1858,7 +2000,8 @@
             },
             {
               "produit": {
-                "nom": "Poulet",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "43368fa4-4193-49a6-adc3-39ca06e0f5a4"
               },
               "quantite": {
@@ -1870,7 +2013,8 @@
             },
             {
               "produit": {
-                "nom": "Riz",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a63338f6-1a3f-41f3-9ad5-da9d020ac008"
               },
               "quantite": {
@@ -1889,7 +2033,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Crème liquide",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "f66b737a-29f2-43b2-81c2-92f2c2ada18f"
               },
               "quantite": {
@@ -1901,7 +2046,8 @@
             },
             {
               "produit": {
-                "nom": "Cube de bouillon de légumes",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "07876a0c-8b18-4d0b-9244-bfbb3deea8d3"
               },
               "quantite": {
@@ -1913,7 +2059,8 @@
             },
             {
               "produit": {
-                "nom": "Dés de jambon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "3076f04e-fa0c-41b6-8dc8-9fe4c53e88c5"
               },
               "quantite": {
@@ -1925,7 +2072,8 @@
             },
             {
               "produit": {
-                "nom": "Eau",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "57675275-c06a-4641-b054-09d3e43ccc9c"
               },
               "quantite": {
@@ -1937,7 +2085,8 @@
             },
             {
               "produit": {
-                "nom": "Polenta",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "915cac1c-a791-4cb2-8857-beae6903df43"
               },
               "quantite": {
@@ -1956,7 +2105,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Pesto",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7f7734ea-a086-4fd2-8ac2-895c64a02b1f"
               },
               "quantite": {
@@ -1968,8 +2118,9 @@
             },
             {
               "produit": {
-                "nom": "Pâte",
-                "identifiant": "4a61fd02-1221-4fdd-a19c-d658a6f2e27f"
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
+                "identifiant": "f33f8458-349a-4c01-b535-a45a0017b12d"
               },
               "quantite": {
                 "valeur": 500,
@@ -1987,7 +2138,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Boeuf",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "e811f610-c2b3-4d17-a3b9-cdfa7d129895"
               },
               "quantite": {
@@ -1999,7 +2151,8 @@
             },
             {
               "produit": {
-                "nom": "Carotte",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "53438087-49a4-4d13-b49c-172aed103780"
               },
               "quantite": {
@@ -2011,7 +2164,8 @@
             },
             {
               "produit": {
-                "nom": "Noc mam",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "2611d335-6ae5-4dd7-b402-d7ece576e0f1"
               },
               "quantite": {
@@ -2023,7 +2177,8 @@
             },
             {
               "produit": {
-                "nom": "Nouilles sautées",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "b3983c9f-9538-46c0-bb0c-bb751012a1c6"
               },
               "quantite": {
@@ -2035,7 +2190,8 @@
             },
             {
               "produit": {
-                "nom": "Oeuf",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "80ac8281-2629-43dc-853a-6b35b22f547f"
               },
               "quantite": {
@@ -2047,7 +2203,8 @@
             },
             {
               "produit": {
-                "nom": "Oignon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7819ec61-d437-422d-8680-4e71952a2f3a"
               },
               "quantite": {
@@ -2059,7 +2216,8 @@
             },
             {
               "produit": {
-                "nom": "Pousses de soja",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "8f1935e6-4248-4a55-b329-abd5ee353d22"
               },
               "quantite": {
@@ -2071,7 +2229,8 @@
             },
             {
               "produit": {
-                "nom": "Sucre roux",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "70e53b94-a39b-438b-9184-c29db1047978"
               },
               "quantite": {
@@ -2090,7 +2249,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Carotte",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "53438087-49a4-4d13-b49c-172aed103780"
               },
               "quantite": {
@@ -2102,7 +2262,8 @@
             },
             {
               "produit": {
-                "nom": "Crevette",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "0c9c8c8f-ce36-46db-82d8-1b417ea7ceac"
               },
               "quantite": {
@@ -2114,7 +2275,8 @@
             },
             {
               "produit": {
-                "nom": "Noc mam",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "2611d335-6ae5-4dd7-b402-d7ece576e0f1"
               },
               "quantite": {
@@ -2126,7 +2288,8 @@
             },
             {
               "produit": {
-                "nom": "Nouilles sautées",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "b3983c9f-9538-46c0-bb0c-bb751012a1c6"
               },
               "quantite": {
@@ -2138,7 +2301,8 @@
             },
             {
               "produit": {
-                "nom": "Oeuf",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "80ac8281-2629-43dc-853a-6b35b22f547f"
               },
               "quantite": {
@@ -2150,7 +2314,8 @@
             },
             {
               "produit": {
-                "nom": "Oignon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7819ec61-d437-422d-8680-4e71952a2f3a"
               },
               "quantite": {
@@ -2162,7 +2327,8 @@
             },
             {
               "produit": {
-                "nom": "Pousses de soja",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "8f1935e6-4248-4a55-b329-abd5ee353d22"
               },
               "quantite": {
@@ -2174,7 +2340,8 @@
             },
             {
               "produit": {
-                "nom": "Sucre roux",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "70e53b94-a39b-438b-9184-c29db1047978"
               },
               "quantite": {
@@ -2193,7 +2360,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Carotte",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "53438087-49a4-4d13-b49c-172aed103780"
               },
               "quantite": {
@@ -2205,7 +2373,8 @@
             },
             {
               "produit": {
-                "nom": "Noc mam",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "2611d335-6ae5-4dd7-b402-d7ece576e0f1"
               },
               "quantite": {
@@ -2217,7 +2386,8 @@
             },
             {
               "produit": {
-                "nom": "Nouilles sautées",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "b3983c9f-9538-46c0-bb0c-bb751012a1c6"
               },
               "quantite": {
@@ -2229,7 +2399,8 @@
             },
             {
               "produit": {
-                "nom": "Oeuf",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "80ac8281-2629-43dc-853a-6b35b22f547f"
               },
               "quantite": {
@@ -2241,7 +2412,8 @@
             },
             {
               "produit": {
-                "nom": "Oignon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7819ec61-d437-422d-8680-4e71952a2f3a"
               },
               "quantite": {
@@ -2253,7 +2425,8 @@
             },
             {
               "produit": {
-                "nom": "Porc",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "b6b9e74f-78e1-4f5f-b346-5638e4a38268"
               },
               "quantite": {
@@ -2265,7 +2438,8 @@
             },
             {
               "produit": {
-                "nom": "Pousses de soja",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "8f1935e6-4248-4a55-b329-abd5ee353d22"
               },
               "quantite": {
@@ -2277,7 +2451,8 @@
             },
             {
               "produit": {
-                "nom": "Sucre roux",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "70e53b94-a39b-438b-9184-c29db1047978"
               },
               "quantite": {
@@ -2296,7 +2471,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Carotte",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "53438087-49a4-4d13-b49c-172aed103780"
               },
               "quantite": {
@@ -2308,7 +2484,8 @@
             },
             {
               "produit": {
-                "nom": "Noc mam",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "2611d335-6ae5-4dd7-b402-d7ece576e0f1"
               },
               "quantite": {
@@ -2320,7 +2497,8 @@
             },
             {
               "produit": {
-                "nom": "Nouilles sautées",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "b3983c9f-9538-46c0-bb0c-bb751012a1c6"
               },
               "quantite": {
@@ -2332,7 +2510,8 @@
             },
             {
               "produit": {
-                "nom": "Oeuf",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "80ac8281-2629-43dc-853a-6b35b22f547f"
               },
               "quantite": {
@@ -2344,7 +2523,8 @@
             },
             {
               "produit": {
-                "nom": "Oignon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7819ec61-d437-422d-8680-4e71952a2f3a"
               },
               "quantite": {
@@ -2356,7 +2536,8 @@
             },
             {
               "produit": {
-                "nom": "Poulet",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "43368fa4-4193-49a6-adc3-39ca06e0f5a4"
               },
               "quantite": {
@@ -2368,7 +2549,8 @@
             },
             {
               "produit": {
-                "nom": "Pousses de soja",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "8f1935e6-4248-4a55-b329-abd5ee353d22"
               },
               "quantite": {
@@ -2380,7 +2562,8 @@
             },
             {
               "produit": {
-                "nom": "Sucre roux",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "70e53b94-a39b-438b-9184-c29db1047978"
               },
               "quantite": {
@@ -2405,7 +2588,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Crème",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "262e30e9-fae7-4e63-a883-3cbaedb9dd8c"
               },
               "quantite": {
@@ -2417,7 +2601,8 @@
             },
             {
               "produit": {
-                "nom": "Dés de jambon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "3076f04e-fa0c-41b6-8dc8-9fe4c53e88c5"
               },
               "quantite": {
@@ -2429,7 +2614,8 @@
             },
             {
               "produit": {
-                "nom": "Fromage râpé",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "c9bd2c6c-7c7b-4511-b4be-cb53582d5288"
               },
               "quantite": {
@@ -2441,7 +2627,8 @@
             },
             {
               "produit": {
-                "nom": "Lardon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "e2dc2d05-79b4-4da7-a4ee-14d49758b361"
               },
               "quantite": {
@@ -2453,7 +2640,8 @@
             },
             {
               "produit": {
-                "nom": "Pâte",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "f33f8458-349a-4c01-b535-a45a0017b12d"
               },
               "quantite": {
@@ -2484,7 +2672,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Crème",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "262e30e9-fae7-4e63-a883-3cbaedb9dd8c"
               },
               "quantite": {
@@ -2496,7 +2685,8 @@
             },
             {
               "produit": {
-                "nom": "Epautre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a8997c41-3ff7-442b-92c5-4b666362b87d"
               },
               "quantite": {
@@ -2508,7 +2698,8 @@
             },
             {
               "produit": {
-                "nom": "Fromage bleu",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "c278af63-e57f-4ee3-9dd5-d1168b744dbb"
               },
               "quantite": {
@@ -2520,7 +2711,8 @@
             },
             {
               "produit": {
-                "nom": "Pommes",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "1f2620cb-3992-43f5-9a1e-467bb3f170ab"
               },
               "quantite": {
@@ -2532,7 +2724,8 @@
             },
             {
               "produit": {
-                "nom": "Poulet",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "43368fa4-4193-49a6-adc3-39ca06e0f5a4"
               },
               "quantite": {
@@ -2551,7 +2744,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Champignon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "8f6fd32a-9b27-4763-878f-12eb1867d14d"
               },
               "quantite": {
@@ -2563,7 +2757,8 @@
             },
             {
               "produit": {
-                "nom": "Cube de bouillon de légumes",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "07876a0c-8b18-4d0b-9244-bfbb3deea8d3"
               },
               "quantite": {
@@ -2575,7 +2770,8 @@
             },
             {
               "produit": {
-                "nom": "Fromage fondu",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "d703a8aa-f433-4180-a2a2-6de3cc590f94"
               },
               "quantite": {
@@ -2587,7 +2783,8 @@
             },
             {
               "produit": {
-                "nom": "Parmesan",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "9b7a6f24-fb2d-4e6b-8470-ec24916751e2"
               },
               "quantite": {
@@ -2599,7 +2796,8 @@
             },
             {
               "produit": {
-                "nom": "Riz à risotto",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "59407c70-3fe4-41bb-ac6c-384adcb3582c"
               },
               "quantite": {
@@ -2611,7 +2809,8 @@
             },
             {
               "produit": {
-                "nom": "Vin blanc",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "3e9afcc0-da19-45c6-a03e-8b611b54d243"
               },
               "quantite": {
@@ -2630,7 +2829,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Courgette",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "66081893-ae7e-4c8b-a912-b9311afdaf89"
               },
               "quantite": {
@@ -2642,7 +2842,8 @@
             },
             {
               "produit": {
-                "nom": "Cube de bouillon de légumes",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "07876a0c-8b18-4d0b-9244-bfbb3deea8d3"
               },
               "quantite": {
@@ -2654,7 +2855,8 @@
             },
             {
               "produit": {
-                "nom": "Gorgonzola mascarpome",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "6bb3ad21-f85d-4b97-b9da-81c87557081c"
               },
               "quantite": {
@@ -2666,7 +2868,8 @@
             },
             {
               "produit": {
-                "nom": "Riz à risotto",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "59407c70-3fe4-41bb-ac6c-384adcb3582c"
               },
               "quantite": {
@@ -2678,7 +2881,8 @@
             },
             {
               "produit": {
-                "nom": "Vin blanc",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "3e9afcc0-da19-45c6-a03e-8b611b54d243"
               },
               "quantite": {
@@ -2703,7 +2907,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Dés de jambon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "3076f04e-fa0c-41b6-8dc8-9fe4c53e88c5"
               },
               "quantite": {
@@ -2715,7 +2920,8 @@
             },
             {
               "produit": {
-                "nom": "Oeuf",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "80ac8281-2629-43dc-853a-6b35b22f547f"
               },
               "quantite": {
@@ -2727,7 +2933,8 @@
             },
             {
               "produit": {
-                "nom": "Petit pois",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "5a6f792e-2b75-412f-9b4a-d57db6f4667a"
               },
               "quantite": {
@@ -2739,7 +2946,8 @@
             },
             {
               "produit": {
-                "nom": "Riz",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a63338f6-1a3f-41f3-9ad5-da9d020ac008"
               },
               "quantite": {
@@ -2770,7 +2978,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Branche de céleri",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a25e2a37-7794-4ce5-b98e-e859d25037cb"
               },
               "quantite": {
@@ -2782,7 +2991,8 @@
             },
             {
               "produit": {
-                "nom": "Concentré de tomates",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "627bd951-cd49-4eec-8646-d34eeec3b826"
               },
               "quantite": {
@@ -2794,7 +3004,8 @@
             },
             {
               "produit": {
-                "nom": "Courgette",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "66081893-ae7e-4c8b-a912-b9311afdaf89"
               },
               "quantite": {
@@ -2806,7 +3017,8 @@
             },
             {
               "produit": {
-                "nom": "Crevette",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "0c9c8c8f-ce36-46db-82d8-1b417ea7ceac"
               },
               "quantite": {
@@ -2818,7 +3030,8 @@
             },
             {
               "produit": {
-                "nom": "Cube de bouillon de poule",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "693f0748-91cb-4c98-a84e-f6a31355fa94"
               },
               "quantite": {
@@ -2830,7 +3043,8 @@
             },
             {
               "produit": {
-                "nom": "Poivron",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "ba592197-0590-4dfb-b2f9-01c218e9d49c"
               },
               "quantite": {
@@ -2842,7 +3056,8 @@
             },
             {
               "produit": {
-                "nom": "Riz",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a63338f6-1a3f-41f3-9ad5-da9d020ac008"
               },
               "quantite": {
@@ -2854,7 +3069,8 @@
             },
             {
               "produit": {
-                "nom": "Saucisse à cuire",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "c45f6e43-bf75-4379-9485-7a8c64c4659a"
               },
               "quantite": {
@@ -2866,7 +3082,8 @@
             },
             {
               "produit": {
-                "nom": "Viande hachée",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7f4e4a0c-94d9-4ad1-93f0-416020c03983"
               },
               "quantite": {
@@ -2885,7 +3102,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Coulis de tomates",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "2a9e6fc6-8ce9-456f-a662-bbadae3a5322"
               },
               "quantite": {
@@ -2897,7 +3115,8 @@
             },
             {
               "produit": {
-                "nom": "Spaghetti",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "59250650-b30d-46f1-9b95-0af66b241655"
               },
               "quantite": {
@@ -2909,7 +3128,8 @@
             },
             {
               "produit": {
-                "nom": "Viande hachée",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7f4e4a0c-94d9-4ad1-93f0-416020c03983"
               },
               "quantite": {
@@ -2928,7 +3148,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Farine",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "6404b882-1c89-42f2-b4a7-1155496a4198"
               },
               "quantite": {
@@ -2940,7 +3161,8 @@
             },
             {
               "produit": {
-                "nom": "Fromage blanc",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "40823c6a-9450-4d21-af91-bbb804393c6a"
               },
               "quantite": {
@@ -2952,7 +3174,8 @@
             },
             {
               "produit": {
-                "nom": "Munster",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7c8a3c99-17f5-4c07-822e-035cb587d62b"
               },
               "quantite": {
@@ -2964,7 +3187,8 @@
             },
             {
               "produit": {
-                "nom": "Oeuf",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "80ac8281-2629-43dc-853a-6b35b22f547f"
               },
               "quantite": {
@@ -2976,7 +3200,8 @@
             },
             {
               "produit": {
-                "nom": "Saucisse à cuire",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "c45f6e43-bf75-4379-9485-7a8c64c4659a"
               },
               "quantite": {
@@ -2995,7 +3220,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Epinard",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "0bc6656e-4a8e-45ff-88f8-1b22250526b2"
               },
               "quantite": {
@@ -3007,7 +3233,8 @@
             },
             {
               "produit": {
-                "nom": "Farine",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "6404b882-1c89-42f2-b4a7-1155496a4198"
               },
               "quantite": {
@@ -3019,7 +3246,8 @@
             },
             {
               "produit": {
-                "nom": "Lait",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a6635339-0d59-49df-9702-071f81c8d4f9"
               },
               "quantite": {
@@ -3031,7 +3259,8 @@
             },
             {
               "produit": {
-                "nom": "Oeuf",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "80ac8281-2629-43dc-853a-6b35b22f547f"
               },
               "quantite": {
@@ -3043,7 +3272,8 @@
             },
             {
               "produit": {
-                "nom": "Vin blanc",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "3e9afcc0-da19-45c6-a03e-8b611b54d243"
               },
               "quantite": {
@@ -3080,7 +3310,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Cancoillotte",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "61b5ea67-d833-4dfc-a197-730aa66b79b2"
               },
               "quantite": {
@@ -3092,7 +3323,8 @@
             },
             {
               "produit": {
-                "nom": "Pomme de terre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "5b68621d-355b-45f7-b94f-e58c4567b0a0"
               },
               "quantite": {
@@ -3104,7 +3336,8 @@
             },
             {
               "produit": {
-                "nom": "Salade",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "0108a9ab-0b0d-4030-b518-1b530373aa61"
               },
               "quantite": {
@@ -3116,7 +3349,8 @@
             },
             {
               "produit": {
-                "nom": "Saucisse à cuire",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "c45f6e43-bf75-4379-9485-7a8c64c4659a"
               },
               "quantite": {
@@ -3141,7 +3375,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Coulis de tomates",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "2a9e6fc6-8ce9-456f-a662-bbadae3a5322"
               },
               "quantite": {
@@ -3153,7 +3388,8 @@
             },
             {
               "produit": {
-                "nom": "Haricot rouge",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "84a53dd2-0efc-42eb-b682-74f76b3099f7"
               },
               "quantite": {
@@ -3165,7 +3401,8 @@
             },
             {
               "produit": {
-                "nom": "Maïs",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "2e0fe615-7189-40a7-a743-7f968dfdfbcb"
               },
               "quantite": {
@@ -3177,7 +3414,8 @@
             },
             {
               "produit": {
-                "nom": "Riz",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a63338f6-1a3f-41f3-9ad5-da9d020ac008"
               },
               "quantite": {
@@ -3189,7 +3427,8 @@
             },
             {
               "produit": {
-                "nom": "Sauce chili",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "5ac6f67e-1079-4846-bb87-2d9eea0eaa83"
               },
               "quantite": {
@@ -3201,7 +3440,8 @@
             },
             {
               "produit": {
-                "nom": "Viande hachée",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7f4e4a0c-94d9-4ad1-93f0-416020c03983"
               },
               "quantite": {
@@ -3220,7 +3460,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Cordon bleu",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7eabfe6a-ee37-401f-bc00-ef55035ef50b"
               },
               "quantite": {
@@ -3232,7 +3473,8 @@
             },
             {
               "produit": {
-                "nom": "Petit pois et carotte",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "69d11215-1d55-48a9-9d3d-4e1fc22f8545"
               },
               "quantite": {
@@ -3251,7 +3493,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Beurre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7e406583-ee08-4968-8a13-47ef598cb127"
               },
               "quantite": {
@@ -3263,7 +3506,8 @@
             },
             {
               "produit": {
-                "nom": "Lait",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a6635339-0d59-49df-9702-071f81c8d4f9"
               },
               "quantite": {
@@ -3275,7 +3519,8 @@
             },
             {
               "produit": {
-                "nom": "Pomme de terre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "5b68621d-355b-45f7-b94f-e58c4567b0a0"
               },
               "quantite": {
@@ -3287,7 +3532,8 @@
             },
             {
               "produit": {
-                "nom": "Viande hachée",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7f4e4a0c-94d9-4ad1-93f0-416020c03983"
               },
               "quantite": {
@@ -3306,7 +3552,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Cheddar",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "698856dc-83a5-4683-b907-69e659bf8302"
               },
               "quantite": {
@@ -3318,7 +3565,8 @@
             },
             {
               "produit": {
-                "nom": "Knack",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "2d5734d3-ab83-4533-b7ef-4dd120d154c1"
               },
               "quantite": {
@@ -3330,7 +3578,8 @@
             },
             {
               "produit": {
-                "nom": "Pomme de terre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "5b68621d-355b-45f7-b94f-e58c4567b0a0"
               },
               "quantite": {
@@ -3349,7 +3598,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Riz",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a63338f6-1a3f-41f3-9ad5-da9d020ac008"
               },
               "quantite": {
@@ -3361,7 +3611,8 @@
             },
             {
               "produit": {
-                "nom": "Roti salé",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "9f5a8fde-cdb1-4778-93ea-e0e664709148"
               },
               "quantite": {
@@ -3380,7 +3631,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Frite",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "1ba410ca-dd21-4b0e-96f9-5abf96e8c37f"
               },
               "quantite": {
@@ -3392,7 +3644,8 @@
             },
             {
               "produit": {
-                "nom": "Pavé savoyard",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "17092a06-578c-4c17-837a-555e934dee19"
               },
               "quantite": {
@@ -3411,7 +3664,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Beurre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7e406583-ee08-4968-8a13-47ef598cb127"
               },
               "quantite": {
@@ -3423,7 +3677,8 @@
             },
             {
               "produit": {
-                "nom": "Lait",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a6635339-0d59-49df-9702-071f81c8d4f9"
               },
               "quantite": {
@@ -3435,7 +3690,8 @@
             },
             {
               "produit": {
-                "nom": "Pomme de terre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "5b68621d-355b-45f7-b94f-e58c4567b0a0"
               },
               "quantite": {
@@ -3447,7 +3703,8 @@
             },
             {
               "produit": {
-                "nom": "Saucisse",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "c128ea63-3bee-43cf-a2af-fe4d0d4a5a61"
               },
               "quantite": {
@@ -3466,31 +3723,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Riz",
-                "identifiant": "a63338f6-1a3f-41f3-9ad5-da9d020ac008"
-              },
-              "quantite": {
-                "valeur": 0,
-                "mesure": "MASSE",
-                "identifiant": "43dc8dae-871c-4ed0-8937-18c1c626407a"
-              },
-              "identifiant": "1bf4b994-3977-42bc-b113-f785dd578194"
-            },
-            {
-              "produit": {
-                "nom": "Olive",
-                "identifiant": "e10213aa-a34d-4169-a844-152fd42a36ea"
-              },
-              "quantite": {
-                "valeur": 0,
-                "mesure": "MASSE",
-                "identifiant": "8b4a6ffa-09d1-4940-a7dd-c5e2fb589227"
-              },
-              "identifiant": "4cd5301e-110f-41ca-a959-18000d7dcfe8"
-            },
-            {
-              "produit": {
-                "nom": "Curcuma",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "9aa8247e-f76b-49f9-aaa4-2cf268c9aa5e"
               },
               "quantite": {
@@ -3502,7 +3736,21 @@
             },
             {
               "produit": {
-                "nom": "Laurier",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
+                "identifiant": "ee2ec60f-9cd3-4e1d-8a26-0a2c0d7040d2"
+              },
+              "quantite": {
+                "valeur": 6,
+                "mesure": "UNITE",
+                "identifiant": "bc2e3493-f78b-4e76-ae38-4f2fac85df9c"
+              },
+              "identifiant": "7b2690f6-8feb-423e-9ec9-474384b086eb"
+            },
+            {
+              "produit": {
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "0d233032-df60-4a1b-a494-c953ab99e378"
               },
               "quantite": {
@@ -3514,31 +3762,8 @@
             },
             {
               "produit": {
-                "nom": "Saucisse",
-                "identifiant": "c128ea63-3bee-43cf-a2af-fe4d0d4a5a61"
-              },
-              "quantite": {
-                "valeur": 6,
-                "mesure": "UNITE",
-                "identifiant": "1008dfee-950c-458a-918f-70faa36333fe"
-              },
-              "identifiant": "f6cd7cba-4908-40c7-9554-6aa1a5115455"
-            },
-            {
-              "produit": {
-                "nom": "Tomate",
-                "identifiant": "f7b3bdd0-71f8-4899-88b0-ee104c439c40"
-              },
-              "quantite": {
-                "valeur": 8,
-                "mesure": "UNITE",
-                "identifiant": "0f83f8fd-5b13-47e9-a6a5-78048bfe2dfa"
-              },
-              "identifiant": "39eec752-eced-42b1-b050-5427f7d73098"
-            },
-            {
-              "produit": {
-                "nom": "Oignon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7819ec61-d437-422d-8680-4e71952a2f3a"
               },
               "quantite": {
@@ -3550,15 +3775,55 @@
             },
             {
               "produit": {
-                "nom": "Gousse d\u0027ail",
-                "identifiant": "ee2ec60f-9cd3-4e1d-8a26-0a2c0d7040d2"
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
+                "identifiant": "e10213aa-a34d-4169-a844-152fd42a36ea"
+              },
+              "quantite": {
+                "valeur": 0,
+                "mesure": "MASSE",
+                "identifiant": "8b4a6ffa-09d1-4940-a7dd-c5e2fb589227"
+              },
+              "identifiant": "4cd5301e-110f-41ca-a959-18000d7dcfe8"
+            },
+            {
+              "produit": {
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
+                "identifiant": "a63338f6-1a3f-41f3-9ad5-da9d020ac008"
+              },
+              "quantite": {
+                "valeur": 0,
+                "mesure": "MASSE",
+                "identifiant": "43dc8dae-871c-4ed0-8937-18c1c626407a"
+              },
+              "identifiant": "1bf4b994-3977-42bc-b113-f785dd578194"
+            },
+            {
+              "produit": {
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
+                "identifiant": "c128ea63-3bee-43cf-a2af-fe4d0d4a5a61"
               },
               "quantite": {
                 "valeur": 6,
                 "mesure": "UNITE",
-                "identifiant": "bc2e3493-f78b-4e76-ae38-4f2fac85df9c"
+                "identifiant": "1008dfee-950c-458a-918f-70faa36333fe"
               },
-              "identifiant": "7b2690f6-8feb-423e-9ec9-474384b086eb"
+              "identifiant": "f6cd7cba-4908-40c7-9554-6aa1a5115455"
+            },
+            {
+              "produit": {
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
+                "identifiant": "f7b3bdd0-71f8-4899-88b0-ee104c439c40"
+              },
+              "quantite": {
+                "valeur": 8,
+                "mesure": "UNITE",
+                "identifiant": "0f83f8fd-5b13-47e9-a6a5-78048bfe2dfa"
+              },
+              "identifiant": "39eec752-eced-42b1-b050-5427f7d73098"
             }
           ],
           "identifiant": "584a4239-0b60-44a0-b2ec-dd27e99c9b3b"
@@ -3569,7 +3834,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Bacon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "f49352e4-b644-4b10-b72a-533f8815b044"
               },
               "quantite": {
@@ -3581,7 +3847,8 @@
             },
             {
               "produit": {
-                "nom": "Cervelas",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a2fd9d34-5a60-4a1c-9d6d-31407c7d1e4c"
               },
               "quantite": {
@@ -3593,7 +3860,8 @@
             },
             {
               "produit": {
-                "nom": "Gruyère",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "eb0d591e-82fc-4db7-aa1a-3b95229af574"
               },
               "quantite": {
@@ -3612,7 +3880,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Haricot vert",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "eb7dbb12-5d91-4ba5-9b75-fd5fa5fcd850"
               },
               "quantite": {
@@ -3624,7 +3893,8 @@
             },
             {
               "produit": {
-                "nom": "Steack haché",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "b04ecd9a-acb0-4daa-9c5c-9406f7a7459c"
               },
               "quantite": {
@@ -3649,7 +3919,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Beurre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7e406583-ee08-4968-8a13-47ef598cb127"
               },
               "quantite": {
@@ -3661,7 +3932,8 @@
             },
             {
               "produit": {
-                "nom": "Champignon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "8f6fd32a-9b27-4763-878f-12eb1867d14d"
               },
               "quantite": {
@@ -3673,7 +3945,8 @@
             },
             {
               "produit": {
-                "nom": "Crème",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "262e30e9-fae7-4e63-a883-3cbaedb9dd8c"
               },
               "quantite": {
@@ -3685,7 +3958,8 @@
             },
             {
               "produit": {
-                "nom": "Cube de bouillon de volaille",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "47f1e465-33d4-4ff3-8161-db684b40f0a2"
               },
               "quantite": {
@@ -3697,7 +3971,8 @@
             },
             {
               "produit": {
-                "nom": "Lardon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "e2dc2d05-79b4-4da7-a4ee-14d49758b361"
               },
               "quantite": {
@@ -3709,7 +3984,8 @@
             },
             {
               "produit": {
-                "nom": "Oeuf",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "80ac8281-2629-43dc-853a-6b35b22f547f"
               },
               "quantite": {
@@ -3721,7 +3997,8 @@
             },
             {
               "produit": {
-                "nom": "Oignon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7819ec61-d437-422d-8680-4e71952a2f3a"
               },
               "quantite": {
@@ -3733,7 +4010,8 @@
             },
             {
               "produit": {
-                "nom": "Poulet",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "43368fa4-4193-49a6-adc3-39ca06e0f5a4"
               },
               "quantite": {
@@ -3758,7 +4036,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Chorizo doux",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "3caed30c-b3ff-46c1-839b-791ca0808998"
               },
               "quantite": {
@@ -3770,7 +4049,8 @@
             },
             {
               "produit": {
-                "nom": "Courgette",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "66081893-ae7e-4c8b-a912-b9311afdaf89"
               },
               "quantite": {
@@ -3782,7 +4062,8 @@
             },
             {
               "produit": {
-                "nom": "Cube de bouillon de légumes",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "07876a0c-8b18-4d0b-9244-bfbb3deea8d3"
               },
               "quantite": {
@@ -3794,7 +4075,8 @@
             },
             {
               "produit": {
-                "nom": "Dés de jambon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "3076f04e-fa0c-41b6-8dc8-9fe4c53e88c5"
               },
               "quantite": {
@@ -3806,7 +4088,8 @@
             },
             {
               "produit": {
-                "nom": "Poivron",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "ba592197-0590-4dfb-b2f9-01c218e9d49c"
               },
               "quantite": {
@@ -3818,7 +4101,8 @@
             },
             {
               "produit": {
-                "nom": "Poulet",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "43368fa4-4193-49a6-adc3-39ca06e0f5a4"
               },
               "quantite": {
@@ -3830,7 +4114,8 @@
             },
             {
               "produit": {
-                "nom": "Riz",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a63338f6-1a3f-41f3-9ad5-da9d020ac008"
               },
               "quantite": {
@@ -3879,7 +4164,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Aubergines",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a5e306fe-69f0-4898-b085-5f00bbbe3ddb"
               },
               "quantite": {
@@ -3891,7 +4177,8 @@
             },
             {
               "produit": {
-                "nom": "Nouilles sautées",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "b3983c9f-9538-46c0-bb0c-bb751012a1c6"
               },
               "quantite": {
@@ -3903,7 +4190,8 @@
             },
             {
               "produit": {
-                "nom": "Poulet",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "43368fa4-4193-49a6-adc3-39ca06e0f5a4"
               },
               "quantite": {
@@ -3915,7 +4203,8 @@
             },
             {
               "produit": {
-                "nom": "Sucre terriaky",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "564f8d1a-96eb-4d0a-a22e-9acb83752344"
               },
               "quantite": {
@@ -3934,7 +4223,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Aubergines",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a5e306fe-69f0-4898-b085-5f00bbbe3ddb"
               },
               "quantite": {
@@ -3946,7 +4236,8 @@
             },
             {
               "produit": {
-                "nom": "Poulet",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "43368fa4-4193-49a6-adc3-39ca06e0f5a4"
               },
               "quantite": {
@@ -3958,7 +4249,8 @@
             },
             {
               "produit": {
-                "nom": "Riz",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a63338f6-1a3f-41f3-9ad5-da9d020ac008"
               },
               "quantite": {
@@ -3970,7 +4262,8 @@
             },
             {
               "produit": {
-                "nom": "Sucre terriaky",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "564f8d1a-96eb-4d0a-a22e-9acb83752344"
               },
               "quantite": {
@@ -4001,7 +4294,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Carotte",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "53438087-49a4-4d13-b49c-172aed103780"
               },
               "quantite": {
@@ -4013,7 +4307,8 @@
             },
             {
               "produit": {
-                "nom": "Courgette",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "66081893-ae7e-4c8b-a912-b9311afdaf89"
               },
               "quantite": {
@@ -4025,7 +4320,8 @@
             },
             {
               "produit": {
-                "nom": "Cumin",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "4d42e9d0-29c6-47ef-89e5-650e9d650321"
               },
               "quantite": {
@@ -4037,7 +4333,8 @@
             },
             {
               "produit": {
-                "nom": "Epice à tajine",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "8eceb3c2-cfc2-42a0-b893-028394e264ca"
               },
               "quantite": {
@@ -4049,7 +4346,8 @@
             },
             {
               "produit": {
-                "nom": "Oignon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7819ec61-d437-422d-8680-4e71952a2f3a"
               },
               "quantite": {
@@ -4061,7 +4359,8 @@
             },
             {
               "produit": {
-                "nom": "Pomme de terre",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "5b68621d-355b-45f7-b94f-e58c4567b0a0"
               },
               "quantite": {
@@ -4073,7 +4372,8 @@
             },
             {
               "produit": {
-                "nom": "Poulet",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "43368fa4-4193-49a6-adc3-39ca06e0f5a4"
               },
               "quantite": {
@@ -4085,7 +4385,8 @@
             },
             {
               "produit": {
-                "nom": "Semoule",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "5cadd858-3a5e-481a-8f57-c201747c83c8"
               },
               "quantite": {
@@ -4097,7 +4398,8 @@
             },
             {
               "produit": {
-                "nom": "Tomate",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "f7b3bdd0-71f8-4899-88b0-ee104c439c40"
               },
               "quantite": {
@@ -4122,7 +4424,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Champignon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "8f6fd32a-9b27-4763-878f-12eb1867d14d"
               },
               "quantite": {
@@ -4134,7 +4437,8 @@
             },
             {
               "produit": {
-                "nom": "Crème liquide",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "f66b737a-29f2-43b2-81c2-92f2c2ada18f"
               },
               "quantite": {
@@ -4146,7 +4450,8 @@
             },
             {
               "produit": {
-                "nom": "Cube de bouillon de volaille",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "47f1e465-33d4-4ff3-8161-db684b40f0a2"
               },
               "quantite": {
@@ -4158,7 +4463,8 @@
             },
             {
               "produit": {
-                "nom": "Curry",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "30bce719-0dac-42a9-add3-ef112a54d702"
               },
               "quantite": {
@@ -4170,7 +4476,8 @@
             },
             {
               "produit": {
-                "nom": "Lardon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "e2dc2d05-79b4-4da7-a4ee-14d49758b361"
               },
               "quantite": {
@@ -4182,7 +4489,8 @@
             },
             {
               "produit": {
-                "nom": "Oeuf",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "80ac8281-2629-43dc-853a-6b35b22f547f"
               },
               "quantite": {
@@ -4194,7 +4502,8 @@
             },
             {
               "produit": {
-                "nom": "Poulet",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "43368fa4-4193-49a6-adc3-39ca06e0f5a4"
               },
               "quantite": {
@@ -4206,7 +4515,8 @@
             },
             {
               "produit": {
-                "nom": "Pâte feuilletée",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "aaced113-aa6d-40d5-9d77-cd5b8f42932a"
               },
               "quantite": {
@@ -4225,7 +4535,8 @@
           "produitsQuantifier": [
             {
               "produit": {
-                "nom": "Branche de céleri",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a25e2a37-7794-4ce5-b98e-e859d25037cb"
               },
               "quantite": {
@@ -4237,7 +4548,8 @@
             },
             {
               "produit": {
-                "nom": "Carotte",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "53438087-49a4-4d13-b49c-172aed103780"
               },
               "quantite": {
@@ -4249,7 +4561,8 @@
             },
             {
               "produit": {
-                "nom": "Crème",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "262e30e9-fae7-4e63-a883-3cbaedb9dd8c"
               },
               "quantite": {
@@ -4261,7 +4574,8 @@
             },
             {
               "produit": {
-                "nom": "Cube de bouillon de volaille",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "47f1e465-33d4-4ff3-8161-db684b40f0a2"
               },
               "quantite": {
@@ -4273,7 +4587,8 @@
             },
             {
               "produit": {
-                "nom": "Oeuf",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "80ac8281-2629-43dc-853a-6b35b22f547f"
               },
               "quantite": {
@@ -4285,7 +4600,8 @@
             },
             {
               "produit": {
-                "nom": "Oignon",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "7819ec61-d437-422d-8680-4e71952a2f3a"
               },
               "quantite": {
@@ -4297,7 +4613,8 @@
             },
             {
               "produit": {
-                "nom": "Poireau",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "eabcbb43-26c7-4c84-8e2a-3f9d413a812d"
               },
               "quantite": {
@@ -4309,7 +4626,8 @@
             },
             {
               "produit": {
-                "nom": "Poulet",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "43368fa4-4193-49a6-adc3-39ca06e0f5a4"
               },
               "quantite": {
@@ -4321,7 +4639,8 @@
             },
             {
               "produit": {
-                "nom": "Riz",
+                "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\epiceries\\defaut.json",
+                "classeFournisseur": "org.mgd.gmel.coeur.persistence.EpicerieJao",
                 "identifiant": "a63338f6-1a3f-41f3-9ad5-da9d020ac008"
               },
               "quantite": {

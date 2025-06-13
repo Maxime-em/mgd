@@ -1,0 +1,21 @@
+{
+  "annee": 2025,
+  "semaine": 25,
+  "formules": [
+    {
+      "recette": {
+        "chemin": "E:\\IdeaProjects\\mgd\\gmel-javafx\\extern\\base\\bibliotheques\\defaut.json",
+        "classeFournisseur": "org.mgd.gmel.coeur.persistence.BibliothequeJao",
+        "identifiant": "bdf7c90b-f4d4-415d-8591-31baf9094ce1"
+      },
+      "periode": {
+        "repas": "2025-06-16#DEJEUNER",
+        "taille": 1,
+        "identifiant": "d65f6f07-5e85-4679-b9f7-4657f190d08a"
+      },
+      "nombreConvives": 1,
+      "identifiant": "0f7ad53a-442e-48e6-a561-5727cbe519ee"
+    }
+  ],
+  "identifiant": "283514f9-1bdf-4368-a65d-eee54e64e142"
+}

@@ -1,9 +1,12 @@
 package org.mgd.jab.persistence;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mgd.jab.JabCreation;
 import org.mgd.jab.JabSingletons;
 import org.mgd.jab.JabTable;
 import org.mgd.jab.dto.Dto;
+import org.mgd.jab.dto.ReferenceDto;
 import org.mgd.jab.objet.Jo;
 import org.mgd.jab.persistence.exception.JaoExecutionException;
 import org.mgd.jab.persistence.exception.JaoParseException;
@@ -18,6 +21,7 @@ import java.text.MessageFormat;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
@@ -25,11 +29,13 @@ import java.util.stream.Collectors;
  * Chaque classe fille sera associée à une classe métier {@link O} et une classe de transfert {@link D}
  * et sera instanciée pour lire et écrire les données du système de fichiers JSON.
  *
- * @param <O> classe métier
- * @param <D> classe de transfert de données
+ * @param <O> classe métier de l'objet
+ * @param <D> classe de transfert de données de l'objet
  * @author Maxime
  */
 public abstract class Jao<D extends Dto, O extends Jo<D>> {
+    private static final Logger LOGGER = LogManager.getLogger(Jao.class);
+
     private final Class<D> classeDto;
     private final Class<O> classeJo;
     private final JabTable<D, O> table;
@@ -59,10 +65,14 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
     }
 
     public D decharger(O objet) {
+        return decharger(objet, () -> to(objet));
+    }
+
+    private <T extends Dto> T decharger(O objet, Supplier<T> obtenirDto) {
         if (objet == null) {
             return null;
         }
-        D dto = to(objet);
+        T dto = obtenirDto.get();
         dto.setIdentifiant(objet.getIdentifiant().toString());
         return dto;
     }
@@ -167,31 +177,31 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
         } else {
             try {
                 UUID identifiant = dto.getIdentifiant() != null ? UUID.fromString(dto.getIdentifiant()) : UUID.randomUUID();
-                return construire(dto, parent, identifiant);
+                return charger(dto, parent, identifiant);
             } catch (JaoRuntimeException e) {
                 throw new JaoParseException(e);
             }
         }
     }
 
+    private <P extends Dto> O charger(D dto, Jo<P> parent, UUID identifiant) throws JaoExecutionException {
+        return table.existe(identifiant) ? table.selectionner(identifiant) : construire(dto, parent, identifiant);
+    }
+
     private <P extends Dto> O construire(D dto, Jo<P> parent, UUID identifiant) throws JaoExecutionException {
-        if (table.existe(identifiant)) {
-            return table.selectionner(identifiant);
-        } else {
-            O objet = nouveau(identifiant, nouveau -> {
-                try {
-                    nouveau.depuis(dto);
-                } catch (JaoExecutionException | JaoParseException | VerificationException e) {
-                    throw new JaoRuntimeException(e);
-                }
-            });
-
-            if (parent != null) {
-                objet.ajouterParent(parent);
+        O objet = nouveau(identifiant, nouveau -> {
+            try {
+                nouveau.depuis(dto);
+            } catch (JaoExecutionException | JaoParseException | VerificationException e) {
+                throw new JaoRuntimeException(e);
             }
+        });
 
-            return objet;
+        if (parent != null) {
+            objet.ajouterParent(parent);
         }
+
+        return objet;
     }
 
     public <P extends Dto> List<O> charger(Collection<D> dtos, Jo<P> parent) throws JaoParseException, JaoExecutionException {
@@ -228,5 +238,71 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
         } catch (JaoRuntimeException e) {
             throw new JaoParseException(MessageFormat.format("Impossible de charger le tableau associatif d''objets. {0}", e.getCause().getMessage()), e);
         }
+    }
+
+    public <V extends Dto, W extends Jo<V>, X extends Jao<V, W>> ReferenceDto<V, W, X> dechargerVersReference(O objet, Class<W> classeRacine, Class<X> classeFournisseur) {
+        if (objet == null) {
+            return null;
+        }
+        ReferenceDto<V, W, X> referenceDto = decharger(objet, ReferenceDto::new);
+        referenceDto.setChemin(creation.getFichiers()
+                .entrySet()
+                .stream()
+                .filter(element -> objet.racines(classeRacine).stream().anyMatch(racine -> racine.getIdentifiant().equals(element.getKey())))
+                .findFirst()
+                .orElseThrow()
+                .getValue());
+        referenceDto.setClasseFournisseur(classeFournisseur);
+        return referenceDto;
+    }
+
+    public <V extends Dto, W extends Jo<V>, X extends Jao<V, W>> List<ReferenceDto<V, W, X>> dechargerVersReferences(Collection<O> objets, Class<W> classeRacine, Class<X> classeFournisseur) {
+        return objets.stream().map(objet -> dechargerVersReference(objet, classeRacine, classeFournisseur)).toList();
+    }
+
+    public <V extends Dto, W extends Jo<V>, X extends Jao<V, W>> O chargerParReference(ReferenceDto<V, W, X> referenceDto) throws JaoParseException, JaoExecutionException {
+        if (referenceDto == null) {
+            throw new JaoParseException("Référence vers un objet inconnu.");
+        } else if (referenceDto.getIdentifiant() == null) {
+            throw new JaoParseException("Référence vers un objet d'identifiant inconnu.");
+        } else {
+            UUID identifiant = UUID.fromString(referenceDto.getIdentifiant());
+            if (!table.existe(identifiant)) {
+                constuireParReference(referenceDto, identifiant);
+            }
+            if (!table.existe(identifiant)) {
+                throw new JaoExecutionException(MessageFormat.format("Référence vers un objet d''identifiant {0} introuvable.", identifiant));
+            }
+            if (LOGGER.isDebugEnabled() && referenceDto.getChemin() == null) {
+                LOGGER.warn("La réference {} n'a pas de chemin.", referenceDto.getIdentifiant());
+            }
+            if (LOGGER.isDebugEnabled() && referenceDto.getClasseFournisseur() == null) {
+                LOGGER.warn("La réference {} n'a pas de classe pour son fournisseur.", referenceDto.getIdentifiant());
+            }
+            return table.selectionner(identifiant);
+        }
+    }
+
+    private <V extends Dto, W extends Jo<V>, X extends Jao<V, W>> void constuireParReference(ReferenceDto<V, W, X> referenceDto, UUID identifiant) throws JaoParseException, JaoExecutionException {
+        if (referenceDto.getClasseFournisseur() == null) {
+            throw new JaoParseException(MessageFormat.format("Référence vers un objet d''identifiant {0} sans classe pour le fournisseur.", identifiant));
+        } else if (referenceDto.getChemin() == null) {
+            throw new JaoParseException(MessageFormat.format("Référence vers un objet d''identifiant {0} sans chemin.", identifiant));
+        }
+        Class<X> classeFournisseur = referenceDto.getClasseFournisseur();
+        try {
+            classeFournisseur.getConstructor().newInstance().charger(referenceDto.getChemin());
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                 NoSuchMethodException e) {
+            throw new JaoExecutionException(MessageFormat.format("Impossible d''instancier le fournisseur {1} de la référence {0}.", identifiant, classeFournisseur), e);
+        }
+    }
+
+    public <V extends Dto, W extends Jo<V>, X extends Jao<V, W>> List<O> chargerParReferences(Collection<ReferenceDto<V, W, X>> referencesDtos) throws JaoParseException, JaoExecutionException {
+        List<O> objets = new ArrayList<>(referencesDtos.size());
+        for (ReferenceDto<V, W, X> dto : referencesDtos) {
+            objets.add(chargerParReference(dto));
+        }
+        return objets;
     }
 }

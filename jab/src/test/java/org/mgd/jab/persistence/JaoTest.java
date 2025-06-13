@@ -2,6 +2,7 @@ package org.mgd.jab.persistence;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +34,20 @@ import java.util.stream.Stream;
 // TODO tester LocalDateAdapter
 // TODO tester nonInclus
 class JaoTest {
-    private static Path ressourcesObjets;
+    public static final String UUID_PERSONNE_1 = "5896fac0-c48d-11ed-afa1-0242ac120002";
+    public static final String UUID_PERSONNE_2 = "5f2a5aa8-c48d-11ed-afa1-0242ac120002";
+    public static final String UUID_JEU_1 = "7b056a2a-c48c-11ed-afa1-0242ac120002";
+    public static final String UUID_JEU_2 = "105b6dea-c48d-11ed-afa1-0242ac120002";
+    public static final String UUID_LIVRE_1 = "856b9132-c48d-11ed-afa1-0242ac120002";
+    public static final String UUID_LIVRE_2 = "97583a9e-c48d-11ed-afa1-0242ac120002";
+    public static final String UUID_LIVRE_3 = "ef53d929-c48d-11ed-afa1-0242ac120002";
+    public static final String UUID_CHAPITRE_11 = "e3b1aa1f-c48d-11ed-afa1-0242ac120002";
+    public static final String UUID_CHAPITRE_21 = "e6428919-c48d-11ed-afa1-0242ac120002";
+    public static final String UUID_CHAPITRE_22 = "60d4a435-c48d-11ed-afa1-0242ac120002";
+    public static final String UUID_CHAPITRE_31 = "6a7d6fbc-c48d-11ed-afa1-0242ac120002";
+    public static final String UUID_CHAPITRE_32 = "93fa7649-c48d-11ed-afa1-0242ac120002";
+
+    private static Path ressourcesCommun;
     private static Path ressourcesSupprimable;
     private static Path fichier1;
     private static Path fichier2;
@@ -47,28 +61,37 @@ class JaoTest {
     private static Path fichier10;
     private static Path fichier11;
     private static Path fichier12;
+    private static Path fichier13;
+    private static Path fichier14;
     private static Personne personne1;
     private static Personne personne2;
     private static Jeu jeu1;
+    private static Jeu jeu2;
     private static Livre livre1;
     private static Livre livre2;
+    private static Livre livre3;
     private static Chapitre chapitre11;
     private static Chapitre chapitre21;
     private static Chapitre chapitre22;
+    private static Chapitre chapitre31;
+    private static Chapitre chapitre32;
     private static Jeu jeu;
     private static PersonneJao personneJao;
     private static JeuJao jeuJao;
     private static PegiJao pegiJao;
+    private static AdresseJao adresseJao;
     private static Pegi pegi12;
     private static Pegi pegi18;
     private static Adresse adresse1;
+    private static Communaute communaute1;
+    private static Monde monde1;
 
     @BeforeEach
     void setUp() throws IOException, JaoExecutionException, JaoParseException {
         JabSingletons.reinitialiser();
         JabSingletons.sauvegarde().setAsynchrone(false);
 
-        ressourcesObjets = Path.of("src/test/resources/base/commun");
+        ressourcesCommun = Path.of("src/test/resources/base/commun");
         ressourcesSupprimable = Path.of("src/test/resources/base/supprimable");
 
         try (Stream<Path> arborescence = Files.walk(ressourcesSupprimable)) {
@@ -81,42 +104,54 @@ class JaoTest {
             });
         }
 
-        fichier1 = ressourcesObjets.resolve("personne1.json");
-        fichier2 = ressourcesObjets.resolve("personne2.json");
-        fichier3 = ressourcesObjets.resolve("jeu.json");
-        fichier4 = ressourcesObjets.resolve("jeu1.json");
-        fichier5 = ressourcesObjets.resolve("pegi12.json");
-        fichier6 = ressourcesObjets.resolve("pegi18.json");
-        fichier7 = ressourcesObjets.resolve("adresse.json");
-        fichier8 = ressourcesObjets.resolve("livre1.json");
-        fichier9 = ressourcesObjets.resolve("livre2.json");
-        fichier10 = ressourcesObjets.resolve("chapitre11.json");
-        fichier11 = ressourcesObjets.resolve("chapitre21.json");
-        fichier12 = ressourcesObjets.resolve("chapitre22.json");
+        fichier1 = ressourcesCommun.resolve("personne1.json").toAbsolutePath();
+        fichier2 = ressourcesCommun.resolve("personne2.json").toAbsolutePath();
+        fichier3 = ressourcesCommun.resolve("jeu.json").toAbsolutePath();
+        fichier4 = ressourcesCommun.resolve("jeu1.json").toAbsolutePath();
+        fichier5 = ressourcesCommun.resolve("pegi12.json").toAbsolutePath();
+        fichier6 = ressourcesCommun.resolve("pegi18.json").toAbsolutePath();
+        fichier7 = ressourcesCommun.resolve("adresse1.json").toAbsolutePath();
+        fichier8 = ressourcesCommun.resolve("livre1.json").toAbsolutePath();
+        fichier9 = ressourcesCommun.resolve("livre2.json").toAbsolutePath();
+        fichier10 = ressourcesCommun.resolve("chapitre11.json").toAbsolutePath();
+        fichier11 = ressourcesCommun.resolve("chapitre21.json").toAbsolutePath();
+        fichier12 = ressourcesCommun.resolve("chapitre22.json").toAbsolutePath();
+        fichier13 = ressourcesCommun.resolve("communaute1.json").toAbsolutePath();
+        fichier14 = ressourcesCommun.resolve("monde1.json").toAbsolutePath();
+
+        CommunauteJao communauteJao = new CommunauteJao();
+        communaute1 = communauteJao.charger(fichier13);
+
+        MondeJao mondeJao = new MondeJao();
+        monde1 = mondeJao.charger(fichier14);
+
+        adresseJao = new AdresseJao();
+        adresse1 = adresseJao.charger(fichier7);
 
         personneJao = new PersonneJao();
         personne1 = personneJao.charger(fichier1);
-        personne2 = personneJao.charger(fichier2);
+        personne2 = adresse1.getProprietaires().stream().filter(element -> element.getIdentifiant().equals(UUID.fromString(UUID_PERSONNE_2))).findFirst().orElseThrow();
 
         jeuJao = new JeuJao();
         jeu = jeuJao.charger(fichier3);
         jeu1 = jeuJao.charger(fichier4);
+        jeu2 = personne2.getJeux().stream().filter(element -> element.getIdentifiant().equals(UUID.fromString(UUID_JEU_2))).findFirst().orElseThrow();
 
         pegiJao = new PegiJao();
         pegi12 = pegiJao.charger(fichier5);
         pegi18 = pegiJao.charger(fichier6);
 
-        AdresseJao adresseJao = new AdresseJao();
-        adresse1 = adresseJao.charger(fichier7);
-
         LivreJao livreJao = new LivreJao();
         livre1 = livreJao.charger(fichier8);
         livre2 = livreJao.charger(fichier9);
+        livre3 = personne2.getLivres().values().stream().filter(element -> element.getIdentifiant().equals(UUID.fromString(UUID_LIVRE_3))).findFirst().orElseThrow();
 
         ChapitreJao chapitreJao = new ChapitreJao();
         chapitre11 = chapitreJao.charger(fichier10);
         chapitre21 = chapitreJao.charger(fichier11);
         chapitre22 = chapitreJao.charger(fichier12);
+        chapitre31 = livre3.getChapitres().keySet().stream().filter(element -> element.getIdentifiant().equals(UUID.fromString(UUID_CHAPITRE_31))).findFirst().orElseThrow();
+        chapitre32 = livre3.getChapitres().keySet().stream().filter(element -> element.getIdentifiant().equals(UUID.fromString(UUID_CHAPITRE_32))).findFirst().orElseThrow();
     }
 
     @ParameterizedTest
@@ -132,8 +167,9 @@ class JaoTest {
 
     @ParameterizedTest
     @ArgumentsSource(chargerExceptionArgumentsProvider.class)
-    <T extends Throwable> void chargerException(Class<T> classe, String chemin, String message, Supplier<Jao<Dto, Jo<Dto>>> jaoSupplier) {
-        Assertions.assertThrows(classe, () -> jaoSupplier.get().charger(ressourcesObjets.resolve(chemin)), message);
+    <T extends Throwable> void chargerException(Class<T> classe, String chemin, Supplier<Jao<Dto, Jo<Dto>>> jaoSupplier) {
+        Jao<Dto, Jo<Dto>> jao = jaoSupplier.get();
+        Assertions.assertThrows(classe, () -> jao.charger(ressourcesCommun.resolve(chemin)), MessageFormat.format("Chargement de {0} avec {1}", chemin, jao.getClass().getName()));
     }
 
     @Test
@@ -167,7 +203,9 @@ class JaoTest {
                 new AbstractMap.SimpleEntry<>(fichier9, livre2.getIdentifiant()),
                 new AbstractMap.SimpleEntry<>(fichier10, chapitre11.getIdentifiant()),
                 new AbstractMap.SimpleEntry<>(fichier11, chapitre21.getIdentifiant()),
-                new AbstractMap.SimpleEntry<>(fichier12, chapitre22.getIdentifiant())
+                new AbstractMap.SimpleEntry<>(fichier12, chapitre22.getIdentifiant()),
+                new AbstractMap.SimpleEntry<>(fichier13, communaute1.getIdentifiant()),
+                new AbstractMap.SimpleEntry<>(fichier14, monde1.getIdentifiant())
         );
         Map<UUID, Path> fichiers = Map.ofEntries(
                 new AbstractMap.SimpleEntry<>(personne1.getIdentifiant(), fichier1),
@@ -181,20 +219,18 @@ class JaoTest {
                 new AbstractMap.SimpleEntry<>(livre2.getIdentifiant(), fichier9),
                 new AbstractMap.SimpleEntry<>(chapitre11.getIdentifiant(), fichier10),
                 new AbstractMap.SimpleEntry<>(chapitre21.getIdentifiant(), fichier11),
-                new AbstractMap.SimpleEntry<>(chapitre22.getIdentifiant(), fichier12)
+                new AbstractMap.SimpleEntry<>(chapitre22.getIdentifiant(), fichier12),
+                new AbstractMap.SimpleEntry<>(communaute1.getIdentifiant(), fichier13),
+                new AbstractMap.SimpleEntry<>(monde1.getIdentifiant(), fichier14)
         );
 
         Assertions.assertAll(
                 () -> Assertions.assertEquals(germes.size(), JabSingletons.creation().getGermes().size()),
                 () -> Assertions.assertTrue(JabSingletons.creation().getGermes().keySet().containsAll(germes.keySet())),
-                () -> JabSingletons.creation().getGermes().keySet().forEach(fichier ->
-                        Assertions.assertEquals(germes.get(fichier), JabSingletons.creation().getGermes().get(fichier))
-                ),
+                () -> JabSingletons.creation().getGermes().keySet().forEach(fichier -> Assertions.assertEquals(germes.get(fichier), JabSingletons.creation().getGermes().get(fichier))),
                 () -> Assertions.assertEquals(fichiers.size(), JabSingletons.creation().getFichiers().size()),
                 () -> Assertions.assertTrue(JabSingletons.creation().getFichiers().keySet().containsAll(fichiers.keySet())),
-                () -> JabSingletons.creation().getFichiers().keySet().forEach(identifiant ->
-                        Assertions.assertSame(fichiers.get(identifiant), JabSingletons.creation().getFichiers().get(identifiant))
-                )
+                () -> JabSingletons.creation().getFichiers().keySet().forEach(identifiant -> Assertions.assertEquals(fichiers.get(identifiant), JabSingletons.creation().getFichiers().get(identifiant)))
         );
     }
 
@@ -212,6 +248,32 @@ class JaoTest {
                 () -> Assertions.assertFalse(nouveauJeu.estDetache()),
                 () -> Assertions.assertSame(nouveauPegi, nouveauJeu.getPegi())
         );
+
+        Voie voie = new VoieJao().nouveau(objet -> {
+            objet.setNumero(0);
+            objet.setLibelle("Voie");
+        });
+        Commune commune = new CommuneJao().nouveau(objet -> {
+            objet.setNom("Commune");
+            objet.setCode("00000");
+        });
+        Adresse nouvelleAdresse = new AdresseJao().nouveau((objet, jos) -> {
+                    objet.setVoie((Voie) jos[0]);
+                    objet.setCommune((Commune) jos[1]);
+                },
+                voie,
+                commune
+        );
+
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(nouvelleAdresse),
+                () -> Assertions.assertNotNull(nouvelleAdresse.getIdentifiant()),
+                () -> Assertions.assertFalse(nouvelleAdresse.estDetache()),
+                () -> Assertions.assertNotNull(nouvelleAdresse.getVoie()),
+                () -> Assertions.assertSame(voie, nouvelleAdresse.getVoie()),
+                () -> Assertions.assertNotNull(nouvelleAdresse.getCommune()),
+                () -> Assertions.assertSame(commune, nouvelleAdresse.getCommune())
+        );
     }
 
     @ParameterizedTest
@@ -222,79 +284,82 @@ class JaoTest {
         Assertions.assertAll(
                 () -> Assertions.assertNotNull(jao.table()),
                 () -> Assertions.assertSame(jao.table(), JabSingletons.table(classeJo)),
-
                 () -> Assertions.assertNotNull(jao.table().selectionner()),
                 () -> Assertions.assertEquals(jos.size(), jao.table().selectionner().size()),
                 () -> Assertions.assertTrue(jao.table().selectionner().containsAll(jos)),
-
                 () -> Assertions.assertTrue(jos.stream().allMatch(jo -> jao.table().selectionner(jo.getIdentifiant()).equals(jo)))
         );
     }
 
     @Test
     void sauvegarder() throws IOException, JaoParseException, JaoExecutionException {
-        Path defautPersonne = ressourcesObjets.resolve("personne_sauvegarde_attendu.json");
+        Path attenduPersonne = ressourcesCommun.resolve("personne_sauvegarde_attendu.json");
+        Path attenduPersonneScore = ressourcesCommun.resolve("personne_sauvegarde_attendu_score.json");
+        Path attenduPersonnePremierJeuType = ressourcesCommun.resolve("personne_sauvegarde_attendu_premier_jeu_type.json");
+        Path attenduPersonneJeuNom = ressourcesCommun.resolve("personne_sauvegarde_attendu_jeu_nom.json");
         Path sauvegardePersonne = ressourcesSupprimable.resolve("personne_sauvegarde.json");
-        Files.writeString(sauvegardePersonne, Files.readString(defautPersonne), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-        Personne chargementPersonne = personneJao.charger(sauvegardePersonne);
+        Files.writeString(sauvegardePersonne, Files.readString(attenduPersonne), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 
+        Personne chargementPersonne = personneJao.charger(sauvegardePersonne);
         Files.writeString(sauvegardePersonne, "{}");
         chargementPersonne.setScore(chargementPersonne.getScore());
-        JsonElement actuelPersonneAucuneModificationScore = JsonParser.parseReader(Files.newBufferedReader(sauvegardePersonne));
+        assertFichierVide(sauvegardePersonne);
+
+        JabSingletons.sauvegarde().demarrer(chargementPersonne);
+        assertFichier(attenduPersonne, sauvegardePersonne);
+
         chargementPersonne.setScore(chargementPersonne.getScore() + 100);
-        JsonElement actuelPersonneModificationScore = JsonParser.parseReader(Files.newBufferedReader(sauvegardePersonne));
-
-        Assertions.assertAll(
-                () -> Assertions.assertTrue(actuelPersonneAucuneModificationScore.isJsonObject()),
-                () -> Assertions.assertTrue(actuelPersonneAucuneModificationScore.getAsJsonObject().isEmpty()),
-                () -> Assertions.assertTrue(actuelPersonneModificationScore.isJsonObject()),
-                () -> Assertions.assertFalse(actuelPersonneModificationScore.getAsJsonObject().isEmpty())
-        );
-
-        Jeu premierJeu = chargementPersonne.getJeux().stream().findFirst().orElseThrow();
+        assertFichier(attenduPersonneScore, sauvegardePersonne);
 
         Files.writeString(sauvegardePersonne, "{}");
+        Jeu premierJeu = chargementPersonne.getJeux().stream().findFirst().orElseThrow();
         premierJeu.setType(premierJeu.getType());
-        JsonElement actuelPersonneAucuneModificationJeux = JsonParser.parseReader(Files.newBufferedReader(sauvegardePersonne));
-        premierJeu.setType(JeuType.values()[(premierJeu.getType().ordinal() + 1) % JeuType.values().length]);
-        JsonElement actuelPersonneModificationJeux = JsonParser.parseReader(Files.newBufferedReader(sauvegardePersonne));
+        assertFichierVide(sauvegardePersonne);
 
-        Assertions.assertAll(
-                () -> Assertions.assertTrue(actuelPersonneAucuneModificationJeux.isJsonObject()),
-                () -> Assertions.assertTrue(actuelPersonneAucuneModificationJeux.getAsJsonObject().isEmpty()),
-                () -> Assertions.assertTrue(actuelPersonneModificationJeux.isJsonObject()),
-                () -> Assertions.assertFalse(actuelPersonneModificationJeux.getAsJsonObject().isEmpty())
-        );
+        premierJeu.setType(JeuType.CARTES);
+        assertFichier(attenduPersonnePremierJeuType, sauvegardePersonne);
 
-        Path defautJeu = ressourcesObjets.resolve("jeu_sauvegarde_attendu.json");
+        Path attenduJeu = ressourcesCommun.resolve("jeu_sauvegarde_attendu.json");
+        Path attenduJeuNom = ressourcesCommun.resolve("jeu_sauvegarde_attendu_jeu_nom.json");
         Path sauvegardeJeu = ressourcesSupprimable.resolve("jeu_sauvegarde.json");
-        Files.writeString(sauvegardeJeu, Files.readString(defautJeu), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+        Files.writeString(sauvegardeJeu, Files.readString(attenduJeu), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         Jeu chargementJeu = jeuJao.charger(sauvegardeJeu);
 
         Files.writeString(sauvegardePersonne, "{}");
         Files.writeString(sauvegardeJeu, "{}");
-        chargementJeu.setNom(chargementJeu.getNom());
-        JsonElement actuelPersonneAucuneModificationJeuNom = JsonParser.parseReader(Files.newBufferedReader(sauvegardePersonne));
-        JsonElement actuelJeuAucuneModificationJeuNom = JsonParser.parseReader(Files.newBufferedReader(sauvegardeJeu));
-        chargementJeu.setNom(chargementJeu.getNom() + " (nouveau)");
-        JsonElement actuelPersonneModificationJeuNom = JsonParser.parseReader(Files.newBufferedReader(sauvegardePersonne));
-        JsonElement actuelJeuModificationJeuNom = JsonParser.parseReader(Files.newBufferedReader(sauvegardeJeu));
 
-        Assertions.assertAll(
-                () -> Assertions.assertTrue(actuelPersonneAucuneModificationJeuNom.isJsonObject()),
-                () -> Assertions.assertTrue(actuelPersonneAucuneModificationJeuNom.getAsJsonObject().isEmpty()),
-                () -> Assertions.assertTrue(actuelJeuAucuneModificationJeuNom.isJsonObject()),
-                () -> Assertions.assertTrue(actuelJeuAucuneModificationJeuNom.getAsJsonObject().isEmpty()),
-                () -> Assertions.assertTrue(actuelPersonneModificationJeuNom.isJsonObject()),
-                () -> Assertions.assertFalse(actuelPersonneModificationJeuNom.getAsJsonObject().isEmpty()),
-                () -> Assertions.assertTrue(actuelJeuModificationJeuNom.isJsonObject()),
-                () -> Assertions.assertFalse(actuelJeuModificationJeuNom.getAsJsonObject().isEmpty())
-        );
+        chargementJeu.setNom(chargementJeu.getNom() + " (nouveau)");
+        assertFichier(attenduPersonneJeuNom, sauvegardePersonne);
+        assertFichier(attenduJeuNom, sauvegardeJeu);
+
+        Path attenduAdresse = ressourcesCommun.resolve("adresse_sauvegarde_attendu.json");
+        Path sauvegardeAdresse = ressourcesSupprimable.resolve("adresse_sauvegarde.json");
+        Files.writeString(sauvegardeAdresse, Files.readString(attenduAdresse), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+
+        Adresse chargementAdresse = adresseJao.charger(sauvegardeAdresse);
+        Files.writeString(sauvegardeAdresse, "{}");
+        JabSingletons.sauvegarde().demarrer(chargementAdresse);
+
+        assertFichier(attenduAdresse, sauvegardeAdresse);
+    }
+
+    private void assertJson(JsonElement attendu, JsonElement actuel) {
+        Assertions.assertTrue(attendu.isJsonObject());
+        Assertions.assertTrue(actuel.isJsonObject());
+        Assertions.assertEquals(attendu.getAsJsonObject(), actuel.getAsJsonObject());
+    }
+
+    private void assertFichierVide(Path actuel) throws IOException {
+        assertJson(JsonParser.parseString("{}"), JsonParser.parseReader(Files.newBufferedReader(actuel)));
+    }
+
+    private void assertFichier(Path attendu, Path actuel) throws IOException {
+        assertJson(JsonParser.parseReader(Files.newBufferedReader(attendu)), JsonParser.parseReader(Files.newBufferedReader(actuel)));
     }
 
     @Test
     void modificationJoc() throws IOException, JaoParseException, JaoExecutionException {
-        Path defautPersonne = ressourcesObjets.resolve("personne_modification_attendu.json");
+        Path defautPersonne = ressourcesCommun.resolve("personne_modification_attendu.json");
         Path modificationPersonne = ressourcesSupprimable.resolve("personne_sauvegarde.json");
         Files.writeString(modificationPersonne, Files.readString(defautPersonne), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         Personne chargementPersonne = personneJao.charger(modificationPersonne);
@@ -320,7 +385,7 @@ class JaoTest {
 
     @Test
     void modificationJocArrayList() throws IOException, JaoParseException, JaoExecutionException {
-        Path defautPersonne = ressourcesObjets.resolve("personne_modification_attendu.json");
+        Path defautPersonne = ressourcesCommun.resolve("personne_modification_attendu.json");
         Path modificationPersonne = ressourcesSupprimable.resolve("personne_sauvegarde.json");
         Files.writeString(modificationPersonne, Files.readString(defautPersonne), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         Personne chargementPersonne = personneJao.charger(modificationPersonne);
@@ -380,13 +445,18 @@ class JaoTest {
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
             return Stream.of(
-                    Arguments.of(personne1, "5896fac0-c48d-11ed-afa1-0242ac120002", Collections.emptyList(), Arrays.asList(jeu1, livre1, livre2)),
-                    Arguments.of(jeu1, "7b056a2a-c48c-11ed-afa1-0242ac120002", Collections.singletonList(personne1), Collections.emptyList()),
-                    Arguments.of(livre1, "856b9132-c48d-11ed-afa1-0242ac120002", Collections.singletonList(personne1), Collections.singletonList(chapitre11)),
-                    Arguments.of(livre2, "97583a9e-c48d-11ed-afa1-0242ac120002", Collections.singletonList(personne1), Arrays.asList(chapitre21, chapitre22)),
-                    Arguments.of(chapitre11, "e3b1aa1f-c48d-11ed-afa1-0242ac120002", Collections.singletonList(livre1), Collections.emptyList()),
-                    Arguments.of(chapitre21, "e6428919-c48d-11ed-afa1-0242ac120002", Collections.singletonList(livre2), Collections.emptyList()),
-                    Arguments.of(chapitre22, "60d4a435-c48d-11ed-afa1-0242ac120002", Collections.singletonList(livre2), Collections.emptyList())
+                    Arguments.of(personne1, UUID_PERSONNE_1, Collections.emptyList(), Arrays.asList(jeu1, livre1, livre2)),
+                    Arguments.of(personne2, UUID_PERSONNE_2, Collections.emptyList(), Arrays.asList(jeu1, jeu2, livre3)),
+                    Arguments.of(jeu1, UUID_JEU_1, Arrays.asList(personne1, personne2), Collections.emptyList()),
+                    Arguments.of(jeu2, UUID_JEU_2, Collections.singletonList(personne2), Collections.emptyList()),
+                    Arguments.of(livre1, UUID_LIVRE_1, Collections.singletonList(personne1), Collections.singletonList(chapitre11)),
+                    Arguments.of(livre2, UUID_LIVRE_2, Collections.singletonList(personne1), Arrays.asList(chapitre21, chapitre22)),
+                    Arguments.of(livre3, UUID_LIVRE_3, Collections.singletonList(personne2), Arrays.asList(chapitre31, chapitre32)),
+                    Arguments.of(chapitre11, UUID_CHAPITRE_11, Collections.singletonList(livre1), Collections.emptyList()),
+                    Arguments.of(chapitre21, UUID_CHAPITRE_21, Collections.singletonList(livre2), Collections.emptyList()),
+                    Arguments.of(chapitre22, UUID_CHAPITRE_22, Collections.singletonList(livre2), Collections.emptyList()),
+                    Arguments.of(chapitre31, UUID_CHAPITRE_31, Collections.singletonList(livre3), Collections.emptyList()),
+                    Arguments.of(chapitre32, UUID_CHAPITRE_32, Collections.singletonList(livre3), Collections.emptyList())
             );
         }
     }
@@ -395,18 +465,27 @@ class JaoTest {
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
             return Stream.of(
-                    Arguments.of(JaoParseException.class, "inconnu.json", MessageFormat.format("Impossible de charger le fichier {0}\\inconnu.json", ressourcesObjets), (Supplier<JeuJao>) JeuJao::new),
-                    Arguments.of(JaoParseException.class, "jeu_avec_nom_null.json", "Le nom du jeu est obligatoire", (Supplier<JeuJao>) JeuJao::new),
-                    Arguments.of(JaoParseException.class, "jeu_avec_nom_vide.json", "Le nom du jeu est obligatoire", (Supplier<JeuJao>) JeuJao::new),
-                    Arguments.of(JaoParseException.class, "jeu_avec_type_incorrect.json", "Le type d'un jeu devrait être une des valeurs JEU_DE_ROLES, CARTES", (Supplier<JeuJao>) JeuJao::new),
-                    Arguments.of(JaoParseException.class, "jeu_avec_annee_incorrect.json", "L'année du jeu est en dehors de la plage acceptée", (Supplier<JeuJao>) JeuJao::new),
-                    Arguments.of(JaoParseException.class, "jeu_avec_semaine_incorrect.json", "Le numéro de la semaine annuel du jeu est en dehors de la plage acceptée", (Supplier<JeuJao>) JeuJao::new),
-                    Arguments.of(JaoParseException.class, "pegi_avec_age_trop_grand.json", "L'age du système PEGI doit être compris entre 0 et 99 ans.", (Supplier<PegiJao>) PegiJao::new),
-                    Arguments.of(JaoParseException.class, "pegi_avec_age_trop_petit.json", "L'age du système PEGI doit être compris entre 0 et 99 ans.", (Supplier<PegiJao>) PegiJao::new),
-                    Arguments.of(JaoParseException.class, "personne_avec_jeux_null.json", "La liste des jeux d'une personne devrait être une liste éventuellement vide", (Supplier<PersonneJao>) PersonneJao::new),
-                    Arguments.of(JaoParseException.class, "personne_avec_jeu_sans_nom.json", "Impossible de charger la liste d'objets. Le nom du jeu est obligatoire", (Supplier<PersonneJao>) PersonneJao::new),
-                    Arguments.of(JaoParseException.class, "personne_avec_noms_jeux_multiple.json", "La liste des jeux ne doit pas contenir plusieurs jeux avec le même nom", (Supplier<PersonneJao>) PersonneJao::new),
-                    Arguments.of(JaoParseException.class, "personne_avec_score_negatif.json", "Le score d'une personne doit être strictement positif", (Supplier<PersonneJao>) PersonneJao::new)
+                    Arguments.of(JaoParseException.class, "inconnu.json", (Supplier<JeuJao>) JeuJao::new),
+                    Arguments.of(JaoParseException.class, "jeu_avec_nom_null.json", (Supplier<JeuJao>) JeuJao::new),
+                    Arguments.of(JaoParseException.class, "jeu_avec_nom_vide.json", (Supplier<JeuJao>) JeuJao::new),
+                    Arguments.of(JaoParseException.class, "jeu_avec_type_incorrect.json", (Supplier<JeuJao>) JeuJao::new),
+                    Arguments.of(JaoParseException.class, "jeu_avec_annee_incorrect.json", (Supplier<JeuJao>) JeuJao::new),
+                    Arguments.of(JaoParseException.class, "jeu_avec_semaine_incorrect.json", (Supplier<JeuJao>) JeuJao::new),
+                    Arguments.of(JaoParseException.class, "pegi_avec_age_trop_grand.json", (Supplier<PegiJao>) PegiJao::new),
+                    Arguments.of(JaoParseException.class, "pegi_avec_age_trop_petit.json", (Supplier<PegiJao>) PegiJao::new),
+                    Arguments.of(JaoParseException.class, "personne_avec_jeux_null.json", (Supplier<PersonneJao>) PersonneJao::new),
+                    Arguments.of(JaoParseException.class, "personne_avec_jeu_sans_nom.json", (Supplier<PersonneJao>) PersonneJao::new),
+                    Arguments.of(JaoParseException.class, "personne_avec_noms_jeux_multiple.json", (Supplier<PersonneJao>) PersonneJao::new),
+                    Arguments.of(JaoParseException.class, "personne_avec_score_negatif.json", (Supplier<PersonneJao>) PersonneJao::new),
+                    Arguments.of(JaoParseException.class, "personne_avec_score_negatif.json", (Supplier<PersonneJao>) PersonneJao::new),
+                    Arguments.of(JaoParseException.class, "personne_avec_score_negatif.json", (Supplier<PersonneJao>) PersonneJao::new),
+                    Arguments.of(JaoParseException.class, "adresse_avec_reference_commune_inconnu.json", (Supplier<AdresseJao>) AdresseJao::new),
+                    Arguments.of(JaoParseException.class, "adresse_avec_reference_commune_identifiant_inconnu.json", (Supplier<AdresseJao>) AdresseJao::new),
+                    Arguments.of(JaoParseException.class, "adresse_avec_reference_commune_sans_chemin.json", (Supplier<AdresseJao>) AdresseJao::new),
+                    Arguments.of(JaoParseException.class, "adresse_avec_reference_commune_mauvais_chemin.json", (Supplier<AdresseJao>) AdresseJao::new),
+                    Arguments.of(JaoParseException.class, "adresse_avec_reference_commune_sans_classe.json", (Supplier<AdresseJao>) AdresseJao::new),
+                    Arguments.of(JsonSyntaxException.class, "adresse_avec_reference_commune_mauvaise_classe.json", (Supplier<AdresseJao>) AdresseJao::new),
+                    Arguments.of(JaoParseException.class, "adresse_avec_reference_sans_pays.json", (Supplier<AdresseJao>) AdresseJao::new)
             );
         }
     }

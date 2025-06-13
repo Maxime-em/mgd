@@ -30,9 +30,13 @@ class EpicerieJaoTest extends AbstractMetierTest<EpicerieDto, Epicerie, Epicerie
         produit3.setIdentifiant(UUID.fromString("6da29b2f-a8e4-42ba-ab26-2df048fa67df"));
         produit3.setNom("Produit 3");
 
+        Produit produit4 = new Produit();
+        produit4.setIdentifiant(UUID.fromString("56b4ee41-d325-4ea1-85d8-4b3acd8f976a"));
+        produit4.setNom("Produit 4");
+
         Epicerie epicerie = new Epicerie();
         epicerie.setIdentifiant(UUID.fromString("35a6a780-e6d2-4ef9-b2e2-aba5312110a0"));
-        epicerie.getProduits().addAll(List.of(produit1, produit2, produit3));
+        epicerie.getProduits().addAll(List.of(produit1, produit2, produit3, produit4));
 
         return epicerie;
     }

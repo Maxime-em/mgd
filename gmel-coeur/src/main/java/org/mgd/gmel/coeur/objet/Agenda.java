@@ -33,12 +33,7 @@ public class Agenda extends Jo<AgendaDto> {
     @Override
     public void depuis(AgendaDto dto) throws JaoExecutionException, JaoParseException, VerificationException {
         Verifications.nonNull(dto.getMenus(), "Les menus d''un agenda devrait être une liste éventuellement vide");
-        Verifications.nonMultiple(
-                dto.getMenus(),
-                (menuDto1, menuDto2) -> menuDto1.getAnnee().equals(menuDto2.getAnnee()) && menuDto1.getSemaine().equals(menuDto2.getSemaine()),
-                "Les semaines annuelles des menus dans un agenda doivent être unique"
-        );
-        getMenus().addAll(new MenuJao().charger(dto.getMenus(), this));
+        getMenus().addAll(new MenuJao().chargerParReferences(dto.getMenus()));
     }
 
     @Override

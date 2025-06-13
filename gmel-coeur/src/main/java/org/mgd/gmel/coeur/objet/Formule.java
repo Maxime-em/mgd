@@ -55,7 +55,7 @@ public class Formule extends Jo<FormuleDto> implements Comparable<Formule> {
     @Override
     public void depuis(FormuleDto dto) throws JaoExecutionException, JaoParseException {
         if (dto.getRecette() != null) {
-            setRecette(new RecetteJao().charger(dto.getRecette(), this));
+            setRecette(new RecetteJao().chargerParReference(dto.getRecette()));
         }
 
         if (dto.getPeriode() != null) {

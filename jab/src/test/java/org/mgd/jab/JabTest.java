@@ -68,8 +68,6 @@ class JabTest {
                 () -> Assertions.assertTrue(jabMinimal.ads.isEmpty()),
                 () -> Assertions.assertNotNull(jabMinimal.jaos),
                 () -> Assertions.assertTrue(jabMinimal.jaos.isEmpty()),
-                () -> Assertions.assertNotNull(jabMinimal.sources),
-                () -> Assertions.assertTrue(jabMinimal.sources.isEmpty()),
                 () -> Assertions.assertNotNull(sauvegarde),
                 () -> Assertions.assertSame(sauvegarde, JabSingletons.sauvegarde())
         );
@@ -97,8 +95,6 @@ class JabTest {
                 () -> Assertions.assertNotNull(jab.ads.get("voie")),
                 () -> Assertions.assertNotNull(jab.jaos),
                 () -> Assertions.assertEquals(2, jab.jaos.size()),
-                () -> Assertions.assertNotNull(jab.sources),
-                () -> Assertions.assertTrue(jab.sources.isEmpty()),
                 () -> Assertions.assertDoesNotThrow(jab::disposer)
         );
     }
