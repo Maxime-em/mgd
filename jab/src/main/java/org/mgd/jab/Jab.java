@@ -27,7 +27,6 @@ import java.util.TreeMap;
 public abstract class Jab {
     protected final Path base;
     protected final Properties proprietes = new Properties();
-    protected final SortedMap<String, Jo<? extends Dto>> sources = new TreeMap<>();
     protected final SortedMap<String, Jao<? extends Dto, ? extends Jo<? extends Dto>>> jaos = new TreeMap<>();
     protected final SortedMap<String, Ad<? extends Dto, ? extends Jo<? extends Dto>, ? extends Af<? extends Dto, ? extends Jo<? extends Dto>>>> ads = new TreeMap<>();
     private final JabSauvegarde sauvegarde;
