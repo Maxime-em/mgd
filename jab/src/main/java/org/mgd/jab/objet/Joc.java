@@ -1,6 +1,5 @@
 package org.mgd.jab.objet;
 
-import com.google.gson.annotations.JsonAdapter;
 import org.mgd.jab.dto.Dto;
 import org.mgd.jab.utilitaire.Jos;
 
@@ -15,7 +14,6 @@ import java.util.Objects;
  * @param <T> Type du champ métier
  * @author Maxime
  */
-@JsonAdapter(JocJsonSerializer.class)
 public class Joc<T> {
     protected final Jo<? extends Dto> contenant;
     protected T contenu;
