@@ -5,13 +5,14 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import org.mgd.connexion.exception.ConnexionException;
 import org.mgd.gmel.coeur.Jabm;
 import org.mgd.gmel.coeur.objet.*;
 import org.mgd.gmel.coeur.persistence.FormuleJao;
 import org.mgd.gmel.coeur.persistence.PeriodeJao;
 import org.mgd.gmel.javafx.GmelSingletons;
 import org.mgd.gmel.javafx.composant.MenuComposant;
-import org.mgd.gmel.javafx.persistence.exception.ConnectionException;
+import org.mgd.gmel.javafx.connexions.exception.ConnexionsException;
 import org.mgd.gmel.javafx.service.exception.ServiceException;
 import org.mgd.jab.persistence.exception.JaoExecutionException;
 import org.mgd.jab.persistence.exception.JaoParseException;
@@ -30,7 +31,7 @@ public class MenuService extends Service {
             GmelSingletons.connexion().ouvrir();
             jabm = GmelSingletons.connexion().getJabm();
             instance = new MenuService();
-        } catch (ConnectionException e) {
+        } catch (ConnexionsException | ConnexionException e) {
             throw new ServiceException(e);
         }
     }

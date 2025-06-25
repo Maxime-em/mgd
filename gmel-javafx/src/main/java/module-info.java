@@ -15,7 +15,7 @@ module org.mgd.gmel.javafx {
     opens org.mgd.gmel.javafx.controle to javafx.fxml, javafx.graphics;
     opens org.mgd.gmel.javafx.scene to javafx.fxml, javafx.graphics;
 
-    exports org.mgd.gmel.javafx.persistence.exception;
-    exports org.mgd.gmel.javafx.persistence;
+    exports org.mgd.gmel.javafx.connexions;
+    exports org.mgd.gmel.javafx.connexions.exception;
     exports org.mgd.gmel.javafx;
 }

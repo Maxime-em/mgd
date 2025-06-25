@@ -1,7 +1,7 @@
 package org.mgd.gmel.javafx.composant;
 
 import javafx.fxml.Initializable;
-import org.mgd.gmel.javafx.persistence.exception.ConnectionException;
+import org.mgd.gmel.javafx.connexions.exception.ConnexionsException;
 import org.mgd.utilitaire.Strings;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ public class SemaineCelluleTitre extends SemaineCelluleEntete<LocalDate> impleme
     private static final DateTimeFormatter formateurSemaine = new DateTimeFormatterBuilder().appendPattern("'Semaine' ww").toFormatter();
     private static final DateTimeFormatter formateurMoisAnnee = new DateTimeFormatterBuilder().appendPattern("MMMM yyyy").toFormatter();
 
-    public SemaineCelluleTitre() throws IOException, ConnectionException {
+    public SemaineCelluleTitre() throws IOException, ConnexionsException {
         super();
 
         load();

@@ -4,10 +4,11 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import org.mgd.connexion.exception.ConnexionException;
 import org.mgd.gmel.coeur.commun.Mesure;
 import org.mgd.gmel.coeur.objet.*;
 import org.mgd.gmel.javafx.GmelSingletons;
-import org.mgd.gmel.javafx.persistence.exception.ConnectionException;
+import org.mgd.gmel.javafx.connexions.exception.ConnexionsException;
 import org.mgd.gmel.javafx.service.exception.ServiceException;
 import org.mgd.jab.persistence.exception.JaoExecutionException;
 import org.mgd.jab.persistence.exception.JaoParseException;
@@ -25,7 +26,7 @@ public class ImprimerieService extends Service {
     static {
         try {
             instance = new ImprimerieService();
-        } catch (ConnectionException | JaoExecutionException | IOException | JaoParseException e) {
+        } catch (ConnexionsException | ConnexionException | JaoExecutionException | IOException | JaoParseException e) {
             throw new ServiceException(e);
         }
     }
@@ -39,7 +40,7 @@ public class ImprimerieService extends Service {
     private final ListChangeListener<Menu> menuListChangeListener = getListChangeListener(() -> agenda.get().getMenus());
     private final ListChangeListener<ProduitQuantifier> produitsQuantifierListChangeListener = getListChangeListener(() -> inventaire.get().getProduitsQuantifier());
 
-    private ImprimerieService() throws ConnectionException, JaoExecutionException, IOException, JaoParseException {
+    private ImprimerieService() throws ConnexionsException, ConnexionException, JaoExecutionException, IOException, JaoParseException {
         agenda.addListener((observable, ancien, nouveau) -> {
             menus.removeListener(menuListChangeListener);
             menus.clear();
@@ -70,7 +71,7 @@ public class ImprimerieService extends Service {
         menus.setAll(debut.datesUntil(fin.plusDays(1), Period.ofDays(7)).map(jour -> {
             try {
                 return GmelSingletons.connexion().getJabm().menu(jour);
-            } catch (JaoParseException | JaoExecutionException | IOException | ConnectionException e) {
+            } catch (JaoParseException | JaoExecutionException | IOException | ConnexionsException e) {
                 throw new ServiceException(e);
             }
         }).toList());

@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import org.mgd.connexion.exception.ConnexionException;
 import org.mgd.gmel.coeur.commun.Mesure;
 import org.mgd.gmel.coeur.objet.Epicerie;
 import org.mgd.gmel.coeur.objet.Produit;
@@ -15,7 +16,7 @@ import org.mgd.gmel.coeur.persistence.ProduitQuantifierJao;
 import org.mgd.gmel.coeur.persistence.QuantiteJao;
 import org.mgd.gmel.javafx.GmelSingletons;
 import org.mgd.gmel.javafx.composant.exception.ComposantException;
-import org.mgd.gmel.javafx.persistence.exception.ConnectionException;
+import org.mgd.gmel.javafx.connexions.exception.ConnexionsException;
 import org.mgd.gmel.javafx.service.exception.ServiceException;
 import org.mgd.jab.persistence.exception.JaoExecutionException;
 import org.mgd.jab.persistence.exception.JaoParseException;
@@ -29,7 +30,7 @@ public class EpicerieService extends Service {
     static {
         try {
             instance = new EpicerieService();
-        } catch (ConnectionException | JaoExecutionException | IOException | JaoParseException e) {
+        } catch (ConnexionsException | ConnexionException | JaoExecutionException | IOException | JaoParseException e) {
             throw new ServiceException(e);
         }
     }
@@ -41,7 +42,7 @@ public class EpicerieService extends Service {
 
     private final ListChangeListener<Produit> produitListChangeListener = getListChangeListener(() -> epicerie.get().getProduits());
 
-    private EpicerieService() throws ConnectionException, JaoExecutionException, IOException, JaoParseException {
+    private EpicerieService() throws ConnexionsException, ConnexionException, JaoExecutionException, IOException, JaoParseException {
         epicerie.addListener((observable, ancienne, nouvelle) -> {
             produits.removeListener(produitListChangeListener);
             produits.clear();

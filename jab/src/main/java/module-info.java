@@ -1,6 +1,7 @@
 module mgd.jab {
     requires com.google.gson;
     requires org.apache.logging.log4j;
+    requires mgd.commun;
 
     opens org.mgd.jab to com.google.gson;
     opens org.mgd.jab.dto to com.google.gson;

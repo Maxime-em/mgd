@@ -11,8 +11,8 @@ import javafx.scene.layout.GridPane;
 import org.mgd.gmel.coeur.commun.TypeDocument;
 import org.mgd.gmel.javafx.GmelSingletons;
 import org.mgd.gmel.javafx.composant.exception.ComposantException;
+import org.mgd.gmel.javafx.connexions.exception.ConnexionsException;
 import org.mgd.gmel.javafx.convertisseur.TypeDocumentStringConvertisseur;
-import org.mgd.gmel.javafx.persistence.exception.ConnectionException;
 import org.mgd.gmel.javafx.service.ImprimerieService;
 import org.mgd.gmel.pdf.Pabm;
 import org.mgd.pam.exception.PabException;
@@ -73,7 +73,7 @@ public class ImprimerieComposant extends GridPane implements Initializable {
             } else {
                 Desktop.getDesktop().open(pabm.ecrire(imprimerieService.inventaireProperty().get()).toFile());
             }
-        } catch (PabException | ConnectionException | IOException e) {
+        } catch (PabException | ConnexionsException | IOException e) {
             throw new ComposantException(e);
         }
     }

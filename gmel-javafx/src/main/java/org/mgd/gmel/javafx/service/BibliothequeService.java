@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.scene.input.DataFormat;
+import org.mgd.connexion.exception.ConnexionException;
 import org.mgd.gmel.coeur.objet.Bibliotheque;
 import org.mgd.gmel.coeur.objet.LivreCuisine;
 import org.mgd.gmel.coeur.objet.ProduitQuantifier;
@@ -14,7 +15,7 @@ import org.mgd.gmel.coeur.objet.Recette;
 import org.mgd.gmel.coeur.persistence.LivreCuisineJao;
 import org.mgd.gmel.coeur.persistence.RecetteJao;
 import org.mgd.gmel.javafx.GmelSingletons;
-import org.mgd.gmel.javafx.persistence.exception.ConnectionException;
+import org.mgd.gmel.javafx.connexions.exception.ConnexionsException;
 import org.mgd.gmel.javafx.service.exception.ServiceException;
 import org.mgd.jab.persistence.exception.JaoExecutionException;
 import org.mgd.jab.persistence.exception.JaoParseException;
@@ -33,7 +34,7 @@ public class BibliothequeService extends Service {
     static {
         try {
             instance = new BibliothequeService();
-        } catch (ConnectionException | JaoExecutionException | IOException | JaoParseException e) {
+        } catch (ConnexionsException | ConnexionException | JaoExecutionException | IOException | JaoParseException e) {
             throw new ServiceException(e);
         }
     }
@@ -53,7 +54,7 @@ public class BibliothequeService extends Service {
     private final ListChangeListener<Recette> recetteListChangeListener = getListChangeListener(() -> livreCuisine.get().getRecettes());
     private final ListChangeListener<ProduitQuantifier> recetteProduitsQuantifierListChangeListener = getListChangeListener(() -> recette.get().getProduitsQuantifier());
 
-    private BibliothequeService() throws ConnectionException, JaoExecutionException, IOException, JaoParseException {
+    private BibliothequeService() throws ConnexionsException, ConnexionException, JaoExecutionException, IOException, JaoParseException {
         super();
 
         bibliotheque.addListener((observable, ancienne, nouvelle) -> {

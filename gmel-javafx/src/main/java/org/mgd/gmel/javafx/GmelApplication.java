@@ -6,7 +6,7 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.mgd.gmel.javafx.persistence.exception.ConnectionException;
+import org.mgd.gmel.javafx.connexions.exception.ConnexionsException;
 import org.mgd.gmel.javafx.scene.GmelScene;
 
 import java.io.IOException;
@@ -65,7 +65,7 @@ public class GmelApplication extends Application {
     }
 
     @Override
-    public void stop() throws ConnectionException {
+    public void stop() throws ConnexionsException {
         GmelSingletons.connexion().fermer();
     }
 }

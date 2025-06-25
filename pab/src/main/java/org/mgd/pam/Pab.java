@@ -4,6 +4,7 @@ import org.apache.fontbox.util.autodetect.FontFileFinder;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.mgd.connexion.Connectable;
 import org.mgd.pam.exception.PabException;
 import org.mgd.pam.pagination.Paginateur;
 import org.mgd.pam.producteur.exception.ProducteurException;
@@ -19,7 +20,7 @@ import java.text.MessageFormat;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 
-public abstract class Pab {
+public abstract class Pab implements Connectable {
     protected final Properties proprietes = new Properties();
 
     private final Path cheminFichier;
@@ -69,5 +70,9 @@ public abstract class Pab {
 
     private PDFont chargerPolice(PDDocument document) throws IOException {
         return PDType0Font.load(document, cheminPolice.toFile());
+    }
+
+    public void disposer() {
+        // Rien à faire
     }
 }

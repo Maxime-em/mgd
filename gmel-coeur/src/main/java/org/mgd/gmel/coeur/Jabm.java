@@ -1,5 +1,6 @@
 package org.mgd.gmel.coeur;
 
+import org.mgd.connexion.Connectable;
 import org.mgd.gmel.coeur.objet.*;
 import org.mgd.gmel.coeur.persistence.*;
 import org.mgd.gmel.coeur.source.*;
@@ -12,7 +13,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.time.LocalDate;
 
-public class Jabm extends Jab {
+public class Jabm extends Jab implements Connectable {
     public static final String NOM_PAR_DEFAUT = "defaut";
 
     public Jabm(Path chemin) throws JabException {

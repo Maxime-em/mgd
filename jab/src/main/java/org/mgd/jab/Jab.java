@@ -1,5 +1,6 @@
 package org.mgd.jab;
 
+import org.mgd.connexion.Connectable;
 import org.mgd.jab.dto.Dto;
 import org.mgd.jab.exception.JabException;
 import org.mgd.jab.objet.Jo;
@@ -24,7 +25,7 @@ import java.util.TreeMap;
  *
  * @author Maxime
  */
-public abstract class Jab {
+public abstract class Jab implements Connectable {
     protected final Path base;
     protected final Properties proprietes = new Properties();
     protected final SortedMap<String, Jao<? extends Dto, ? extends Jo<? extends Dto>>> jaos = new TreeMap<>();

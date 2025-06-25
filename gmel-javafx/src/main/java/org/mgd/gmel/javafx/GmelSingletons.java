@@ -1,18 +1,18 @@
 package org.mgd.gmel.javafx;
 
-import org.mgd.gmel.javafx.persistence.Connexion;
-import org.mgd.gmel.javafx.persistence.exception.ConnectionException;
+import org.mgd.gmel.javafx.connexions.Connexions;
+import org.mgd.gmel.javafx.connexions.exception.ConnexionsException;
 
 public class GmelSingletons {
-    private static Connexion connexion;
+    private static Connexions connexions;
 
     private GmelSingletons() {
     }
 
-    public static Connexion connexion() throws ConnectionException {
-        if (connexion == null) {
-            connexion = new Connexion();
+    public static Connexions connexion() throws ConnexionsException {
+        if (connexions == null) {
+            connexions = new Connexions();
         }
-        return connexion;
+        return connexions;
     }
 }
