@@ -25,18 +25,18 @@
         <maven.jar.plugin>3.3.0</maven.jar.plugin>
         <maven.resources.plugin>3.3.1</maven.resources.plugin>
         <maven.dependency.plugin>3.6.0</maven.dependency.plugin>
+        <maven.javafx.plugin.version>0.0.8</maven.javafx.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <gson.version>2.10.1</gson.version>
-        <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
-        <javafx.version>23.0.2</javafx.version>
         <junit.version>5.10.1</junit.version>
+        <log4j.version>2.24.3</log4j.version>
+        <gson.version>2.10.1</gson.version>
+        <pdfbox.version>3.0.3</pdfbox.version>
+        <javafx.version>23.0.2</javafx.version>
         <mgd.commun.version>1.0-SNAPSHOT</mgd.commun.version>
-        <mgd.gmel.coeur.version>1.0-SNAPSHOT</mgd.gmel.coeur.version>
-        <mgd.gmel.pdf.version>1.0-SNAPSHOT</mgd.gmel.pdf.version>
         <mgd.jab.version>1.0-SNAPSHOT</mgd.jab.version>
         <mgd.pab.version>1.0-SNAPSHOT</mgd.pab.version>
-        <pdfbox.version>3.0.3</pdfbox.version>
-        <log4j.version>2.24.3</log4j.version>
+        <mgd.gmel.coeur.version>1.0-SNAPSHOT</mgd.gmel.coeur.version>
+        <mgd.gmel.pdf.version>1.0-SNAPSHOT</mgd.gmel.pdf.version>
     </properties>
 
     <dependencies>

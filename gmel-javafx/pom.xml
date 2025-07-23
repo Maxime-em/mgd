@@ -73,7 +73,7 @@
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>${javafx.maven.plugin.version}</version>
+                <version>${maven.javafx.plugin.version}</version>
                 <executions>
                     <execution>
                         <id>default-cli</id>
