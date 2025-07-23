@@ -3,6 +3,7 @@ package org.mgd.jab.persistence;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mgd.jab.JabCreation;
+import org.mgd.jab.JabSauvegarde;
 import org.mgd.jab.JabSingletons;
 import org.mgd.jab.JabTable;
 import org.mgd.jab.dto.Dto;
@@ -54,7 +55,8 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
 
     private D from(Path fichier) throws JaoParseException {
         try {
-            return JabSingletons.sauvegarde().gsonSauvegarde.fromJson(Files.newBufferedReader(fichier), classeDto);
+            JabSingletons.sauvegarde();
+            return JabSauvegarde.gsonSauvegarde.fromJson(Files.newBufferedReader(fichier), classeDto);
         } catch (IOException e) {
             throw new JaoParseException(MessageFormat.format("Impossible de charger le fichier {0}.", fichier), e);
         }
@@ -162,10 +164,6 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
             O objet = charger(dto, null);
 
             creation.ajouter(fichier, objet.getIdentifiant());
-
-            if (dto.getIdentifiant() == null) {
-                objet.sauvegarder();
-            }
 
             return objet;
         }

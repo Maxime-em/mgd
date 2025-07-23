@@ -1,5 +1,7 @@
 package org.mgd.jab;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.mgd.connexion.Connectable;
 import org.mgd.jab.dto.Dto;
 import org.mgd.jab.exception.JabException;
@@ -7,6 +9,7 @@ import org.mgd.jab.objet.Jo;
 import org.mgd.jab.persistence.Jao;
 import org.mgd.jab.source.Ad;
 import org.mgd.jab.source.Af;
+import org.mgd.utilitaire.Fichiers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,6 +29,8 @@ import java.util.TreeMap;
  * @author Maxime
  */
 public abstract class Jab implements Connectable {
+    private static final Logger LOGGER = LogManager.getLogger(Jab.class);
+
     protected final Path base;
     protected final Properties proprietes = new Properties();
     protected final SortedMap<String, Jao<? extends Dto, ? extends Jo<? extends Dto>>> jaos = new TreeMap<>();
@@ -85,17 +90,21 @@ public abstract class Jab implements Connectable {
             if (proprietes.containsKey("jab.sources")) {
                 for (String ad : proprietes.getProperty("jab.sources").split(",")) {
                     String[] chaines = ad.split(":");
-                    String nom = chaines[0];
-                    if (nom == null || nom.isBlank()) {
+                    String pattern = chaines[0];
+                    if (pattern == null || pattern.isBlank()) {
                         throw new JabException("Les noms des sources ne doivent pas être vide.");
-                    } else if (!ads.containsKey(nom)) {
-                        Path dossier = base.resolve(Paths.get(nom));
+                    }
+                    for (Path dossier : Fichiers.rechercherDossiers(base, pattern)) {
+                        String nom = dossier.getFileName().toString();
+                        if (ads.containsKey(nom)) {
+                            LOGGER.warn("Le nom {} de l'accès au dossier {} existe déjà pour le dossier {}.", nom, dossier, ads.get(nom));
+                        }
                         ads.put(nom, (Ad<? extends Dto, ? extends Jo<? extends Dto>, ? extends Af<? extends Dto, ? extends Jo<? extends Dto>>>) Class.forName(chaines[1]).getDeclaredConstructor(Path.class).newInstance(dossier));
                     }
                 }
             }
-        } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException |
-                 IllegalAccessException | InvocationTargetException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException |
+                 InvocationTargetException | IOException e) {
             throw new JabException(e);
         }
     }

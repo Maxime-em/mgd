@@ -1,7 +1,5 @@
 package org.mgd.jab.persistence;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
+import org.mgd.jab.AbstractTest;
 import org.mgd.jab.JabSingletons;
 import org.mgd.jab.dto.Dto;
 import org.mgd.jab.dto.PersonneDto;
@@ -33,7 +32,7 @@ import java.util.stream.Stream;
 // TODO tester plus précisément les collections et tableaux associatifs
 // TODO tester LocalDateAdapter
 // TODO tester nonInclus
-class JaoTest {
+class JaoTest extends AbstractTest {
     public static final String UUID_PERSONNE_1 = "5896fac0-c48d-11ed-afa1-0242ac120002";
     public static final String UUID_PERSONNE_2 = "5f2a5aa8-c48d-11ed-afa1-0242ac120002";
     public static final String UUID_JEU_1 = "7b056a2a-c48c-11ed-afa1-0242ac120002";
@@ -343,20 +342,6 @@ class JaoTest {
         assertFichier(attenduAdresse, sauvegardeAdresse);
     }
 
-    private void assertJson(JsonElement attendu, JsonElement actuel) {
-        Assertions.assertTrue(attendu.isJsonObject());
-        Assertions.assertTrue(actuel.isJsonObject());
-        Assertions.assertEquals(attendu.getAsJsonObject(), actuel.getAsJsonObject());
-    }
-
-    private void assertFichierVide(Path actuel) throws IOException {
-        assertJson(JsonParser.parseString("{}"), JsonParser.parseReader(Files.newBufferedReader(actuel)));
-    }
-
-    private void assertFichier(Path attendu, Path actuel) throws IOException {
-        assertJson(JsonParser.parseReader(Files.newBufferedReader(attendu)), JsonParser.parseReader(Files.newBufferedReader(actuel)));
-    }
-
     @Test
     void modificationJoc() throws IOException, JaoParseException, JaoExecutionException {
         Path defautPersonne = ressourcesCommun.resolve("personne_modification_attendu.json");
@@ -431,14 +416,6 @@ class JaoTest {
                         duplicationPersonne.getLivres().values().stream().flatMap(livre -> livre.getChapitres().keySet().stream()).toList()
                 )
         );
-    }
-
-    private <D extends Dto, O extends Jo<D>> void assertIdentifiantsNonEgales(Collection<O> objets1, Collection<O> objets2) {
-        Assertions.assertTrue(objets1.stream().allMatch(objet1 -> objets2.stream().noneMatch(objet1::equals)));
-    }
-
-    private <K, D extends Dto, O extends Jo<D>> void assertIdentifiantsNonEgales(Map<K, O> objets1, Map<K, O> objets2) {
-        Assertions.assertTrue(objets1.values().stream().allMatch(objet1 -> objets2.values().stream().noneMatch(objet1::equals)));
     }
 
     private static class verifierChargementArgumentsProvider implements ArgumentsProvider {

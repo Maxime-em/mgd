@@ -7,6 +7,7 @@ import com.google.gson.JsonParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mgd.jab.AbstractTest;
 import org.mgd.jab.JabSingletons;
 import org.mgd.jab.objet.Adresse;
 import org.mgd.jab.objet.Commune;
@@ -23,7 +24,7 @@ import java.text.MessageFormat;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-class AdTest {
+class AdTest extends AbstractTest {
     private static Path ressourcesCommun;
     private static Path ressourcesSupprimable;
 
@@ -58,7 +59,9 @@ class AdTest {
 
         Voie voie = voieAf.jo();
         Assertions.assertNotNull(voie.getIdentifiant());
+        assertFichierVide(fichier);
 
+        voie.sauvegarder();
         JsonElement elementActuel = JsonParser.parseReader(Files.newBufferedReader(fichier));
         Assertions.assertTrue(elementActuel.isJsonObject());
 

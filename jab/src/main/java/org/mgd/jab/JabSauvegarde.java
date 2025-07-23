@@ -26,13 +26,12 @@ import java.util.concurrent.*;
  * @author Maxime
  */
 public class JabSauvegarde {
-    private static final Logger LOGGER = LogManager.getLogger(JabSauvegarde.class);
-
-    public final Gson gsonSauvegarde = new GsonBuilder().enableComplexMapKeySerialization()
+    public static final Gson gsonSauvegarde = new GsonBuilder().enableComplexMapKeySerialization()
             .registerTypeHierarchyAdapter(LocalDate.class, new LocalDateAdapter())
             .registerTypeHierarchyAdapter(Path.class, new PathAdapter())
             .registerTypeHierarchyAdapter(Class.class, new ClassAdapter())
             .create();
+    private static final Logger LOGGER = LogManager.getLogger(JabSauvegarde.class);
     private final Moniteur moniteur = new Moniteur();
     private final JabCreation creation;
     private final Map<Path, String> sources = new ConcurrentHashMap<>();
@@ -48,8 +47,20 @@ public class JabSauvegarde {
         this.nombreThreads = nombreThreads;
     }
 
+    public int getNombreThreads() {
+        return nombreThreads;
+    }
+
     public void setAsynchrone(boolean asynchrone) {
         this.asynchrone = asynchrone;
+    }
+
+    public boolean isAsynchrone() {
+        return asynchrone;
+    }
+
+    public long getDelai() {
+        return delai;
     }
 
     public void setDelai(long delai) {

@@ -23,16 +23,15 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 class JabTest {
+    private static Path ressourcesBase;
     private static Path ressourcesJabs;
     private static Path ressourcesSupprimable;
-    private final long delai = 2000L;
-    private Jabt jab;
-    private JabSauvegarde sauvegarde;
 
     @BeforeEach
-    void setUp() throws IOException, JabException {
+    void setUp() throws IOException {
         JabSingletons.reinitialiser();
 
+        ressourcesBase = Path.of("src/test/resources/base");
         ressourcesJabs = Path.of("src/test/resources/jabs");
         ressourcesSupprimable = Path.of("src/test/resources/base/supprimable");
 
@@ -45,16 +44,12 @@ class JabTest {
                 }
             });
         }
-
-        jab = new Jabt(ressourcesJabs.resolve("jab_complet.properties"));
-
-        sauvegarde = JabSingletons.sauvegarde();
     }
 
     @ParameterizedTest
     @ArgumentsSource(JabTest.propertiesExceptionArgumentsProvider.class)
-    void chargerException(String chemin, String message) {
-        Assertions.assertThrows(JabException.class, () -> new Jabt(chemin != null ? ressourcesJabs.resolve(chemin) : null), message);
+    void chargerException(String chemin) {
+        Assertions.assertThrows(JabException.class, () -> new Jabt(chemin != null ? ressourcesJabs.resolve(chemin) : null));
     }
 
     @Test
@@ -63,18 +58,20 @@ class JabTest {
         Assertions.assertAll(
                 () -> Assertions.assertNotNull(jabMinimal.proprietes),
                 () -> Assertions.assertTrue(jabMinimal.proprietes.containsKey("jab.base")),
-                () -> Assertions.assertEquals(Path.of(jabMinimal.proprietes.getProperty("jab.base")), jab.base),
+                () -> Assertions.assertEquals(ressourcesBase.toAbsolutePath(), Path.of(jabMinimal.proprietes.getProperty("jab.base"))),
+                () -> Assertions.assertEquals(100, JabSingletons.sauvegarde().getNombreThreads()),
+                () -> Assertions.assertTrue(JabSingletons.sauvegarde().isAsynchrone()),
+                () -> Assertions.assertEquals(60_000L, JabSingletons.sauvegarde().getDelai()),
                 () -> Assertions.assertNotNull(jabMinimal.ads),
                 () -> Assertions.assertTrue(jabMinimal.ads.isEmpty()),
                 () -> Assertions.assertNotNull(jabMinimal.jaos),
-                () -> Assertions.assertTrue(jabMinimal.jaos.isEmpty()),
-                () -> Assertions.assertNotNull(sauvegarde),
-                () -> Assertions.assertSame(sauvegarde, JabSingletons.sauvegarde())
+                () -> Assertions.assertTrue(jabMinimal.jaos.isEmpty())
         );
     }
 
     @Test
-    void chargerFichierComplet() {
+    void chargerFichierComplet() throws JabException {
+        Jabt jab = new Jabt(ressourcesJabs.resolve("jab_complet.properties"));
         Assertions.assertAll(
                 () -> Assertions.assertNotNull(jab.proprietes),
                 () -> Assertions.assertTrue(jab.proprietes.containsKey("jab.base")),
@@ -83,10 +80,13 @@ class JabTest {
                 () -> Assertions.assertTrue(jab.proprietes.containsKey("jab.sauvegarde.delai")),
                 () -> Assertions.assertTrue(jab.proprietes.containsKey("jab.sources")),
                 () -> Assertions.assertTrue(jab.proprietes.containsKey("jab.persistences")),
-                () -> Assertions.assertEquals("E:\\IdeaProjects\\mgd\\jab\\src\\test\\resources\\base", jab.proprietes.getProperty("jab.base")),
+                () -> Assertions.assertEquals(ressourcesBase.toAbsolutePath(), Path.of(jab.proprietes.getProperty("jab.base"))),
                 () -> Assertions.assertEquals("10", jab.proprietes.getProperty("jab.sauvegarde.nombre.threads")),
                 () -> Assertions.assertEquals("false", jab.proprietes.getProperty("jab.sauvegarde.asynchrone")),
                 () -> Assertions.assertEquals("5000", jab.proprietes.getProperty("jab.sauvegarde.delai")),
+                () -> Assertions.assertEquals(10, JabSingletons.sauvegarde().getNombreThreads()),
+                () -> Assertions.assertFalse(JabSingletons.sauvegarde().isAsynchrone()),
+                () -> Assertions.assertEquals(5_000L, JabSingletons.sauvegarde().getDelai()),
                 () -> Assertions.assertNotNull(jab.ads),
                 () -> Assertions.assertEquals(2, jab.ads.size()),
                 () -> Assertions.assertTrue(jab.ads.containsKey("adresse")),
@@ -100,8 +100,26 @@ class JabTest {
     }
 
     @Test
+    void chargerFichierSourceInconnu() throws JabException {
+        Jabt jab = new Jabt(ressourcesJabs.resolve("jab_source_inconnu.properties"));
+        Assertions.assertAll(
+                () -> Assertions.assertNotNull(jab.proprietes),
+                () -> Assertions.assertTrue(jab.proprietes.containsKey("jab.base")),
+                () -> Assertions.assertTrue(jab.proprietes.containsKey("jab.sources")),
+                () -> Assertions.assertEquals(ressourcesBase.toAbsolutePath(), Path.of(jab.proprietes.getProperty("jab.base"))),
+                () -> Assertions.assertNotNull(jab.ads),
+                () -> Assertions.assertEquals(0, jab.ads.size()),
+                () -> Assertions.assertNotNull(jab.jaos),
+                () -> Assertions.assertEquals(0, jab.jaos.size()),
+                () -> Assertions.assertDoesNotThrow(jab::disposer)
+        );
+    }
+
+    @Test
     void sauvegarder() throws JaoParseException, JaoExecutionException, IOException {
+        JabSauvegarde sauvegarde = JabSingletons.sauvegarde();
         sauvegarde.setAsynchrone(true);
+        sauvegarde.setDelai(3_000L);
 
         Pegi pegi = new Pegi();
         pegi.setIdentifiant(UUID.randomUUID());
@@ -117,14 +135,14 @@ class JabTest {
                     sauvegarde.demarrer(voie);
                     sauvegarde.attendre();
                     long temps = System.currentTimeMillis() - debut;
-                    Assertions.assertTrue(temps >= delai);
+                    Assertions.assertTrue(temps >= sauvegarde.getDelai());
                 },
                 () -> {
                     long debut = System.currentTimeMillis();
                     sauvegarde.demarrer(voie);
                     sauvegarde.reinitialiser();
                     long temps = System.currentTimeMillis() - debut;
-                    Assertions.assertTrue(temps >= delai);
+                    Assertions.assertTrue(temps >= sauvegarde.getDelai());
                 }
         );
 
@@ -138,12 +156,11 @@ class JabTest {
         @Override
         public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
             return Stream.of(
-                    Arguments.of(null, "Le chemin vers le fichier de configuration du Jab ne doit pas être nul."),
-                    Arguments.of("inexistant.properties", "Impossible de lire le fichier de configuration du Jab avec le chemin src\\test\\resources\\jabs\\inexistant.properties."),
-                    Arguments.of("jab_vide.properties", "Le fichier de configuration du Jab doit contenir le chemin vers la base via la propriété jab.base."),
-                    Arguments.of("jab_source_inconnu.properties", "java.lang.ClassNotFoundException: org.mgd.jab.source.InconnuAd"),
-                    Arguments.of("jab_source_nom_vide.properties", "Les noms des sources ne doivent pas être vide."),
-                    Arguments.of("jab_jao_inconnu.properties", "java.lang.ClassNotFoundException: org.mgd.jab.persistence.InconnuJao")
+                    Arguments.of(new Object[]{null}),
+                    Arguments.of("inexistant.properties"),
+                    Arguments.of("jab_vide.properties"),
+                    Arguments.of("jab_source_nom_vide.properties"),
+                    Arguments.of("jab_jao_inconnu.properties")
             );
         }
     }

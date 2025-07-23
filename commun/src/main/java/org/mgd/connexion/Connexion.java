@@ -15,10 +15,11 @@ public abstract class Connexion<T extends Connectable> {
 
     protected abstract T construire(Path chemin) throws ConnexionException;
 
-    public void ouvrir() throws ConnexionException {
+    public Connexion<T> ouvrir() throws ConnexionException {
         if (!isOuverte()) {
             instance = construire(fichierConfiguration);
         }
+        return this;
     }
 
     public void fermer() {

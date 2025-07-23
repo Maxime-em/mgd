@@ -38,4 +38,4 @@ build/
 ### Gmel ###
 /jab/src/test/resources/base/supprimable
 /gmel-coeur/src/test/resources/base/supprimable
-/gmel-javafx/extern/
+/**/extern/
