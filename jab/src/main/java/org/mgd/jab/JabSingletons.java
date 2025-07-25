@@ -1,6 +1,5 @@
 package org.mgd.jab;
 
-import org.mgd.jab.dto.Dto;
 import org.mgd.jab.objet.Jo;
 
 import java.util.HashMap;
@@ -12,7 +11,7 @@ import java.util.Map;
  * @author Maxime
  */
 public class JabSingletons {
-    private static final Map<Class<? extends Jo<? extends Dto>>, JabTable<? extends Dto, ? extends Jo<? extends Dto>>> tables = new HashMap<>();
+    private static final Map<Class<? extends Jo>, JabTable<? extends Jo>> tables = new HashMap<>();
     private static JabSauvegarde sauvegarde;
     private static JabCreation creation;
 
@@ -20,9 +19,9 @@ public class JabSingletons {
     }
 
     @SuppressWarnings("unchecked")
-    public static <D extends Dto, O extends Jo<D>> JabTable<D, O> table(Class<O> classe) {
+    public static <O extends Jo> JabTable<O> table(Class<O> classe) {
         synchronized (tables) {
-            return (JabTable<D, O>) tables.computeIfAbsent(classe, aClass -> new JabTable<D, O>());
+            return (JabTable<O>) tables.computeIfAbsent(classe, aClass -> new JabTable<O>());
         }
     }
 

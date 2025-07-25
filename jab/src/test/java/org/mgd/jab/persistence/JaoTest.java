@@ -1,6 +1,5 @@
 package org.mgd.jab.persistence;
 
-import com.google.gson.JsonSyntaxException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -155,7 +154,7 @@ class JaoTest extends AbstractTest {
 
     @ParameterizedTest
     @ArgumentsSource(verifierChargementArgumentsProvider.class)
-    <D extends Dto> void verifierChargement(Jo<D> objet, String identifiant, List<Jo<?>> parents, List<Jo<?>> enfants) {
+    void verifierChargement(Jo objet, String identifiant, List<Jo> parents, List<Jo> enfants) {
         Assertions.assertAll(
                 () -> Assertions.assertEquals(UUID.fromString(identifiant), objet.getIdentifiant()),
                 () -> Assertions.assertTrue(parents.stream().allMatch(objet::estEnfantDe)),
@@ -166,8 +165,8 @@ class JaoTest extends AbstractTest {
 
     @ParameterizedTest
     @ArgumentsSource(chargerExceptionArgumentsProvider.class)
-    <T extends Throwable> void chargerException(Class<T> classe, String chemin, Supplier<Jao<Dto, Jo<Dto>>> jaoSupplier) {
-        Jao<Dto, Jo<Dto>> jao = jaoSupplier.get();
+    <T extends Throwable> void chargerException(Class<T> classe, String chemin, Supplier<Jao<Dto, Jo>> jaoSupplier) {
+        Jao<Dto, Jo> jao = jaoSupplier.get();
         Assertions.assertThrows(classe, () -> jao.charger(ressourcesCommun.resolve(chemin)), MessageFormat.format("Chargement de {0} avec {1}", chemin, jao.getClass().getName()));
     }
 
@@ -234,7 +233,7 @@ class JaoTest extends AbstractTest {
     }
 
     @Test
-    void nouveau() throws JaoExecutionException {
+    void nouveau() throws JaoExecutionException, JaoParseException {
         Pegi nouveauPegi = pegiJao.nouveau();
         Jeu nouveauJeu = jeuJao.nouveau(objet -> objet.setPegi(nouveauPegi));
 
@@ -277,9 +276,9 @@ class JaoTest extends AbstractTest {
 
     @ParameterizedTest
     @ArgumentsSource(jsonTableArgumentsProvider.class)
-    void table(Supplier<Set<Jo<Dto>>> josSupplier, Supplier<Jao<Dto, Jo<Dto>>> jaoSupplier, Class<? extends Jo<Dto>> classeJo) {
-        Set<Jo<Dto>> jos = josSupplier.get();
-        Jao<Dto, Jo<Dto>> jao = jaoSupplier.get();
+    void table(Supplier<Set<Jo>> josSupplier, Supplier<Jao<Dto, Jo>> jaoSupplier, Class<? extends Jo> classeJo) {
+        Set<Jo> jos = josSupplier.get();
+        Jao<Dto, Jo> jao = jaoSupplier.get();
         Assertions.assertAll(
                 () -> Assertions.assertNotNull(jao.table()),
                 () -> Assertions.assertSame(jao.table(), JabSingletons.table(classeJo)),
@@ -304,7 +303,7 @@ class JaoTest extends AbstractTest {
         chargementPersonne.setScore(chargementPersonne.getScore());
         assertFichierVide(sauvegardePersonne);
 
-        JabSingletons.sauvegarde().demarrer(chargementPersonne);
+        chargementPersonne.sauvegarder();
         assertFichier(attenduPersonne, sauvegardePersonne);
 
         chargementPersonne.setScore(chargementPersonne.getScore() + 100);
@@ -337,7 +336,7 @@ class JaoTest extends AbstractTest {
 
         Adresse chargementAdresse = adresseJao.charger(sauvegardeAdresse);
         Files.writeString(sauvegardeAdresse, "{}");
-        JabSingletons.sauvegarde().demarrer(chargementAdresse);
+        chargementAdresse.sauvegarder();
 
         assertFichier(attenduAdresse, sauvegardeAdresse);
     }
@@ -392,7 +391,7 @@ class JaoTest extends AbstractTest {
     }
 
     @Test
-    void dupliquer() throws JaoExecutionException {
+    void dupliquer() throws JaoExecutionException, JaoParseException {
         Personne duplicationPersonne = new PersonneJao().dupliquer(personne1);
         Pegi duplicationPegi = new PegiJao().dupliquer(pegi12);
         Map<Chapitre, Pegi> duplicationChapitres = new ChapitreJao().dupliquer(new PegiJao(), livre1.getChapitres());
@@ -456,12 +455,12 @@ class JaoTest extends AbstractTest {
                     Arguments.of(JaoParseException.class, "personne_avec_score_negatif.json", (Supplier<PersonneJao>) PersonneJao::new),
                     Arguments.of(JaoParseException.class, "personne_avec_score_negatif.json", (Supplier<PersonneJao>) PersonneJao::new),
                     Arguments.of(JaoParseException.class, "personne_avec_score_negatif.json", (Supplier<PersonneJao>) PersonneJao::new),
-                    Arguments.of(JaoParseException.class, "adresse_avec_reference_commune_inconnu.json", (Supplier<AdresseJao>) AdresseJao::new),
+                    Arguments.of(JaoExecutionException.class, "adresse_avec_reference_commune_inconnu.json", (Supplier<AdresseJao>) AdresseJao::new),
                     Arguments.of(JaoParseException.class, "adresse_avec_reference_commune_identifiant_inconnu.json", (Supplier<AdresseJao>) AdresseJao::new),
                     Arguments.of(JaoParseException.class, "adresse_avec_reference_commune_sans_chemin.json", (Supplier<AdresseJao>) AdresseJao::new),
                     Arguments.of(JaoParseException.class, "adresse_avec_reference_commune_mauvais_chemin.json", (Supplier<AdresseJao>) AdresseJao::new),
                     Arguments.of(JaoParseException.class, "adresse_avec_reference_commune_sans_classe.json", (Supplier<AdresseJao>) AdresseJao::new),
-                    Arguments.of(JsonSyntaxException.class, "adresse_avec_reference_commune_mauvaise_classe.json", (Supplier<AdresseJao>) AdresseJao::new),
+                    Arguments.of(JaoParseException.class, "adresse_avec_reference_commune_mauvaise_classe.json", (Supplier<AdresseJao>) AdresseJao::new),
                     Arguments.of(JaoParseException.class, "adresse_avec_reference_sans_pays.json", (Supplier<AdresseJao>) AdresseJao::new)
             );
         }

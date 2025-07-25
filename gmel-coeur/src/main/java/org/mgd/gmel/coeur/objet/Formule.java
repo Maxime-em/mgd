@@ -1,13 +1,7 @@
 package org.mgd.gmel.coeur.objet;
 
-import org.mgd.gmel.coeur.dto.FormuleDto;
-import org.mgd.gmel.coeur.persistence.FormuleJao;
-import org.mgd.gmel.coeur.persistence.PeriodeJao;
-import org.mgd.gmel.coeur.persistence.RecetteJao;
 import org.mgd.jab.objet.Jo;
 import org.mgd.jab.objet.Joc;
-import org.mgd.jab.persistence.exception.JaoExecutionException;
-import org.mgd.jab.persistence.exception.JaoParseException;
 import org.mgd.temps.LocalRepas;
 
 import java.util.Comparator;
@@ -18,7 +12,7 @@ import java.util.Comparator;
  * @author Maxime
  */
 @SuppressWarnings("java:S2160")
-public class Formule extends Jo<FormuleDto> implements Comparable<Formule> {
+public class Formule extends Jo implements Comparable<Formule> {
     private final Joc<Recette> recette = new Joc<>(this);
     private final Joc<Periode> periode = new Joc<>(this);
     private final Joc<Integer> nombreConvives = new Joc<>(this);
@@ -45,24 +39,6 @@ public class Formule extends Jo<FormuleDto> implements Comparable<Formule> {
 
     public void setNombreConvives(Integer nombreConvives) {
         this.nombreConvives.set(nombreConvives);
-    }
-
-    @Override
-    public FormuleDto dto() {
-        return new FormuleJao().decharger(this);
-    }
-
-    @Override
-    public void depuis(FormuleDto dto) throws JaoExecutionException, JaoParseException {
-        if (dto.getRecette() != null) {
-            setRecette(new RecetteJao().chargerParReference(dto.getRecette()));
-        }
-
-        if (dto.getPeriode() != null) {
-            setPeriode(new PeriodeJao().charger(dto.getPeriode(), this));
-        }
-
-        setNombreConvives(dto.getNombreConvives());
     }
 
     @Override

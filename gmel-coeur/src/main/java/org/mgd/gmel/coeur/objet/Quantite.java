@@ -1,16 +1,10 @@
 package org.mgd.gmel.coeur.objet;
 
 import org.mgd.gmel.coeur.commun.Mesure;
-import org.mgd.gmel.coeur.dto.QuantiteDto;
-import org.mgd.gmel.coeur.persistence.QuantiteJao;
 import org.mgd.jab.objet.Jo;
 import org.mgd.jab.objet.Joc;
-import org.mgd.jab.utilitaire.Verifications;
-import org.mgd.jab.utilitaire.exception.VerificationException;
 
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.stream.Collectors;
 
 /**
  * Objet métier représentant une quantité qui sera associée à un produit pour faire partie d'une recette de cuisines.
@@ -18,7 +12,7 @@ import java.util.stream.Collectors;
  * @author Maxime
  */
 @SuppressWarnings("java:S2160")
-public class Quantite extends Jo<QuantiteDto> implements Comparable<Quantite> {
+public class Quantite extends Jo implements Comparable<Quantite> {
     private final Joc<Long> valeur = new Joc<>(this);
     private final Joc<Mesure> mesure = new Joc<>(this);
 
@@ -36,20 +30,6 @@ public class Quantite extends Jo<QuantiteDto> implements Comparable<Quantite> {
 
     public void setMesure(Mesure mesure) {
         this.mesure.set(mesure);
-    }
-
-    @Override
-    public QuantiteDto dto() {
-        return new QuantiteJao().decharger(this);
-    }
-
-    @Override
-    public void depuis(QuantiteDto dto) throws VerificationException {
-        Verifications.nonNull(dto.getMesure(), "La mesure d''une quantité devrait être une des valeurs {0}", Arrays.stream(Mesure.values()).map(Enum::name).collect(Collectors.joining(", ")));
-        Verifications.nonStrictementNegatif(dto.getValeur(), "La valeur de la quantité doit être un entier positif");
-
-        setValeur(dto.getValeur());
-        setMesure(dto.getMesure());
     }
 
     @Override

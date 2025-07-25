@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
 import org.mgd.gmel.javafx.service.EpicerieService;
 import org.mgd.jab.persistence.exception.JaoExecutionException;
+import org.mgd.jab.persistence.exception.JaoParseException;
 
 import java.io.IOException;
 
@@ -22,7 +23,7 @@ public class EpicerieComposant extends GridPane {
     }
 
     @FXML
-    protected void onActionAjouterProduit() throws JaoExecutionException {
+    protected void onActionAjouterProduit() throws JaoExecutionException, JaoParseException {
         epicerieService.creerNouveauProduit();
     }
 }

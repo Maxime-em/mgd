@@ -9,10 +9,15 @@ public class ChapitreJao extends Jao<ChapitreDto, Chapitre> {
     }
 
     @Override
-    protected ChapitreDto to(Chapitre chapitre) {
+    public ChapitreDto dto(Chapitre chapitre) {
         ChapitreDto dto = new ChapitreDto();
         dto.setNom(chapitre.getNom());
         return dto;
+    }
+
+    @Override
+    public void enrichir(ChapitreDto dto, Chapitre chapitre) {
+        chapitre.setNom(dto.getNom());
     }
 
     @Override

@@ -1,6 +1,5 @@
 package org.mgd.jab.objet;
 
-import org.mgd.jab.dto.Dto;
 import org.mgd.jab.utilitaire.Jos;
 
 import java.util.AbstractMap;
@@ -18,7 +17,7 @@ import java.util.Set;
  * @author Maxime
  */
 public abstract class JocAbstractMap<K, V, C extends AbstractMap<K, V>> extends Joc<C> implements Map<K, V> {
-    protected JocAbstractMap(Jo<? extends Dto> contenant) {
+    protected JocAbstractMap(Jo contenant) {
         super(contenant);
     }
 

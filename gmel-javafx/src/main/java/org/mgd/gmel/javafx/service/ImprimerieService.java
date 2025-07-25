@@ -88,7 +88,7 @@ public class ImprimerieService extends Service {
                                     .computeIfAbsent(mesure, k -> {
                                         try {
                                             return epicerieService.creerNouveauProduitQuantifier(produit, calcul(produit, mesure), mesure);
-                                        } catch (JaoExecutionException e) {
+                                        } catch (JaoExecutionException | JaoParseException e) {
                                             throw new ServiceException(e);
                                         }
                                     });

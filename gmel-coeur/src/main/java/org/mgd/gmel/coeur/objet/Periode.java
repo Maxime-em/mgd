@@ -1,11 +1,7 @@
 package org.mgd.gmel.coeur.objet;
 
-import org.mgd.gmel.coeur.dto.PeriodeDto;
-import org.mgd.gmel.coeur.persistence.PeriodeJao;
 import org.mgd.jab.objet.Jo;
 import org.mgd.jab.objet.Joc;
-import org.mgd.jab.utilitaire.Verifications;
-import org.mgd.jab.utilitaire.exception.VerificationException;
 import org.mgd.temps.LocalRepas;
 
 import java.util.Comparator;
@@ -16,7 +12,7 @@ import java.util.Comparator;
  * @author Maxime
  */
 @SuppressWarnings("java:S2160")
-public class Periode extends Jo<PeriodeDto> implements Comparable<Periode> {
+public class Periode extends Jo implements Comparable<Periode> {
     private final Joc<LocalRepas> repas = new Joc<>(this);
     private final Joc<Integer> taille = new Joc<>(this);
 
@@ -34,20 +30,6 @@ public class Periode extends Jo<PeriodeDto> implements Comparable<Periode> {
 
     public void setTaille(Integer taille) {
         this.taille.set(taille);
-    }
-
-    @Override
-    public PeriodeDto dto() {
-        return new PeriodeJao().decharger(this);
-    }
-
-    @Override
-    public void depuis(PeriodeDto dto) throws VerificationException {
-        Verifications.nonNull(dto.getRepas(), "Une période doit contenir le repas");
-        Verifications.nonNegatif(dto.getTaille(), "La taille d''une période doit être un entier strictement positif");
-
-        setRepas(dto.getRepas());
-        setTaille(dto.getTaille());
     }
 
     @Override

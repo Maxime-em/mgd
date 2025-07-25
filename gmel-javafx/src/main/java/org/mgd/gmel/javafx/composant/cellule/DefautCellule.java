@@ -14,7 +14,6 @@ import javafx.util.converter.DefaultStringConverter;
 import org.mgd.gmel.javafx.controle.BoutonIcone;
 import org.mgd.gmel.javafx.controle.BoutonIconeTaille;
 import org.mgd.gmel.javafx.controle.BoutonIconeType;
-import org.mgd.jab.dto.Dto;
 import org.mgd.jab.objet.Jo;
 
 import java.util.Objects;
@@ -51,7 +50,7 @@ public class DefautCellule<S, T> extends Cellule<S, T> {
         this(convertisseur, null, noeuds);
     }
 
-    public static <D extends Dto, O extends Jo<D>> void colonneNomParDefaut(TableColumn<O, String> colonne, Function<O, ObservableValue<String>> obtenirObservableLibelle, StringPropertyBase stringProperty) {
+    public static <O extends Jo> void colonneNomParDefaut(TableColumn<O, String> colonne, Function<O, ObservableValue<String>> obtenirObservableLibelle, StringPropertyBase stringProperty) {
         colonne.setCellValueFactory(features -> obtenirObservableLibelle.apply(features.getValue()));
         colonne.setCellFactory(colonneDeCellule -> new DefautCellule<>(new DefaultStringConverter(), new BoutonIcone(BoutonIconeType.SUPPRIMER, BoutonIconeTaille.PETITE)));
         colonne.setOnEditCommit(evenement -> {

@@ -1,15 +1,8 @@
 package org.mgd.jab.objet;
 
-import org.mgd.jab.dto.AdresseDto;
-import org.mgd.jab.persistence.*;
-import org.mgd.jab.persistence.exception.JaoExecutionException;
-import org.mgd.jab.persistence.exception.JaoParseException;
-import org.mgd.jab.utilitaire.Verifications;
-import org.mgd.jab.utilitaire.exception.VerificationException;
-
 import java.util.List;
 
-public class Adresse extends Jo<AdresseDto> {
+public class Adresse extends Jo {
     private final List<Personne> proprietaires = new JocArrayList<>(this);
     private final Joc<Voie> voie = new Joc<>(this);
     private final Joc<Commune> commune = new Joc<>(this);
@@ -41,26 +34,6 @@ public class Adresse extends Jo<AdresseDto> {
 
     public void setPays(Pays pays) {
         this.pays.set(pays);
-    }
-
-    @Override
-    public AdresseDto dto() {
-        return new AdresseJao().decharger(this);
-    }
-
-    @Override
-    public void depuis(AdresseDto dto) throws JaoExecutionException, JaoParseException, VerificationException {
-        Verifications.nonNull(dto.getProprietaires(), "La liste des propriétaires dans une adresse devrait être une liste éventuellement vide");
-        Verifications.nonNull(dto.getVoie(), "La voie dans une adresse devrait être non null");
-
-        getProprietaires().addAll(new PersonneJao().chargerParReferences(dto.getProprietaires()));
-        setVoie(new VoieJao().charger(dto.getVoie(), this));
-
-        if (dto.getCommune() != null) {
-            setCommune(new CommuneJao().chargerParReference(dto.getCommune()));
-        }
-
-        setPays(new PaysJao().chargerParReference(dto.getPays()));
     }
 
     @Override

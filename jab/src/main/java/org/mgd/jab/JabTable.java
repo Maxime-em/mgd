@@ -1,6 +1,5 @@
 package org.mgd.jab;
 
-import org.mgd.jab.dto.Dto;
 import org.mgd.jab.objet.Jo;
 
 import java.util.Comparator;
@@ -14,7 +13,7 @@ import java.util.UUID;
  * @param <O> Type des éléments de la table
  * @author Maxime
  */
-public class JabTable<D extends Dto, O extends Jo<D>> {
+public class JabTable<O extends Jo> {
     private final SortedSet<O> objets = new TreeSet<>(Comparator.comparing(Jo::getIdentifiant));
 
     public void referencer(O objet) {

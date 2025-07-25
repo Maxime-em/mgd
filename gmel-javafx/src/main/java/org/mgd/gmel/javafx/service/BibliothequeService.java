@@ -93,7 +93,7 @@ public class BibliothequeService extends Service {
         return instance;
     }
 
-    public void creerNouveauLivreCuisine() throws JaoExecutionException {
+    public void creerNouveauLivreCuisine() throws JaoExecutionException, JaoParseException {
         livresCuisine.add(new LivreCuisineJao().nouveau(nouveauLivreCuisine -> nouveauLivreCuisine.setNom("Livre de cuisine " + (livresCuisine.size() + 1))));
     }
 
@@ -111,7 +111,7 @@ public class BibliothequeService extends Service {
                 .orElseThrow(() -> new NoSuchElementException(MessageFormat.format("Impossible de trouver un livre de cuisine contenant la recette {0} dans la bibliothèque.", recette)));
     }
 
-    public void creerNouvelleRecette() throws JaoExecutionException {
+    public void creerNouvelleRecette() throws JaoExecutionException, JaoParseException {
         recettes.add(new RecetteJao().nouveau(nouvelleRecette -> {
             nouvelleRecette.setNom("Recette " + (recettes.size() + 1));
             nouvelleRecette.setNombrePersonnes(1);

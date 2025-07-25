@@ -1,7 +1,5 @@
 package org.mgd.jab.objet;
 
-import org.mgd.jab.dto.Dto;
-
 import java.util.AbstractSet;
 import java.util.Set;
 
@@ -14,7 +12,7 @@ import java.util.Set;
  * @author Maxime
  */
 public abstract class JocAbstractSet<T, C extends AbstractSet<T>> extends JocAbstractCollection<T, C> implements Set<T> {
-    protected JocAbstractSet(Jo<? extends Dto> contenant) {
+    protected JocAbstractSet(Jo contenant) {
         super(contenant);
     }
 }

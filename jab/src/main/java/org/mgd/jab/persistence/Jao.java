@@ -1,5 +1,6 @@
 package org.mgd.jab.persistence;
 
+import com.google.gson.JsonParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mgd.jab.JabCreation;
@@ -21,7 +22,6 @@ import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -34,12 +34,12 @@ import java.util.stream.Collectors;
  * @param <D> classe de transfert de données de l'objet
  * @author Maxime
  */
-public abstract class Jao<D extends Dto, O extends Jo<D>> {
+public abstract class Jao<D extends Dto, O extends Jo> {
     private static final Logger LOGGER = LogManager.getLogger(Jao.class);
 
     private final Class<D> classeDto;
     private final Class<O> classeJo;
-    private final JabTable<D, O> table;
+    private final JabTable<O> table;
     private final JabCreation creation;
 
     protected Jao(Class<D> classeDto, Class<O> classeJo) {
@@ -49,25 +49,27 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
         this.creation = JabSingletons.creation();
     }
 
-    protected abstract D to(O objet);
+    public abstract D dto(O objet);
 
-    protected abstract void copier(O source, O cible) throws JaoExecutionException;
+    public abstract void enrichir(D dto, O objet) throws JaoExecutionException, JaoParseException, VerificationException;
 
-    private D from(Path fichier) throws JaoParseException {
+    protected abstract void copier(O source, O cible) throws JaoExecutionException, JaoParseException;
+
+    private D dto(Path fichier) throws JaoParseException {
         try {
             JabSingletons.sauvegarde();
             return JabSauvegarde.gsonSauvegarde.fromJson(Files.newBufferedReader(fichier), classeDto);
-        } catch (IOException e) {
+        } catch (IOException | JsonParseException e) {
             throw new JaoParseException(MessageFormat.format("Impossible de charger le fichier {0}.", fichier), e);
         }
     }
 
-    public JabTable<D, O> table() {
+    public JabTable<O> table() {
         return table;
     }
 
     public D decharger(O objet) {
-        return decharger(objet, () -> to(objet));
+        return decharger(objet, () -> dto(objet));
     }
 
     private <T extends Dto> T decharger(O objet, Supplier<T> obtenirDto) {
@@ -90,20 +92,20 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
                 .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
     }
 
-    public <V extends Dto, W extends Jo<V>> Map<D, V> decharger(Jao<V, W> jao, Map<O, W> objets) {
+    public <V extends Dto, W extends Jo> Map<D, V> decharger(Jao<V, W> jao, Map<O, W> objets) {
         return objets.entrySet()
                 .stream()
                 .map(element -> new AbstractMap.SimpleEntry<>(decharger(element.getKey()), jao.decharger(element.getValue())))
                 .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
     }
 
-    public O dupliquer(O source) throws JaoExecutionException {
+    public O dupliquer(O source) throws JaoExecutionException, JaoParseException {
         O objet = nouveau();
         copier(source, objet);
         return objet;
     }
 
-    public List<O> dupliquer(Collection<O> sources) throws JaoExecutionException {
+    public List<O> dupliquer(Collection<O> sources) throws JaoExecutionException, JaoParseException {
         List<O> nouveaux = new ArrayList<>(sources.size());
         for (O source : sources) {
             nouveaux.add(dupliquer(source));
@@ -111,7 +113,7 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
         return nouveaux;
     }
 
-    public <K> Map<K, O> dupliquer(Map<K, O> sources) throws JaoExecutionException {
+    public <K> Map<K, O> dupliquer(Map<K, O> sources) throws JaoExecutionException, JaoParseException {
         Map<K, O> nouveaux = HashMap.newHashMap(sources.size());
         for (Map.Entry<K, O> element : sources.entrySet()) {
             nouveaux.put(element.getKey(), dupliquer(element.getValue()));
@@ -119,7 +121,7 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
         return nouveaux;
     }
 
-    public <V extends Dto, W extends Jo<V>> Map<O, W> dupliquer(Jao<V, W> jao, Map<O, W> sources) throws JaoExecutionException {
+    public <V extends Dto, W extends Jo> Map<O, W> dupliquer(Jao<V, W> jao, Map<O, W> sources) throws JaoExecutionException, JaoParseException {
         Map<O, W> nouveaux = HashMap.newHashMap(sources.size());
         for (Map.Entry<O, W> element : sources.entrySet()) {
             nouveaux.put(dupliquer(element.getKey()), jao.dupliquer(element.getValue()));
@@ -127,24 +129,24 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
         return nouveaux;
     }
 
-    public O nouveau() throws JaoExecutionException {
+    public O nouveau() throws JaoExecutionException, JaoParseException {
         return nouveau(UUID.randomUUID(), nouveau -> {
         });
     }
 
-    public O nouveau(Consumer<O> enrichir) throws JaoExecutionException {
+    public O nouveau(Enrichissement<O> enrichir) throws JaoExecutionException, JaoParseException {
         return nouveau(UUID.randomUUID(), enrichir);
     }
 
-    public O nouveau(BiConsumer<O, Jo<?>[]> enrichir, Jo<?>... autresJos) throws JaoExecutionException {
+    public O nouveau(BiConsumer<O, Jo[]> enrichir, Jo... autresJos) throws JaoExecutionException, JaoParseException {
         return nouveau(UUID.randomUUID(), jo -> enrichir.accept(jo, autresJos));
     }
 
-    private O nouveau(UUID identifiant, Consumer<O> enrichir) throws JaoExecutionException {
+    private O nouveau(UUID identifiant, Enrichissement<O> enrichir) throws JaoExecutionException, JaoParseException {
         try {
             O objet = classeJo.getConstructor().newInstance();
             objet.setIdentifiant(identifiant);
-            enrichir.accept(objet);
+            enrichir.faire(objet);
             objet.setDetache(false);
 
             table.referencer(objet);
@@ -153,6 +155,8 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
                  NoSuchMethodException e) {
             throw new JaoExecutionException(e);
+        } catch (VerificationException e) {
+            throw new JaoParseException(e);
         }
     }
 
@@ -160,40 +164,33 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
         if (creation.getGermes().containsKey(fichier)) {
             return table.selectionner(creation.getGermes().get(fichier));
         } else {
-            D dto = from(fichier);
+            D dto = dto(fichier);
             O objet = charger(dto, null);
 
-            creation.ajouter(fichier, objet.getIdentifiant());
+            creation.ajouter(fichier, objet.getIdentifiant(), this);
 
             return objet;
         }
     }
 
-    public <P extends Dto> O charger(D dto, Jo<P> parent) throws JaoParseException, JaoExecutionException {
+    public O charger(D dto, Jo parent) throws JaoParseException, JaoExecutionException {
         if (dto == null) {
             throw new JaoParseException("Objet inconnu.");
         } else {
             try {
-                UUID identifiant = dto.getIdentifiant() != null ? UUID.fromString(dto.getIdentifiant()) : UUID.randomUUID();
-                return charger(dto, parent, identifiant);
+                return charger(dto, parent, dto.getIdentifiant() != null ? UUID.fromString(dto.getIdentifiant()) : UUID.randomUUID());
             } catch (JaoRuntimeException e) {
                 throw new JaoParseException(e);
             }
         }
     }
 
-    private <P extends Dto> O charger(D dto, Jo<P> parent, UUID identifiant) throws JaoExecutionException {
+    private O charger(D dto, Jo parent, UUID identifiant) throws JaoExecutionException, JaoParseException {
         return table.existe(identifiant) ? table.selectionner(identifiant) : construire(dto, parent, identifiant);
     }
 
-    private <P extends Dto> O construire(D dto, Jo<P> parent, UUID identifiant) throws JaoExecutionException {
-        O objet = nouveau(identifiant, nouveau -> {
-            try {
-                nouveau.depuis(dto);
-            } catch (JaoExecutionException | JaoParseException | VerificationException e) {
-                throw new JaoRuntimeException(e);
-            }
-        });
+    private O construire(D dto, Jo parent, UUID identifiant) throws JaoExecutionException, JaoParseException {
+        O objet = nouveau(identifiant, nouveau -> enrichir(dto, nouveau));
 
         if (parent != null) {
             objet.ajouterParent(parent);
@@ -202,7 +199,7 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
         return objet;
     }
 
-    public <P extends Dto> List<O> charger(Collection<D> dtos, Jo<P> parent) throws JaoParseException, JaoExecutionException {
+    public List<O> charger(Collection<D> dtos, Jo parent) throws JaoParseException, JaoExecutionException {
         List<O> objets = new ArrayList<>(dtos.size());
         for (D dto : dtos) {
             objets.add(charger(dto, parent));
@@ -210,7 +207,7 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
         return objets;
     }
 
-    public <K, P extends Dto> Map<K, O> charger(Map<K, D> dtos, Jo<P> parent) throws JaoParseException {
+    public <K> Map<K, O> charger(Map<K, D> dtos, Jo parent) throws JaoParseException {
         try {
             return dtos.entrySet().stream().map(element -> {
                 try {
@@ -224,7 +221,7 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
         }
     }
 
-    public <V extends Dto, W extends Jo<V>, P extends Dto> Map<O, W> charger(Jao<V, W> jao, Map<D, V> dtos, Jo<P> parent) throws JaoParseException {
+    public <V extends Dto, W extends Jo> Map<O, W> charger(Jao<V, W> jao, Map<D, V> dtos, Jo parent) throws JaoParseException {
         try {
             return dtos.entrySet().stream().map(element -> {
                 try {
@@ -238,7 +235,7 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
         }
     }
 
-    public <V extends Dto, W extends Jo<V>, X extends Jao<V, W>> ReferenceDto<V, W, X> dechargerVersReference(O objet, Class<W> classeRacine, Class<X> classeFournisseur) {
+    public <V extends Dto, W extends Jo, X extends Jao<V, W>> ReferenceDto<V, W, X> dechargerVersReference(O objet, Class<W> classeRacine, Class<X> classeFournisseur) {
         if (objet == null) {
             return null;
         }
@@ -254,11 +251,11 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
         return referenceDto;
     }
 
-    public <V extends Dto, W extends Jo<V>, X extends Jao<V, W>> List<ReferenceDto<V, W, X>> dechargerVersReferences(Collection<O> objets, Class<W> classeRacine, Class<X> classeFournisseur) {
+    public <V extends Dto, W extends Jo, X extends Jao<V, W>> List<ReferenceDto<V, W, X>> dechargerVersReferences(Collection<O> objets, Class<W> classeRacine, Class<X> classeFournisseur) {
         return objets.stream().map(objet -> dechargerVersReference(objet, classeRacine, classeFournisseur)).toList();
     }
 
-    public <V extends Dto, W extends Jo<V>, X extends Jao<V, W>> O chargerParReference(ReferenceDto<V, W, X> referenceDto) throws JaoParseException, JaoExecutionException {
+    public <V extends Dto, W extends Jo, X extends Jao<V, W>> O chargerParReference(ReferenceDto<V, W, X> referenceDto) throws JaoParseException, JaoExecutionException {
         if (referenceDto == null) {
             throw new JaoParseException("Référence vers un objet inconnu.");
         } else if (referenceDto.getIdentifiant() == null) {
@@ -281,7 +278,7 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
         }
     }
 
-    private <V extends Dto, W extends Jo<V>, X extends Jao<V, W>> void constuireParReference(ReferenceDto<V, W, X> referenceDto, UUID identifiant) throws JaoParseException, JaoExecutionException {
+    private <V extends Dto, W extends Jo, X extends Jao<V, W>> void constuireParReference(ReferenceDto<V, W, X> referenceDto, UUID identifiant) throws JaoParseException, JaoExecutionException {
         if (referenceDto.getClasseFournisseur() == null) {
             throw new JaoParseException(MessageFormat.format("Référence vers un objet d''identifiant {0} sans classe pour le fournisseur.", identifiant));
         } else if (referenceDto.getChemin() == null) {
@@ -296,11 +293,16 @@ public abstract class Jao<D extends Dto, O extends Jo<D>> {
         }
     }
 
-    public <V extends Dto, W extends Jo<V>, X extends Jao<V, W>> List<O> chargerParReferences(Collection<ReferenceDto<V, W, X>> referencesDtos) throws JaoParseException, JaoExecutionException {
+    public <V extends Dto, W extends Jo, X extends Jao<V, W>> List<O> chargerParReferences(Collection<ReferenceDto<V, W, X>> referencesDtos) throws JaoParseException, JaoExecutionException {
         List<O> objets = new ArrayList<>(referencesDtos.size());
         for (ReferenceDto<V, W, X> dto : referencesDtos) {
             objets.add(chargerParReference(dto));
         }
         return objets;
+    }
+
+    @FunctionalInterface
+    public interface Enrichissement<O extends Jo> {
+        void faire(O objet) throws JaoExecutionException, JaoParseException, VerificationException;
     }
 }

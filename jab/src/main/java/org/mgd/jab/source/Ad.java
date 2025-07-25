@@ -19,7 +19,7 @@ import java.util.TreeMap;
  * @param <O> Type de l'objet métier {@link Jo}
  * @author Maxime
  */
-public abstract class Ad<D extends Dto, O extends Jo<D>, F extends Af<D, O>> {
+public abstract class Ad<D extends Dto, O extends Jo, F extends Af<D, O>> {
     private final Path dossier;
     private final SortedMap<String, F> aos = new TreeMap<>();
 

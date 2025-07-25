@@ -1,7 +1,5 @@
 package org.mgd.jab.objet;
 
-import org.mgd.jab.dto.Dto;
-
 import java.util.*;
 
 /**
@@ -12,7 +10,7 @@ import java.util.*;
  * @author Maxime
  */
 public class JocTreeSet<T extends Comparable<? super T>> extends JocAbstractSet<T, TreeSet<T>> implements NavigableSet<T> {
-    public JocTreeSet(Jo<? extends Dto> contenant) {
+    public JocTreeSet(Jo contenant) {
         super(contenant);
         this.contenu = new TreeSet<>();
     }

@@ -1,6 +1,5 @@
 package org.mgd.jab.objet;
 
-import org.mgd.jab.dto.Dto;
 import org.mgd.jab.utilitaire.Jos;
 
 import java.util.Objects;
@@ -15,10 +14,10 @@ import java.util.Objects;
  * @author Maxime
  */
 public class Joc<T> {
-    protected final Jo<? extends Dto> contenant;
+    protected final Jo contenant;
     protected T contenu;
 
-    public Joc(Jo<? extends Dto> contenant) {
+    public Joc(Jo contenant) {
         this.contenant = contenant;
     }
 

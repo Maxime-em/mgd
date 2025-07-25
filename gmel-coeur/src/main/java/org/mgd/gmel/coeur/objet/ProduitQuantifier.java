@@ -1,15 +1,7 @@
 package org.mgd.gmel.coeur.objet;
 
-import org.mgd.gmel.coeur.dto.ProduitQuantifierDto;
-import org.mgd.gmel.coeur.persistence.ProduitJao;
-import org.mgd.gmel.coeur.persistence.ProduitQuantifierJao;
-import org.mgd.gmel.coeur.persistence.QuantiteJao;
 import org.mgd.jab.objet.Jo;
 import org.mgd.jab.objet.Joc;
-import org.mgd.jab.persistence.exception.JaoExecutionException;
-import org.mgd.jab.persistence.exception.JaoParseException;
-import org.mgd.jab.utilitaire.Verifications;
-import org.mgd.jab.utilitaire.exception.VerificationException;
 
 import java.util.Comparator;
 
@@ -19,7 +11,7 @@ import java.util.Comparator;
  * @author Maxime
  */
 @SuppressWarnings("java:S2160")
-public class ProduitQuantifier extends Jo<ProduitQuantifierDto> implements Comparable<ProduitQuantifier> {
+public class ProduitQuantifier extends Jo implements Comparable<ProduitQuantifier> {
     private final Joc<Produit> produit = new Joc<>(this);
     private final Joc<Quantite> quantite = new Joc<>(this);
 
@@ -37,20 +29,6 @@ public class ProduitQuantifier extends Jo<ProduitQuantifierDto> implements Compa
 
     public void setQuantite(Quantite quantite) {
         this.quantite.set(quantite);
-    }
-
-    @Override
-    public ProduitQuantifierDto dto() {
-        return new ProduitQuantifierJao().decharger(this);
-    }
-
-    @Override
-    public void depuis(ProduitQuantifierDto dto) throws JaoExecutionException, JaoParseException, VerificationException {
-        Verifications.nonNull(dto.getProduit(), "Un produit quantifié doit contenir un produit");
-        Verifications.nonNull(dto.getQuantite(), "Un produit quantifié doit contenir une quantité");
-
-        setProduit(new ProduitJao().chargerParReference(dto.getProduit()));
-        setQuantite(new QuantiteJao().charger(dto.getQuantite(), this));
     }
 
     @Override

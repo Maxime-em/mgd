@@ -1,7 +1,5 @@
 package org.mgd.jab.objet;
 
-import org.mgd.jab.dto.Dto;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +12,7 @@ import java.util.Map;
  * @author Maxime
  */
 public class JocHashMap<K, V> extends JocAbstractMap<K, V, HashMap<K, V>> implements Map<K, V> {
-    public JocHashMap(Jo<? extends Dto> contenant) {
+    public JocHashMap(Jo contenant) {
         super(contenant);
         this.contenu = new HashMap<>();
     }

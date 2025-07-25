@@ -33,8 +33,8 @@ public abstract class Jab implements Connectable {
 
     protected final Path base;
     protected final Properties proprietes = new Properties();
-    protected final SortedMap<String, Jao<? extends Dto, ? extends Jo<? extends Dto>>> jaos = new TreeMap<>();
-    protected final SortedMap<String, Ad<? extends Dto, ? extends Jo<? extends Dto>, ? extends Af<? extends Dto, ? extends Jo<? extends Dto>>>> ads = new TreeMap<>();
+    protected final SortedMap<String, Jao<? extends Dto, ? extends Jo>> jaos = new TreeMap<>();
+    protected final SortedMap<String, Ad<? extends Dto, ? extends Jo, ? extends Af<? extends Dto, ? extends Jo>>> ads = new TreeMap<>();
     private final JabSauvegarde sauvegarde;
 
     protected Jab(Path chemin) throws JabException {
@@ -76,7 +76,7 @@ public abstract class Jab implements Connectable {
             if (proprietes.containsKey("jab.persistences")) {
                 for (String persistence : proprietes.getProperty("jab.persistences").split(",")) {
                     String[] chaines = persistence.split(":");
-                    jaos.put(chaines[0], (Jao<? extends Dto, ? extends Jo<? extends Dto>>) Class.forName(chaines[1]).getConstructor().newInstance());
+                    jaos.put(chaines[0], (Jao<? extends Dto, ? extends Jo>) Class.forName(chaines[1]).getConstructor().newInstance());
                 }
             }
         } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException |
@@ -99,7 +99,7 @@ public abstract class Jab implements Connectable {
                         if (ads.containsKey(nom)) {
                             LOGGER.warn("Le nom {} de l'accès au dossier {} existe déjà pour le dossier {}.", nom, dossier, ads.get(nom));
                         }
-                        ads.put(nom, (Ad<? extends Dto, ? extends Jo<? extends Dto>, ? extends Af<? extends Dto, ? extends Jo<? extends Dto>>>) Class.forName(chaines[1]).getDeclaredConstructor(Path.class).newInstance(dossier));
+                        ads.put(nom, (Ad<? extends Dto, ? extends Jo, ? extends Af<? extends Dto, ? extends Jo>>) Class.forName(chaines[1]).getDeclaredConstructor(Path.class).newInstance(dossier));
                     }
                 }
             }

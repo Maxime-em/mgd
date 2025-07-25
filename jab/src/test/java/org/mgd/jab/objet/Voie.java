@@ -1,11 +1,8 @@
 package org.mgd.jab.objet;
 
-import org.mgd.jab.dto.VoieDto;
-import org.mgd.jab.persistence.VoieJao;
-
 import java.util.Objects;
 
-public class Voie extends Jo<VoieDto> {
+public class Voie extends Jo {
     private final Joc<Integer> numero = new Joc<>(this);
     private final Joc<String> libelle = new Joc<>(this);
 
@@ -23,17 +20,6 @@ public class Voie extends Jo<VoieDto> {
 
     public void setLibelle(String libelle) {
         this.libelle.set(libelle);
-    }
-
-    @Override
-    public VoieDto dto() {
-        return new VoieJao().decharger(this);
-    }
-
-    @Override
-    public void depuis(VoieDto dto) {
-        setNumero(dto.getNumero());
-        setLibelle(dto.getLibelle());
     }
 
     @Override

@@ -61,11 +61,11 @@ public class EpicerieService extends Service {
         return instance;
     }
 
-    public void creerNouveauProduit() throws JaoExecutionException {
+    public void creerNouveauProduit() throws JaoExecutionException, JaoParseException {
         produits.add(new ProduitJao().nouveau(nouveauProduit -> nouveauProduit.setNom("Produit " + (produits.size() + 1))));
     }
 
-    public ProduitQuantifier creerNouveauProduitQuantifier() throws JaoExecutionException {
+    public ProduitQuantifier creerNouveauProduitQuantifier() throws JaoExecutionException, JaoParseException {
         return new ProduitQuantifierJao().nouveau((nouveauProduitQuantifier, autresJos) -> {
                     nouveauProduitQuantifier.setProduit((Produit) autresJos[0]);
                     nouveauProduitQuantifier.setQuantite((Quantite) autresJos[1]);
@@ -82,7 +82,7 @@ public class EpicerieService extends Service {
         );
     }
 
-    public ProduitQuantifier creerNouveauProduitQuantifier(Produit produit, Long valeur, Mesure mesure) throws JaoExecutionException {
+    public ProduitQuantifier creerNouveauProduitQuantifier(Produit produit, Long valeur, Mesure mesure) throws JaoExecutionException, JaoParseException {
         return new ProduitQuantifierJao().nouveau((nouveauProduitQuantifier, autresJos) -> {
                     nouveauProduitQuantifier.setProduit(produit);
                     nouveauProduitQuantifier.setQuantite((Quantite) autresJos[0]);

@@ -10,7 +10,7 @@ public class Jos {
 
     public static boolean idem(Object a, Object b) {
         if (a == b) return true;
-        else if (a instanceof Jo<?> jo) return jo.idem(b);
+        else if (a instanceof Jo jo) return jo.idem(b);
         else if (a instanceof Joc<?> joc) return joc.idem(b);
         else return a.equals(b);
     }

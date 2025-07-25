@@ -9,11 +9,17 @@ public class VoieJao extends Jao<VoieDto, Voie> {
     }
 
     @Override
-    protected VoieDto to(Voie voie) {
+    public VoieDto dto(Voie voie) {
         VoieDto voieDto = new VoieDto();
         voieDto.setNumero(voie.getNumero());
         voieDto.setLibelle(voie.getLibelle());
         return voieDto;
+    }
+
+    @Override
+    public void enrichir(VoieDto dto, Voie voie) {
+        voie.setNumero(dto.getNumero());
+        voie.setLibelle(dto.getLibelle());
     }
 
     @Override

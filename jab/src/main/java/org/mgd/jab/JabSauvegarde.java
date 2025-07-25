@@ -43,20 +43,20 @@ public class JabSauvegarde {
         this.creation = JabSingletons.creation();
     }
 
-    public void setNombreThreads(int nombreThreads) {
-        this.nombreThreads = nombreThreads;
-    }
-
     public int getNombreThreads() {
         return nombreThreads;
     }
 
-    public void setAsynchrone(boolean asynchrone) {
-        this.asynchrone = asynchrone;
+    public void setNombreThreads(int nombreThreads) {
+        this.nombreThreads = nombreThreads;
     }
 
     public boolean isAsynchrone() {
         return asynchrone;
+    }
+
+    public void setAsynchrone(boolean asynchrone) {
+        this.asynchrone = asynchrone;
     }
 
     public long getDelai() {
@@ -84,12 +84,14 @@ public class JabSauvegarde {
         moniteur.attendre();
     }
 
-    public <D extends Dto> void demarrer(Jo<D> objet) {
+    public <O extends Jo> void demarrer(O objet) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Démarrage de la sauvegarde de l''objet {}", objet);
         }
-        if (objet.getIdentifiant() != null && creation.getFichiers().containsKey(objet.getIdentifiant())) {
-            sources.put(creation.getFichiers().get(objet.getIdentifiant()), gsonSauvegarde.toJson(objet.dto()));
+        if (objet.getIdentifiant() != null && creation.verifier(objet.getIdentifiant())) {
+            Dto dto = creation.getJao((objet.getIdentifiant())).dto(objet);
+            dto.setIdentifiant(objet.getIdentifiant().toString());
+            sources.put(creation.getFichier(objet.getIdentifiant()), gsonSauvegarde.toJson(dto));
         }
 
         if (asynchrone) {

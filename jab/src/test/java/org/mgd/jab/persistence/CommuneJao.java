@@ -9,11 +9,17 @@ public class CommuneJao extends Jao<CommuneDto, Commune> {
     }
 
     @Override
-    protected CommuneDto to(Commune objet) {
+    public CommuneDto dto(Commune objet) {
         CommuneDto communeDto = new CommuneDto();
         communeDto.setNom(objet.getNom());
         communeDto.setCode(objet.getCode());
         return communeDto;
+    }
+
+    @Override
+    public void enrichir(CommuneDto dto, Commune commune) {
+        commune.setNom(dto.getNom());
+        commune.setCode(dto.getCode());
     }
 
     @Override

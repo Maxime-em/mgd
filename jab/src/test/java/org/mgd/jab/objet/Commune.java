@@ -1,11 +1,8 @@
 package org.mgd.jab.objet;
 
-import org.mgd.jab.dto.CommuneDto;
-import org.mgd.jab.persistence.CommuneJao;
-
 import java.util.Comparator;
 
-public class Commune extends Jo<CommuneDto> implements Comparable<Commune> {
+public class Commune extends Jo implements Comparable<Commune> {
     private final Joc<String> nom = new Joc<>(this);
     private final Joc<String> code = new Joc<>(this);
 
@@ -23,17 +20,6 @@ public class Commune extends Jo<CommuneDto> implements Comparable<Commune> {
 
     public void setCode(String code) {
         this.code.set(code);
-    }
-
-    @Override
-    public CommuneDto dto() {
-        return new CommuneJao().decharger(this);
-    }
-
-    @Override
-    public void depuis(CommuneDto dto) {
-        setNom(dto.getNom());
-        setCode(dto.getCode());
     }
 
     @Override

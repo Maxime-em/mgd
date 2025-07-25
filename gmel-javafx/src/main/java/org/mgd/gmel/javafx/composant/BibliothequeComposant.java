@@ -12,6 +12,7 @@ import org.mgd.gmel.javafx.convertisseur.LivreCuisineStringConvertisseur;
 import org.mgd.gmel.javafx.service.BibliothequeService;
 import org.mgd.gmel.javafx.service.EpicerieService;
 import org.mgd.jab.persistence.exception.JaoExecutionException;
+import org.mgd.jab.persistence.exception.JaoParseException;
 
 import java.io.IOException;
 import java.net.URL;
@@ -68,17 +69,17 @@ public class BibliothequeComposant extends GridPane implements Initializable {
     }
 
     @FXML
-    protected void onActionAjouterLivreCuisine() throws JaoExecutionException {
+    protected void onActionAjouterLivreCuisine() throws JaoExecutionException, JaoParseException {
         bibliothequeService.creerNouveauLivreCuisine();
     }
 
     @FXML
-    protected void onActionAjouterRecette() throws JaoExecutionException {
+    protected void onActionAjouterRecette() throws JaoExecutionException, JaoParseException {
         bibliothequeService.creerNouvelleRecette();
     }
 
     @FXML
-    protected void onActionAjouterProduit() throws JaoExecutionException {
+    protected void onActionAjouterProduit() throws JaoExecutionException, JaoParseException {
         bibliothequeService.recetteProduitsQuantifierProperty().add(epicerieService.creerNouveauProduitQuantifier());
     }
 

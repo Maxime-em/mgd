@@ -16,7 +16,7 @@ import java.util.Objects;
  * @param <O> Type de l'objet métier {@link Jo}
  * @author Maxime
  */
-public abstract class Af<D extends Dto, O extends Jo<D>> {
+public abstract class Af<D extends Dto, O extends Jo> {
     private final Jao<D, O> jao;
     private final Path fichier;
     protected O jo;

@@ -1,7 +1,5 @@
 package org.mgd.jab.objet;
 
-import org.mgd.jab.dto.Dto;
-
 import java.util.AbstractList;
 import java.util.Collection;
 import java.util.List;
@@ -16,7 +14,7 @@ import java.util.ListIterator;
  * @author Maxime
  */
 public abstract class JocAbstractList<T, C extends AbstractList<T>> extends JocAbstractCollection<T, C> implements List<T> {
-    protected JocAbstractList(Jo<? extends Dto> contenant) {
+    protected JocAbstractList(Jo contenant) {
         super(contenant);
     }
 

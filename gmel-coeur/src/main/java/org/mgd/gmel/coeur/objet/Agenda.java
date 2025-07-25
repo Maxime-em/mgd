@@ -1,14 +1,7 @@
 package org.mgd.gmel.coeur.objet;
 
-import org.mgd.gmel.coeur.dto.AgendaDto;
-import org.mgd.gmel.coeur.persistence.AgendaJao;
-import org.mgd.gmel.coeur.persistence.MenuJao;
 import org.mgd.jab.objet.Jo;
 import org.mgd.jab.objet.JocTreeSet;
-import org.mgd.jab.persistence.exception.JaoExecutionException;
-import org.mgd.jab.persistence.exception.JaoParseException;
-import org.mgd.jab.utilitaire.Verifications;
-import org.mgd.jab.utilitaire.exception.VerificationException;
 
 import java.util.SortedSet;
 
@@ -18,22 +11,11 @@ import java.util.SortedSet;
  * @author Maxime
  */
 @SuppressWarnings("java:S2160")
-public class Agenda extends Jo<AgendaDto> {
+public class Agenda extends Jo {
     private final SortedSet<Menu> menus = new JocTreeSet<>(this);
 
     public SortedSet<Menu> getMenus() {
         return menus;
-    }
-
-    @Override
-    public AgendaDto dto() {
-        return new AgendaJao().decharger(this);
-    }
-
-    @Override
-    public void depuis(AgendaDto dto) throws JaoExecutionException, JaoParseException, VerificationException {
-        Verifications.nonNull(dto.getMenus(), "Les menus d''un agenda devrait être une liste éventuellement vide");
-        getMenus().addAll(new MenuJao().chargerParReferences(dto.getMenus()));
     }
 
     @Override

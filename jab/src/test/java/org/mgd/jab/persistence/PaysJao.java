@@ -9,10 +9,15 @@ public class PaysJao extends Jao<PaysDto, Pays> {
     }
 
     @Override
-    protected PaysDto to(Pays pays) {
+    public PaysDto dto(Pays pays) {
         PaysDto paysDto = new PaysDto();
         paysDto.setNom(pays.getNom());
         return paysDto;
+    }
+
+    @Override
+    public void enrichir(PaysDto dto, Pays pays) {
+        pays.setNom(dto.getNom());
     }
 
     @Override

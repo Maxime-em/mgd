@@ -95,7 +95,7 @@ public class MenuService extends Service {
         return instance;
     }
 
-    public void creerNouvelleFormule(LocalRepas repas, Recette recette) throws JaoExecutionException {
+    public void creerNouvelleFormule(LocalRepas repas, Recette recette) throws JaoExecutionException, JaoParseException {
         formules.add(new FormuleJao().nouveau(
                 (nouvelleFormule, autresJos) -> {
                     nouvelleFormule.setRecette(recette);

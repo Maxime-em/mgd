@@ -1,9 +1,6 @@
 package org.mgd.jab.objet;
 
-import org.mgd.jab.dto.ChapitreDto;
-import org.mgd.jab.persistence.ChapitreJao;
-
-public class Chapitre extends Jo<ChapitreDto> {
+public class Chapitre extends Jo {
     private final Joc<String> nom = new Joc<>(this);
 
     public String getNom() {
@@ -12,16 +9,6 @@ public class Chapitre extends Jo<ChapitreDto> {
 
     public void setNom(String nom) {
         this.nom.set(nom);
-    }
-
-    @Override
-    public ChapitreDto dto() {
-        return new ChapitreJao().decharger(this);
-    }
-
-    @Override
-    public void depuis(ChapitreDto dto) {
-        setNom(dto.getNom());
     }
 
     @Override

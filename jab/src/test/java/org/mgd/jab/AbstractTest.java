@@ -3,7 +3,6 @@ package org.mgd.jab;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import org.junit.jupiter.api.Assertions;
-import org.mgd.jab.dto.Dto;
 import org.mgd.jab.objet.Jo;
 
 import java.io.IOException;
@@ -27,11 +26,11 @@ public abstract class AbstractTest {
         assertJson(JsonParser.parseReader(Files.newBufferedReader(attendu)), JsonParser.parseReader(Files.newBufferedReader(actuel)));
     }
 
-    protected <D extends Dto, O extends Jo<D>> void assertIdentifiantsNonEgales(Collection<O> objets1, Collection<O> objets2) {
+    protected <O extends Jo> void assertIdentifiantsNonEgales(Collection<O> objets1, Collection<O> objets2) {
         Assertions.assertTrue(objets1.stream().allMatch(objet1 -> objets2.stream().noneMatch(objet1::equals)));
     }
 
-    protected <K, D extends Dto, O extends Jo<D>> void assertIdentifiantsNonEgales(Map<K, O> objets1, Map<K, O> objets2) {
+    protected <K, O extends Jo> void assertIdentifiantsNonEgales(Map<K, O> objets1, Map<K, O> objets2) {
         Assertions.assertTrue(objets1.values().stream().allMatch(objet1 -> objets2.values().stream().noneMatch(objet1::equals)));
     }
 }

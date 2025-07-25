@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.stream.Stream;
 
-public abstract class AbstractMetierTest<D extends Dto, O extends Jo<D>, F extends Af<D, O>, A extends Ad<D, O, F>> {
+public abstract class AbstractMetierTest<D extends Dto, O extends Jo, F extends Af<D, O>, A extends Ad<D, O, F>> {
     protected Path ressourcesObjets;
     protected Path ressourcesSupprimable;
     protected O attendu;

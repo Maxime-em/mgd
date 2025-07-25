@@ -9,6 +9,7 @@ import org.mgd.commun.TypeRepas;
 import org.mgd.gmel.javafx.service.BibliothequeService;
 import org.mgd.gmel.javafx.service.MenuService;
 import org.mgd.jab.persistence.exception.JaoExecutionException;
+import org.mgd.jab.persistence.exception.JaoParseException;
 import org.mgd.temps.LocalRepas;
 
 import java.io.IOException;
@@ -68,7 +69,7 @@ public class MenuComposant extends GridPane implements Initializable {
     }
 
     @FXML
-    protected void onActionAjouterFormule() throws JaoExecutionException {
+    protected void onActionAjouterFormule() throws JaoExecutionException, JaoParseException {
         LocalDate jour = menuService.referenceProperty().get().with(jourChoiceBox.getSelectionModel().getSelectedItem());
         TypeRepas typeRepas = typeRepasChoiceBox.getSelectionModel().getSelectedItem();
         menuService.creerNouvelleFormule(LocalRepas.pour(jour, typeRepas), bibliothequeService.obtenirPremierLivreCuisineNonVide().getRecettes().getFirst());

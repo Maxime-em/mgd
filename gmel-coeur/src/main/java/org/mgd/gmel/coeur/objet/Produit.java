@@ -1,11 +1,7 @@
 package org.mgd.gmel.coeur.objet;
 
-import org.mgd.gmel.coeur.dto.ProduitDto;
-import org.mgd.gmel.coeur.persistence.ProduitJao;
 import org.mgd.jab.objet.Jo;
 import org.mgd.jab.objet.Joc;
-import org.mgd.jab.utilitaire.Verifications;
-import org.mgd.jab.utilitaire.exception.VerificationException;
 
 /**
  * Objet métier représentant un produit qui peut être mis à disposition par une épicerie.
@@ -13,7 +9,7 @@ import org.mgd.jab.utilitaire.exception.VerificationException;
  * @author Maxime
  */
 @SuppressWarnings("java:S2160")
-public class Produit extends Jo<ProduitDto> implements Comparable<Produit> {
+public class Produit extends Jo implements Comparable<Produit> {
     private final Joc<String> nom = new Joc<>(this);
 
     public String getNom() {
@@ -22,18 +18,6 @@ public class Produit extends Jo<ProduitDto> implements Comparable<Produit> {
 
     public void setNom(String nom) {
         this.nom.set(nom);
-    }
-
-    @Override
-    public ProduitDto dto() {
-        return new ProduitJao().decharger(this);
-    }
-
-    @Override
-    public void depuis(ProduitDto dto) throws VerificationException {
-        Verifications.nonVide(dto.getNom(), "Le nom de produit \"{0}\" est incorrect");
-
-        setNom(dto.getNom());
     }
 
     @Override

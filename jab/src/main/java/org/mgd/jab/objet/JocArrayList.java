@@ -1,7 +1,5 @@
 package org.mgd.jab.objet;
 
-import org.mgd.jab.dto.Dto;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +11,7 @@ import java.util.List;
  * @author Maxime
  */
 public class JocArrayList<T> extends JocAbstractList<T, ArrayList<T>> implements List<T> {
-    public JocArrayList(Jo<? extends Dto> contenant) {
+    public JocArrayList(Jo contenant) {
         super(contenant);
         this.contenu = new ArrayList<>();
     }

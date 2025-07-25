@@ -5,7 +5,7 @@ import org.mgd.jab.persistence.Jao;
 
 import java.nio.file.Path;
 
-public class ReferenceDto<D extends Dto, O extends Jo<D>, J extends Jao<D, O>> extends Dto {
+public class ReferenceDto<D extends Dto, O extends Jo, J extends Jao<D, O>> extends Dto {
     private Path chemin;
     private Class<J> classeFournisseur;
 
