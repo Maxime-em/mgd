@@ -4,7 +4,6 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import org.mgd.connexion.exception.ConnexionException;
 import org.mgd.gmel.coeur.commun.Mesure;
 import org.mgd.gmel.coeur.objet.Epicerie;
@@ -40,21 +39,14 @@ public class EpicerieService extends Service {
     private final SimpleObjectProperty<Produit> produit = new SimpleObjectProperty<>(this, "produit");
     private final SimpleStringProperty produitNom = new SimpleStringProperty(this, "produit-nom");
 
-    private final ListChangeListener<Produit> produitListChangeListener = getListChangeListener(() -> epicerie.get().getProduits());
-
     private EpicerieService() throws ConnexionsException, ConnexionException, JaoExecutionException, IOException, JaoParseException {
-        epicerie.addListener((observable, ancienne, nouvelle) -> {
-            produits.removeListener(produitListChangeListener);
-            produits.clear();
-            if (nouvelle != null) {
-                produits.addAll(nouvelle.getProduits());
-                produits.addListener(produitListChangeListener);
-            }
-        });
-        produitNom.addListener((observable, ancien, nouveau) -> Optional.ofNullable(produit.get()).ifPresent(produitAModifier -> produitAModifier.setNom(nouveau)));
+        produits.bind(new ListeLiaison<>(epicerie, Epicerie::getProduits));
 
         GmelSingletons.connexion().ouvrir();
         epicerie.set(GmelSingletons.connexion().getJabm().epicerie());
+
+        produits.addListener(propager(epicerie, Epicerie::getProduits));
+        produitNom.addListener((observable, ancien, nouveau) -> Optional.ofNullable(produit.get()).ifPresent(produitAModifier -> produitAModifier.setNom(nouveau)));
     }
 
     public static EpicerieService getInstance() {

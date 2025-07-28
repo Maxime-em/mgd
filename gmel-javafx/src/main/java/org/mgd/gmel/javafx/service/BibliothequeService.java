@@ -5,7 +5,6 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.scene.input.DataFormat;
 import org.mgd.connexion.exception.ConnexionException;
 import org.mgd.gmel.coeur.objet.Bibliotheque;
@@ -50,43 +49,20 @@ public class BibliothequeService extends Service {
     private final SimpleListProperty<ProduitQuantifier> recetteProduitsQuantifier = new SimpleListProperty<>(this, "recette-produits-quantifier", FXCollections.observableArrayList());
     private final SimpleObjectProperty<LivreCuisine> livreCuisineCible = new SimpleObjectProperty<>(this, "livre-de-cuisine-cible");
 
-    private final ListChangeListener<LivreCuisine> livreCuisineListChangeListener = getListChangeListener(() -> bibliotheque.get().getLivresCuisine());
-    private final ListChangeListener<Recette> recetteListChangeListener = getListChangeListener(() -> livreCuisine.get().getRecettes());
-    private final ListChangeListener<ProduitQuantifier> recetteProduitsQuantifierListChangeListener = getListChangeListener(() -> recette.get().getProduitsQuantifier());
-
     private BibliothequeService() throws ConnexionsException, ConnexionException, JaoExecutionException, IOException, JaoParseException {
-        super();
-
-        bibliotheque.addListener((observable, ancienne, nouvelle) -> {
-            livresCuisine.removeListener(livreCuisineListChangeListener);
-            livresCuisine.clear();
-            if (nouvelle != null) {
-                livresCuisine.setAll(nouvelle.getLivresCuisine());
-                livresCuisine.addListener(livreCuisineListChangeListener);
-            }
-        });
-        livreCuisine.addListener((observable, ancien, nouveau) -> {
-            recettes.removeListener(recetteListChangeListener);
-            recettes.clear();
-            if (nouveau != null) {
-                recettes.setAll(nouveau.getRecettes());
-                recettes.addListener(recetteListChangeListener);
-            }
-        });
-        livreCuisineNom.addListener((observable, ancien, nouveau) -> Optional.ofNullable(livreCuisine.get()).ifPresent(livreCuisineAModifier -> livreCuisineAModifier.setNom(nouveau)));
-        recette.addListener((observable, ancienne, nouvelle) -> {
-            recetteProduitsQuantifier.removeListener(recetteProduitsQuantifierListChangeListener);
-            recetteProduitsQuantifier.clear();
-            if (nouvelle != null) {
-                recetteProduitsQuantifier.setValue(FXCollections.observableArrayList(nouvelle.getProduitsQuantifier()));
-                recetteProduitsQuantifier.addListener(recetteProduitsQuantifierListChangeListener);
-            }
-        });
-        recetteNom.addListener((observable, ancien, nouveau) -> Optional.ofNullable(recette.get()).ifPresent(recetteAModifier -> recetteAModifier.setNom(nouveau)));
-        recetteNombrePersonnes.addListener((observable, ancien, nouveau) -> Optional.ofNullable(recette.get()).ifPresent(recetteAModifier -> recetteAModifier.setNombrePersonnes(nouveau)));
+        livresCuisine.bind(new ListeLiaison<>(bibliotheque, Bibliotheque::getLivresCuisine));
+        recettes.bind(new ListeLiaison<>(livreCuisine, LivreCuisine::getRecettes));
+        recetteProduitsQuantifier.bind(new ListeLiaison<>(recette, Recette::getProduitsQuantifier));
 
         GmelSingletons.connexion().ouvrir();
         bibliotheque.set(GmelSingletons.connexion().getJabm().bibliotheque());
+
+        livresCuisine.addListener(propager(bibliotheque, Bibliotheque::getLivresCuisine));
+        recettes.addListener(propager(livreCuisine, LivreCuisine::getRecettes));
+        recetteProduitsQuantifier.addListener(propager(recette, Recette::getProduitsQuantifier));
+        livreCuisineNom.addListener((observable, ancien, nouveau) -> Optional.ofNullable(livreCuisine.get()).ifPresent(livreCuisineAModifier -> livreCuisineAModifier.setNom(nouveau)));
+        recetteNom.addListener((observable, ancien, nouveau) -> Optional.ofNullable(recette.get()).ifPresent(recetteAModifier -> recetteAModifier.setNom(nouveau)));
+        recetteNombrePersonnes.addListener((observable, ancien, nouveau) -> Optional.ofNullable(recette.get()).ifPresent(recetteAModifier -> recetteAModifier.setNombrePersonnes(nouveau)));
     }
 
     public static BibliothequeService getInstance() {

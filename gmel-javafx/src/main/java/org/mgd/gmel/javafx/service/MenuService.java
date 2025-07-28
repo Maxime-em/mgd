@@ -1,5 +1,7 @@
 package org.mgd.gmel.javafx.service;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -46,25 +48,11 @@ public class MenuService extends Service {
     private final SimpleIntegerProperty formuleNombreConvives = new SimpleIntegerProperty(this, "formule-nombre-convives");
     private final SimpleIntegerProperty formuleTaille = new SimpleIntegerProperty(this, "formule-taille");
 
-    private final ListChangeListener<Formule> formulesListChangeListener = getListChangeListener(() -> menu.get().getFormules());
-
     private MenuService() {
-        reference.addListener((observable, ancienne, nouvelle) -> {
-            try {
-                menu.set(jabm.menu(reference.get()));
-            } catch (JaoParseException | JaoExecutionException | IOException e) {
-                throw new ServiceException(e);
-            }
-        });
+        menu.bind(new MenuLiaison());
+        formules.bind(new ListeLiaison<>(menu, Menu::getFormules));
+        formuleRecettes.bind(new ListeLiaison<>(formuleLivreCuisine, LivreCuisine::getRecettes));
 
-        menu.addListener((observable, ancien, nouveau) -> {
-            formules.removeListener(formulesListChangeListener);
-            formules.clear();
-            if (nouveau != null) {
-                formules.setAll(nouveau.getFormules());
-                formules.addListener(formulesListChangeListener);
-            }
-        });
         formules.addListener((ListChangeListener<Formule>) change -> {
             while (change.next()) {
                 if (change.wasRemoved()) {
@@ -77,13 +65,6 @@ public class MenuService extends Service {
                 if (change.wasAdded()) {
                     change.getAddedSubList().stream().findFirst().ifPresent(formule::set);
                 }
-            }
-        });
-        formuleLivreCuisine.addListener((observable, ancien, nouveau) -> {
-            if (nouveau != null) {
-                formuleRecettes.setAll(nouveau.getRecettes());
-            } else {
-                formuleRecettes.clear();
             }
         });
         formuleRecette.addListener((observable, ancienne, nouvelle) -> Optional.ofNullable(formule.get()).ifPresent(formuleAModifier -> formuleAModifier.setRecette(nouvelle)));
@@ -155,5 +136,26 @@ public class MenuService extends Service {
 
     public SimpleIntegerProperty formuleTailleProperty() {
         return formuleTaille;
+    }
+
+    private class MenuLiaison extends ObjectBinding<Menu> {
+        public MenuLiaison() {
+            bind(reference);
+        }
+
+        @Override
+        protected Menu computeValue() {
+            try {
+                return Bindings.isNotNull(reference).get() ? jabm.menu(reference.get()) : null;
+            } catch (JaoParseException | JaoExecutionException | IOException e) {
+                throw new ServiceException(e);
+            }
+        }
+
+        @Override
+        public void dispose() {
+            super.dispose();
+            bind(reference);
+        }
     }
 }

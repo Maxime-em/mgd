@@ -3,7 +3,6 @@ package org.mgd.gmel.javafx.service;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import org.mgd.connexion.exception.ConnexionException;
 import org.mgd.gmel.coeur.commun.Mesure;
 import org.mgd.gmel.coeur.objet.*;
@@ -37,30 +36,16 @@ public class ImprimerieService extends Service {
     private final SimpleObjectProperty<Inventaire> inventaire = new SimpleObjectProperty<>(this, "inventaire");
     private final SimpleListProperty<ProduitQuantifier> produitsQuantifier = new SimpleListProperty<>(this, "produitsQuantifier", FXCollections.observableArrayList());
 
-    private final ListChangeListener<Menu> menuListChangeListener = getListChangeListener(() -> agenda.get().getMenus());
-    private final ListChangeListener<ProduitQuantifier> produitsQuantifierListChangeListener = getListChangeListener(() -> inventaire.get().getProduitsQuantifier());
-
     private ImprimerieService() throws ConnexionsException, ConnexionException, JaoExecutionException, IOException, JaoParseException {
-        agenda.addListener((observable, ancien, nouveau) -> {
-            menus.removeListener(menuListChangeListener);
-            menus.clear();
-            if (nouveau != null) {
-                menus.setAll(nouveau.getMenus());
-                menus.addListener(menuListChangeListener);
-            }
-        });
-        inventaire.addListener((observable, ancien, nouveau) -> {
-            produitsQuantifier.removeListener(produitsQuantifierListChangeListener);
-            produitsQuantifier.clear();
-            if (nouveau != null) {
-                produitsQuantifier.setAll(nouveau.getProduitsQuantifier());
-                produitsQuantifier.addListener(produitsQuantifierListChangeListener);
-            }
-        });
+        menus.bind(new ListeLiaison<>(agenda, Agenda::getMenus));
+        produitsQuantifier.bind(new ListeLiaison<>(inventaire, Inventaire::getProduitsQuantifier));
 
         GmelSingletons.connexion().ouvrir();
         agenda.set(GmelSingletons.connexion().getJabm().agenda());
         inventaire.set(GmelSingletons.connexion().getJabm().inventaire());
+
+        menus.addListener(propager(agenda, Agenda::getMenus));
+        produitsQuantifier.addListener(propager(inventaire, Inventaire::getProduitsQuantifier));
     }
 
     public static ImprimerieService getInstance() {
