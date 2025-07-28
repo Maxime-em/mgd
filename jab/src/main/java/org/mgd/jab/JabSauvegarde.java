@@ -86,7 +86,7 @@ public class JabSauvegarde {
 
     public <O extends Jo> void demarrer(O objet) {
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Démarrage de la sauvegarde de l''objet {}", objet);
+            LOGGER.debug("Démarrage de la sauvegarde de l'objet {}", objet);
         }
         if (objet.getIdentifiant() != null && creation.verifier(objet.getIdentifiant())) {
             Dto dto = creation.getJao((objet.getIdentifiant())).dto(objet);
