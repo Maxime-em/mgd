@@ -1,6 +1,5 @@
 package org.mgd.gmel.javafx.service;
 
-import javafx.beans.binding.Bindings;
 import javafx.beans.binding.ListBinding;
 import javafx.beans.value.ObservableObjectValue;
 import javafx.collections.FXCollections;
@@ -32,17 +31,17 @@ public abstract class Service {
 
     protected static class ListeLiaison<O, E> extends ListBinding<E> {
         private final ObservableObjectValue<O> source;
-        private final Function<O, Collection<E>> obtenirListe;
+        private final Function<O, Collection<E>> obtenirCible;
 
-        public ListeLiaison(ObservableObjectValue<O> source, Function<O, Collection<E>> obtenirListe) {
+        public ListeLiaison(ObservableObjectValue<O> source, Function<O, Collection<E>> obtenirCible) {
             this.source = source;
-            this.obtenirListe = obtenirListe;
+            this.obtenirCible = obtenirCible;
             bind(source);
         }
 
         @Override
         protected ObservableList<E> computeValue() {
-            return Bindings.isNotNull(source).get() ? FXCollections.observableArrayList(obtenirListe.apply(source.get())) : FXCollections.emptyObservableList();
+            return source.get() != null ? FXCollections.observableArrayList(obtenirCible.apply(source.get())) : FXCollections.emptyObservableList();
         }
 
         @Override
