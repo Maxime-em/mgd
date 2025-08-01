@@ -53,6 +53,7 @@ public class MenuService extends Service {
         formules.bind(new ListeLiaison<>(menu, Menu::getFormules));
         formuleRecettes.bind(new ListeLiaison<>(formuleLivreCuisine, LivreCuisine::getRecettes));
 
+        formules.addListener(propager(menu, Menu::getFormules));
         formules.addListener((ListChangeListener<Formule>) change -> {
             while (change.next()) {
                 if (change.wasRemoved()) {

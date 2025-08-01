@@ -14,10 +14,10 @@ public abstract class Service {
     protected Service() {
     }
 
-    public static <O, E> ListChangeListener<E> propager(ObservableObjectValue<O> source, Function<O, Collection<E>> obtenirListe) {
+    public static <O, E> ListChangeListener<E> propager(ObservableObjectValue<O> source, Function<O, Collection<E>> obtenirCible) {
         return change -> {
-            if (Bindings.isNotNull(source).get()) {
-                Collection<E> aModifier = obtenirListe.apply(source.get());
+            if (source.get() != null) {
+                Collection<E> aModifier = obtenirCible.apply(source.get());
                 while (change.next()) {
                     if (change.wasRemoved()) {
                         change.getRemoved().forEach(aModifier::remove);
