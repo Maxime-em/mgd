@@ -2,7 +2,6 @@ package org.mgd.gmel.javafx.service;
 
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
 import org.mgd.connexion.exception.ConnexionException;
 import org.mgd.gmel.coeur.commun.Mesure;
 import org.mgd.gmel.coeur.objet.*;
@@ -32,9 +31,9 @@ public class ImprimerieService extends Service {
 
     private final EpicerieService epicerieService = EpicerieService.getInstance();
     private final SimpleObjectProperty<Agenda> agenda = new SimpleObjectProperty<>(this, "agenda");
-    private final SimpleListProperty<Menu> menus = new SimpleListProperty<>(this, "menus", FXCollections.observableArrayList());
+    private final SimpleListProperty<Menu> menus = new SimpleListProperty<>(this, "menus");
     private final SimpleObjectProperty<Inventaire> inventaire = new SimpleObjectProperty<>(this, "inventaire");
-    private final SimpleListProperty<ProduitQuantifier> produitsQuantifier = new SimpleListProperty<>(this, "produitsQuantifier", FXCollections.observableArrayList());
+    private final SimpleListProperty<ProduitQuantifier> produitsQuantifier = new SimpleListProperty<>(this, "produitsQuantifier");
 
     private ImprimerieService() throws ConnexionsException, ConnexionException, JaoExecutionException, IOException, JaoParseException {
         menus.bind(new ListeLiaison<>(agenda, Agenda::getMenus));
@@ -78,7 +77,10 @@ public class ImprimerieService extends Service {
                                         }
                                     });
                         })));
-        produitsQuantifier.setAll(produitsQuantifierParProduitEtMesure.values().stream().flatMap(produitsQuantifierParMesure -> produitsQuantifierParMesure.values().stream()).toList());
+        produitsQuantifier.setAll(produitsQuantifierParProduitEtMesure.values()
+                .stream()
+                .flatMap(produitsQuantifierParMesure -> produitsQuantifierParMesure.values().stream())
+                .toList());
     }
 
     /**

@@ -4,7 +4,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import javafx.scene.input.DataFormat;
 import org.mgd.connexion.exception.ConnexionException;
 import org.mgd.gmel.coeur.objet.Bibliotheque;
@@ -39,14 +38,14 @@ public class BibliothequeService extends Service {
     }
 
     private final SimpleObjectProperty<Bibliotheque> bibliotheque = new SimpleObjectProperty<>(this, "bibliothèque");
-    private final SimpleListProperty<LivreCuisine> livresCuisine = new SimpleListProperty<>(this, "livres-de-cuisines", FXCollections.observableArrayList());
+    private final SimpleListProperty<LivreCuisine> livresCuisine = new SimpleListProperty<>(this, "livres-de-cuisines");
     private final SimpleStringProperty livreCuisineNom = new SimpleStringProperty(this, "livre-de-cuisine-nom");
     private final SimpleObjectProperty<LivreCuisine> livreCuisine = new SimpleObjectProperty<>(this, "livre-de-cuisine");
-    private final SimpleListProperty<Recette> recettes = new SimpleListProperty<>(this, "recettes", FXCollections.observableArrayList());
+    private final SimpleListProperty<Recette> recettes = new SimpleListProperty<>(this, "recettes");
     private final SimpleObjectProperty<Recette> recette = new SimpleObjectProperty<>(this, "recette");
     private final SimpleStringProperty recetteNom = new SimpleStringProperty(this, "recette-nom");
     private final SimpleIntegerProperty recetteNombrePersonnes = new SimpleIntegerProperty(this, "recette-nombre-personnes");
-    private final SimpleListProperty<ProduitQuantifier> recetteProduitsQuantifier = new SimpleListProperty<>(this, "recette-produits-quantifier", FXCollections.observableArrayList());
+    private final SimpleListProperty<ProduitQuantifier> recetteProduitsQuantifier = new SimpleListProperty<>(this, "recette-produits-quantifier");
     private final SimpleObjectProperty<LivreCuisine> livreCuisineCible = new SimpleObjectProperty<>(this, "livre-de-cuisine-cible");
 
     private BibliothequeService() throws ConnexionsException, ConnexionException, JaoExecutionException, IOException, JaoParseException {

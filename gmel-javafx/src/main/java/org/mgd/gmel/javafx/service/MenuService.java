@@ -5,7 +5,6 @@ import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import org.mgd.connexion.exception.ConnexionException;
 import org.mgd.gmel.coeur.Jabm;
@@ -40,10 +39,10 @@ public class MenuService extends Service {
 
     private final SimpleObjectProperty<LocalDate> reference = new SimpleObjectProperty<>();
     private final SimpleObjectProperty<Menu> menu = new SimpleObjectProperty<>(this, "menu");
-    private final SimpleListProperty<Formule> formules = new SimpleListProperty<>(this, "formules", FXCollections.observableArrayList());
+    private final SimpleListProperty<Formule> formules = new SimpleListProperty<>(this, "formules");
     private final SimpleObjectProperty<Formule> formule = new SimpleObjectProperty<>(this, "formule");
     private final SimpleObjectProperty<LivreCuisine> formuleLivreCuisine = new SimpleObjectProperty<>(this, "formule-livre-de-cuisine");
-    private final SimpleListProperty<Recette> formuleRecettes = new SimpleListProperty<>(this, "formule-recettes", FXCollections.observableArrayList());
+    private final SimpleListProperty<Recette> formuleRecettes = new SimpleListProperty<>(this, "formule-recettes");
     private final SimpleObjectProperty<Recette> formuleRecette = new SimpleObjectProperty<>(this, "formule-recette");
     private final SimpleIntegerProperty formuleNombreConvives = new SimpleIntegerProperty(this, "formule-nombre-convives");
     private final SimpleIntegerProperty formuleTaille = new SimpleIntegerProperty(this, "formule-taille");

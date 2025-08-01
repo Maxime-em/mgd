@@ -3,7 +3,6 @@ package org.mgd.gmel.javafx.service;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
 import org.mgd.connexion.exception.ConnexionException;
 import org.mgd.gmel.coeur.commun.Mesure;
 import org.mgd.gmel.coeur.objet.Epicerie;
@@ -35,7 +34,7 @@ public class EpicerieService extends Service {
     }
 
     private final SimpleObjectProperty<Epicerie> epicerie = new SimpleObjectProperty<>(this, "épicerie");
-    private final SimpleListProperty<Produit> produits = new SimpleListProperty<>(this, "produits", FXCollections.observableArrayList());
+    private final SimpleListProperty<Produit> produits = new SimpleListProperty<>(this, "produits");
     private final SimpleObjectProperty<Produit> produit = new SimpleObjectProperty<>(this, "produit");
     private final SimpleStringProperty produitNom = new SimpleStringProperty(this, "produit-nom");
 
