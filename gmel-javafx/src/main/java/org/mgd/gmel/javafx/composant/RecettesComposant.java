@@ -50,7 +50,9 @@ public class RecettesComposant extends TableView<Recette> implements Initializab
     private static class Ligne extends TableRow<Recette> {
         private Ligne() {
             setOnDragDetected(event -> {
-                startDragAndDrop(TransferMode.MOVE).setContent(Map.of(BibliothequeService.FORMAT_DONNEE_RECETTE_UUID, getItem().getIdentifiant()));
+                if (getItem() != null) {
+                    startDragAndDrop(TransferMode.MOVE).setContent(Map.of(BibliothequeService.FORMAT_DONNEE_RECETTE_UUID, getItem().getIdentifiant()));
+                }
                 event.consume();
             });
         }
