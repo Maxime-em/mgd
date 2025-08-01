@@ -14,6 +14,6 @@ import java.util.Map;
 public class JocHashMap<K, V> extends JocAbstractMap<K, V, HashMap<K, V>> implements Map<K, V> {
     public JocHashMap(Jo contenant) {
         super(contenant);
-        this.contenu = new HashMap<>();
+        contenu = new HashMap<>();
     }
 }

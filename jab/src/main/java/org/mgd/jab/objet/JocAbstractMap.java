@@ -2,10 +2,7 @@ package org.mgd.jab.objet;
 
 import org.mgd.jab.utilitaire.Jos;
 
-import java.util.AbstractMap;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Classe abstraite à utiliser pour créer des implementations de {@link Map} d'objet métier de type {@link Jo}
@@ -23,72 +20,80 @@ public abstract class JocAbstractMap<K, V, C extends AbstractMap<K, V>> extends 
 
     @Override
     public int size() {
-        return this.contenu.size();
+        return contenu.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return this.contenu.isEmpty();
+        return contenu.isEmpty();
     }
 
     @Override
     public boolean containsKey(Object key) {
-        return this.contenu.containsKey(key);
+        return contenu.containsKey(key);
     }
 
     @Override
     public boolean containsValue(Object value) {
-        return this.contenu.containsValue(value);
+        return contenu.containsValue(value);
     }
 
     @Override
     public V get(Object key) {
-        return this.contenu.get(key);
+        return contenu.get(key);
     }
 
     @Override
     public V put(K key, V value) {
-        this.contenant.ajouterEnfant(value);
+        Objects.requireNonNull(value);
+        contenant.ajouterEnfant(value);
         V result = contenu.put(key, value);
-        this.contenant.sauvegarder();
+        if (result == null || !result.equals(value)) {
+            contenant.sauvegarder();
+        }
         return result;
     }
 
     @Override
     public V remove(Object key) {
-        this.contenant.enleverEnfant(get(key));
+        contenant.enleverEnfant(get(key));
         V result = contenu.remove(key);
-        this.contenant.sauvegarder();
+        if (result != null) {
+            contenant.sauvegarder();
+        }
         return result;
     }
 
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
-        this.contenant.ajouterEnfants(m.values());
+        Objects.requireNonNull(m);
+        contenant.ajouterEnfants(m.values());
         contenu.putAll(m);
-        this.contenant.sauvegarder();
+        // TODO mettre du code pour ne sauvegarder que si la collection à réellement changée
+        contenant.sauvegarder();
     }
 
     @Override
     public void clear() {
-        this.contenant.ajouterEnfants(this.contenu.values());
-        this.contenu.clear();
-        this.contenant.sauvegarder();
+        contenant.ajouterEnfants(contenu.values());
+        contenu.clear();
+        // TODO mettre du code pour ne sauvegarder que si la collection à réellement changée
+        contenant.sauvegarder();
     }
 
     @Override
     public Set<K> keySet() {
-        return this.contenu.keySet();
+        return contenu.keySet();
     }
 
     @Override
     public Collection<V> values() {
-        return this.contenu.values();
+        return contenu.values();
     }
 
     @Override
     public Set<Entry<K, V>> entrySet() {
-        return this.contenu.entrySet();
+        return contenu.entrySet();
     }
 
     @Override

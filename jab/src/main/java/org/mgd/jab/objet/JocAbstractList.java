@@ -20,64 +20,69 @@ public abstract class JocAbstractList<T, C extends AbstractList<T>> extends JocA
 
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
-        this.contenant.ajouterEnfants(c);
-        boolean resultat = contenu.addAll(index, c);
-        this.contenant.sauvegarder();
-        return resultat;
+        contenant.ajouterEnfants(c);
+        if (contenu.addAll(index, c)) {
+            contenant.sauvegarder();
+            return true;
+        }
+        return false;
     }
 
     @Override
     public T get(int index) {
-        return this.contenu.get(index);
+        return contenu.get(index);
     }
 
     @Override
     public T set(int index, T element) {
-        this.contenant.ajouterEnfant(element);
-        T resultat = this.contenu.set(index, element);
-        this.contenant.sauvegarder();
+        contenant.ajouterEnfant(element);
+        T resultat = contenu.set(index, element);
+        // TODO mettre du code pour ne sauvegarder que si la collection à réellement changée
+        contenant.sauvegarder();
         return resultat;
     }
 
     @Override
     public void add(int index, T element) {
-        this.contenant.ajouterEnfant(element);
-        this.contenu.add(index, element);
-        this.contenant.sauvegarder();
+        contenant.ajouterEnfant(element);
+        contenu.add(index, element);
+        // TODO mettre du code pour ne sauvegarder que si la collection à réellement changée
+        contenant.sauvegarder();
     }
 
     @Override
     public T remove(int index) {
-        this.contenant.enleverEnfant(get(index));
-        T resultat = this.contenu.remove(index);
-        this.contenant.sauvegarder();
+        contenant.enleverEnfant(get(index));
+        T resultat = contenu.remove(index);
+        // TODO mettre du code pour ne sauvegarder que si la collection à réellement changée
+        contenant.sauvegarder();
         return resultat;
     }
 
     @Override
     public int indexOf(Object o) {
-        return this.contenu.indexOf(o);
+        return contenu.indexOf(o);
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        return this.contenu.lastIndexOf(o);
+        return contenu.lastIndexOf(o);
     }
 
     @Override
     public ListIterator<T> listIterator() {
-        return this.contenu.listIterator();
+        return contenu.listIterator();
     }
 
     @Override
     public ListIterator<T> listIterator(int index) {
-        return this.contenu.listIterator();
+        return contenu.listIterator();
     }
 
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
-        JocArrayList<T> jocArrayList = new JocArrayList<>(this.contenant);
-        jocArrayList.addAll(this.contenu.subList(fromIndex, toIndex));
+        JocArrayList<T> jocArrayList = new JocArrayList<>(contenant);
+        jocArrayList.addAll(contenu.subList(fromIndex, toIndex));
         return jocArrayList;
     }
 }

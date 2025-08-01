@@ -12,105 +12,105 @@ import java.util.*;
 public class JocTreeSet<T extends Comparable<? super T>> extends JocAbstractSet<T, TreeSet<T>> implements NavigableSet<T> {
     public JocTreeSet(Jo contenant) {
         super(contenant);
-        this.contenu = new TreeSet<>();
+        contenu = new TreeSet<>();
     }
 
     @Override
     public T lower(T t) {
-        return this.contenu.lower(t);
+        return contenu.lower(t);
     }
 
     @Override
     public T floor(T t) {
-        return this.contenu.floor(t);
+        return contenu.floor(t);
     }
 
     @Override
     public T ceiling(T t) {
-        return this.contenu.ceiling(t);
+        return contenu.ceiling(t);
     }
 
     @Override
     public T higher(T t) {
-        return this.contenu.higher(t);
+        return contenu.higher(t);
     }
 
     @Override
     public T pollFirst() {
-        return this.contenu.pollFirst();
+        return contenu.pollFirst();
     }
 
     @Override
     public T pollLast() {
-        return this.contenu.pollLast();
+        return contenu.pollLast();
     }
 
     @Override
     public NavigableSet<T> descendingSet() {
-        JocTreeSet<T> jocTreeSet = new JocTreeSet<>(this.contenant);
-        jocTreeSet.addAll(this.contenu.descendingSet());
+        JocTreeSet<T> jocTreeSet = new JocTreeSet<>(contenant);
+        jocTreeSet.addAll(contenu.descendingSet());
         return jocTreeSet;
     }
 
     @Override
     public Iterator<T> descendingIterator() {
-        return this.contenu.descendingIterator();
+        return contenu.descendingIterator();
     }
 
     @Override
     public NavigableSet<T> subSet(T fromElement, boolean fromInclusive, T toElement, boolean toInclusive) {
-        JocTreeSet<T> jocTreeSet = new JocTreeSet<>(this.contenant);
-        jocTreeSet.addAll(this.contenu.subSet(fromElement, fromInclusive, toElement, toInclusive));
+        JocTreeSet<T> jocTreeSet = new JocTreeSet<>(contenant);
+        jocTreeSet.addAll(contenu.subSet(fromElement, fromInclusive, toElement, toInclusive));
         return jocTreeSet;
     }
 
     @Override
     public NavigableSet<T> headSet(T toElement, boolean inclusive) {
-        JocTreeSet<T> jocTreeSet = new JocTreeSet<>(this.contenant);
-        jocTreeSet.addAll(this.contenu.headSet(toElement, inclusive));
+        JocTreeSet<T> jocTreeSet = new JocTreeSet<>(contenant);
+        jocTreeSet.addAll(contenu.headSet(toElement, inclusive));
         return jocTreeSet;
     }
 
     @Override
     public NavigableSet<T> tailSet(T fromElement, boolean inclusive) {
-        JocTreeSet<T> jocTreeSet = new JocTreeSet<>(this.contenant);
-        jocTreeSet.addAll(this.contenu.tailSet(fromElement, inclusive));
+        JocTreeSet<T> jocTreeSet = new JocTreeSet<>(contenant);
+        jocTreeSet.addAll(contenu.tailSet(fromElement, inclusive));
         return jocTreeSet;
     }
 
     @Override
     public Comparator<? super T> comparator() {
-        return this.contenu.comparator();
+        return contenu.comparator();
     }
 
     @Override
     public SortedSet<T> subSet(T fromElement, T toElement) {
-        JocTreeSet<T> jocTreeSet = new JocTreeSet<>(this.contenant);
-        jocTreeSet.addAll(this.contenu.subSet(fromElement, toElement));
+        JocTreeSet<T> jocTreeSet = new JocTreeSet<>(contenant);
+        jocTreeSet.addAll(contenu.subSet(fromElement, toElement));
         return jocTreeSet;
     }
 
     @Override
     public SortedSet<T> headSet(T toElement) {
-        JocTreeSet<T> jocTreeSet = new JocTreeSet<>(this.contenant);
-        jocTreeSet.addAll(this.contenu.headSet(toElement));
+        JocTreeSet<T> jocTreeSet = new JocTreeSet<>(contenant);
+        jocTreeSet.addAll(contenu.headSet(toElement));
         return jocTreeSet;
     }
 
     @Override
     public SortedSet<T> tailSet(T fromElement) {
-        JocTreeSet<T> jocTreeSet = new JocTreeSet<>(this.contenant);
-        jocTreeSet.addAll(this.contenu.tailSet(fromElement));
+        JocTreeSet<T> jocTreeSet = new JocTreeSet<>(contenant);
+        jocTreeSet.addAll(contenu.tailSet(fromElement));
         return jocTreeSet;
     }
 
     @Override
     public T first() {
-        return this.contenu.first();
+        return contenu.first();
     }
 
     @Override
     public T last() {
-        return this.contenu.last();
+        return contenu.last();
     }
 }

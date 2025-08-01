@@ -13,6 +13,6 @@ import java.util.List;
 public class JocArrayList<T> extends JocAbstractList<T, ArrayList<T>> implements List<T> {
     public JocArrayList(Jo contenant) {
         super(contenant);
-        this.contenu = new ArrayList<>();
+        contenu = new ArrayList<>();
     }
 }

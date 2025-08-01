@@ -21,93 +21,104 @@ public abstract class JocAbstractCollection<T, C extends AbstractCollection<T>> 
 
     @Override
     public int size() {
-        return this.contenu.size();
+        return contenu.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return this.contenu.isEmpty();
+        return contenu.isEmpty();
     }
 
     @Override
     public boolean contains(Object o) {
-        return this.contenu.contains(o);
+        return contenu.contains(o);
     }
 
     @Override
     public Iterator<T> iterator() {
-        return this.contenu.iterator();
+        return contenu.iterator();
     }
 
     @Override
     public Object[] toArray() {
-        return this.contenu.toArray();
+        return contenu.toArray();
     }
 
     @Override
     public <T1> T1[] toArray(T1[] a) {
-        return this.contenu.toArray(a);
+        return contenu.toArray(a);
     }
 
     @Override
     public boolean add(T t) {
-        this.contenant.ajouterEnfant(t);
-        boolean resultat = contenu.add(t);
-        this.contenant.sauvegarder();
-        return resultat;
+        contenant.ajouterEnfant(t);
+        if (contenu.add(t)) {
+            contenant.sauvegarder();
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean remove(Object o) {
-        this.contenant.enleverEnfant(o);
-        boolean resultat = contenu.remove(o);
-        this.contenant.sauvegarder();
-        return resultat;
+        contenant.enleverEnfant(o);
+        if (contenu.remove(o)) {
+            contenant.sauvegarder();
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        return this.contenu.containsAll(c);
+        return contenu.containsAll(c);
     }
 
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        this.contenant.ajouterEnfants(c);
-        boolean resultat = contenu.addAll(c);
-        this.contenant.sauvegarder();
-        return resultat;
+        contenant.ajouterEnfants(c);
+        if (contenu.addAll(c)) {
+            contenant.sauvegarder();
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
-        this.contenant.removeEnfants(c);
-        boolean resultat = contenu.removeAll(c);
-        this.contenant.sauvegarder();
-        return resultat;
+        contenant.removeEnfants(c);
+        if (contenu.removeAll(c)) {
+            contenant.sauvegarder();
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        this.contenant.removeEnfants(this.contenu.stream().filter(t -> !c.contains(t)).toList());
-        boolean resultat = this.contenu.retainAll(c);
-        this.contenant.sauvegarder();
-        return resultat;
+        contenant.removeEnfants(contenu.stream().filter(t -> !c.contains(t)).toList());
+        if (contenu.retainAll(c)) {
+            contenant.sauvegarder();
+            return true;
+        }
+        return false;
     }
 
     @Override
     public void clear() {
-        this.contenant.removeEnfants(this.contenu);
-        this.contenu.clear();
-        this.contenant.sauvegarder();
+        contenant.removeEnfants(contenu);
+        contenu.clear();
+        // TODO mettre du code pour ne sauvegarder que si la collection à réellement changée
+        contenant.sauvegarder();
     }
 
     @Override
     public boolean idem(Object objet) {
         if (this == objet) return true;
         if (!(objet instanceof JocAbstractCollection<?, ?> collection)) return false;
-        if (this.contenu == collection.contenu) return true;
-        if (this.contenu == null || collection.contenu == null) return false;
-        if (this.contenu.size() != collection.contenu.size()) return false;
-        return this.contenu.stream().allMatch(element1 -> collection.contenu.stream().anyMatch(element2 -> Jos.idem(element1, element2)));
+        if (contenu == collection.contenu) return true;
+        if (contenu == null || collection.contenu == null) return false;
+        if (contenu.size() != collection.contenu.size()) return false;
+        return contenu.stream().allMatch(element1 -> collection.contenu.stream().anyMatch(element2 -> Jos.idem(element1, element2)));
     }
 }

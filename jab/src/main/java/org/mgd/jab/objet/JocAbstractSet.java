@@ -15,4 +15,16 @@ public abstract class JocAbstractSet<T, C extends AbstractSet<T>> extends JocAbs
     protected JocAbstractSet(Jo contenant) {
         super(contenant);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof JocAbstractSet<?, ?> that)) return false;
+        return contenu.equals(that.contenu);
+    }
+
+    @Override
+    public int hashCode() {
+        return contenu.hashCode();
+    }
 }
