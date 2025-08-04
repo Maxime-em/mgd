@@ -21,36 +21,6 @@ public class GmelApplication extends Application {
         launch();
     }
 
-    private static void alerter(Thread t, Throwable e) {
-        String message = MessageFormat.format("Exception levée dans le thread {0}", t);
-
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        e.printStackTrace(pw);
-
-        TextArea textArea = new TextArea(sw.toString());
-        textArea.setWrapText(true);
-
-        Alert fenetre = new Alert(Alert.AlertType.ERROR);
-        fenetre.setTitle("Alerte");
-        fenetre.setHeaderText(message);
-        fenetre.setResizable(true);
-        fenetre.getDialogPane().setContent(textArea);
-
-        LOGGER.error(message, e);
-
-        try {
-            fenetre.showAndWait();
-        } catch (IllegalStateException ex) {
-            LOGGER.error("Impossible d'ouvrir une fenêtre d'alerte", ex);
-        }
-    }
-
-    @Override
-    public void init() {
-        Thread.setDefaultUncaughtExceptionHandler(GmelApplication::alerter);
-    }
-
     @Override
     public void start(Stage stage) {
         try {
@@ -59,8 +29,8 @@ public class GmelApplication extends Application {
             stage.setTitle("Gmel");
             stage.setScene(new GmelScene());
             stage.show();
-        } catch (IOException e) {
-            alerter(Thread.currentThread(), e);
+        } catch (Exception e) {
+            LOGGER.error(e);
         }
     }
 
