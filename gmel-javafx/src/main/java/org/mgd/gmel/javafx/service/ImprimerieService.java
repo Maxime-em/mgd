@@ -29,6 +29,8 @@ public class ImprimerieService extends Service {
         }
     }
 
+    private final Map<Produit, Long> restes = new HashMap<>();
+    private final Map<Produit, Map<Mesure, ProduitQuantifier>> produitsQuantifierParProduitEtMesure = new HashMap<>();
     private final EpicerieService epicerieService = EpicerieService.getInstance();
     private final SimpleObjectProperty<Agenda> agenda = new SimpleObjectProperty<>(this, "agenda");
     private final SimpleListProperty<Menu> menus = new SimpleListProperty<>(this, "menus");
@@ -62,12 +64,14 @@ public class ImprimerieService extends Service {
     }
 
     public void remplirInventaire() {
-        Map<Produit, Map<Mesure, ProduitQuantifier>> produitsQuantifierParProduitEtMesure = new HashMap<>();
+        restes.clear();
+        produitsQuantifierParProduitEtMesure.clear();
         menus.forEach(menu ->
                 menu.getFormules().forEach(formule ->
                         formule.getRecette().getProduitsQuantifier().forEach(produitQuantifier -> {
                             Produit produit = produitQuantifier.getProduit();
                             Mesure mesure = produitQuantifier.getQuantite().getMesure();
+                            restes.computeIfAbsent(produit, k -> 0L);
                             produitsQuantifierParProduitEtMesure.computeIfAbsent(produit, k -> new EnumMap<>(Mesure.class))
                                     .computeIfAbsent(mesure, k -> {
                                         try {
@@ -84,43 +88,24 @@ public class ImprimerieService extends Service {
     }
 
     /**
-     * Formule de calcul de la valeur totale d'une quantité pour un produit et une mesure donnée :
-     * <pre>
-     * Somme_{i dans Formules} Somme_{j dans ProduitsQuantiferDuProduitEtDeLaMesure_i} (valeur_j / nombre_personne_i) * nombre_convives_i * taille_i
-     * = [ Somme_{i dans Formules} (Somme_{j dans ProduitsQuantiferDuProduitEtDeLaMesure_i} valeur_j) * nombre_convives_i * taille_i * Produit_{k dans Formules, k != i} np_k ] / Produit_{k dans Formules} np_k
-     * </pre>
+     * Formule de calcul de la valeur totale d'une quantité pour un produit et une mesure donnée
      *
      * @param produit Le produit
      * @param mesure  La mesure
      * @return La valeur totale
      */
     private long calcul(Produit produit, Mesure mesure) {
-        long numerateur = menus.stream().reduce(0L, (resultat, menu) ->
+        return menus.stream().reduce(0L, (resultat, menu) ->
                 resultat + menu.getFormules().stream().reduce(0L, (resultatMenu, formule) -> {
-                    long produitNombrePersonnesAutreFormules = menu.getFormules()
-                            .stream()
-                            .filter(autreFormule -> !autreFormule.equals(formule))
-                            .reduce(1L,
-                                    (resultatValeur, autreFormule) -> resultatValeur * autreFormule.getRecette().getNombrePersonnes(),
-                                    (resultatValeur1, resultatValeur2) -> resultatValeur1 * resultatValeur2);
-                    long valeurProduitsQuantiferDuProduitEtDeLaMesure = formule.getRecette()
+                    long resultatFormule = restes.get(produit) + formule.getRecette()
                             .getProduitsQuantifier()
                             .stream()
-                            .filter(produitQuantifier -> produitQuantifier.getProduit().equals(produit) && produitQuantifier.getQuantite().getMesure().equals(mesure))
+                            .filter(produitQuantifier -> produitQuantifier.getProduit().idem(produit) && produitQuantifier.getQuantite().getMesure().equals(mesure))
                             .mapToLong(produitQuantifier -> produitQuantifier.getQuantite().getValeur())
-                            .sum();
-                    return resultatMenu + valeurProduitsQuantiferDuProduitEtDeLaMesure * formule.getNombreConvives() * formule.getPeriode().getTaille() * produitNombrePersonnesAutreFormules;
-                }, Long::sum), Long::sum);
-
-        long denominateur = menus.stream().reduce(1L, (resultat, menu) ->
-                resultat * menu.getFormules().stream().reduce(1L, (resultatMenu, formule) ->
-                                resultatMenu * formule.getRecette().getNombrePersonnes(),
-                        (resultat1, resultat2) -> resultat1 * resultat2
-                ), (resultatMenu1, resultatMenu2) -> resultatMenu1 * resultatMenu2);
-
-        long quotientValeur = numerateur / denominateur;
-        long resteValeur = numerateur % denominateur;
-        return quotientValeur + (resteValeur > 0 ? 1 : 0);
+                            .sum() * formule.getNombreConvives() * formule.getPeriode().getTaille();
+                    restes.put(produit, resultatFormule % formule.getRecette().getNombrePersonnes());
+                    return resultatMenu + resultatFormule / formule.getRecette().getNombrePersonnes();
+                }, Long::sum), Long::sum) + (restes.get(produit) > 0 ? 1 : 0);
     }
 
     public SimpleObjectProperty<Agenda> agendaProperty() {
