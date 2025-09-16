@@ -1,0 +1,125 @@
+package org.mgd.lwjgl.affichage.element;
+
+import org.mgd.commun.Matrice;
+import org.mgd.lwjgl.Fenetre;
+import org.mgd.lwjgl.Vision;
+import org.mgd.lwjgl.affichage.Animateur;
+import org.mgd.lwjgl.affichage.Primitif;
+import org.mgd.lwjgl.exception.LwjglException;
+import org.mgd.lwjgl.forme.Forme;
+import org.mgd.lwjgl.interne.Ombreur;
+import org.mgd.lwjgl.interne.Tisseur;
+import org.mgd.lwjgl.souscription.Amorcable;
+
+import java.nio.file.Path;
+import java.util.*;
+
+public abstract class Element<G> extends Primitif implements Animateur, Amorcable<Forme> {
+    protected final Map<G, List<Forme>> groupes;
+    private final int priorite;
+    private final Matrice<Float> transformation;
+    private final LinkedList<G> ordre;
+    private final String nom;
+    protected List<Forme> formesSurvoles;
+
+    protected Element(Fenetre parent,
+                      String nom,
+                      int priorite,
+                      float[] translation,
+                      float[] agrandissement,
+                      float[] rotation,
+                      Map<String, Path> textures) throws LwjglException {
+        super(parent);
+        this.nom = nom;
+        this.priorite = priorite;
+        this.transformation = Matrice.transformation(translation, agrandissement, rotation);
+        this.ordre = new LinkedList<>();
+        this.groupes = new HashMap<>();
+        this.formesSurvoles = new ArrayList<>();
+
+        if (!textures.isEmpty()) {
+            Tisseur.compiler(nom, textures);
+        }
+        parent.enfants().add(this);
+    }
+
+    @Override
+    public boolean survoler(Vision vision, Fenetre.EvenementSouris evenementSouris) {
+        formesSurvoles = Collections.emptyList();
+        if (visible) {
+            for (G groupe : ordre) {
+                List<Forme> formes = groupes.get(groupe);
+                for (Forme forme : formes) {
+                    if (formesSurvoles.isEmpty() && forme.survoler(vision, evenementSouris, transformation)) {
+                        formesSurvoles = Collections.singletonList(forme);
+                    } else {
+                        forme.desurvoler();
+                    }
+                }
+            }
+        }
+        return !formesSurvoles.isEmpty();
+    }
+
+    @Override
+    public void desurvoler() {
+        formesSurvoles.forEach(Forme::desurvoler);
+        formesSurvoles = Collections.emptyList();
+    }
+
+    @Override
+    public void amorcer(boolean droite) {
+        avertirAmorcages(parent, formesSurvoles, droite);
+    }
+
+    @Override
+    public void desamorcer(boolean droite) {
+        avertirAmorcages(parent, Collections.emptyList(), droite);
+    }
+
+    @Override
+    public boolean visible() {
+        return visible;
+    }
+
+    @Override
+    public void jouer(long ellipse, Vision vision) {
+        Ombreur.configurer("transformation", transformation);
+        ordre.forEach(groupe -> groupes.get(groupe).forEach(forme -> forme.produire(ellipse)));
+    }
+
+    public void nettoyer() {
+        ordre.forEach(groupe -> groupes.get(groupe).forEach(Forme::nettoyer));
+    }
+
+    public List<Forme> ajouter(G groupe, Forme forme) {
+        List<Forme> formes = groupes.computeIfAbsent(groupe, cle -> {
+            ordre.addFirst(cle);
+            return new LinkedList<>();
+        });
+        formes.add(forme);
+        return formes;
+    }
+
+    public List<Forme> supprimer(G groupe, Forme forme) {
+        return groupes.computeIfPresent(groupe, (_, formes) -> {
+            formes.remove(forme);
+            return formes;
+        });
+    }
+
+    public void ajouter(G groupe, Collection<Forme> formes) {
+        this.groupes.computeIfAbsent(groupe, cle -> {
+            this.ordre.addFirst(cle);
+            return new LinkedList<>();
+        }).addAll(formes);
+    }
+
+    public String identifiant() {
+        return nom;
+    }
+
+    public int priorite() {
+        return priorite;
+    }
+}
