@@ -1,0 +1,131 @@
+load(draw)$
+
+define(translation(dx,dy,dz), matrix(
+  [1,0,0,dx],
+  [0,1,0,dy],
+  [0,0,1,dz],
+  [0,0,0,1]
+))$
+define(agrandissement(sx,sy,sz), matrix(
+  [sx,0,0,0],
+  [0,sy,0,0],
+  [0,0,sz,0],
+  [0,0,0,1]
+))$
+define(rotationx(th), matrix(
+  [1,0,0,0],
+  [0,cos(th),-sin(th),0],
+  [0,sin(th),cos(th),0],
+  [0,0,0,1]
+))$
+define(rotationy(th), matrix(
+  [cos(th),0,sin(th),0],
+  [0,1,0,0],
+  [-sin(th),0,cos(th),0],
+  [0,0,0,1]
+))$
+define(rotationz(th), matrix(
+   [cos(th),-sin(th),0,0],
+   [sin(th),cos(th),0,0],
+   [0,0,1,0],
+   [0,0,0,1]
+ ))$
+define(rotation(thx,thy,thz),rotationx(thx).rotationy(thy).rotationz(thz))$
+define(transformation(dx,dy,dz,sx,sy,sz,thx,thy,thz),factor(translation(dx,dy,dz).agrandissement(sx,sy,sz).rotation(thx,thy,thz)))$
+define(perspective(n,f,t,r,b,l),matrix(
+    [2*n/(r-l),0,(r+l)/(r-l),0],
+    [0,2*n/(t-b),(t+b)/(t-b),0],
+    [0,0,(f+n)/(n-f),2*n*f/(n-f)],
+    [0,0,-1,0]
+))$
+define(perspectivefov(n,f,a,th), ratsimp(perspective(n,f,n*tan(th/2),a*n*tan(th/2),-n*tan(th/2),-a*n*tan(th/2))))$
+
+nv:1$
+fv:10$
+av:an/ad$
+thv:60*%pi/180$
+thfov:tan(thv/2)$
+tv:nv*thfov$
+rv:av*tv$
+bv:-tv$
+lv:-rv$
+define(perspectivefinale(an,ad), limit(perspectivefov(nv,f,av,thv),f,infinity))$
+define(homogeneisation(l,h), matrix([2/l,0,0,-1],[0,-2/h,0,1],[0,0,0,1],[0,0,0,1]))$
+define(vecteurecran(rgx,rgy), matrix([rgx],[rgy],[0],[1]))$
+define(vision(vx,vy), translation(-vx,-vy,0))$
+
+define(f(a,b,c,d,e,f,rx,ry,x,y), matrix([1,0,0],[0,1,0]).matrix([a,b,c],[d,e,f],[0,0,1]).matrix([x],[y],[1]))$
+eqs1:f(a,b,c,d,e,f,rx,ry,0,0)-matrix([1/rx],[(ry-1)/ry])$
+eqs2:f(a,b,c,d,e,f,rx,ry,rx-1,0)-matrix([1],[(ry-1)/ry])$
+eqs3:f(a,b,c,d,e,f,rx,ry,0,ry-1)-matrix([1/rx],[0])$
+eqs:[eqs1[1,1],eqs1[2,1],eqs2[1,1],eqs2[2,1],eqs3[1,1],eqs3[2,1]]$
+res:map(rhs,solve(eqs,[a,b,c,d,e,f])[1])$
+define(f1(rx,ry,x,y), f(res[1],res[2],res[3],res[4],res[5],res[6],rx,ry,x,y))$
+
+define(f(a,b,c,d,e,f,rx,ry,x,y), matrix([1,0,0],[0,1,0]).matrix([a,b,c],[d,e,f],[0,0,1]).matrix([x],[y],[1]))$
+eqs1:f(a,b,c,d,e,f,rx,ry,0,0)-matrix([0],[(ry-1)/ry])$
+eqs2:f(a,b,c,d,e,f,rx,ry,rx-1,0)-matrix([(rx-1)/rx],[(ry-1)/ry])$
+eqs3:f(a,b,c,d,e,f,rx,ry,0,ry-1)-matrix([0],[0])$
+eqs:[eqs1[1,1],eqs1[2,1],eqs2[1,1],eqs2[2,1],eqs3[1,1],eqs3[2,1]]$
+res:map(rhs,solve(eqs,[a,b,c,d,e,f])[1])$
+define(f2(rx,ry,x,y), f(res[1],res[2],res[3],res[4],res[5],res[6],rx,ry,x,y))$
+
+define(f(a,b,c,d,e,f,rx,ry,x,y), matrix([1,0,0],[0,1,0]).matrix([a,b,c],[d,e,f],[0,0,1]).matrix([x],[y],[1]))$
+eqs1:f(a,b,c,d,e,f,rx,ry,0,0)-matrix([0],[1])$
+eqs2:f(a,b,c,d,e,f,rx,ry,rx-1,0)-matrix([(rx-1)/rx],[1])$
+eqs3:f(a,b,c,d,e,f,rx,ry,0,ry-1)-matrix([0],[1/ry])$
+eqs:[eqs1[1,1],eqs1[2,1],eqs2[1,1],eqs2[2,1],eqs3[1,1],eqs3[2,1]]$
+res:map(rhs,solve(eqs,[a,b,c,d,e,f])[1])$
+define(f3(rx,ry,x,y), f(res[1],res[2],res[3],res[4],res[5],res[6],rx,ry,x,y))$
+
+define(f(a,b,c,d,e,f,rx,ry,x,y), matrix([1,0,0],[0,1,0]).matrix([a,b,c],[d,e,f],[0,0,1]).matrix([x],[y],[1]))$
+eqs1:f(a,b,c,d,e,f,rx,ry,0,0)-matrix([1/rx],[1])$
+eqs2:f(a,b,c,d,e,f,rx,ry,rx-1,0)-matrix([1],[1])$
+eqs3:f(a,b,c,d,e,f,rx,ry,0,ry-1)-matrix([1/rx],[1/ry])$
+eqs:[eqs1[1,1],eqs1[2,1],eqs2[1,1],eqs2[2,1],eqs3[1,1],eqs3[2,1]]$
+res:map(rhs,solve(eqs,[a,b,c,d,e,f])[1]);
+define(f4(rx,ry,x,y), f(res[1],res[2],res[3],res[4],res[5],res[6],rx,ry,x,y))$
+
+define(distancecadrillage(an,ad,repx,repy,interval), max(ad*repx/(2*an*thfov),repy/(2*thfov)));
+
+vecteur(x,y,z,w) := matrix([x],[y],[z],[w])$
+produitscalaire(vec1,vec2) := sum(vec1[i,1]*vec2[i,1],i,1,min(length(vec1),length(vec2)))$
+normecarre(vec) := produitscalaire(vec,vec)$
+decomposition(vec,vecsbase) := makelist(ratsimp(produitscalaire(vec,vecbase)/normecarre(vecbase)),vecbase,vecsbase)$
+coordonnees(vec) := makelist(vec[i,1]/vec[4,1],i,1,3)$
+
+define(direction(an,ad,l,h,vx,vy,rgx,rgy),invert(vision(vx,vy)).invert(perspectivefinale(an,ad)).homogeneisation(l,h).vecteurecran(rgx,rgy))$
+define(rayonselection(ox,oy,oz,dirx,diry,dirz,t),t*vecteur(dirx,diry,-1,0) + vecteur(ox,oy,-oz,1))$
+define(baseboite(minx,miny,maxx,maxy,minz,maxz), [matrix([maxx - minx],[0],[0]),matrix([0],[maxy - miny],[0]),matrix([0],[0],[maxz - minz])])$
+ress:[
+    solve(append(coordonnees(vecteur(x,y,z,2)-rayonselection(ox,oy,oz,dirx,diry,dirz,t)),[z-minz]),[x,y,z,t]),
+    solve(append(coordonnees(vecteur(x,y,z,2)-rayonselection(ox,oy,oz,dirx,diry,dirz,t)),[y-maxy]),[x,y,z,t]),
+    solve(append(coordonnees(vecteur(x,y,z,2)-rayonselection(ox,oy,oz,dirx,diry,dirz,t)),[x-maxx]),[x,y,z,t]),
+    solve(append(coordonnees(vecteur(x,y,z,2)-rayonselection(ox,oy,oz,dirx,diry,dirz,t)),[y-miny]),[x,y,z,t]),
+    solve(append(coordonnees(vecteur(x,y,z,2)-rayonselection(ox,oy,oz,dirx,diry,dirz,t)),[x-minx]),[x,y,z,t])
+]$
+define(pointsintersectionsboite(ox,oy,oz,dirx,diry,dirz), makelist(makelist(rhs(res[1][i]),i,1,3),res,ress))$
+define(scalairesboite(minx,miny,minz,maxx,maxy,maxz,ox,oy,oz,dirx,diry,dirz),makelist(decomposition(matrix([v[1] - minx], [v[2] - miny], [v[3] - minz]),baseboite(minx,miny,maxx,maxy,minz,maxz)),v,pointsintersectionsboite(ox,oy,oz,dirx,diry,dirz)))$
+
+projeter(an,ad,x,y,z) := ratsimp(coordonnees(perspectivefinale(an,ad).vecteur(x,y,z,1)))$
+eqs:ratsimp(projeter(an,ad,x,y,z)-[x,y,z])$
+res:solve(eqs,[x,y,z])$
+res:res[1]$
+define(pointfixe(an,ad),[radcan(rhs(res[1])),radcan(rhs(res[2])),radcan(rhs(res[3]))])$
+
+print("Matrice de translation : ", translation(dx,dy,dz));
+print("Matrice d'agrandissement' : ", agrandissement(sx,sy,sz));
+print("Matrice de rotation : ", rotation(thx,thy,thz));
+print("Matrice de transformation : ", transformation(dx,dy,dz,sx,sy,sz,thx,thy,thz));
+print("Matrice de projection : ", perspectivefinale(an,ad));
+print("Matrice d'homogénéisation des coordonnées de l'écran : ", homogeneisation(l,h));
+print("Matrice de vision : ", vision(dx,dy))$
+print("Matrice d'homogénéisation : ", homogeneisation(l,h))$
+print("Point fixe de la matrice de projection :", pointfixe(an,ad))$
+print("Coordonnées texture d'une case du cadrillage : ", f1(repx,repy,x,y), f2(repx,repy,x,y), f3(repx,repy,x,y), f4(repx,repy,x,y))$
+print("Distance maximale pour un cadrillage : ", distancecadrillage(an,ad,repx,repy,interval))$
+print("Direction de la ligne de sélection : ", direction(an,ad,l,h,vx,vy,rgx,rgy))$
+print("Rayon de sélection : ", rayonselection(ox,oy,oz,dirx,diry,dirz,t))$
+print("Base d'une boite : ", baseboite(minx,miny,maxx,maxy,minz,maxz))$
+print("Points d'intersections d'une boite : ", pointsintersectionsboite(ox,oy,oz,dirx,diry,dirz))$
+print("Decomposition des points d'intersections dans la base d'une boite", scalairesboite(minx,miny,minz,maxx,maxy,maxz,ox,oy,oz,dirx,diry,dirz))$
