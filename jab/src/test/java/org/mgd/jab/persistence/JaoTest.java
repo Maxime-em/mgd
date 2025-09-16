@@ -393,7 +393,9 @@ public class JaoTest extends AbstractJabTest {
     void dechargerVersReferenceDUnObjetSansFichierEchoue() throws Exception {
         Heros heros = jao.nouveau();
 
-        assertThrows(NoSuchElementException.class, () -> jao.dechargerVersReference(heros, Heros.class, HerosJao.class));
+        IllegalStateException erreur = assertThrows(IllegalStateException.class, () -> jao.dechargerVersReference(heros, Heros.class, HerosJao.class));
+
+        assertEquals("L'objet " + heros.getIdentifiant() + " de type Heros n'a pas de racine de type Heros.", erreur.getMessage());
     }
 
     @Test

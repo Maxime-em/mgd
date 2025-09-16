@@ -47,5 +47,10 @@ jab.sauvegarde.nombre.threads=100              # défaut : 100
 # Pab
 Permet la production de fichier au format PDF.
 
+# Lwjgl
+
+Module de rendu graphique basé sur LWJGL : fenêtres OpenGL, formes animées, interactions et interface NanoVG.
+Voir la [documentation du module Lwjgl](lwjgl/README.md).
+
 # Gmel
 Permet la gestion de menus et de listes de courses.

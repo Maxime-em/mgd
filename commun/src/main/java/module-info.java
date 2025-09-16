@@ -1,5 +1,6 @@
 module org.mgd.commun {
     requires com.google.gson;
+    requires org.apache.logging.log4j;
 
     opens org.mgd.commun to com.google.gson;
     opens org.mgd.temps to com.google.gson;

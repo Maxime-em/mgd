@@ -9,7 +9,7 @@
 
 ## Génération de tests unitaires
 
-Analysez le code demandé et générez des tests unitaires permettant de valider rigoureusement son comportement.
+- Analysez le code demandé et générez des tests unitaires permettant de valider rigoureusement son comportement.
 
 ### Outils et structure
 

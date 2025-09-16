@@ -1,0 +1,48 @@
+package org.mgd.guerres.puniques.coeur.persistence;
+
+import org.mgd.guerres.puniques.coeur.dto.RegionDto;
+import org.mgd.guerres.puniques.coeur.objet.Partie;
+import org.mgd.guerres.puniques.coeur.objet.Region;
+import org.mgd.jab.persistence.Jao;
+import org.mgd.jab.persistence.exception.JaoExecutionException;
+import org.mgd.jab.persistence.exception.JaoParseException;
+
+public class RegionJao extends Jao<RegionDto, Region> {
+    public RegionJao() {
+        super(RegionDto.class, Region.class);
+    }
+
+    @Override
+    public RegionDto dto(Region region) {
+        RegionDto regionDto = new RegionDto();
+        regionDto.setAlignements(new AlignementJao().decharger(region.getAlignements()));
+        regionDto.setTypes(new TypeRegionJao().dechargerVersReferences(region.getTypes(), Partie.class, PartieJao.class));
+        regionDto.setArmees(new ArmeeJao().dechargerVersReferences(region.getArmees(), Partie.class, PartieJao.class));
+        regionDto.setTransports(new TransportJao().dechargerVersReferences(region.getTransports(), Partie.class, PartieJao.class));
+
+        return regionDto;
+    }
+
+    @Override
+    public void enrichir(RegionDto dto, Region region) throws JaoExecutionException, JaoParseException {
+        region.getAlignements().addAll(new AlignementJao().charger(dto.getAlignements(), region));
+
+        postChargement(region, objet -> {
+            objet.getTypes().addAll(new TypeRegionJao().chargerParReferences(dto.getTypes()));
+            objet.getArmees().addAll(new ArmeeJao().chargerParReferences(dto.getArmees()));
+            objet.getTransports().addAll(new TransportJao().chargerParReferences(dto.getTransports()));
+        });
+    }
+
+    @Override
+    protected void copier(Region source, Region cible) throws JaoExecutionException, JaoParseException {
+        cible.getAlignements().clear();
+        cible.getAlignements().addAll(new AlignementJao().dupliquer(source.getAlignements()));
+        cible.getTypes().clear();
+        cible.getTypes().addAll(new TypeRegionJao().dupliquer(source.getTypes()));
+        cible.getArmees().clear();
+        cible.getArmees().addAll(new ArmeeJao().dupliquer(source.getArmees()));
+        cible.getTransports().clear();
+        cible.getTransports().addAll(new TransportJao().dupliquer(source.getTransports()));
+    }
+}
