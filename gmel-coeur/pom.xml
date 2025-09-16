@@ -20,7 +20,7 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.mgd</groupId>
+            <groupId>org.mgd.jab</groupId>
             <artifactId>jab</artifactId>
             <version>${mgd.jab.version}</version>
             <scope>compile</scope>

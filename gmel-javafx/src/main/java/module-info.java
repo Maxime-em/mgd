@@ -1,13 +1,13 @@
 module org.mgd.gmel.javafx {
+    requires java.desktop;
     requires javafx.controls;
     requires javafx.fxml;
     requires org.apache.logging.log4j;
-    requires mgd.commun;
-    requires mgd.jab;
-    requires mgd.pab;
-    requires gmel.coeur;
-    requires gmel.pdf;
-    requires java.desktop;
+    requires org.mgd.commun;
+    requires org.mgd.jab;
+    requires org.mgd.pab;
+    requires org.mgd.gmel.coeur;
+    requires org.mgd.gmel.pdf;
 
     opens org.mgd.gmel.javafx to javafx.fxml, javafx.graphics;
     opens org.mgd.gmel.javafx.composant to javafx.fxml, javafx.graphics;

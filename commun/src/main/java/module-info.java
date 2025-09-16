@@ -1,4 +1,4 @@
-module mgd.commun {
+module org.mgd.commun {
     requires com.google.gson;
 
     opens org.mgd.commun to com.google.gson;

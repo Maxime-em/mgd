@@ -9,6 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+    <groupId>org.mgd.pab</groupId>
     <artifactId>pab</artifactId>
 
     <dependencies>

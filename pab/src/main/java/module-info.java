@@ -1,7 +1,7 @@
-module mgd.pab {
-    requires mgd.commun;
+module org.mgd.pab {
     requires org.apache.pdfbox;
     requires org.apache.fontbox;
+    requires org.mgd.commun;
 
     exports org.mgd.pam.commun;
     exports org.mgd.pam.exception;

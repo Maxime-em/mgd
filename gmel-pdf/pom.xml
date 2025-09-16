@@ -14,7 +14,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.mgd</groupId>
+            <groupId>org.mgd.pab</groupId>
             <artifactId>pab</artifactId>
             <version>${mgd.pab.version}</version>
             <scope>compile</scope>
