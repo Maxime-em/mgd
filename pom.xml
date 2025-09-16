@@ -16,6 +16,10 @@
         <module>gmel-coeur</module>
         <module>gmel-pdf</module>
         <module>gmel-javafx</module>
+        <module>lwjgl</module>
+        <module>guerres-puniques-coeur</module>
+        <module>guerres-puniques-jeu</module>
+        <module>guerres-puniques-lwjgl</module>
     </modules>
 
     <properties>
@@ -38,6 +42,9 @@
         <mgd.pab.version>1.0-SNAPSHOT</mgd.pab.version>
         <mgd.gmel.coeur.version>1.0-SNAPSHOT</mgd.gmel.coeur.version>
         <mgd.gmel.pdf.version>1.0-SNAPSHOT</mgd.gmel.pdf.version>
+        <mgd.lwjgl.version>1.0-SNAPSHOT</mgd.lwjgl.version>
+        <mgd.guerres.puniques.coeur.version>1.0-SNAPSHOT</mgd.guerres.puniques.coeur.version>
+        <mgd.guerres.puniques.jeu.version>1.0-SNAPSHOT</mgd.guerres.puniques.jeu.version>
     </properties>
 
     <dependencies>
