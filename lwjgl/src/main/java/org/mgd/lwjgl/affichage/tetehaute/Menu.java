@@ -1,0 +1,121 @@
+package org.mgd.lwjgl.affichage.tetehaute;
+
+import org.mgd.lwjgl.Fenetre;
+import org.mgd.lwjgl.Fenetre.EvenementAmorcages;
+import org.mgd.lwjgl.Vision;
+import org.mgd.lwjgl.affichage.tetehaute.composant.ActionTextutelle;
+import org.mgd.lwjgl.affichage.tetehaute.composant.Entite;
+import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
+import org.mgd.lwjgl.commun.Animateur;
+import org.mgd.lwjgl.commun.Identifiable;
+import org.mgd.lwjgl.exception.LwjglException;
+
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+
+import static org.lwjgl.nanovg.NanoVG.*;
+
+public class Menu extends AffichageTeteHaute implements Animateur {
+    public static final double PROPORTION_HAUTEUR_TITRE = 0.3;
+    public static final double PROPORTION_HAUTEUR_BOUTONS = 0.3;
+
+    private final UUID identifiantPremierePage;
+    private final Map<UUID, Page> pages;
+    private Page pageCourante;
+    private List<Entite> entitesSurvoles;
+
+    public Menu(Fenetre parent, Collection<Entite> titres, Collection<Entite> textes) throws LwjglException {
+        super(parent, true, true);
+        this.identifiantPremierePage = UUID.randomUUID();
+        this.pages = new HashMap<>();
+        this.entitesSurvoles = new LinkedList<>();
+        this.pageCourante = new Page(new ArrayList<>(titres), new ArrayList<>(textes));
+        this.pages.put(this.identifiantPremierePage, pageCourante);
+
+        placer(this.pageCourante);
+    }
+
+    public void ajouterPage(Entite declencheur, Collection<Entite> textes, NVGPolice police) {
+        Page page = new Page(Collections.emptyList(), new ArrayList<>(textes));
+        pages.put(declencheur.uuid(), page);
+
+        Entite retour = new ActionTextutelle<>(24f, police, AffichageTeteHaute.BLANC, () -> "Retour");
+        page.textes.add(retour);
+        pages.put(retour.uuid(), pages.get(this.identifiantPremierePage));
+
+        placer(page);
+    }
+
+    public void premierePage() {
+        pageCourante = pages.get(this.identifiantPremierePage);
+    }
+
+    private void placer(Page page) {
+        nvgTextAlign(contexte, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
+
+        double hauteurTitres = page.titres.stream().mapToDouble(this::hauteur).sum();
+        double hauteurBoutons = page.textes.stream().mapToDouble(this::hauteur).sum();
+        double restant = Math.max(parent.hauteur() - hauteurTitres - hauteurBoutons, 0);
+        double margeTitres = PROPORTION_HAUTEUR_TITRE * restant / (page.titres.size() + 1);
+        double margeBoutons = PROPORTION_HAUTEUR_BOUTONS * restant / (page.textes.size() + 1);
+        double interligne = (1 - PROPORTION_HAUTEUR_TITRE - PROPORTION_HAUTEUR_BOUTONS) * restant / 3;
+
+        AtomicReference<Double> ordonneeCourante = new AtomicReference<>(margeTitres);
+        page.titres.forEach(titre -> titre.placer((parent.largeur() - titre.largeur()) / 2, ordonneeCourante.getAndAccumulate(titre.hauteur() + margeTitres, Double::sum).intValue()));
+        ordonneeCourante.getAndAccumulate(interligne, Double::sum);
+        page.textes.forEach(entite -> entite.placer((parent.largeur() - entite.largeur()) / 2, ordonneeCourante.getAndAccumulate(entite.hauteur() + margeBoutons, Double::sum).intValue()));
+    }
+
+    private double hauteur(Entite entite) {
+        entite.dimensionner(contexte);
+        return entite.hauteur();
+    }
+
+    @Override
+    public Fenetre parent() {
+        return parent;
+    }
+
+    @Override
+    public boolean survoler(Vision vision, Fenetre.EvenementSouris evenementSouris) {
+        if (visible) {
+            entitesSurvoles = pageCourante.textes
+                    .stream()
+                    .filter(entite -> evenementSouris.inclus(entite.abscisse(), entite.ordonnee(), entite.largeur(), entite.hauteur()))
+                    .collect(Collectors.toCollection(LinkedList::new));
+        } else {
+            entitesSurvoles.clear();
+        }
+        return !entitesSurvoles.isEmpty();
+    }
+
+    @Override
+    public void retirer(Vision vision, Fenetre.EvenementSouris evenementSouris) {
+        entitesSurvoles.clear();
+    }
+
+    @Override
+    public Collection<Identifiable> amorcer(boolean droite) {
+        return entitesSurvoles.stream().map(Identifiable.class::cast).toList();
+    }
+
+    @Override
+    protected void dessiner() {
+        nvgTextAlign(contexte, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
+        pageCourante.titres.forEach(entite -> entite.dessiner(contexte));
+        pageCourante.textes.forEach(entite -> entite.dessiner(contexte));
+    }
+
+    @Override
+    public void maj(long accumulateur, Vision vision, Fenetre.EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) throws LwjglException {
+        Animateur.super.maj(accumulateur, vision, evenementSouris, evenementAmorcagesCourant);
+        evenementAmorcagesCourant.amorcages()
+                .stream()
+                .filter(amorcage -> !amorcage.droite() && pages.containsKey(amorcage.uuid()))
+                .forEach(amorcage -> pageCourante = pages.get(amorcage.uuid()));
+    }
+
+    private record Page(List<Entite> titres, List<Entite> textes) {
+    }
+}
