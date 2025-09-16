@@ -1,0 +1,112 @@
+load(draw)$
+
+define(translation(dx,dy,dz), matrix(
+  [1,0,0,dx],
+  [0,1,0,dy],
+  [0,0,1,dz],
+  [0,0,0,1]
+))$
+define(agrandissement(sx,sy,sz), matrix(
+  [sx,0,0,0],
+  [0,sy,0,0],
+  [0,0,sz,0],
+  [0,0,0,1]
+))$
+define(rotationx(th), matrix(
+  [1,0,0,0],
+  [0,cos(th),-sin(th),0],
+  [0,sin(th),cos(th),0],
+  [0,0,0,1]
+))$
+define(rotationy(th), matrix(
+  [cos(th),0,sin(th),0],
+  [0,1,0,0],
+  [-sin(th),0,cos(th),0],
+  [0,0,0,1]
+))$
+define(rotationz(th), matrix(
+   [cos(th),-sin(th),0,0],
+   [sin(th),cos(th),0,0],
+   [0,0,1,0],
+   [0,0,0,1]
+ ))$
+define(rotation(thx,thy,thz),rotationx(thx).rotationy(thy).rotationz(thz))$
+define(transformation(dx,dy,dz,sx,sy,sz,thx,thy,thz),factor(translation(dx,dy,dz).agrandissement(sx,sy,sz).rotation(thx,thy,thz)))$
+define(perspective(n,f,t,r,b,l),matrix(
+    [2*n/(r-l),0,(r+l)/(r-l),0],
+    [0,2*n/(t-b),(t+b)/(t-b),0],
+    [0,0,(f+n)/(n-f),2*n*f/(n-f)],
+    [0,0,-1,0]
+))$
+define(perspectivefov(n,f,a,th), ratsimp(perspective(n,f,n*tan(th/2),a*n*tan(th/2),-n*tan(th/2),-a*n*tan(th/2))))$
+
+nv:1$
+fv:10$
+av:an/ad$
+thv:60*%pi/180$
+thfov:tan(thv/2)$
+tv:nv*thfov$
+rv:av*tv$
+bv:-tv$
+lv:-rv$
+define(perspectivefinale(an,ad), limit(perspectivefov(nv,f,av,thv),f,infinity))$
+define(homogeneisation(l,h), matrix([l/2,0,0,l/2],[0,-h/2,0,h/2],[0,0,1,0],[0,0,0,1]))$
+define(vision(vx,vy), translation(-vx,-vy,0))$
+
+coordonnees(vec) := makelist(vec[i,1],i,1,3)$
+
+produitscalaire(vec1,vec2) := sum(vec1[i,1]*vec2[i,1],i,1,min(length(vec1),length(vec2)))$
+normecarre(vec) := produitscalaire(vec,vec)$
+
+define(vecteurecran(rgx,rgy), matrix([rgx],[rgy],[0],[1]))$
+define(direction(an,ad,l,h,vx,vy,rgx,rgy),invert(vision(vx,vy)).invert(perspectivefinale(an,ad)).invert(homogeneisation(l,h)).vecteurecran(rgx,rgy))$
+define(rayonselection(dirx,diry,dirz,t),t*vecteur(dirx,diry,-1))$
+
+vecteur(x,y,z) := matrix([x],[y],[z])$
+res:solve([
+    produitscalaire(vecteur(nx,ny,nz), vecteur(vx,vy,vz) - vecteur(ux,uy,uz)),
+    produitscalaire(vecteur(nx,ny,nz), vecteur(wx,wy,wz) - vecteur(ux,uy,uz)),
+    nz - (vx*(wy - uy) - ux*wy + uy*wx + vy*(ux - wx))
+],[nx,ny,nz])$
+define(normalplan(ux,uy,uz,vx,vy,vz,wx,wy,wz), matrix([rhs(res[1][1])],[rhs(res[1][2])],[rhs(res[1][3])]))$
+define(plan(x,y,z,nx,ny,nz,ux,uy,uz), nx*(x - ux) + ny*(y - uy) + nz*(z - uz))$
+
+res:solve(append(coordonnees(vecteur(x,y,z)-rayonselection(dirx,diry,dirz,t)), [plan(x,y,z,nx,ny,nz,ux,uy,uz)]),[x,y,z,t])$
+define(pointintersectionsplan(dirx,diry,dirz,nx,ny,nz,ux,uy,uz), matrix([rhs(res[1][1])],[rhs(res[1][2])],[rhs(res[1][3])]))$
+define(vecteurselection(dirx,diry,nx,ny,nz,ux,uy,uz), pointintersectionsplan(dirx,diry,dirz,nx,ny,nz,ux,uy,uz) - vecteur(ux, uy, uz))$
+define(scalairesselections(dirx,diry,nx,ny,nz,ux,uy,uz,vx,vy,vz,wx,wy,wz), matrix(
+    [produitscalaire(vecteurselection(dirx,diry,nx,ny,nz,ux,uy,uz), vecteur(vx - ux, vy - uy, vz - uz))],
+    [produitscalaire(vecteurselection(dirx,diry,nx,ny,nz,ux,uy,uz), vecteur(wx - ux, wy - uy, wz - uz))]
+ ))$
+
+print("Matrice de translation : ", translation(dx,dy,dz));
+print("Matrice d'agrandissement' : ", agrandissement(sx,sy,sz));
+print("Matrice de rotation : ", rotation(thx,thy,thz));
+print("Matrice de transformation : ", transformation(dx,dy,dz,sx,sy,sz,thx,thy,thz));
+print("Matrice de projection : ", perspectivefinale(an,ad), invert(perspectivefinale(an,ad)));
+print("Matrice d'homogénéisation des coordonnées de l'écran : ", homogeneisation(l,h), invert(homogeneisation(l,h)));
+print("Matrice de vision : ", vision(dx,dy))$
+print("Direction de la ligne de sélection dans le référentiel de la vision : ", invert(perspectivefinale(an,ad)).invert(homogeneisation(l,h)), direction(an,ad,l,h,vx,vy,rgx,rgy))$
+print("Rayon de sélection dans le référentiel de la vision : ", rayonselection(dirx,diry,dirz,t))$
+print("Normal au plan données par les points u, v, w : ", normalplan(ux,uy,uz,vx,vy,vz,wx,wy,wz))$
+print("Equation du plan données par les points u, v, w : ", plan(x,y,z,nx,ny,nz,ux,uy,uz))$
+print("Point d'intersection entre la direction et un plan : ", pointintersectionsplan(dirx,diry,dirz,nx,ny,nz,ux,uy,uz))$
+print("Vecteur de selection : ", vecteurselection(dirx,diry,nx,ny,nz,ux,uy,uz))$
+print("Condition de selection : ", matrix([0],[0]), " <= ", scalairesselections(dirx,diry,nx,ny,nz,ux,uy,uz,vx,vy,vz,wx,wy,wz), " <= ", matrix([normecarre(vecteur(vx - ux, vy - uy, vz - uz))],[normecarre(vecteur(wx - ux, wy - uy, wz - uz))]))$
+
+print("Calcule avec un plan orthogonal à l'axe des z")$
+vy:uy$
+vz:uz$
+wx:ux$
+wz:uz$
+normal:ratsimp(normalplan(ux,uy,uz,vx,vy,vz,wx,wy,wz))$
+nx:normal[1,1]$
+ny:normal[2,1]$
+nz:normal[3,1]$
+print("Vecteur uv : ", vecteur(vx - ux, vy - uy, vz - uz))$
+print("Vecteur uw : ", vecteur(wx - ux, wy - uy, wz - uz))$
+print("Normal au plan données par les points u, v, w : ", normal)$
+print("Equation du plan données par les points u, v, w : ", plan(x,y,z,nx,ny,nz,ux,uy,uz))$
+print("Point d'intersection entre la direction et un plan : ",  ratsimp(pointintersectionsplan(dirx,diry,dirz,nx,ny,nz,ux,uy,uz)))$
+print("Vecteur de selection : ", ratsimp(vecteurselection(dirx,diry,nx,ny,nz,ux,uy,uz)))$
+print("Condition de selection : ", matrix([0],[0]), " <= ", factor(scalairesselections(dirx,diry,nx,ny,nz,ux,uy,uz,vx,vy,vz,wx,wy,wz)), " <= ", matrix([normecarre(vecteur(vx - ux, vy - uy, vz - uz))],[normecarre(vecteur(wx - ux, wy - uy, wz - uz))]))$
