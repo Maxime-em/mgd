@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+        xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+        xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+        style="enable-background:new 0 0 32 32;"
+        version="1.1"
+        viewBox="0 0 32 32"
+        xml:space="preserve"
+        id="svg4"
+        sodipodi:docname="armee_romaine.svg"
+        inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+        xmlns="http://www.w3.org/2000/svg"><defs
+     id="defs4" />
+    <sodipodi:namedview
+            id="namedview4"
+            pagecolor="#505050"
+            bordercolor="#eeeeee"
+            borderopacity="1"
+            inkscape:showpageshadow="0"
+            inkscape:pageopacity="0"
+            inkscape:pagecheckerboard="0"
+            inkscape:deskcolor="#505050"
+            inkscape:zoom="36.46875"
+            inkscape:cx="16"
+            inkscape:cy="16"
+            inkscape:window-width="2560"
+            inkscape:window-height="1369"
+            inkscape:window-x="1912"
+            inkscape:window-y="-8"
+            inkscape:window-maximized="1"
+            inkscape:current-layer="Sword"/>
+    <style
+            type="text/css"
+            id="style1">
+	.st0{fill:#B9F3F8;}
+	.st1{fill:#55C1FA;}
+	.st2{fill:#FBC34E;}
+	.st3{opacity:0.05;}
+	.st4{fill:#FFFFFF;}
+	.st5{fill:#7A442A;}
+	.st6{fill:#C77C58;}
+	.st7{fill:#E4EDF2;}
+	.st8{fill:#F25949;}
+	.st9{fill:#FA9B55;}
+	.st10{fill:#E5A533;}
+	.st11{fill:#6FA7AB;}
+	.st12{fill:#20A56C;}
+	.st13{fill:#F2C09E;}
+	.st14{fill:#F4E8D0;}
+	.st15{fill:#F2AB38;}
+	.st16{fill:#393B3D;}
+	.st17{fill:#ACE4E5;}
+	.st18{fill:#659899;}
+	.st19{fill:#E3FAFC;}
+	.st20{fill:#DDF1F2;}
+	.st21{fill:#16F293;}
+	.st22{fill:#5C3320;}
+	.st23{fill:#AD410D;}
+	.st24{fill:#8B9CA5;}
+	.st25{fill:#B26C50;}
+	.st26{fill:none;}
+	.st27{fill:#DAE1E5;}
+	.st28{fill:#425158;}
+	.st29{fill:#829299;}
+	.st30{fill:#A5795C;}
+	.st31{fill:#7A7468;}
+	.st32{fill:#7B3ABF;}
+	.st33{fill:#B564FF;}
+	.st34{fill:#2B617D;}
+</style>
+    <g
+            id="Sword"><g
+       id="g4"><polygon
+         class="st6"
+         points="8.205,18.305 7.838,20.121 4.051,23.907 8.093,27.949 11.879,24.162 13.694,23.795   "
+         id="polygon1" /><path
+            class="st7"
+            d="M29,2h-4.73c-0.266,0-0.52,0.105-0.707,0.293L9.292,16.564l1.414,1.414l0.951,0.951l7.964-7.964    c0.391-0.391,1.023-0.391,1.414,0s0.391,1.023,0,1.414l-7.964,7.964l0.951,0.951l1.414,1.414L29.707,8.437    C29.895,8.25,30,7.995,30,7.73V3C30,2.448,29.553,2,29,2z"
+            id="path1"/><path
+            class="st2"
+            d="M4.051,23.907l-0.344-0.344c-0.391-0.391-1.023-0.391-1.414,0s-0.391,1.023,0,1.414    c1.252,1.252,3.478,3.478,4.73,4.73C7.219,29.902,7.475,30,7.73,30s0.512-0.098,0.707-0.293c0.391-0.391,0.391-1.023,0-1.414    l-0.344-0.344L4.051,23.907z"
+            id="path2"/><path
+            class="st24"
+            d="M21.035,12.379c0.391-0.391,0.391-1.023,0-1.414s-1.023-0.391-1.414,0l-7.964,7.964l1.414,1.414    L21.035,12.379z"
+            id="path3"/><path
+            class="st2"
+            d="M14.021,21.294l-0.951-0.951l-1.414-1.414l-0.951-0.951l-1.414-1.414l-0.951-0.951l0.089-0.089    c0.391-0.391,0.391-1.023,0-1.414s-1.023-0.391-1.414,0L6.22,14.906c-0.391,0.391-0.391,1.023,0,1.414l1.985,1.985l5.49,5.49    l1.985,1.985c0.195,0.195,0.451,0.293,0.707,0.293s0.512-0.098,0.707-0.293l0.796-0.796c0.391-0.391,0.391-1.023,0-1.414    s-1.023-0.391-1.414,0l-0.089,0.089l-0.951-0.951L14.021,21.294z"
+            id="path4"/></g></g></svg>
