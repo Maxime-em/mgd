@@ -1,0 +1,24 @@
+package org.mgd.guerres.puniques.coeur.objet;
+
+import org.mgd.jab.objet.Jo;
+import org.mgd.jab.utilitaire.Jos;
+
+@SuppressWarnings("java:S2160")
+public class Monde extends Jo {
+    private Region[][] regions;
+
+    public Region[][] getRegions() {
+        return regions;
+    }
+
+    public void setRegions(Region[][] regions) {
+        this.regions = regions;
+    }
+
+    @Override
+    public boolean idem(Object objet) {
+        if (this == objet) return true;
+        if (!(objet instanceof Monde monde)) return false;
+        return Jos.idem(regions, monde.regions);
+    }
+}
