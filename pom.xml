@@ -16,6 +16,7 @@
         <module>gmel-coeur</module>
         <module>gmel-pdf</module>
         <module>gmel-javafx</module>
+        <module>jab-api</module>
     </modules>
 
     <properties>
@@ -26,6 +27,8 @@
         <maven.jar.plugin>3.3.0</maven.jar.plugin>
         <maven.resources.plugin>3.3.1</maven.resources.plugin>
         <maven.dependency.plugin>3.6.0</maven.dependency.plugin>
+        <maven.surefire.plugin>3.5.3</maven.surefire.plugin>
+        <maven.failsafe.plugin>3.5.3</maven.failsafe.plugin>
         <maven.javafx.plugin.version>0.0.8</maven.javafx.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.10.1</junit.version>
@@ -33,6 +36,7 @@
         <gson.version>2.10.1</gson.version>
         <pdfbox.version>3.0.3</pdfbox.version>
         <javafx.version>23.0.2</javafx.version>
+        <quarkus.platform.version>3.26.3</quarkus.platform.version>
         <mgd.commun.version>1.0-SNAPSHOT</mgd.commun.version>
         <mgd.jab.version>1.0-SNAPSHOT</mgd.jab.version>
         <mgd.pab.version>1.0-SNAPSHOT</mgd.pab.version>
