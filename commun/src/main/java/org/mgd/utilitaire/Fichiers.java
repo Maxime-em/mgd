@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 
 public class Fichiers {
     private Fichiers() {
+        throw new IllegalStateException("Classe utilitaire.");
     }
 
     public static List<Path> rechercher(Path racine, String pattern, Predicate<Path> filtrage) throws IOException {

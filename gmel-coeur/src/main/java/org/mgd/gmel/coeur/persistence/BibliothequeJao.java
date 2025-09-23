@@ -40,7 +40,7 @@ public class BibliothequeJao extends Jao<BibliothequeDto, Bibliotheque> {
 
     @Override
     protected void copier(Bibliotheque source, Bibliotheque cible) throws JaoExecutionException, JaoParseException {
-        source.getLivresCuisine().clear();
-        source.getLivresCuisine().addAll(new LivreCuisineJao().dupliquer(cible.getLivresCuisine()));
+        cible.getLivresCuisine().clear();
+        cible.getLivresCuisine().addAll(new LivreCuisineJao().dupliquer(source.getLivresCuisine()));
     }
 }
