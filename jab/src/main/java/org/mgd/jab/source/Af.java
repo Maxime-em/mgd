@@ -1,5 +1,7 @@
 package org.mgd.jab.source;
 
+import org.mgd.jab.JabCreation;
+import org.mgd.jab.JabSingletons;
 import org.mgd.jab.dto.Dto;
 import org.mgd.jab.objet.Jo;
 import org.mgd.jab.persistence.Jao;
@@ -19,11 +21,13 @@ import java.util.Objects;
 public abstract class Af<D extends Dto, O extends Jo> {
     private final Jao<D, O> jao;
     private final Path fichier;
+    private final JabCreation creation;
     protected O jo;
 
     protected Af(Jao<D, O> jao, Path fichier) {
         this.jao = jao;
         this.fichier = fichier;
+        this.creation = JabSingletons.creation();
     }
 
     public O jo() throws JaoParseException, JaoExecutionException {
@@ -31,5 +35,9 @@ public abstract class Af<D extends Dto, O extends Jo> {
             jo = jao.charger(fichier);
         }
         return jo;
+    }
+
+    public void lier(O objet) {
+        creation.ajouter(fichier, objet.getIdentifiant(), jao);
     }
 }

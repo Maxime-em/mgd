@@ -36,7 +36,7 @@ public class InventaireJao extends Jao<InventaireDto, Inventaire> {
 
     @Override
     protected void copier(Inventaire source, Inventaire cible) throws JaoExecutionException, JaoParseException {
-        source.getProduitsQuantifier().clear();
-        source.getProduitsQuantifier().addAll(new ProduitQuantifierJao().dupliquer(cible.getProduitsQuantifier()));
+        cible.getProduitsQuantifier().clear();
+        cible.getProduitsQuantifier().addAll(new ProduitQuantifierJao().dupliquer(source.getProduitsQuantifier()));
     }
 }

@@ -36,7 +36,7 @@ public abstract class Jo {
 
     public abstract boolean idem(Object objet);
 
-    protected <T> void ajouterEnfant(T enfant) {
+    public <T> void ajouterEnfant(T enfant) {
         if (!Objects.isNull(enfant) && enfant instanceof Jo jo) {
             jo.parents.add(this);
             enfants.add(jo);

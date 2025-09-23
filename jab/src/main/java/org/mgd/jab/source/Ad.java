@@ -44,4 +44,11 @@ public abstract class Ad<D extends Dto, O extends Jo, F extends Af<D, O>> {
         }
         return aos.get(nom);
     }
+
+    public F access(String nom, O objet) throws IOException {
+        F access = access(nom, "{}");
+        access.lier(objet);
+        objet.sauvegarder();
+        return access;
+    }
 }

@@ -16,6 +16,7 @@ import org.mgd.jab.persistence.exception.JaoRuntimeException;
 import org.mgd.jab.utilitaire.exception.VerificationException;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -99,6 +100,17 @@ public abstract class Jao<D extends Dto, O extends Jo> {
                 .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
     }
 
+    @SuppressWarnings("unchecked")
+    public D[][] decharger(O[][] objets) {
+        D[][] dtos = (D[][]) Array.newInstance(classeDto, objets.length, objets[0].length);
+        for (int i = 0; i < objets.length; i++) {
+            for (int j = 0; j < objets[i].length; j++) {
+                dtos[i][j] = decharger(objets[i][j]);
+            }
+        }
+        return dtos;
+    }
+
     public O dupliquer(O source) throws JaoExecutionException, JaoParseException {
         O objet = nouveau();
         copier(source, objet);
@@ -125,6 +137,17 @@ public abstract class Jao<D extends Dto, O extends Jo> {
         Map<O, W> nouveaux = HashMap.newHashMap(sources.size());
         for (Map.Entry<O, W> element : sources.entrySet()) {
             nouveaux.put(dupliquer(element.getKey()), jao.dupliquer(element.getValue()));
+        }
+        return nouveaux;
+    }
+
+    @SuppressWarnings("unchecked")
+    public O[][] dupliquer(O[][] sources) throws JaoExecutionException, JaoParseException {
+        O[][] nouveaux = (O[][]) Array.newInstance(classeDto, sources.length, sources[0].length);
+        for (int i = 0; i < sources.length; i++) {
+            for (int j = 0; j < sources[i].length; j++) {
+                nouveaux[i][j] = dupliquer(sources[i][j]);
+            }
         }
         return nouveaux;
     }
@@ -160,6 +183,10 @@ public abstract class Jao<D extends Dto, O extends Jo> {
         }
     }
 
+    public void enrichirPostCreation(D dto, O objet) throws JaoExecutionException, JaoParseException {
+        // Rien à faire
+    }
+
     public O charger(Path fichier) throws JaoParseException, JaoExecutionException {
         if (creation.getGermes().containsKey(fichier)) {
             return table.selectionner(creation.getGermes().get(fichier));
@@ -168,6 +195,8 @@ public abstract class Jao<D extends Dto, O extends Jo> {
             O objet = charger(dto, null);
 
             creation.ajouter(fichier, objet.getIdentifiant(), this);
+
+            enrichirPostCreation(dto, objet);
 
             return objet;
         }
@@ -233,6 +262,17 @@ public abstract class Jao<D extends Dto, O extends Jo> {
         } catch (JaoRuntimeException e) {
             throw new JaoParseException(MessageFormat.format("Impossible de charger le tableau associatif d''objets. {0}", e.getCause().getMessage()), e);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    public O[][] charger(D[][] dtos, Jo parent) throws JaoParseException, JaoExecutionException {
+        O[][] objets = (O[][]) Array.newInstance(classeJo, dtos.length, dtos[0].length);
+        for (int i = 0; i < dtos.length; i++) {
+            for (int j = 0; j < dtos[i].length; j++) {
+                objets[i][j] = charger(dtos[i][j], parent);
+            }
+        }
+        return objets;
     }
 
     public <V extends Dto, W extends Jo, X extends Jao<V, W>> ReferenceDto<V, W, X> dechargerVersReference(O objet, Class<W> classeRacine, Class<X> classeFournisseur) {

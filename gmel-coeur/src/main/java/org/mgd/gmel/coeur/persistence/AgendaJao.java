@@ -36,7 +36,7 @@ public class AgendaJao extends Jao<AgendaDto, Agenda> {
 
     @Override
     protected void copier(Agenda source, Agenda cible) throws JaoExecutionException, JaoParseException {
-        source.getMenus().clear();
-        source.getMenus().addAll(new MenuJao().dupliquer(cible.getMenus()));
+        cible.getMenus().clear();
+        cible.getMenus().addAll(new MenuJao().dupliquer(source.getMenus()));
     }
 }

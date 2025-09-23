@@ -40,7 +40,7 @@ public class EpicerieJao extends Jao<EpicerieDto, Epicerie> {
 
     @Override
     protected void copier(Epicerie source, Epicerie cible) throws JaoExecutionException, JaoParseException {
-        source.getProduits().clear();
-        source.getProduits().addAll(new ProduitJao().dupliquer(cible.getProduits()));
+        cible.getProduits().clear();
+        cible.getProduits().addAll(new ProduitJao().dupliquer(source.getProduits()));
     }
 }
