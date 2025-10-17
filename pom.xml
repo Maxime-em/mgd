@@ -19,20 +19,20 @@
     </modules>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <maven.compiler.release>21</maven.compiler.release>
-        <maven.compiler.plugin>3.11.0</maven.compiler.plugin>
-        <maven.jar.plugin>3.3.0</maven.jar.plugin>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
+        <maven.compiler.release>25</maven.compiler.release>
+        <maven.compiler.plugin>3.14.1</maven.compiler.plugin>
+        <maven.jar.plugin>3.4.2</maven.jar.plugin>
         <maven.resources.plugin>3.3.1</maven.resources.plugin>
-        <maven.dependency.plugin>3.6.0</maven.dependency.plugin>
+        <maven.dependency.plugin>3.9.0</maven.dependency.plugin>
         <maven.javafx.plugin.version>0.0.8</maven.javafx.plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit.version>5.10.1</junit.version>
-        <log4j.version>2.24.3</log4j.version>
-        <gson.version>2.10.1</gson.version>
-        <pdfbox.version>3.0.3</pdfbox.version>
-        <javafx.version>23.0.2</javafx.version>
+        <junit.version>6.0.0</junit.version>
+        <log4j.version>2.25.2</log4j.version>
+        <gson.version>2.13.2</gson.version>
+        <pdfbox.version>3.0.6</pdfbox.version>
+        <javafx.version>25</javafx.version>
         <mgd.commun.version>1.0-SNAPSHOT</mgd.commun.version>
         <mgd.jab.version>1.0-SNAPSHOT</mgd.jab.version>
         <mgd.pab.version>1.0-SNAPSHOT</mgd.pab.version>

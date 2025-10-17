@@ -91,15 +91,15 @@ public abstract class Jab implements Connectable {
                 for (String ad : proprietes.getProperty("jab.sources").split(",")) {
                     String[] chaines = ad.split(":");
                     String pattern = chaines[0];
-                    if (pattern == null || pattern.isBlank()) {
-                        throw new JabException("Les noms des sources ne doivent pas être vide.");
-                    }
-                    for (Path dossier : Fichiers.rechercherDossiers(base, pattern)) {
-                        String nom = dossier.getFileName().toString();
-                        if (ads.containsKey(nom)) {
-                            LOGGER.warn("Le nom {} de l'accès au dossier {} existe déjà pour le dossier {}.", nom, dossier, ads.get(nom));
+                    if (Boolean.parseBoolean(proprietes.getProperty("jab.sources.pattern"))) {
+                        if (pattern == null || pattern.isBlank()) {
+                            throw new JabException("Les noms des sources ne doivent pas être vide.");
                         }
-                        ads.put(nom, (Ad<? extends Dto, ? extends Jo, ? extends Af<? extends Dto, ? extends Jo>>) Class.forName(chaines[1]).getDeclaredConstructor(Path.class).newInstance(dossier));
+                        for (Path dossier : Fichiers.rechercherDossiers(base, pattern)) {
+                            remplirAds(chaines, dossier);
+                        }
+                    } else {
+                        remplirAds(chaines, Files.createDirectories(base.resolve(pattern)));
                     }
                 }
             }
@@ -107,5 +107,13 @@ public abstract class Jab implements Connectable {
                  InvocationTargetException | IOException e) {
             throw new JabException(e);
         }
+    }
+
+    private void remplirAds(String[] chaines, Path dossier) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
+        String nom = dossier.getFileName().toString();
+        if (ads.containsKey(nom)) {
+            LOGGER.warn("Le nom {} de l'accès au dossier {} existe déjà pour le dossier {}.", nom, dossier, ads.get(nom));
+        }
+        ads.put(nom, (Ad<? extends Dto, ? extends Jo, ? extends Af<? extends Dto, ? extends Jo>>) Class.forName(chaines[1]).getDeclaredConstructor(Path.class).newInstance(dossier));
     }
 }
