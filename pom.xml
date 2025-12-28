@@ -30,7 +30,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>6.0.0</junit.version>
         <jetbrains.annotations.version>26.0.2-1</jetbrains.annotations.version>
-        <log4j.version>2.25.2</log4j.version>
+        <log4j.version>2.25.3</log4j.version>
         <gson.version>2.13.2</gson.version>
         <pdfbox.version>3.0.6</pdfbox.version>
         <javafx.version>25</javafx.version>
