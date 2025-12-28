@@ -1,5 +1,6 @@
 package org.mgd.gmel.coeur.objet;
 
+import org.jetbrains.annotations.NotNull;
 import org.mgd.jab.objet.Jo;
 import org.mgd.jab.objet.Joc;
 import org.mgd.temps.LocalRepas;
@@ -60,7 +61,7 @@ public class Formule extends Jo implements Comparable<Formule> {
     }
 
     @Override
-    public int compareTo(Formule o) {
+    public int compareTo(@NotNull Formule o) {
         return Comparator.comparing(Formule::getPeriode).thenComparing(Formule::getRecette).thenComparing(Formule::getNombreConvives).compare(this, o);
     }
 

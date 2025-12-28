@@ -1,4 +1,5 @@
 module org.mgd.gmel.coeur {
+    requires org.jetbrains.annotations;
     requires org.mgd.commun;
     requires org.mgd.jab;
 

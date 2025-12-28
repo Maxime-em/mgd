@@ -1,5 +1,7 @@
 package org.mgd.jab.objet;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Comparator;
 
 public class Commune extends Jo implements Comparable<Commune> {
@@ -30,7 +32,7 @@ public class Commune extends Jo implements Comparable<Commune> {
     }
 
     @Override
-    public int compareTo(Commune commune) {
+    public int compareTo(@NotNull Commune commune) {
         return Comparator.comparing(Commune::getCode).thenComparing(Commune::getNom).compare(this, commune);
     }
 }
