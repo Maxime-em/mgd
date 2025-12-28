@@ -1,5 +1,6 @@
 package org.mgd.jab.persistence;
 
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
+import org.junit.jupiter.params.support.ParameterDeclarations;
 import org.mgd.jab.AbstractTest;
 import org.mgd.jab.JabSingletons;
 import org.mgd.jab.dto.Dto;
@@ -419,7 +421,7 @@ class JaoTest extends AbstractTest {
 
     private static class verifierChargementArgumentsProvider implements ArgumentsProvider {
         @Override
-        public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
+        public @NonNull Stream<? extends Arguments> provideArguments(@NonNull ParameterDeclarations parameters, @NonNull ExtensionContext extensionContext) {
             return Stream.of(
                     Arguments.of(personne1, UUID_PERSONNE_1, Collections.emptyList(), Arrays.asList(jeu1, livre1, livre2)),
                     Arguments.of(personne2, UUID_PERSONNE_2, Collections.emptyList(), Arrays.asList(jeu1, jeu2, livre3)),
@@ -439,7 +441,7 @@ class JaoTest extends AbstractTest {
 
     private static class chargerExceptionArgumentsProvider implements ArgumentsProvider {
         @Override
-        public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
+        public @NonNull Stream<? extends Arguments> provideArguments(@NonNull ParameterDeclarations parameters, @NonNull ExtensionContext context) {
             return Stream.of(
                     Arguments.of(JaoParseException.class, "inconnu.json", (Supplier<JeuJao>) JeuJao::new),
                     Arguments.of(JaoParseException.class, "jeu_avec_nom_null.json", (Supplier<JeuJao>) JeuJao::new),
@@ -468,7 +470,7 @@ class JaoTest extends AbstractTest {
 
     private static class jsonTableArgumentsProvider implements ArgumentsProvider {
         @Override
-        public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
+        public @NonNull Stream<? extends Arguments> provideArguments(@NonNull ParameterDeclarations parameters, @NonNull ExtensionContext context) {
             return Stream.of(
                     Arguments.of(
                             (Supplier<Set<Personne>>) () -> Set.of(personne1, personne2),

@@ -3,6 +3,7 @@ package org.mgd.jab.persistence;
 import com.google.gson.JsonParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mgd.commun.Tabulable;
 import org.mgd.jab.JabCreation;
 import org.mgd.jab.JabSauvegarde;
 import org.mgd.jab.JabSingletons;
@@ -153,7 +154,7 @@ public abstract class Jao<D extends Dto, O extends Jo> {
     }
 
     public O nouveau() throws JaoExecutionException, JaoParseException {
-        return nouveau(UUID.randomUUID(), nouveau -> {
+        return nouveau(UUID.randomUUID(), _ -> {
         });
     }
 
@@ -267,9 +268,13 @@ public abstract class Jao<D extends Dto, O extends Jo> {
     @SuppressWarnings("unchecked")
     public O[][] charger(D[][] dtos, Jo parent) throws JaoParseException, JaoExecutionException {
         O[][] objets = (O[][]) Array.newInstance(classeJo, dtos.length, dtos[0].length);
-        for (int i = 0; i < dtos.length; i++) {
-            for (int j = 0; j < dtos[i].length; j++) {
-                objets[i][j] = charger(dtos[i][j], parent);
+        for (int ligne = 0; ligne < dtos.length; ligne++) {
+            for (int colonne = 0; colonne < dtos[ligne].length; colonne++) {
+                objets[ligne][colonne] = charger(dtos[ligne][colonne], parent);
+                if (objets[ligne][colonne] instanceof Tabulable element) {
+                    element.ligne(ligne);
+                    element.colonne(colonne);
+                }
             }
         }
         return objets;

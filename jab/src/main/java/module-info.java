@@ -1,6 +1,6 @@
 module org.mgd.jab {
-    requires org.apache.logging.log4j;
     requires com.google.gson;
+    requires org.apache.logging.log4j;
     requires org.mgd.commun;
 
     opens org.mgd.jab to com.google.gson;

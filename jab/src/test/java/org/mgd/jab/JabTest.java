@@ -1,5 +1,6 @@
 package org.mgd.jab;
 
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
 import org.junit.jupiter.params.provider.ArgumentsSource;
+import org.junit.jupiter.params.support.ParameterDeclarations;
 import org.mgd.jab.exception.JabException;
 import org.mgd.jab.objet.Pegi;
 import org.mgd.jab.objet.Voie;
@@ -154,7 +156,7 @@ class JabTest {
 
     private static class propertiesExceptionArgumentsProvider implements ArgumentsProvider {
         @Override
-        public Stream<? extends Arguments> provideArguments(ExtensionContext context) {
+        public @NonNull Stream<? extends Arguments> provideArguments(@NonNull ParameterDeclarations parameters, @NonNull ExtensionContext context) {
             return Stream.of(
                     Arguments.of(new Object[]{null}),
                     Arguments.of("inexistant.properties"),
