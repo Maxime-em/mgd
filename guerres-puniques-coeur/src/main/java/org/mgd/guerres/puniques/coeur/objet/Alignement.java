@@ -1,5 +1,6 @@
 package org.mgd.guerres.puniques.coeur.objet;
 
+import org.jetbrains.annotations.NotNull;
 import org.mgd.guerres.puniques.coeur.commun.Posture;
 import org.mgd.jab.objet.Jo;
 
@@ -34,7 +35,7 @@ public class Alignement extends Jo implements Comparable<Alignement> {
     }
 
     @Override
-    public int compareTo(Alignement alignement) {
-        return Comparator.comparing(Alignement::getIdentifiant).compare(this, alignement);
+    public int compareTo(@NotNull Alignement alignement) {
+        return Comparator.nullsLast(Comparator.comparing(Alignement::getIdentifiant)).compare(this, alignement);
     }
 }

@@ -1,4 +1,5 @@
 module org.mgd.guerres.puniques.coeur {
+    requires org.jetbrains.annotations;
     requires org.apache.logging.log4j;
     requires org.mgd.commun;
     requires org.mgd.jab;

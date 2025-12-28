@@ -1,5 +1,6 @@
 package org.mgd.guerres.puniques.coeur.objet;
 
+import org.jetbrains.annotations.NotNull;
 import org.mgd.guerres.puniques.coeur.commun.TypeArmee;
 import org.mgd.guerres.puniques.coeur.commun.TypeUnite;
 import org.mgd.jab.objet.Jo;
@@ -50,7 +51,7 @@ public class Armee extends Jo implements Comparable<Armee> {
     }
 
     @Override
-    public int compareTo(Armee armee) {
+    public int compareTo(@NotNull Armee armee) {
         return Comparator.comparing(Armee::getType).thenComparing(Armee::getIdentifiant).compare(this, armee);
     }
 }
