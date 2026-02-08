@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
  */
 public abstract class Jao<D extends Dto, O extends Jo> {
     private static final Logger LOGGER = LogManager.getLogger(Jao.class);
+    private static final Map<Jo, Enrichissement<Jo>> ENRICHISSEMENTS = new HashMap<>();
 
     private final Class<D> classeDto;
     private final Class<O> classeJo;
@@ -49,6 +50,11 @@ public abstract class Jao<D extends Dto, O extends Jo> {
         this.classeJo = classeJo;
         this.table = JabSingletons.table(classeJo);
         this.creation = JabSingletons.creation();
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Jo> void postChargement(T objet, Enrichissement<T> enrichissement) {
+        ENRICHISSEMENTS.put(objet, (Enrichissement<Jo>) enrichissement);
     }
 
     public abstract D dto(O objet);
@@ -184,22 +190,25 @@ public abstract class Jao<D extends Dto, O extends Jo> {
         }
     }
 
-    public void enrichirPostCreation(D dto, O objet) throws JaoExecutionException, JaoParseException {
-        // Rien à faire
-    }
-
     public O charger(Path fichier) throws JaoParseException, JaoExecutionException {
         if (creation.getGermes().containsKey(fichier)) {
             return table.selectionner(creation.getGermes().get(fichier));
         } else {
-            D dto = dto(fichier);
-            O objet = charger(dto, null);
+            try {
+                D dto = dto(fichier);
+                O objet = charger(dto, null);
 
-            creation.ajouter(fichier, objet.getIdentifiant(), this);
+                creation.ajouter(fichier, objet.getIdentifiant(), this);
 
-            enrichirPostCreation(dto, objet);
+                for (Map.Entry<Jo, Enrichissement<Jo>> entry : ENRICHISSEMENTS.entrySet()) {
+                    entry.getValue().faire(entry.getKey());
+                }
+                ENRICHISSEMENTS.clear();
 
-            return objet;
+                return objet;
+            } catch (VerificationException e) {
+                throw new JaoExecutionException(e);
+            }
         }
     }
 
@@ -344,10 +353,5 @@ public abstract class Jao<D extends Dto, O extends Jo> {
             objets.add(chargerParReference(dto));
         }
         return objets;
-    }
-
-    @FunctionalInterface
-    public interface Enrichissement<O extends Jo> {
-        void faire(O objet) throws JaoExecutionException, JaoParseException, VerificationException;
     }
 }
