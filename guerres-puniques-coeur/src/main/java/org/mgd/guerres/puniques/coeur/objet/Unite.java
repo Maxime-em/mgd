@@ -1,6 +1,6 @@
 package org.mgd.guerres.puniques.coeur.objet;
 
-import org.mgd.guerres.puniques.coeur.commun.TypeUnite;
+import org.jetbrains.annotations.NotNull;
 import org.mgd.jab.objet.Jo;
 
 import java.util.Comparator;
@@ -35,7 +35,7 @@ public class Unite extends Jo implements Comparable<Unite> {
     }
 
     @Override
-    public int compareTo(Unite unite) {
-        return Comparator.comparing(Unite::getType).thenComparing(Unite::getVie).thenComparing(Unite::getIdentifiant).compare(this, unite);
+    public int compareTo(@NotNull Unite unite) {
+        return Comparator.comparing(Unite::getIdentifiant).compare(this, unite);
     }
 }

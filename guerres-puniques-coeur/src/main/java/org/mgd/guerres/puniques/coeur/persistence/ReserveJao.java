@@ -15,7 +15,6 @@ public class ReserveJao extends Jao<ReserveDto, Reserve> {
     public ReserveDto dto(Reserve reserve) {
         ReserveDto reserveDto = new ReserveDto();
         reserveDto.setUnites(new UniteJao().decharger(reserve.getUnites()));
-        reserveDto.setNombresUnitesMaximales(reserve.getNombresUnitesMaximales());
 
         return reserveDto;
     }
@@ -23,13 +22,11 @@ public class ReserveJao extends Jao<ReserveDto, Reserve> {
     @Override
     public void enrichir(ReserveDto dto, Reserve reserve) throws JaoExecutionException, JaoParseException {
         reserve.getUnites().addAll(new UniteJao().charger(dto.getUnites(), reserve));
-        reserve.getNombresUnitesMaximales().putAll(dto.getNombresUnitesMaximales());
     }
 
     @Override
     protected void copier(Reserve source, Reserve cible) throws JaoExecutionException, JaoParseException {
         cible.getUnites().clear();
         cible.getUnites().addAll(new UniteJao().dupliquer(source.getUnites()));
-        cible.getNombresUnitesMaximales().putAll(source.getNombresUnitesMaximales());
     }
 }

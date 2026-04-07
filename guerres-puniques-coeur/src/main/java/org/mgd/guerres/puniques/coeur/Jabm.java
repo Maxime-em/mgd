@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mgd.guerres.puniques.coeur.commun.Posture;
 import org.mgd.guerres.puniques.coeur.commun.TypeArmee;
-import org.mgd.guerres.puniques.coeur.commun.TypeUnite;
 import org.mgd.guerres.puniques.coeur.objet.*;
 import org.mgd.guerres.puniques.coeur.persistence.*;
 import org.mgd.guerres.puniques.coeur.source.PartieAd;
@@ -16,10 +15,7 @@ import org.mgd.jab.persistence.exception.JaoParseException;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class Jabm extends Jab {
@@ -71,48 +67,37 @@ public class Jabm extends Jab {
         });
     }
 
-    public Civilisation creerCivilisation(String nom, Map<TypeArmee, Integer> nombresArmees, Map<TypeUnite, Integer> nombresUnites) throws JaoExecutionException, JaoParseException {
-        List<Unite> unites = nombresUnites.entrySet()
-                .stream()
-                .flatMap(element -> {
-                    TypeUnite type = element.getKey();
-                    return IntStream.range(0, element.getValue())
-                            .mapToObj(index -> {
-                                try {
-                                    return new UniteJao().nouveau(nouvelleUnite -> {
-                                        nouvelleUnite.setType(type);
-                                        nouvelleUnite.setVie(type.getVie());
-                                    });
-                                } catch (JaoExecutionException | JaoParseException e) {
-                                    LOGGER.error("Impossible de créer une nouvelle unité.", e);
-                                    return null;
-                                }
-                            })
-                            .filter(Objects::nonNull);
-                }).toList();
-        Reserve reserve = new ReserveJao().nouveau(nouvelleReserve -> {
-            nouvelleReserve.getUnites().addAll(unites);
-            nouvelleReserve.getNombresUnitesMaximales().putAll(nombresUnites);
-        });
+    public Civilisation creerCivilisation(String nom, Map<TypeArmee, Integer> nombresArmees, Collection<TypeUnite> typesUnites) throws JaoExecutionException, JaoParseException {
+        List<Unite> unites = typesUnites.stream().flatMap(type -> IntStream.range(0, type.getMaximum()).mapToObj(_ -> {
+            try {
+                return new UniteJao().nouveau(nouvelleUnite -> {
+                    nouvelleUnite.setType(type);
+                    nouvelleUnite.setVie(type.getConstitution());
+                });
+            } catch (JaoExecutionException | JaoParseException e) {
+                LOGGER.error("Impossible de créer une nouvelle unité.", e);
+                return null;
+            }
+        }).filter(Objects::nonNull)).toList();
+        Reserve reserve = new ReserveJao().nouveau(nouvelleReserve -> nouvelleReserve.getUnites().addAll(unites));
         List<Armee> armees = nombresArmees.entrySet()
                 .stream()
-                .flatMap(element -> {
-                    TypeArmee type = element.getKey();
-                    return IntStream.range(0, element.getValue())
-                            .mapToObj(index -> {
-                                try {
-                                    return new ArmeeJao().nouveau(nouvelleArmee -> nouvelleArmee.setType(type));
-                                } catch (JaoExecutionException | JaoParseException e) {
-                                    LOGGER.error("Impossible de créer une nouvelle armée.", e);
-                                    return null;
-                                }
-                            });
-                }).toList();
+                .flatMap(element -> IntStream.range(0, element.getValue())
+                        .mapToObj(_ -> {
+                            try {
+                                return new ArmeeJao().nouveau(nouvelleArmee -> nouvelleArmee.setType(element.getKey()));
+                            } catch (JaoExecutionException | JaoParseException e) {
+                                LOGGER.error("Impossible de créer une nouvelle armée.", e);
+                                return null;
+                            }
+                        }))
+                .toList();
         Civilisation civilisation = new CivilisationJao().nouveau(nouvelleCivilisation -> {
+            nouvelleCivilisation.getArmees().addAll(armees);
+            nouvelleCivilisation.getTypesUnites().addAll(typesUnites);
+            nouvelleCivilisation.getNombresArmeesMaximales().putAll(nombresArmees);
             nouvelleCivilisation.setNom(nom);
             nouvelleCivilisation.setReserve(reserve);
-            nouvelleCivilisation.getArmees().addAll(armees);
-            nouvelleCivilisation.getNombresArmeesMaximales().putAll(nombresArmees);
         });
         civilisation.getArmees().forEach(armee -> {
             try {
@@ -127,10 +112,17 @@ public class Jabm extends Jab {
         return civilisation;
     }
 
-    public Alignement creerAlignement(Civilisation civilisation, Posture posture) throws JaoExecutionException, JaoParseException {
-        return new AlignementJao().nouveau(nouveauAlignement -> {
-            nouveauAlignement.setCivilisation(civilisation);
-            nouveauAlignement.setPosture(posture);
+    public Des creerDesDegats() throws JaoExecutionException, JaoParseException {
+        return new DesJao().nouveau(nouveauDes -> nouveauDes.setMaximum(6));
+    }
+
+    public TypeUnite creerTypeUnite(String nom, String libelle, Integer maximum, Integer vie, Integer force) throws JaoExecutionException, JaoParseException {
+        return new TypeUniteJao().nouveau(nouveauType -> {
+            nouveauType.setNom(nom);
+            nouveauType.setLibelle(libelle);
+            nouveauType.setMaximum(maximum);
+            nouveauType.setConstitution(vie);
+            nouveauType.setForce(force);
         });
     }
 }

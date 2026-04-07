@@ -8,6 +8,7 @@ import java.util.Map;
 
 public class CivilisationDto extends Dto {
     private List<ArmeeDto> armees;
+    private List<TypeUniteDto> typesUnites;
     private Map<TypeArmee, Integer> nombresArmeesMaximales;
     private String nom;
     private ReserveDto reserve;
@@ -18,6 +19,14 @@ public class CivilisationDto extends Dto {
 
     public void setArmees(List<ArmeeDto> armees) {
         this.armees = armees;
+    }
+
+    public List<TypeUniteDto> getTypesUnites() {
+        return typesUnites;
+    }
+
+    public void setTypesUnites(List<TypeUniteDto> typesUnites) {
+        this.typesUnites = typesUnites;
     }
 
     public Map<TypeArmee, Integer> getNombresArmeesMaximales() {

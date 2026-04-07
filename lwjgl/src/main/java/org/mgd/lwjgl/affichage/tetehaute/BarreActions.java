@@ -207,15 +207,16 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Am
         avertirAmorcages(parent, actionsSurvolees, droite);
     }
 
-    public void ajouter(G groupe, Action<?> action) {
+    public <T> void ajouter(G groupe, Action<T> action) {
         groupes.computeIfAbsent(groupe, _ -> new ArrayList<>()).add(action);
     }
 
-    public void ajouter(G groupe, Action<?>... actions) {
+    @SafeVarargs
+    public final <T> void ajouter(G groupe, Action<T>... actions) {
         groupes.computeIfAbsent(groupe, _ -> new ArrayList<>()).addAll(List.of(actions));
     }
 
-    public void ajouter(G groupe, Collection<Action<?>> actions) {
+    public <T> void ajouter(G groupe, Collection<Action<T>> actions) {
         groupes.computeIfAbsent(groupe, _ -> new ArrayList<>()).addAll(actions);
     }
 

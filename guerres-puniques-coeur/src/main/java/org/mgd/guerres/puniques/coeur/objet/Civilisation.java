@@ -3,7 +3,6 @@ package org.mgd.guerres.puniques.coeur.objet;
 import org.mgd.guerres.puniques.coeur.commun.TypeArmee;
 import org.mgd.jab.objet.Jo;
 
-import java.text.MessageFormat;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
@@ -12,12 +11,17 @@ import java.util.TreeSet;
 @SuppressWarnings("java:S2160")
 public class Civilisation extends Jo implements Comparable<Civilisation> {
     private final Set<Armee> armees = new TreeSet<>();
+    private final Set<TypeUnite> typesUnites = new TreeSet<>();
     private final Map<TypeArmee, Integer> nombresArmeesMaximales = new EnumMap<>(TypeArmee.class);
     private String nom;
     private Reserve reserve;
 
     public Set<Armee> getArmees() {
         return armees;
+    }
+
+    public Set<TypeUnite> getTypesUnites() {
+        return typesUnites;
     }
 
     public Map<TypeArmee, Integer> getNombresArmeesMaximales() {
@@ -38,10 +42,6 @@ public class Civilisation extends Jo implements Comparable<Civilisation> {
 
     public void setReserve(Reserve reserve) {
         this.reserve = reserve;
-    }
-
-    public String getInformations() {
-        return MessageFormat.format("{0} : {1}", nom, reserve.getInformations());
     }
 
     @Override

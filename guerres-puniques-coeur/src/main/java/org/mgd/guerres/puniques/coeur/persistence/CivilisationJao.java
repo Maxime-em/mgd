@@ -15,6 +15,7 @@ public class CivilisationJao extends Jao<CivilisationDto, Civilisation> {
     public CivilisationDto dto(Civilisation civilisation) {
         CivilisationDto civilisationDto = new CivilisationDto();
         civilisationDto.setArmees(new ArmeeJao().decharger(civilisation.getArmees()));
+        civilisationDto.setTypesUnites(new TypeUniteJao().decharger(civilisation.getTypesUnites()));
         civilisationDto.setNombresArmeesMaximales(civilisation.getNombresArmeesMaximales());
         civilisationDto.setNom(civilisation.getNom());
         civilisationDto.setReserve(new ReserveJao().decharger(civilisation.getReserve()));
@@ -25,6 +26,7 @@ public class CivilisationJao extends Jao<CivilisationDto, Civilisation> {
     @Override
     public void enrichir(CivilisationDto dto, Civilisation civilisation) throws JaoExecutionException, JaoParseException {
         civilisation.getArmees().addAll(new ArmeeJao().charger(dto.getArmees(), civilisation));
+        civilisation.getTypesUnites().addAll(new TypeUniteJao().charger(dto.getTypesUnites(), civilisation));
         civilisation.getNombresArmeesMaximales().putAll(dto.getNombresArmeesMaximales());
         civilisation.setNom(dto.getNom());
         civilisation.setReserve(new ReserveJao().charger(dto.getReserve(), civilisation));
@@ -34,6 +36,8 @@ public class CivilisationJao extends Jao<CivilisationDto, Civilisation> {
     protected void copier(Civilisation source, Civilisation cible) throws JaoExecutionException, JaoParseException {
         cible.getArmees().clear();
         cible.getArmees().addAll(new ArmeeJao().dupliquer(source.getArmees()));
+        cible.getTypesUnites().clear();
+        cible.getTypesUnites().addAll(new TypeUniteJao().dupliquer(source.getTypesUnites()));
         cible.getNombresArmeesMaximales().clear();
         cible.getNombresArmeesMaximales().putAll(source.getNombresArmeesMaximales());
         cible.setNom(source.getNom());

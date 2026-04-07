@@ -6,7 +6,6 @@ import org.mgd.connexion.exception.ConnexionException;
 import org.mgd.guerres.puniques.coeur.Jabm;
 import org.mgd.guerres.puniques.coeur.JabmConnexion;
 import org.mgd.guerres.puniques.coeur.commun.TypeArmee;
-import org.mgd.guerres.puniques.coeur.commun.TypeUnite;
 import org.mgd.guerres.puniques.coeur.objet.*;
 import org.mgd.guerres.puniques.jeu.exception.JeuException;
 import org.mgd.guerres.puniques.jeu.souscription.*;
@@ -121,17 +120,26 @@ public class Jeu {
             Map<String, Civilisation> civilisations = new HashMap<>();
             Arrays.stream(aliasCivilisations).forEach(alias -> {
                 try {
+                    List<TypeUnite> types = Arrays.stream(obtenirTypesUnites(alias).split(";")).map(nom -> {
+                        try {
+                            TypeUnite typeUnite = jabm.creerTypeUnite(nom,
+                                    obtenirTypeUnite(alias, nom, "libelle"),
+                                    obtenirNombreTypeUnite(alias, nom, "maximum"),
+                                    obtenirNombreTypeUnite(alias, nom, "vie"),
+                                    obtenirNombreTypeUnite(alias, nom, "force"));
+                            partieEnCours.ajouterEnfant(typeUnite);
+                            return typeUnite;
+                        } catch (JaoExecutionException | JaoParseException e) {
+                            LOGGER.error("Impossible de construire le type d'unité {} de la civilisation {}.", nom, alias, e);
+                            return null;
+                        }
+                    }).filter(Objects::nonNull).toList();
                     Civilisation civilisation = jabm.creerCivilisation(obtenirProprieteCivilisations(alias, "nom"),
                             Map.of(
-                                    TypeArmee.TERRESTRE, obtenirNombreArmeesCivilisations(alias, "terrestres"),
-                                    TypeArmee.MARITIME, obtenirNombreArmeesCivilisations(alias, "maritime")
+                                    TypeArmee.TERRESTRE, obtenirNombreArmees(alias, "terrestres"),
+                                    TypeArmee.MARITIME, obtenirNombreArmees(alias, "maritime")
                             ),
-                            Map.of(
-                                    TypeUnite.SOLDAT, obtenirUniteReserveCivilisations(alias, "soldat"),
-                                    TypeUnite.GENERAL, obtenirUniteReserveCivilisations(alias, "general"),
-                                    TypeUnite.ELEPHANT, obtenirUniteReserveCivilisations(alias, "elephant"),
-                                    TypeUnite.CATAPULTE, obtenirUniteReserveCivilisations(alias, "catapulte")
-                            ));
+                            types);
                     partieEnCours.getCivilisations().add(civilisation);
                     partieEnCours.ajouterEnfant(civilisation);
                     civilisations.put(obtenirProprieteCivilisations(alias, "code"), civilisation);
@@ -166,12 +174,20 @@ public class Jeu {
         return proprietes.getProperty(MessageFormat.format("{0}.{1}.{2}", APPLICATION_JEU_CIVILISATIONS, alias, nom));
     }
 
-    private Integer obtenirNombreArmeesCivilisations(String alias, String type) {
-        return Integer.valueOf(proprietes.getProperty(MessageFormat.format("{0}.{1}.armees.{2}", APPLICATION_JEU_CIVILISATIONS, alias, type)));
+    private String obtenirTypesUnites(String alias) {
+        return proprietes.getProperty(MessageFormat.format("{0}.{1}.unites.types", APPLICATION_JEU_CIVILISATIONS, alias));
     }
 
-    private Integer obtenirUniteReserveCivilisations(String alias, String type) {
-        return Integer.valueOf(proprietes.getProperty(MessageFormat.format("{0}.{1}.reserve.{2}", APPLICATION_JEU_CIVILISATIONS, alias, type)));
+    private String obtenirTypeUnite(String alias, String type, String nom) {
+        return proprietes.getProperty(MessageFormat.format("{0}.{1}.unites.{2}.{3}", APPLICATION_JEU_CIVILISATIONS, alias, type, nom));
+    }
+
+    private Integer obtenirNombreTypeUnite(String alias, String type, String nom) {
+        return Integer.valueOf(obtenirTypeUnite(alias, type, nom));
+    }
+
+    private Integer obtenirNombreArmees(String alias, String type) {
+        return Integer.valueOf(proprietes.getProperty(MessageFormat.format("{0}.{1}.armees.{2}", APPLICATION_JEU_CIVILISATIONS, alias, type)));
     }
 
     public void demarrerPartie(UUID uuidFichier) {
@@ -204,6 +220,25 @@ public class Jeu {
                         changementsDeploiementArmee.forEach(changement -> changement.traiter(civilisation, armee, region));
                     });
         }
+    }
+
+    public void rattacher(Civilisation civilisation, Armee armee, TypeUnite type) {
+        civilisation.getReserve()
+                .getUnites()
+                .stream()
+                .filter(unite -> unite.getType() == type)
+                .findFirst()
+                .ifPresent(unite -> {
+                    try {
+                        civilisation.getReserve().getUnites().remove(unite);
+                        armee.getUnites().add(unite);
+                        while (armee.getUnites().stream().mapToInt(element -> element.getType().getForce()).sum() >= (armee.getDesDegats().size() + 1) * 10) {
+                            armee.getDesDegats().add(jabm.creerDesDegats());
+                        }
+                    } catch (JaoExecutionException | JaoParseException e) {
+                        LOGGER.error("Impossible d'ajouter un dés de dégâts", e);
+                    }
+                });
     }
 
     public void amorcer(Armee armee) {
@@ -305,18 +340,6 @@ public class Jeu {
 
     public void souscription(ChangementFinTour changement) {
         changementsFinTour.add(changement);
-    }
-
-    public void rattacherUnite(Civilisation civilisation, Armee armee, TypeUnite type) {
-        civilisation.getReserve()
-                .getUnites()
-                .stream()
-                .filter(unite -> unite.getType() == type)
-                .findFirst()
-                .ifPresent(unite -> {
-                    civilisation.getReserve().getUnites().remove(unite);
-                    armee.getUnites().add(unite);
-                });
     }
 
     public Region region(Integer ligne, Integer colonne) {

@@ -6,6 +6,8 @@ import org.mgd.commun.Matrice;
 import org.mgd.lwjgl.affichage.Primitif;
 import org.mgd.lwjgl.affichage.element.Element;
 import org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute;
+import org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute.NVGImage;
+import org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute.NVGPolice;
 import org.mgd.lwjgl.exception.LwjglException;
 import org.mgd.lwjgl.interne.Ombreur;
 import org.mgd.lwjgl.souscription.DetecteurAmorcage;
@@ -54,8 +56,8 @@ public class Fenetre implements Identifiable {
     private final Map<String, Consumer<Amorcage>> invocationsGroupees;
 
     private long contexteNvg;
-    private Map<String, AffichageTeteHaute.NVGPolice> polices;
-    private Map<String, AffichageTeteHaute.NVGImage> images;
+    private Map<String, NVGPolice> polices;
+    private Map<String, NVGImage> images;
     private AffichageTeteHaute menu;
 
     protected Fenetre(String titre, int hauteur, int ratioNumerateur, int ratioDenominateur) throws LwjglException {
@@ -142,7 +144,7 @@ public class Fenetre implements Identifiable {
     }
 
     public void creerPolice(String identifiant, Path fichier) {
-        polices.computeIfAbsent(identifiant, _ -> new AffichageTeteHaute.NVGPolice(identifiant, fichier, nvgCreateFont(contexteNvg, identifiant, fichier.toString())));
+        polices.computeIfAbsent(identifiant, _ -> new NVGPolice(identifiant, fichier, nvgCreateFont(contexteNvg, identifiant, fichier.toString())));
     }
 
     public void creerImage(String identifiant, Path fichier) {
@@ -151,18 +153,18 @@ public class Fenetre implements Identifiable {
             int[] largeurImage = new int[1];
             int[] hauteurImage = new int[1];
             nvgImageSize(contexteNvg, nvg, largeurImage, hauteurImage);
-            return new AffichageTeteHaute.NVGImage(identifiant, fichier, largeurImage[0], hauteurImage[0], nvg);
+            return new NVGImage(identifiant, fichier, largeurImage[0], hauteurImage[0], nvg);
         });
     }
 
-    public AffichageTeteHaute.NVGImage obtenirImage(String identifiant) {
+    public NVGImage obtenirImage(String identifiant) {
         if (!images.containsKey(identifiant)) {
             throw new NoSuchElementException(MessageFormat.format("L''image \"{0}\" est introuvable.", identifiant));
         }
         return images.get(identifiant);
     }
 
-    public AffichageTeteHaute.NVGPolice obtenirPolice(String identifiant) {
+    public NVGPolice obtenirPolice(String identifiant) {
         if (!polices.containsKey(identifiant)) {
             throw new NoSuchElementException(MessageFormat.format("La police \"{0}\" est introuvable.", identifiant));
         }
