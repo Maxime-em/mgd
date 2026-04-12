@@ -7,10 +7,11 @@ import java.util.Comparator;
 import java.util.Objects;
 
 @SuppressWarnings({"java:S2160", "java:S1210"})
-public class Unite extends Jo implements Comparable<Unite> {
+public class Unite extends Jo implements Comparable<Unite>, Typable {
     private TypeUnite type;
     private Integer vie;
 
+    @Override
     public TypeUnite getType() {
         return type;
     }

@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SuppressWarnings({"java:S2160", "java:S1210"})
-public class Armee extends Jo implements Comparable<Armee> {
+public class Armee extends Jo implements Comparable<Armee>, Typable {
     private final Set<Unite> unites = new TreeSet<>();
     private final Set<Alignement> alignements = new TreeSet<>();
     private final Set<Transport> transports = new TreeSet<>();
@@ -31,6 +31,7 @@ public class Armee extends Jo implements Comparable<Armee> {
         return desDegats;
     }
 
+    @Override
     public TypeArmee getType() {
         return type;
     }

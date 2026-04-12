@@ -1,47 +1,19 @@
 package org.mgd.guerres.puniques.coeur.objet;
 
 import org.jetbrains.annotations.NotNull;
-import org.mgd.jab.objet.Jo;
 
 import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 
 @SuppressWarnings({"java:S2160", "java:S1210"})
-public class TypeUnite extends Jo implements Comparable<TypeUnite> {
+public class TypeUnite extends Type implements Comparable<TypeUnite> {
     private final Set<TypeRegion> praticables = new TreeSet<>();
-    private String nom;
-    private String libelle;
-    private Integer maximum;
     private Integer constitution;
     private Integer force;
 
     public Set<TypeRegion> getPraticables() {
         return praticables;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getLibelle() {
-        return libelle;
-    }
-
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
-    }
-
-    public Integer getMaximum() {
-        return maximum;
-    }
-
-    public void setMaximum(Integer maximum) {
-        this.maximum = maximum;
     }
 
     public Integer getConstitution() {

@@ -47,9 +47,6 @@ public class GuerresPuniquesApplication extends Application {
     private static final String IMAGE_LANCER_DEX = "Lancer les dés";
     private static final String IMAGE_FINIR_LE_TOUR = "Finir le tour";
     private static final String IMAGE_CIVILISATION_PREFIX = "Civilisation";
-    private static final String IMAGE_ARMEE_PREFIX = "Armée";
-    private static final String IMAGE_TRANSPORT_PREFIX = "Transport";
-    private static final String IMAGE_UNITE_PREFIX = "Unité";
     private static final String IMAGE_DEPLOIEMENT_ARMEE_PREFIX = "Déploiement d'une armée";
     private static final String POLICE_DEFAUT = "Calibri";
     private static final float PROFONDEUR = -21.5f;
@@ -303,9 +300,9 @@ public class GuerresPuniquesApplication extends Application {
     private void construireBarreActions(Civilisation civilisation, int ordre) throws LwjglException {
         NVGPolice police = fenetre.obtenirPolice(POLICE_DEFAUT);
         fenetre.creerImage(identifiantImageCite(civilisation), cheminImageCite(civilisation));
-        civilisation.getTypesUnites().forEach(type -> fenetre.creerImage(identifiantImageTypeUnite(civilisation, type), cheminImageTypeUnite(civilisation, type)));
-        civilisation.getTypeArmees().forEach(type -> fenetre.creerImage(identifiantImageTypeArmee(civilisation, type), cheminImageTypeArmee(civilisation, type)));
-        civilisation.getTypesTransports().forEach(type -> fenetre.creerImage(identifiantImageTypeTransport(civilisation, type), cheminImageTypeTransport(civilisation, type)));
+        civilisation.getTypesUnites().forEach(type -> fenetre.creerImage(identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_UNITES, type), cheminImageType(civilisation, Jeu.NOM_GROUPE_TYPES_UNITES, type)));
+        civilisation.getTypeArmees().forEach(type -> fenetre.creerImage(identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_ARMEES, type), cheminImageType(civilisation, Jeu.NOM_GROUPE_TYPES_ARMEES, type)));
+        civilisation.getTypesTransports().forEach(type -> fenetre.creerImage(identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_TRANSPORTS, type), cheminImageType(civilisation, Jeu.NOM_GROUPE_TYPES_TRANSPORTS, type)));
         fenetre.creerImage(identifiantImageDeploiementArmee(civilisation), cheminImageDeploiementArmee(civilisation));
 
         BarreActions<String> barreActionsCivilisation = new BarreActions<>(fenetre,
@@ -321,17 +318,9 @@ public class GuerresPuniquesApplication extends Application {
         Action<Civilisation> actionCivilisation = new Action<>(civilisation, 100, 100, false, fenetre.obtenirImage(identifiantImageCite(civilisation)));
         identifiablesCivilisations.add(actionCivilisation);
         barreActionsCivilisation.ajouter(civilisation.getNom(), actionCivilisation);
-        barreActionsCivilisation.ajouter(actionCivilisation.uuid(), creerInformations(police,
-                () -> MessageFormat.format("{0}: {1}",
-                        civilisation.getNom(),
-                        civilisation.getTypesUnites()
-                                .stream()
-                                .map(type ->
-                                        MessageFormat.format("{0} ({1}/{2})",
-                                                type.getLibelle(),
-                                                civilisation.getReserve().getUnites().stream().filter(unite -> unite.getType() == type).count(),
-                                                type.getMaximum()))
-                                .collect(Collectors.joining(", ")))));
+        barreActionsCivilisation.ajouter(actionCivilisation.uuid(), creerInformations(police, civilisation::getNom));
+        barreActionsCivilisation.ajouter(actionCivilisation.uuid(), informationType(police, civilisation.getTypesUnites(), civilisation.getReserve().getUnites()));
+        barreActionsCivilisation.ajouter(actionCivilisation.uuid(), informationType(police, civilisation.getTypesTransports(), civilisation.getTransports()));
 
         civilisation.getArmees().forEach(armee -> {
             Action<CivilisationArmee> action = new Action<>(
@@ -339,7 +328,7 @@ public class GuerresPuniquesApplication extends Application {
                     50,
                     50,
                     true,
-                    fenetre.obtenirImage(identifiantImageTypeArmee(civilisation, armee.getType())));
+                    fenetre.obtenirImage(identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_ARMEES, armee.getType())));
             identifiablesArmees.add(action);
             actionsParArmee.put(armee, action);
             barreActionsCivilisation.ajouter(civilisation.getNom(), action);
@@ -353,7 +342,7 @@ public class GuerresPuniquesApplication extends Application {
                         100,
                         100,
                         false,
-                        fenetre.obtenirImage(identifiantImageTypeUnite(civilisation, type)));
+                        fenetre.obtenirImage(identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_UNITES, type)));
                 identifiablesArmeeAjouterUnite.add(actionArmeeAjouterUnite);
                 formatterInformations(barreActionsGenerale, actionArmeeAjouterUnite, police, () -> MessageFormat.format("Ajouter l''unité {0}", type.getNom()));
                 formatterInformations(barreActionsGenerale, actionArmeeAjouterUnite, police, () -> MessageFormat.format("Constitution : {0}", type.getConstitution()));
@@ -377,6 +366,14 @@ public class GuerresPuniquesApplication extends Application {
         barresActionsCivilisations.put(civilisation, barreActionsCivilisation);
     }
 
+    private Ecrit<Void> informationType(NVGPolice police, Collection<? extends Type> types, Collection<? extends Typable> typables) {
+        return creerInformations(police, () -> types.stream().map(type -> MessageFormat.format("{0} ({1}/{2})",
+                        type.getLibelle(),
+                        typables.stream().filter(unite -> unite.getType() == type).count(),
+                        type.getMaximum()))
+                .collect(Collectors.joining(", ")));
+    }
+
     private void construireDesCivilisation() throws LwjglException {
         informationsDesCivilisation = new Informations(fenetre, 10, fenetre.hauteur() - 110, 100, 100);
         informationsDesCivilisation.ajouter(creerValeurDes(fenetre.obtenirPolice(POLICE_DEFAUT), () -> partie.getDesCivilisation().getValeur() != null ? partie.getDesCivilisation().getValeur().toString() : ""));
@@ -393,16 +390,8 @@ public class GuerresPuniquesApplication extends Application {
         return String.join(":", IMAGE_CIVILISATION_PREFIX, civilisation.getIdentifiant().toString());
     }
 
-    private String identifiantImageTypeUnite(Civilisation civilisation, TypeUnite type) {
-        return String.join(":", IMAGE_UNITE_PREFIX, civilisation.getIdentifiant().toString(), type.getIdentifiant().toString());
-    }
-
-    private String identifiantImageTypeArmee(Civilisation civilisation, TypeArmee type) {
-        return String.join(":", IMAGE_ARMEE_PREFIX, civilisation.getIdentifiant().toString(), type.getNom());
-    }
-
-    private String identifiantImageTypeTransport(Civilisation civilisation, TypeTransport type) {
-        return String.join(":", IMAGE_TRANSPORT_PREFIX, civilisation.getIdentifiant().toString(), type.getNom());
+    private <T extends Type> String identifiantImageType(Civilisation civilisation, String groupe, T type) {
+        return String.join(":", groupe, civilisation.getIdentifiant().toString(), type.getIdentifiant().toString());
     }
 
     private String identifiantImageDeploiementArmee(Civilisation civilisation) {
@@ -413,16 +402,8 @@ public class GuerresPuniquesApplication extends Application {
         return dossierTextures.resolve(civilisation.getNom().toLowerCase(), "cite.png");
     }
 
-    private Path cheminImageTypeUnite(Civilisation civilisation, TypeUnite type) {
-        return dossierTextures.resolve(civilisation.getNom().toLowerCase(), "unites", type.getNom().toLowerCase() + ".png");
-    }
-
-    private Path cheminImageTypeArmee(Civilisation civilisation, TypeArmee type) {
-        return dossierTextures.resolve(civilisation.getNom().toLowerCase(), "armees", type.getNom().toLowerCase() + ".png");
-    }
-
-    private Path cheminImageTypeTransport(Civilisation civilisation, TypeTransport type) {
-        return dossierTextures.resolve(civilisation.getNom().toLowerCase(), "transports", type.getNom().toLowerCase() + ".png");
+    private <T extends Type> Path cheminImageType(Civilisation civilisation, String groupe, T type) {
+        return dossierTextures.resolve(civilisation.getNom().toLowerCase(), groupe, type.getNom().toLowerCase() + ".png");
     }
 
     private Path cheminImageDeploiementArmee(Civilisation civilisation) {

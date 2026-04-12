@@ -6,9 +6,10 @@ import org.mgd.jab.objet.Jo;
 import java.util.Comparator;
 
 @SuppressWarnings({"java:S2160", "java:S1210"})
-public class Transport extends Jo implements Comparable<Transport> {
+public class Transport extends Jo implements Comparable<Transport>, Typable {
     private TypeTransport type;
 
+    @Override
     public TypeTransport getType() {
         return type;
     }
