@@ -2,7 +2,6 @@ package org.mgd.guerres.puniques.coeur.objet;
 
 import org.mgd.commun.Tabulable;
 import org.mgd.guerres.puniques.coeur.commun.Posture;
-import org.mgd.guerres.puniques.coeur.commun.TypeRegion;
 import org.mgd.guerres.puniques.coeur.persistence.AlignementJao;
 import org.mgd.jab.objet.Jo;
 import org.mgd.jab.persistence.exception.JaoExecutionException;
@@ -18,6 +17,7 @@ public class Region extends Jo implements Tabulable {
     private final Set<Alignement> alignements = new TreeSet<>();
     private final Set<TypeRegion> types = new TreeSet<>();
     private final Set<Armee> armees = new TreeSet<>();
+    private final Set<Transport> transports = new TreeSet<>();
     private Integer ligne;
     private Integer colonne;
 
@@ -33,20 +33,12 @@ public class Region extends Jo implements Tabulable {
         return armees;
     }
 
-    public boolean estAmiAvec(Civilisation civilisation) {
-        return alignements.stream().anyMatch(alignement -> alignement.getCivilisation().equals(civilisation) && alignement.getPosture() == Posture.AMI);
+    public Set<Transport> getTransports() {
+        return transports;
     }
 
-    public void ajouterTypes(String noms) {
-        if (noms.contains("T")) {
-            types.add(TypeRegion.TERRESTRE);
-        }
-        if (noms.contains("M")) {
-            types.add(TypeRegion.MARITIME);
-        }
-        if (noms.contains("C")) {
-            types.add(TypeRegion.CAPITAL);
-        }
+    public boolean estAmiAvec(Civilisation civilisation) {
+        return alignements.stream().anyMatch(alignement -> alignement.getCivilisation().equals(civilisation) && alignement.getPosture() == Posture.AMI);
     }
 
     public void ajouterAlignementAmi(String codes, Map<String, Civilisation> civilisations) throws JaoExecutionException, JaoParseException {
@@ -84,7 +76,7 @@ public class Region extends Jo implements Tabulable {
     public boolean idem(Object objet) {
         if (this == objet) return true;
         if (!(objet instanceof Region region)) return false;
-        return alignements.equals(region.alignements) && types.equals(region.types) && (armees).equals(region.armees);
+        return ligne.equals(region.ligne) && colonne.equals(region.colonne);
     }
 
     public String getInformations() {

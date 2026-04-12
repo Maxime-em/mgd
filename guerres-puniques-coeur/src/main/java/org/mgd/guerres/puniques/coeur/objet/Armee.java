@@ -1,20 +1,17 @@
 package org.mgd.guerres.puniques.coeur.objet;
 
 import org.jetbrains.annotations.NotNull;
-import org.mgd.guerres.puniques.coeur.commun.Posture;
-import org.mgd.guerres.puniques.coeur.commun.TypeArmee;
 import org.mgd.jab.objet.Jo;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SuppressWarnings({"java:S2160", "java:S1210"})
 public class Armee extends Jo implements Comparable<Armee> {
     private final Set<Unite> unites = new TreeSet<>();
     private final Set<Alignement> alignements = new TreeSet<>();
+    private final Set<Transport> transports = new TreeSet<>();
     private final Set<Des> desDegats = new HashSet<>();
     private TypeArmee type;
 
@@ -24,6 +21,10 @@ public class Armee extends Jo implements Comparable<Armee> {
 
     public Set<Alignement> getAlignements() {
         return alignements;
+    }
+
+    public Set<Transport> getTransports() {
+        return transports;
     }
 
     public Set<Des> getDesDegats() {
@@ -38,19 +39,25 @@ public class Armee extends Jo implements Comparable<Armee> {
         this.type = type;
     }
 
+    public Set<TypeRegion> getPraticables() {
+        return Stream.concat(unites.stream()
+                                .map(unite -> unite.getType().getPraticables())
+                                .reduce((intersection, praticables) -> intersection.stream().filter(praticables::contains).collect(Collectors.toSet()))
+                                .stream()
+                                .flatMap(Collection::stream),
+                        transports.stream().flatMap(transport -> transport.getType().getPraticables().stream()))
+                .collect(Collectors.toSet());
+    }
+
     @Override
     public boolean idem(Object objet) {
         if (this == objet) return true;
         if (!(objet instanceof Armee armee)) return false;
-        return unites.equals(armee.unites) && alignements.equals(armee.alignements) && type == armee.type;
+        return unites.equals(armee.unites) && alignements.equals(armee.alignements);
     }
 
     @Override
     public int compareTo(@NotNull Armee armee) {
-        return Comparator.comparing(Armee::getType).thenComparing(Armee::getIdentifiant).compare(this, armee);
-    }
-
-    public Stream<Civilisation> fluxCivilisationsAmies() {
-        return alignements.stream().filter(alignement -> alignement.getPosture() == Posture.AMI).map(Alignement::getCivilisation);
+        return Comparator.comparing(Armee::getIdentifiant).compare(this, armee);
     }
 }

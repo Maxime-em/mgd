@@ -4,11 +4,23 @@ import org.mgd.jab.objet.Jo;
 import org.mgd.jab.utilitaire.Jos;
 
 import java.util.Arrays;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @SuppressWarnings("java:S2160")
 public class Monde extends Jo {
+    private final Set<TypeRegion> types = new TreeSet<>();
     private Region[][] regions;
+
+    public Set<TypeRegion> getTypes() {
+        return types;
+    }
+
+    public Set<TypeRegion> getTypes(String codes) {
+        return types.stream().filter(type -> codes.contains(type.getCode())).collect(Collectors.toSet());
+    }
 
     public Region[][] getRegions() {
         return regions;

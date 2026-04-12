@@ -16,8 +16,9 @@ public class ArmeeJao extends Jao<ArmeeDto, Armee> {
         ArmeeDto armeeDto = new ArmeeDto();
         armeeDto.setUnites(new UniteJao().decharger(armee.getUnites()));
         armeeDto.setAlignements(new AlignementJao().decharger(armee.getAlignements()));
+        armeeDto.setTransports(new TransportJao().decharger(armee.getTransports()));
         armeeDto.setDesDegats(new DesJao().decharger(armee.getDesDegats()));
-        armeeDto.setType(armee.getType());
+        armeeDto.setType(new TypeArmeeJao().decharger(armee.getType()));
 
         return armeeDto;
     }
@@ -26,8 +27,9 @@ public class ArmeeJao extends Jao<ArmeeDto, Armee> {
     public void enrichir(ArmeeDto dto, Armee armee) throws JaoExecutionException, JaoParseException {
         armee.getUnites().addAll(new UniteJao().charger(dto.getUnites(), armee));
         armee.getAlignements().addAll(new AlignementJao().charger(dto.getAlignements(), armee));
+        armee.getTransports().addAll(new TransportJao().charger(dto.getTransports(), armee));
         armee.getDesDegats().addAll(new DesJao().charger(dto.getDesDegats(), armee));
-        armee.setType(dto.getType());
+        armee.setType(new TypeArmeeJao().charger(dto.getType(), armee));
     }
 
     @Override
@@ -36,8 +38,10 @@ public class ArmeeJao extends Jao<ArmeeDto, Armee> {
         cible.getUnites().addAll(new UniteJao().dupliquer(source.getUnites()));
         cible.getAlignements().clear();
         cible.getAlignements().addAll(new AlignementJao().dupliquer(source.getAlignements()));
+        cible.getTransports().clear();
+        cible.getTransports().addAll(new TransportJao().dupliquer(source.getTransports()));
         cible.getDesDegats().clear();
         cible.getDesDegats().addAll(new DesJao().dupliquer(source.getDesDegats()));
-        cible.setType(source.getType());
+        cible.setType(new TypeArmeeJao().dupliquer(source.getType()));
     }
 }

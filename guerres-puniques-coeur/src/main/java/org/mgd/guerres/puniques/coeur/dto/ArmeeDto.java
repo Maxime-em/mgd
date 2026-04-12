@@ -1,6 +1,5 @@
 package org.mgd.guerres.puniques.coeur.dto;
 
-import org.mgd.guerres.puniques.coeur.commun.TypeArmee;
 import org.mgd.jab.dto.Dto;
 
 import java.util.List;
@@ -8,8 +7,9 @@ import java.util.List;
 public class ArmeeDto extends Dto {
     private List<UniteDto> unites;
     private List<AlignementDto> alignements;
+    private List<TransportDto> transports;
     private List<DesDto> desDegats;
-    private TypeArmee type;
+    private TypeArmeeDto type;
 
     public List<UniteDto> getUnites() {
         return unites;
@@ -27,6 +27,14 @@ public class ArmeeDto extends Dto {
         this.alignements = alignements;
     }
 
+    public List<TransportDto> getTransports() {
+        return transports;
+    }
+
+    public void setTransports(List<TransportDto> transports) {
+        this.transports = transports;
+    }
+
     public List<DesDto> getDesDegats() {
         return desDegats;
     }
@@ -35,11 +43,11 @@ public class ArmeeDto extends Dto {
         this.desDegats = desDegats;
     }
 
-    public TypeArmee getType() {
+    public TypeArmeeDto getType() {
         return type;
     }
 
-    public void setType(TypeArmee type) {
+    public void setType(TypeArmeeDto type) {
         this.type = type;
     }
 }

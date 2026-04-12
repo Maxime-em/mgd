@@ -4,13 +4,12 @@ import org.mgd.jab.dto.Dto;
 
 import java.util.List;
 
-public class TypeUniteDto extends Dto {
+public class TypeTransportDto extends Dto {
     private List<TypeRegionDto> praticables;
+    private Integer[] texture;
     private String nom;
     private String libelle;
     private Integer maximum;
-    private Integer constitution;
-    private Integer force;
 
     public List<TypeRegionDto> getPraticables() {
         return praticables;
@@ -18,6 +17,14 @@ public class TypeUniteDto extends Dto {
 
     public void setPraticables(List<TypeRegionDto> praticables) {
         this.praticables = praticables;
+    }
+
+    public Integer[] getTexture() {
+        return texture;
+    }
+
+    public void setTexture(Integer[] texture) {
+        this.texture = texture;
     }
 
     public String getNom() {
@@ -42,21 +49,5 @@ public class TypeUniteDto extends Dto {
 
     public void setMaximum(Integer maximum) {
         this.maximum = maximum;
-    }
-
-    public Integer getConstitution() {
-        return constitution;
-    }
-
-    public void setConstitution(Integer constitution) {
-        this.constitution = constitution;
-    }
-
-    public Integer getForce() {
-        return force;
-    }
-
-    public void setForce(Integer force) {
-        this.force = force;
     }
 }

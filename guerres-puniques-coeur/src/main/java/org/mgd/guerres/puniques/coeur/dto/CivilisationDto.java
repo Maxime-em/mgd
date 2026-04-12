@@ -1,25 +1,17 @@
 package org.mgd.guerres.puniques.coeur.dto;
 
-import org.mgd.guerres.puniques.coeur.commun.TypeArmee;
 import org.mgd.jab.dto.Dto;
 
 import java.util.List;
-import java.util.Map;
 
 public class CivilisationDto extends Dto {
-    private List<ArmeeDto> armees;
     private List<TypeUniteDto> typesUnites;
-    private Map<TypeArmee, Integer> nombresArmeesMaximales;
+    private List<TypeTransportDto> typesTransports;
+    private List<TypeArmeeDto> typeArmees;
+    private List<TransportDto> transports;
+    private List<ArmeeDto> armees;
     private String nom;
     private ReserveDto reserve;
-
-    public List<ArmeeDto> getArmees() {
-        return armees;
-    }
-
-    public void setArmees(List<ArmeeDto> armees) {
-        this.armees = armees;
-    }
 
     public List<TypeUniteDto> getTypesUnites() {
         return typesUnites;
@@ -29,12 +21,36 @@ public class CivilisationDto extends Dto {
         this.typesUnites = typesUnites;
     }
 
-    public Map<TypeArmee, Integer> getNombresArmeesMaximales() {
-        return nombresArmeesMaximales;
+    public List<TypeTransportDto> getTypesTransports() {
+        return typesTransports;
     }
 
-    public void setNombresArmeesMaximales(Map<TypeArmee, Integer> nombresArmeesMaximales) {
-        this.nombresArmeesMaximales = nombresArmeesMaximales;
+    public void setTypesTransports(List<TypeTransportDto> typesTransports) {
+        this.typesTransports = typesTransports;
+    }
+
+    public List<TransportDto> getTransports() {
+        return transports;
+    }
+
+    public void setTransports(List<TransportDto> transports) {
+        this.transports = transports;
+    }
+
+    public List<TypeArmeeDto> getTypeArmees() {
+        return typeArmees;
+    }
+
+    public void setTypeArmees(List<TypeArmeeDto> typeArmees) {
+        this.typeArmees = typeArmees;
+    }
+
+    public List<ArmeeDto> getArmees() {
+        return armees;
+    }
+
+    public void setArmees(List<ArmeeDto> armees) {
+        this.armees = armees;
     }
 
     public String getNom() {

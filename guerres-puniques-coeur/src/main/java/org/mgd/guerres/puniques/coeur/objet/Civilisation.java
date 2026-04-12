@@ -1,31 +1,40 @@
 package org.mgd.guerres.puniques.coeur.objet;
 
-import org.mgd.guerres.puniques.coeur.commun.TypeArmee;
+import org.jetbrains.annotations.NotNull;
 import org.mgd.jab.objet.Jo;
 
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 
 @SuppressWarnings("java:S2160")
 public class Civilisation extends Jo implements Comparable<Civilisation> {
-    private final Set<Armee> armees = new TreeSet<>();
     private final Set<TypeUnite> typesUnites = new TreeSet<>();
-    private final Map<TypeArmee, Integer> nombresArmeesMaximales = new EnumMap<>(TypeArmee.class);
+    private final Set<TypeTransport> typesTransports = new TreeSet<>();
+    private final Set<TypeArmee> typeArmees = new TreeSet<>();
+    private final Set<Transport> transports = new TreeSet<>();
+    private final Set<Armee> armees = new TreeSet<>();
     private String nom;
     private Reserve reserve;
-
-    public Set<Armee> getArmees() {
-        return armees;
-    }
 
     public Set<TypeUnite> getTypesUnites() {
         return typesUnites;
     }
 
-    public Map<TypeArmee, Integer> getNombresArmeesMaximales() {
-        return nombresArmeesMaximales;
+    public Set<TypeTransport> getTypesTransports() {
+        return typesTransports;
+    }
+
+    public Set<Transport> getTransports() {
+        return transports;
+    }
+
+    public Set<TypeArmee> getTypeArmees() {
+        return typeArmees;
+    }
+
+    public Set<Armee> getArmees() {
+        return armees;
     }
 
     public String getNom() {
@@ -48,12 +57,12 @@ public class Civilisation extends Jo implements Comparable<Civilisation> {
     public boolean idem(Object objet) {
         if (this == objet) return true;
         if (!(objet instanceof Civilisation civilisation)) return false;
-        return nom.equals(civilisation.nom) && reserve.idem(civilisation.reserve);
+        return nom.equals(civilisation.nom);
     }
 
     @Override
-    public int compareTo(Civilisation civilisation) {
-        return nom.compareToIgnoreCase(civilisation.nom);
+    public int compareTo(@NotNull Civilisation civilisation) {
+        return Comparator.comparing(Civilisation::getNom).compare(this, civilisation);
     }
 
     @Override

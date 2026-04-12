@@ -14,17 +14,21 @@ public class MondeJao extends Jao<MondeDto, Monde> {
     @Override
     public MondeDto dto(Monde monde) {
         MondeDto mondeDto = new MondeDto();
+        mondeDto.setTypes(new TypeRegionJao().decharger(monde.getTypes()));
         mondeDto.setRegions(new RegionJao().decharger(monde.getRegions()));
         return mondeDto;
     }
 
     @Override
     public void enrichir(MondeDto dto, Monde monde) throws JaoExecutionException, JaoParseException {
+        monde.getTypes().addAll(new TypeRegionJao().charger(dto.getTypes(), monde));
         monde.setRegions(new RegionJao().charger(dto.getRegions(), monde));
     }
 
     @Override
     protected void copier(Monde source, Monde cible) throws JaoExecutionException, JaoParseException {
+        cible.getTypes().clear();
+        cible.getTypes().addAll(new TypeRegionJao().dupliquer(source.getTypes()));
         cible.setRegions(new RegionJao().dupliquer(source.getRegions()));
     }
 }

@@ -14,9 +14,11 @@ public class CivilisationJao extends Jao<CivilisationDto, Civilisation> {
     @Override
     public CivilisationDto dto(Civilisation civilisation) {
         CivilisationDto civilisationDto = new CivilisationDto();
-        civilisationDto.setArmees(new ArmeeJao().decharger(civilisation.getArmees()));
         civilisationDto.setTypesUnites(new TypeUniteJao().decharger(civilisation.getTypesUnites()));
-        civilisationDto.setNombresArmeesMaximales(civilisation.getNombresArmeesMaximales());
+        civilisationDto.setTypesTransports(new TypeTransportJao().decharger(civilisation.getTypesTransports()));
+        civilisationDto.setTypeArmees(new TypeArmeeJao().decharger(civilisation.getTypeArmees()));
+        civilisationDto.setTransports(new TransportJao().decharger(civilisation.getTransports()));
+        civilisationDto.setArmees(new ArmeeJao().decharger(civilisation.getArmees()));
         civilisationDto.setNom(civilisation.getNom());
         civilisationDto.setReserve(new ReserveJao().decharger(civilisation.getReserve()));
 
@@ -25,21 +27,27 @@ public class CivilisationJao extends Jao<CivilisationDto, Civilisation> {
 
     @Override
     public void enrichir(CivilisationDto dto, Civilisation civilisation) throws JaoExecutionException, JaoParseException {
-        civilisation.getArmees().addAll(new ArmeeJao().charger(dto.getArmees(), civilisation));
         civilisation.getTypesUnites().addAll(new TypeUniteJao().charger(dto.getTypesUnites(), civilisation));
-        civilisation.getNombresArmeesMaximales().putAll(dto.getNombresArmeesMaximales());
+        civilisation.getTypesTransports().addAll(new TypeTransportJao().charger(dto.getTypesTransports(), civilisation));
+        civilisation.getTypeArmees().addAll(new TypeArmeeJao().charger(dto.getTypeArmees(), civilisation));
+        civilisation.getTransports().addAll(new TransportJao().charger(dto.getTransports(), civilisation));
+        civilisation.getArmees().addAll(new ArmeeJao().charger(dto.getArmees(), civilisation));
         civilisation.setNom(dto.getNom());
         civilisation.setReserve(new ReserveJao().charger(dto.getReserve(), civilisation));
     }
 
     @Override
     protected void copier(Civilisation source, Civilisation cible) throws JaoExecutionException, JaoParseException {
-        cible.getArmees().clear();
-        cible.getArmees().addAll(new ArmeeJao().dupliquer(source.getArmees()));
         cible.getTypesUnites().clear();
         cible.getTypesUnites().addAll(new TypeUniteJao().dupliquer(source.getTypesUnites()));
-        cible.getNombresArmeesMaximales().clear();
-        cible.getNombresArmeesMaximales().putAll(source.getNombresArmeesMaximales());
+        cible.getTypesTransports().clear();
+        cible.getTypesTransports().addAll(new TypeTransportJao().dupliquer(source.getTypesTransports()));
+        cible.getTypeArmees().clear();
+        cible.getTypeArmees().addAll(new TypeArmeeJao().dupliquer(source.getTypeArmees()));
+        cible.getTransports().clear();
+        cible.getTransports().addAll(new TransportJao().dupliquer(source.getTransports()));
+        cible.getArmees().clear();
+        cible.getArmees().addAll(new ArmeeJao().dupliquer(source.getArmees()));
         cible.setNom(source.getNom());
         cible.setReserve(new ReserveJao().dupliquer(source.getReserve()));
     }

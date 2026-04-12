@@ -1,6 +1,7 @@
 package org.mgd.guerres.puniques.coeur.objet;
 
 import org.jetbrains.annotations.NotNull;
+import org.mgd.commun.Tabulable;
 import org.mgd.jab.objet.Jo;
 
 import java.util.Comparator;
@@ -8,13 +9,12 @@ import java.util.Set;
 import java.util.TreeSet;
 
 @SuppressWarnings({"java:S2160", "java:S1210"})
-public class TypeUnite extends Jo implements Comparable<TypeUnite> {
+public class TypeTransport extends Jo implements Comparable<TypeTransport>, Tabulable {
     private final Set<TypeRegion> praticables = new TreeSet<>();
+    private final Integer[] texture = new Integer[2];
     private String nom;
     private String libelle;
     private Integer maximum;
-    private Integer constitution;
-    private Integer force;
 
     public Set<TypeRegion> getPraticables() {
         return praticables;
@@ -44,31 +44,35 @@ public class TypeUnite extends Jo implements Comparable<TypeUnite> {
         this.maximum = maximum;
     }
 
-    public Integer getConstitution() {
-        return constitution;
+    @Override
+    public Integer ligne() {
+        return texture[0];
     }
 
-    public void setConstitution(Integer constitution) {
-        this.constitution = constitution;
+    @Override
+    public void ligne(Integer ligne) {
+        texture[0] = ligne;
     }
 
-    public Integer getForce() {
-        return force;
+    @Override
+    public Integer colonne() {
+        return texture[1];
     }
 
-    public void setForce(Integer force) {
-        this.force = force;
+    @Override
+    public void colonne(Integer colonne) {
+        texture[1] = colonne;
     }
 
     @Override
     public boolean idem(Object objet) {
         if (this == objet) return true;
-        if (!(objet instanceof TypeUnite type)) return false;
+        if (!(objet instanceof TypeTransport type)) return false;
         return nom.equals(type.nom);
     }
 
     @Override
-    public int compareTo(@NotNull TypeUnite type) {
-        return Comparator.comparing(TypeUnite::getNom).compare(this, type);
+    public int compareTo(@NotNull TypeTransport type) {
+        return Comparator.comparing(TypeTransport::getNom).compare(this, type);
     }
 }

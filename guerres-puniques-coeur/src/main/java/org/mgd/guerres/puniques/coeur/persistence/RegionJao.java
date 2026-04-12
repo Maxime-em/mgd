@@ -15,8 +15,9 @@ public class RegionJao extends Jao<RegionDto, Region> {
     public RegionDto dto(Region region) {
         RegionDto regionDto = new RegionDto();
         regionDto.setAlignements(new AlignementJao().decharger(region.getAlignements()));
-        regionDto.setTypes(region.getTypes().stream().toList());
-        regionDto.setArmees(new ArmeeJao().decharger(region.getArmees()));
+        regionDto.setTypes(new TypeRegionJao().decharger(region.getTypes()));
+        regionDto.setArmee(new ArmeeJao().decharger(region.getArmees()));
+        regionDto.setTransports(new TransportJao().decharger(region.getTransports()));
 
         return regionDto;
     }
@@ -24,8 +25,9 @@ public class RegionJao extends Jao<RegionDto, Region> {
     @Override
     public void enrichir(RegionDto dto, Region region) throws JaoExecutionException, JaoParseException {
         region.getAlignements().addAll(new AlignementJao().charger(dto.getAlignements(), region));
-        region.getTypes().addAll(dto.getTypes());
-        region.getArmees().addAll(new ArmeeJao().charger(dto.getArmees(), region));
+        region.getTypes().addAll(new TypeRegionJao().charger(dto.getTypes(), region));
+        region.getArmees().addAll(new ArmeeJao().charger(dto.getArmee(), region));
+        region.getTransports().addAll(new TransportJao().charger(dto.getTransports(), region));
     }
 
     @Override
@@ -33,8 +35,10 @@ public class RegionJao extends Jao<RegionDto, Region> {
         cible.getAlignements().clear();
         cible.getAlignements().addAll(new AlignementJao().dupliquer(source.getAlignements()));
         cible.getTypes().clear();
-        cible.getTypes().addAll(source.getTypes());
+        cible.getTypes().addAll(new TypeRegionJao().dupliquer(source.getTypes()));
         cible.getArmees().clear();
         cible.getArmees().addAll(new ArmeeJao().dupliquer(source.getArmees()));
+        cible.getTransports().clear();
+        cible.getTransports().addAll(new TransportJao().dupliquer(source.getTransports()));
     }
 }

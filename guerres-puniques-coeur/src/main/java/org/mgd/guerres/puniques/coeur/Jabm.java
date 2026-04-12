@@ -3,7 +3,6 @@ package org.mgd.guerres.puniques.coeur;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mgd.guerres.puniques.coeur.commun.Posture;
-import org.mgd.guerres.puniques.coeur.commun.TypeArmee;
 import org.mgd.guerres.puniques.coeur.objet.*;
 import org.mgd.guerres.puniques.coeur.persistence.*;
 import org.mgd.guerres.puniques.coeur.source.PartieAd;
@@ -15,7 +14,10 @@ import org.mgd.jab.persistence.exception.JaoParseException;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
 public class Jabm extends Jab {
@@ -42,11 +44,13 @@ public class Jabm extends Jab {
         return new InformationsJao().nouveau(nouvellesInformations -> nouvellesInformations.setNom(nom));
     }
 
-    public Partie creerPartie(Informations informations, int nombreLignes, int nombreColonnes) throws JaoExecutionException, JaoParseException {
+    public Partie creerPartie(Informations informations, Collection<TypeRegion> typesRegions, int[] taille) throws JaoExecutionException, JaoParseException {
         Monde monde = new MondeJao().nouveau(nouveauMonde -> {
-            Region[][] regions = new Region[nombreLignes][nombreColonnes];
-            for (int ligne = 0; ligne < nombreLignes; ligne++) {
-                for (int colonne = 0; colonne < nombreColonnes; colonne++) {
+            nouveauMonde.getTypes().addAll(typesRegions);
+
+            Region[][] regions = new Region[taille[0]][taille[1]];
+            for (int ligne = 0; ligne < taille[0]; ligne++) {
+                for (int colonne = 0; colonne < taille[1]; colonne++) {
                     Region nouvelleRegion = new RegionJao().nouveau();
                     nouvelleRegion.ligne(ligne);
                     nouvelleRegion.colonne(colonne);
@@ -67,7 +71,28 @@ public class Jabm extends Jab {
         });
     }
 
-    public Civilisation creerCivilisation(String nom, Map<TypeArmee, Integer> nombresArmees, Collection<TypeUnite> typesUnites) throws JaoExecutionException, JaoParseException {
+    public Civilisation creerCivilisation(String nom,
+                                          Collection<TypeUnite> typesUnites,
+                                          Collection<TypeTransport> typesTransports,
+                                          Collection<TypeArmee> typeArmees) throws JaoExecutionException, JaoParseException {
+        List<Transport> transports = typesTransports.stream().flatMap(type -> IntStream.range(0, type.getMaximum()).mapToObj(_ -> {
+            try {
+                return new TransportJao().nouveau(nouveauTransport -> nouveauTransport.setType(type));
+            } catch (JaoExecutionException | JaoParseException e) {
+                LOGGER.error("Impossible de créer un nouveau transport.", e);
+                return null;
+            }
+        })).filter(Objects::nonNull).toList();
+
+        List<Armee> armees = typeArmees.stream().flatMap(type -> IntStream.range(0, type.getMaximum()).mapToObj(_ -> {
+            try {
+                return new ArmeeJao().nouveau(nouvelleArmee -> nouvelleArmee.setType(type));
+            } catch (JaoExecutionException | JaoParseException e) {
+                LOGGER.error("Impossible de créer une nouvelle armée.", e);
+                return null;
+            }
+        })).filter(Objects::nonNull).toList();
+
         List<Unite> unites = typesUnites.stream().flatMap(type -> IntStream.range(0, type.getMaximum()).mapToObj(_ -> {
             try {
                 return new UniteJao().nouveau(nouvelleUnite -> {
@@ -79,23 +104,15 @@ public class Jabm extends Jab {
                 return null;
             }
         }).filter(Objects::nonNull)).toList();
+
         Reserve reserve = new ReserveJao().nouveau(nouvelleReserve -> nouvelleReserve.getUnites().addAll(unites));
-        List<Armee> armees = nombresArmees.entrySet()
-                .stream()
-                .flatMap(element -> IntStream.range(0, element.getValue())
-                        .mapToObj(_ -> {
-                            try {
-                                return new ArmeeJao().nouveau(nouvelleArmee -> nouvelleArmee.setType(element.getKey()));
-                            } catch (JaoExecutionException | JaoParseException e) {
-                                LOGGER.error("Impossible de créer une nouvelle armée.", e);
-                                return null;
-                            }
-                        }))
-                .toList();
+
         Civilisation civilisation = new CivilisationJao().nouveau(nouvelleCivilisation -> {
-            nouvelleCivilisation.getArmees().addAll(armees);
             nouvelleCivilisation.getTypesUnites().addAll(typesUnites);
-            nouvelleCivilisation.getNombresArmeesMaximales().putAll(nombresArmees);
+            nouvelleCivilisation.getTypesTransports().addAll(typesTransports);
+            nouvelleCivilisation.getTransports().addAll(transports);
+            nouvelleCivilisation.getTypeArmees().addAll(typeArmees);
+            nouvelleCivilisation.getArmees().addAll(armees);
             nouvelleCivilisation.setNom(nom);
             nouvelleCivilisation.setReserve(reserve);
         });
@@ -116,13 +133,39 @@ public class Jabm extends Jab {
         return new DesJao().nouveau(nouveauDes -> nouveauDes.setMaximum(6));
     }
 
-    public TypeUnite creerTypeUnite(String nom, String libelle, Integer maximum, Integer vie, Integer force) throws JaoExecutionException, JaoParseException {
+    public TypeUnite creerTypeUnite(String nom, Collection<TypeRegion> praticables, String libelle, Integer maximum, Integer vie, Integer force) throws JaoExecutionException, JaoParseException {
         return new TypeUniteJao().nouveau(nouveauType -> {
+            nouveauType.getPraticables().addAll(praticables);
             nouveauType.setNom(nom);
             nouveauType.setLibelle(libelle);
             nouveauType.setMaximum(maximum);
             nouveauType.setConstitution(vie);
             nouveauType.setForce(force);
+        });
+    }
+
+    public TypeRegion creerTypeRegion(String code) throws JaoExecutionException, JaoParseException {
+        return new TypeRegionJao().nouveau(nouveauType -> nouveauType.setCode(code));
+    }
+
+    public TypeTransport creerTypeTransport(String nom, Collection<TypeRegion> praticables, Integer[] textures, String libelle, Integer maximum) throws JaoExecutionException, JaoParseException {
+        return new TypeTransportJao().nouveau(nouveauType -> {
+            nouveauType.getPraticables().addAll(praticables);
+            nouveauType.ligne(textures[0]);
+            nouveauType.colonne(textures[1]);
+            nouveauType.setNom(nom);
+            nouveauType.setLibelle(libelle);
+            nouveauType.setMaximum(maximum);
+        });
+    }
+
+    public TypeArmee creerTypeArmee(String nom, Integer[] textures, String libelle, Integer maximum) throws JaoExecutionException, JaoParseException {
+        return new TypeArmeeJao().nouveau(nouveauType -> {
+            nouveauType.ligne(textures[0]);
+            nouveauType.colonne(textures[1]);
+            nouveauType.setNom(nom);
+            nouveauType.setLibelle(libelle);
+            nouveauType.setMaximum(maximum);
         });
     }
 }

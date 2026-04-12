@@ -5,7 +5,6 @@ import org.mgd.guerres.puniques.coeur.objet.TypeUnite;
 import org.mgd.jab.persistence.Jao;
 import org.mgd.jab.persistence.exception.JaoExecutionException;
 import org.mgd.jab.persistence.exception.JaoParseException;
-import org.mgd.jab.utilitaire.exception.VerificationException;
 
 public class TypeUniteJao extends Jao<TypeUniteDto, TypeUnite> {
     public TypeUniteJao() {
@@ -15,6 +14,7 @@ public class TypeUniteJao extends Jao<TypeUniteDto, TypeUnite> {
     @Override
     public TypeUniteDto dto(TypeUnite typeUnite) {
         TypeUniteDto typeUniteDto = new TypeUniteDto();
+        typeUniteDto.setPraticables(new TypeRegionJao().decharger(typeUnite.getPraticables()));
         typeUniteDto.setNom(typeUnite.getNom());
         typeUniteDto.setLibelle(typeUnite.getLibelle());
         typeUniteDto.setMaximum(typeUnite.getMaximum());
@@ -25,7 +25,8 @@ public class TypeUniteJao extends Jao<TypeUniteDto, TypeUnite> {
     }
 
     @Override
-    public void enrichir(TypeUniteDto dto, TypeUnite typeUnite) throws JaoExecutionException, JaoParseException, VerificationException {
+    public void enrichir(TypeUniteDto dto, TypeUnite typeUnite) throws JaoExecutionException, JaoParseException {
+        typeUnite.getPraticables().addAll(new TypeRegionJao().charger(dto.getPraticables(), typeUnite));
         typeUnite.setNom(dto.getNom());
         typeUnite.setLibelle(dto.getLibelle());
         typeUnite.setMaximum(dto.getMaximum());
@@ -35,6 +36,8 @@ public class TypeUniteJao extends Jao<TypeUniteDto, TypeUnite> {
 
     @Override
     protected void copier(TypeUnite source, TypeUnite cible) throws JaoExecutionException, JaoParseException {
+        cible.getPraticables().clear();
+        cible.getPraticables().addAll(new TypeRegionJao().dupliquer(source.getPraticables()));
         cible.setNom(source.getNom());
         cible.setLibelle(source.getLibelle());
         cible.setMaximum(source.getMaximum());
