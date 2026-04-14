@@ -21,6 +21,7 @@ public class CivilisationJao extends Jao<CivilisationDto, Civilisation> {
         civilisationDto.setArmees(new ArmeeJao().decharger(civilisation.getArmees()));
         civilisationDto.setNom(civilisation.getNom());
         civilisationDto.setReserve(new ReserveJao().decharger(civilisation.getReserve()));
+        civilisationDto.setCapitale(new RegionJao().decharger(civilisation.getCapitale()));
 
         return civilisationDto;
     }
@@ -34,6 +35,7 @@ public class CivilisationJao extends Jao<CivilisationDto, Civilisation> {
         civilisation.getArmees().addAll(new ArmeeJao().charger(dto.getArmees(), civilisation));
         civilisation.setNom(dto.getNom());
         civilisation.setReserve(new ReserveJao().charger(dto.getReserve(), civilisation));
+        civilisation.setCapitale(new RegionJao().charger(dto.getCapitale(), civilisation));
     }
 
     @Override
@@ -50,5 +52,6 @@ public class CivilisationJao extends Jao<CivilisationDto, Civilisation> {
         cible.getArmees().addAll(new ArmeeJao().dupliquer(source.getArmees()));
         cible.setNom(source.getNom());
         cible.setReserve(new ReserveJao().dupliquer(source.getReserve()));
+        cible.setCapitale(new RegionJao().dupliquer(source.getCapitale()));
     }
 }

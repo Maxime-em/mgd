@@ -37,10 +37,6 @@ public class Region extends Jo implements Tabulable {
         return transports;
     }
 
-    public boolean estAmiAvec(Civilisation civilisation) {
-        return alignements.stream().anyMatch(alignement -> alignement.getCivilisation().equals(civilisation) && alignement.getPosture() == Posture.AMI);
-    }
-
     public void ajouterAlignementAmi(String codes, Map<String, Civilisation> civilisations) throws JaoExecutionException, JaoParseException {
         for (String code : codes.split(":")) {
             if (civilisations.containsKey(code)) {

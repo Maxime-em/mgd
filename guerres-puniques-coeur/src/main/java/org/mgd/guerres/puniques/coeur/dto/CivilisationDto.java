@@ -12,6 +12,7 @@ public class CivilisationDto extends Dto {
     private List<ArmeeDto> armees;
     private String nom;
     private ReserveDto reserve;
+    private RegionDto capitale;
 
     public List<TypeUniteDto> getTypesUnites() {
         return typesUnites;
@@ -67,5 +68,13 @@ public class CivilisationDto extends Dto {
 
     public void setReserve(ReserveDto reserve) {
         this.reserve = reserve;
+    }
+
+    public RegionDto getCapitale() {
+        return capitale;
+    }
+
+    public void setCapitale(RegionDto capitale) {
+        this.capitale = capitale;
     }
 }

@@ -74,7 +74,8 @@ public class Jabm extends Jab {
     public Civilisation creerCivilisation(String nom,
                                           Collection<TypeUnite> typesUnites,
                                           Collection<TypeTransport> typesTransports,
-                                          Collection<TypeArmee> typeArmees) throws JaoExecutionException, JaoParseException {
+                                          Collection<TypeArmee> typeArmees,
+                                          Region capitale) throws JaoExecutionException, JaoParseException {
         List<Transport> transports = typesTransports.stream().flatMap(type -> IntStream.range(0, type.getMaximum()).mapToObj(_ -> {
             try {
                 return new TransportJao().nouveau(nouveauTransport -> nouveauTransport.setType(type));
@@ -115,6 +116,7 @@ public class Jabm extends Jab {
             nouvelleCivilisation.getArmees().addAll(armees);
             nouvelleCivilisation.setNom(nom);
             nouvelleCivilisation.setReserve(reserve);
+            nouvelleCivilisation.setCapitale(capitale);
         });
         civilisation.getArmees().forEach(armee -> {
             try {

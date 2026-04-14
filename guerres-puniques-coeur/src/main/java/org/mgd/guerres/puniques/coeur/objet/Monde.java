@@ -34,6 +34,10 @@ public class Monde extends Jo {
         return regions[ligne][colonne];
     }
 
+    public Region getRegion(Integer[] index) {
+        return getRegion(index[0], index[1]);
+    }
+
     @Override
     public boolean idem(Object objet) {
         if (this == objet) return true;

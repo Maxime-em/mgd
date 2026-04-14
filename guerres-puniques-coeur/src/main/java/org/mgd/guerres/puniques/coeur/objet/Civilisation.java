@@ -16,6 +16,7 @@ public class Civilisation extends Jo implements Comparable<Civilisation> {
     private final Set<Armee> armees = new TreeSet<>();
     private String nom;
     private Reserve reserve;
+    private Region capitale;
 
     public Set<TypeUnite> getTypesUnites() {
         return typesUnites;
@@ -51,6 +52,14 @@ public class Civilisation extends Jo implements Comparable<Civilisation> {
 
     public void setReserve(Reserve reserve) {
         this.reserve = reserve;
+    }
+
+    public Region getCapitale() {
+        return this.capitale;
+    }
+
+    public void setCapitale(Region capitale) {
+        this.capitale = capitale;
     }
 
     @Override

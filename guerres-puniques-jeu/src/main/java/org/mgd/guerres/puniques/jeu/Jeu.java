@@ -105,10 +105,14 @@ public class Jeu {
                     List<TypeUnite> typesUnites = fluxTypes(alias, NOM_GROUPE_TYPES_UNITES).map(type -> nouveauTypeUnite(alias, type, typeRegions)).filter(Objects::nonNull).toList();
                     List<TypeTransport> typesTransports = fluxTypes(alias, NOM_GROUPE_TYPES_TRANSPORTS).map(type -> nouveauTypeTransport(alias, type, typeRegions)).filter(Objects::nonNull).toList();
                     List<TypeArmee> typeArmees = fluxTypes(alias, NOM_GROUPE_TYPES_ARMEES).map(type -> nouveauTypeArmee(alias, type)).filter(Objects::nonNull).toList();
-                    Civilisation civilisation = jabm.creerCivilisation(obtenirProprieteCivilisations(alias, "nom"), typesUnites, typesTransports, typeArmees);
+                    Civilisation civilisation = jabm.creerCivilisation(obtenirProprieteCivilisation(alias, "nom"),
+                            typesUnites,
+                            typesTransports,
+                            typeArmees,
+                            partieEnCours.getMonde().getRegion(obtenirIndexCapitaleCivilisation(alias)));
                     partieEnCours.getCivilisations().add(civilisation);
                     partieEnCours.ajouterEnfant(civilisation);
-                    civilisations.put(obtenirProprieteCivilisations(alias, "code"), civilisation);
+                    civilisations.put(obtenirProprieteCivilisation(alias, "code"), civilisation);
                 } catch (JaoExecutionException | JaoParseException | NumberFormatException e) {
                     LOGGER.error("Impossible de construire la civilisation {}.", aliass, e);
                 }
@@ -198,8 +202,12 @@ public class Jeu {
         return proprietes.getProperty("application.jeu.civilisations").split(";");
     }
 
-    private String obtenirProprieteCivilisations(String alias, String nom) {
+    private String obtenirProprieteCivilisation(String alias, String nom) {
         return proprietes.getProperty(MessageFormat.format("application.jeu.civilisations.{0}.{1}", alias, nom));
+    }
+
+    private Integer[] obtenirIndexCapitaleCivilisation(String alias) {
+        return Arrays.stream((obtenirProprieteCivilisation(alias, "capitale").split(";"))).map(Integer::valueOf).toArray(Integer[]::new);
     }
 
     private String[] obtenirTypesRegions() {
@@ -262,14 +270,10 @@ public class Jeu {
 
     public void deployerArmee(Civilisation civilisation, Armee armee) {
         if (partieEnCours.getMonde().fluxRegions().noneMatch(region -> region.getArmees().contains(armee))) {
-            partieEnCours.getMonde()
-                    .fluxRegions()
-                    .filter(region -> region.estAmiAvec(civilisation))
-                    .findFirst()
-                    .ifPresent(region -> {
-                        region.getArmees().add(armee);
-                        changementsDeploiementArmee.forEach(changement -> changement.traiter(armee, region));
-                    });
+            Optional.ofNullable(civilisation.getCapitale()).ifPresent(region -> {
+                region.getArmees().add(armee);
+                changementsDeploiementArmee.forEach(changement -> changement.traiter(armee, region));
+            });
         }
     }
 
