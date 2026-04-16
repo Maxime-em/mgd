@@ -319,8 +319,7 @@ public class Jeu {
             partieEnCours.getMonde()
                     .fluxRegions()
                     .filter(region -> region.getArmees().contains(armeeSelectionnee)
-                            && !Objects.equals(region.ligne(), ligne)
-                            && !Objects.equals(region.colonne(), colonne))
+                            && !(Objects.equals(region.ligne(), ligne) && Objects.equals(region.colonne(), colonne)))
                     .findFirst()
                     .ifPresent(region -> {
                         region.getArmees().remove(armeeSelectionnee);
