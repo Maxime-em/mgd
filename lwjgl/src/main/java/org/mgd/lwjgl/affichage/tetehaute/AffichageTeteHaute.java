@@ -9,6 +9,8 @@ import org.mgd.lwjgl.exception.LwjglException;
 import org.mgd.lwjgl.souscription.Identifiable;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -142,10 +144,6 @@ public abstract class AffichageTeteHaute extends Primitif implements Acteur {
             return objet;
         }
 
-        public float[] dimensions() {
-            return dimensions;
-        }
-
         public int largeur() {
             return (int) Math.ceil(dimensions[2] - dimensions[0]);
         }
@@ -194,17 +192,19 @@ public abstract class AffichageTeteHaute extends Primitif implements Acteur {
         private final int largeur;
         private final int hauteur;
         private final boolean anime;
+        private final List<Action<?>> liaisons;
         private int abscisse;
         private int ordonnee;
         private boolean active;
 
         public Action(T objet, int largeur, int hauteur, boolean anime, NVGImage image) {
+            this.image = image;
             this.uuid = UUID.randomUUID();
             this.objet = objet;
-            this.image = image;
             this.largeur = largeur;
             this.hauteur = hauteur;
             this.anime = anime;
+            this.liaisons = new ArrayList<>();
         }
 
         public Action(int largeur, int hauteur, boolean anime, NVGImage image) {
@@ -224,13 +224,17 @@ public abstract class AffichageTeteHaute extends Primitif implements Acteur {
             this.active = false;
         }
 
-        @Override
-        public UUID uuid() {
-            return uuid;
+        public <U> void lier(Action<U> liaison) {
+            this.liaisons.add(liaison);
         }
 
         public NVGImage image() {
             return image;
+        }
+
+        @Override
+        public UUID uuid() {
+            return uuid;
         }
 
         public T objet() {
@@ -247,6 +251,10 @@ public abstract class AffichageTeteHaute extends Primitif implements Acteur {
 
         public boolean anime() {
             return anime;
+        }
+
+        public List<Action<?>> liaisons() {
+            return liaisons;
         }
 
         public int abscisse() {

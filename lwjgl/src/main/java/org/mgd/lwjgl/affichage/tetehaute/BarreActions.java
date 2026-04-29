@@ -15,17 +15,17 @@ import static org.lwjgl.nanovg.NanoVG.*;
 
 public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Amorcable<AffichageTeteHaute.Action<?>> {
     private static final int MARGE_INFORMATIONS = 10;
+    private static final Map<UUID, List<Ecrit<Void>>> informations = new HashMap<>();
+    private static final Map<UUID, Integer> abscisseEcrits = new HashMap<>();
+    private static final Map<UUID, Integer> ordonneeEcrits = new HashMap<>();
+    private static final Map<UUID, Integer> largeurEcrits = new HashMap<>();
+    private static final Map<UUID, Integer> hauteurEcrits = new HashMap<>();
 
     private final Disposition disposition;
     private final int abcisses;
     private final int ordonnee;
     private final int longueur;
     private final Map<G, List<Action<?>>> groupes;
-    private final Map<UUID, List<Ecrit<Void>>> informations;
-    private final Map<UUID, Integer> abscisseEcrits;
-    private final Map<UUID, Integer> ordonneeEcrits;
-    private final Map<UUID, Integer> largeurEcrits;
-    private final Map<UUID, Integer> hauteurEcrits;
     private int epaisseurActions;
     private G groupe;
     private List<Action<?>> actions;
@@ -38,14 +38,9 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Am
         this.ordonnee = ordonnee;
         this.longueur = longueur;
         this.groupes = new HashMap<>();
-        this.informations = new HashMap<>();
-        this.abscisseEcrits = new HashMap<>();
-        this.ordonneeEcrits = new HashMap<>();
-        this.largeurEcrits = new HashMap<>();
-        this.hauteurEcrits = new HashMap<>();
         this.actions = Collections.emptyList();
         this.epaisseurActions = 0;
-        this.actionsSurvolees = new ArrayList<>();
+        this.actionsSurvolees = new LinkedList<>();
     }
 
     private void placerActions() {
@@ -158,28 +153,34 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Am
             nvgFill(contexte);
             nvgClosePath(contexte);
 
-            List<Ecrit<Void>> ecrits = informations.getOrDefault(action.uuid(), Collections.emptyList());
-            if (!ecrits.isEmpty()) {
-                nvgTextAlign(contexte, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
-
-                nvgBeginPath(contexte);
-                nvgRect(contexte,
-                        abscisseEcrits.getOrDefault(action.uuid(), 0),
-                        ordonneeEcrits.getOrDefault(action.uuid(), 0),
-                        largeurEcrits.getOrDefault(action.uuid(), 0),
-                        hauteurEcrits.getOrDefault(action.uuid(), 0));
-                nvgFillColor(contexte, EMERAUDE.nvg());
-                nvgFill(contexte);
-                nvgClosePath(contexte);
-
-                ecrits.forEach(ecrit -> {
-                    nvgFontSize(contexte, ecrit.taille());
-                    nvgFontFace(contexte, ecrit.police().identifiant());
-                    nvgFillColor(contexte, ecrit.couleur().nvg());
-                    nvgText(contexte, ecrit.abscisse(), ecrit.ordonnee(), ecrit.texte().get());
-                });
-            }
+            dessinerInfobulle(action);
         });
+
+        actionsSurvolees.stream().flatMap(action -> action.liaisons().stream()).forEach(this::dessinerInfobulle);
+    }
+
+    private void dessinerInfobulle(Action<?> action) {
+        List<Ecrit<Void>> ecrits = informations.getOrDefault(action.uuid(), Collections.emptyList());
+        if (!ecrits.isEmpty()) {
+            nvgTextAlign(contexte, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
+
+            nvgBeginPath(contexte);
+            nvgRect(contexte,
+                    abscisseEcrits.getOrDefault(action.uuid(), 0),
+                    ordonneeEcrits.getOrDefault(action.uuid(), 0),
+                    largeurEcrits.getOrDefault(action.uuid(), 0),
+                    hauteurEcrits.getOrDefault(action.uuid(), 0));
+            nvgFillColor(contexte, EMERAUDE.nvg());
+            nvgFill(contexte);
+            nvgClosePath(contexte);
+
+            ecrits.forEach(ecrit -> {
+                nvgFontSize(contexte, ecrit.taille());
+                nvgFontFace(contexte, ecrit.police().identifiant());
+                nvgFillColor(contexte, ecrit.couleur().nvg());
+                nvgText(contexte, ecrit.abscisse(), ecrit.ordonnee(), ecrit.texte().get());
+            });
+        }
     }
 
     @Override
@@ -214,10 +215,6 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Am
     @SafeVarargs
     public final <T> void ajouter(G groupe, Action<T>... actions) {
         groupes.computeIfAbsent(groupe, _ -> new ArrayList<>()).addAll(List.of(actions));
-    }
-
-    public <T> void ajouter(G groupe, Collection<Action<T>> actions) {
-        groupes.computeIfAbsent(groupe, _ -> new ArrayList<>()).addAll(actions);
     }
 
     public void ajouter(UUID uuid, Ecrit<Void> nouveau) {
