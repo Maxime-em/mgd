@@ -163,6 +163,7 @@ public class GuerresPuniquesApplication extends Application {
         Forme jeton = cadrillage.ajouterJeton(region.ligne(), region.colonne(), armee.getType().ligne(), armee.getType().colonne());
         identifiablesJeton.put(jeton, armee);
         jetonsParArmee.put(armee, jeton);
+        actionsArmees.get(armee).lier(jeton);
     }
 
     private Ecrit<UUID> ecritSauvegarde(UUID uuidFichier, String nom, NVGPolice police) {
@@ -382,8 +383,8 @@ public class GuerresPuniquesApplication extends Application {
                     formatterInformations(barreActionsGenerale, actionArmeeAjouterUnite, police, () -> MessageFormat.format("Ajouter l''unité {0}", type.getNom()));
                     formatterInformations(barreActionsGenerale, actionArmeeAjouterUnite, police, () -> MessageFormat.format("Constitution : {0}", type.getConstitution()));
                     formatterInformations(barreActionsGenerale, actionArmeeAjouterUnite, police, () -> MessageFormat.format("Force : {0}", type.getForce()));
-                    actionArmeeAjouterUnite.lier(actionArmee);
-                    actionArmeeAjouterUnite.lier(actionCivilisation);
+                    actionArmee.lier(actionArmeeAjouterUnite);
+                    actionCivilisation.lier(actionArmeeAjouterUnite);
 
                     formatterInformations(barreActionsCivilisation,
                             actionArmee,

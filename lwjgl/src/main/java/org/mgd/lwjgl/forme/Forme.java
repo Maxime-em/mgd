@@ -3,10 +3,9 @@ package org.mgd.lwjgl.forme;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.system.MemoryStack;
 import org.mgd.commun.Matrice;
-import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Programme;
 import org.mgd.lwjgl.Pseudo;
-import org.mgd.lwjgl.Vision;
+import org.mgd.lwjgl.Survolable;
 import org.mgd.lwjgl.affichage.Transition;
 import org.mgd.lwjgl.affichage.element.Element;
 import org.mgd.lwjgl.interne.Ombreur;
@@ -20,7 +19,7 @@ import java.util.*;
 import static org.lwjgl.opengl.GL30.*;
 import static org.mgd.lwjgl.Programme.NOM_PAR_DEFAUT;
 
-public abstract class Forme implements Identifiable {
+public abstract class Forme implements Identifiable, Survolable {
     protected final UUID uuid;
     protected final Element<?> parent;
     protected final String nom;
@@ -85,8 +84,6 @@ public abstract class Forme implements Identifiable {
                 (positions[2] + positions[5] + positions[8] + positions[11]) / 4
         };
     }
-
-    public abstract boolean survoler(Vision vision, Fenetre.EvenementSouris evenementSouris, Matrice<Float> transformation);
 
     public void desurvoler() {
         survole = false;

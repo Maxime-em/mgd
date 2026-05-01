@@ -9,7 +9,6 @@ import org.mgd.lwjgl.souscription.Amorcable;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 import static org.lwjgl.nanovg.NanoVG.*;
 
@@ -30,6 +29,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Am
     private G groupe;
     private List<Action<?>> actions;
     private List<Action<?>> actionsSurvolees;
+    private List<Action<?>> actionsLiees;
 
     public BarreActions(Fenetre parent, Disposition disposition, int abcisses, int ordonnee, int longueur) throws LwjglException {
         super(parent, false);
@@ -156,7 +156,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Am
             dessinerInfobulle(action);
         });
 
-        actionsSurvolees.stream().flatMap(action -> action.liaisons().stream()).forEach(this::dessinerInfobulle);
+        actionsLiees.forEach(this::dessinerInfobulle);
     }
 
     private void dessinerInfobulle(Action<?> action) {
@@ -186,9 +186,18 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Am
     @Override
     public boolean survoler(Vision vision, Fenetre.EvenementSouris evenementSouris) {
         if (visible) {
-            actionsSurvolees = actions.stream().filter(evenementSouris::inclus).collect(Collectors.toCollection(LinkedList::new));
+            actionsSurvolees = new LinkedList<>();
+            actionsLiees = new LinkedList<>();
+            for (Action<?> action : actions) {
+                if (action.survoler(vision, evenementSouris)) {
+                    actionsSurvolees.add(action);
+                } else if (action.liaisons().stream().anyMatch(liaison -> liaison.survoler(vision, evenementSouris))) {
+                    actionsLiees.add(action);
+                }
+            }
         } else {
             actionsSurvolees.clear();
+            actionsLiees.clear();
         }
         return !actionsSurvolees.isEmpty();
     }

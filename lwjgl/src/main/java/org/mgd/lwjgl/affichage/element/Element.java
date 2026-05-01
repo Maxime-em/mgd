@@ -50,7 +50,7 @@ public abstract class Element<G> extends Primitif implements Animateur, Amorcabl
             for (G groupe : ordre) {
                 List<Forme> formes = groupes.get(groupe);
                 for (Forme forme : formes) {
-                    if (formesSurvoles.isEmpty() && forme.survoler(vision, evenementSouris, transformation)) {
+                    if (formesSurvoles.isEmpty() && forme.survoler(vision, evenementSouris)) {
                         formesSurvoles = Collections.singletonList(forme);
                     } else {
                         forme.desurvoler();
@@ -121,5 +121,9 @@ public abstract class Element<G> extends Primitif implements Animateur, Amorcabl
 
     public int priorite() {
         return priorite;
+    }
+
+    public Matrice<Float> transformation() {
+        return transformation;
     }
 }

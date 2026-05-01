@@ -2,6 +2,8 @@ package org.mgd.lwjgl.affichage.tetehaute;
 
 import org.lwjgl.nanovg.NVGColor;
 import org.mgd.lwjgl.Fenetre;
+import org.mgd.lwjgl.Fenetre.EvenementSouris;
+import org.mgd.lwjgl.Survolable;
 import org.mgd.lwjgl.Vision;
 import org.mgd.lwjgl.affichage.Acteur;
 import org.mgd.lwjgl.affichage.Primitif;
@@ -185,14 +187,14 @@ public abstract class AffichageTeteHaute extends Primitif implements Acteur {
         }
     }
 
-    public static class Action<T> implements Identifiable {
+    public static class Action<T> implements Identifiable, Survolable {
         private final NVGImage image;
         private final UUID uuid;
         private final T objet;
         private final int largeur;
         private final int hauteur;
         private final boolean anime;
-        private final List<Action<?>> liaisons;
+        private final List<Survolable> liaisons;
         private int abscisse;
         private int ordonnee;
         private boolean active;
@@ -211,6 +213,11 @@ public abstract class AffichageTeteHaute extends Primitif implements Acteur {
             this(null, largeur, hauteur, anime, image);
         }
 
+        @Override
+        public boolean survoler(Vision vision, EvenementSouris evenementSouris) {
+            return evenementSouris.inclus(this);
+        }
+
         public void placer(int abscisse, int ordonnee) {
             this.abscisse = abscisse;
             this.ordonnee = ordonnee;
@@ -224,7 +231,7 @@ public abstract class AffichageTeteHaute extends Primitif implements Acteur {
             this.active = false;
         }
 
-        public <U> void lier(Action<U> liaison) {
+        public void lier(Survolable liaison) {
             this.liaisons.add(liaison);
         }
 
@@ -253,7 +260,7 @@ public abstract class AffichageTeteHaute extends Primitif implements Acteur {
             return anime;
         }
 
-        public List<Action<?>> liaisons() {
+        public List<Survolable> liaisons() {
             return liaisons;
         }
 
