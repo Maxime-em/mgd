@@ -8,7 +8,6 @@ import org.mgd.utilitaire.Flux;
 
 import java.nio.file.Path;
 import java.text.MessageFormat;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,10 +74,16 @@ public class Cadrillage extends Element<String> {
     }
 
     private void ajuster(Integer ligneCase, Integer colonneCase, List<Forme> formes) {
-        if (!formes.isEmpty()) {
+        int nombreFormes = formes.size();
+        if (nombreFormes > 0) {
+            Float[][] centres = COORDONNEES_CENTRES_GRAVITES_JETONS.get(Math.min(COORDONNEES_CENTRES_GRAVITES_JETONS.size(), nombreFormes));
             AtomicInteger index = new AtomicInteger(0);
-            Arrays.stream(COORDONNEES_CENTRES_GRAVITES_JETONS.get(Math.min(COORDONNEES_CENTRES_GRAVITES_JETONS.size(), formes.size())))
-                    .forEach(coordonnees -> formes.get(index.getAndIncrement()).deplacer(new float[]{colonneCase + coordonnees[0], nombreLignes - 1 - ligneCase + coordonnees[1], 0f}, 1_000));
+            formes.stream()
+                    .limit(centres.length)
+                    .forEach(forme -> {
+                        Float[] coordonnees = centres[index.getAndIncrement()];
+                        forme.deplacer(new float[]{colonneCase + coordonnees[0], nombreLignes - 1 - ligneCase + coordonnees[1], 0f}, 1_000);
+                    });
         }
     }
 
