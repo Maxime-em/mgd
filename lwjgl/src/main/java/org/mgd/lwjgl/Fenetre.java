@@ -6,8 +6,9 @@ import org.mgd.commun.Matrice;
 import org.mgd.lwjgl.affichage.Primitif;
 import org.mgd.lwjgl.affichage.element.Element;
 import org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute;
-import org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute.NVGImage;
-import org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute.NVGPolice;
+import org.mgd.lwjgl.affichage.tetehaute.Ecrit;
+import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGImage;
+import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
 import org.mgd.lwjgl.exception.LwjglException;
 import org.mgd.lwjgl.interne.Ombreur;
 import org.mgd.lwjgl.souscription.DetecteurAmorcage;
@@ -498,12 +499,8 @@ public class Fenetre implements Identifiable {
                     && ordonnee <= coordonnees[1] && coordonnees[1] <= ordonnee + hauteur;
         }
 
-        public boolean inclus(AffichageTeteHaute.Ecrit<?> ecrit) {
+        public boolean inclus(Ecrit<?> ecrit) {
             return inclus(ecrit.abscisse(), ecrit.ordonnee(), ecrit.largeur(), ecrit.hauteur());
-        }
-
-        public boolean inclus(AffichageTeteHaute.Action<?> action) {
-            return inclus(action.abscisse(), action.ordonnee(), action.largeur(), action.hauteur());
         }
 
         public float[] direction() {

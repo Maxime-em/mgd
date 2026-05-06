@@ -2,6 +2,7 @@ package org.mgd.lwjgl.affichage.tetehaute;
 
 import org.lwjgl.nanovg.NVGPaint;
 import org.mgd.lwjgl.Fenetre;
+import org.mgd.lwjgl.Fenetre.EvenementSouris;
 import org.mgd.lwjgl.Vision;
 import org.mgd.lwjgl.affichage.Animateur;
 import org.mgd.lwjgl.exception.LwjglException;
@@ -12,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.lwjgl.nanovg.NanoVG.*;
 
-public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Amorcable<AffichageTeteHaute.Action<?>> {
+public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Amorcable<Action<?>> {
     private static final int MARGE_INFORMATIONS = 10;
     private static final Map<UUID, List<Ecrit<Void>>> informations = new HashMap<>();
     private static final Map<UUID, Integer> abscisseEcrits = new HashMap<>();
@@ -25,11 +26,10 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Am
     private final int ordonnee;
     private final int longueur;
     private final Map<G, List<Action<?>>> groupes;
+    private final List<Action<?>> actionsSurvolees;
+    private final List<Action<?>> actionsLiees;
     private int epaisseurActions;
     private G groupe;
-    private List<Action<?>> actions;
-    private List<Action<?>> actionsSurvolees;
-    private List<Action<?>> actionsLiees;
 
     public BarreActions(Fenetre parent, Disposition disposition, int abcisses, int ordonnee, int longueur) throws LwjglException {
         super(parent, false);
@@ -38,12 +38,13 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Am
         this.ordonnee = ordonnee;
         this.longueur = longueur;
         this.groupes = new HashMap<>();
-        this.actions = Collections.emptyList();
         this.epaisseurActions = 0;
         this.actionsSurvolees = new LinkedList<>();
+        this.actionsLiees = new LinkedList<>();
     }
 
     private void placerActions() {
+        List<Action<?>> actions = groupes.getOrDefault(groupe, Collections.emptyList());
         int longueurActions = actions.stream()
                 .mapToInt(action -> disposition.orientation() == Disposition.Orientation.HORIZONTAL ? action.largeur() : action.hauteur())
                 .sum();
@@ -79,6 +80,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Am
     }
 
     private void placerInformations() {
+        List<Action<?>> actions = groupes.getOrDefault(groupe, Collections.emptyList());
         actions.forEach(action -> {
             List<Ecrit<Void>> ecrits = informations.getOrDefault(action.uuid(), Collections.emptyList());
             int largeur = ecrits.stream().mapToInt(ecrit -> ecrit.dimensionner(contexte).largeur()).max().orElse(0);
@@ -116,7 +118,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Am
         nvgFill(contexte);
         nvgClosePath(contexte);
 
-        actions.forEach(action -> {
+        groupes.getOrDefault(groupe, Collections.emptyList()).forEach(action -> {
             nvgBeginPath(contexte);
             nvgRect(contexte, action.abscisse(), action.ordonnee(), action.largeur(), action.hauteur());
             nvgFillColor(contexte, BLANC.nvg());
@@ -184,20 +186,17 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Am
     }
 
     @Override
-    public boolean survoler(Vision vision, Fenetre.EvenementSouris evenementSouris) {
+    public boolean survoler(Vision vision, EvenementSouris evenementSouris) {
+        actionsSurvolees.clear();
+        actionsLiees.clear();
         if (visible) {
-            actionsSurvolees = new LinkedList<>();
-            actionsLiees = new LinkedList<>();
-            for (Action<?> action : actions) {
+            for (Action<?> action : groupes.getOrDefault(groupe, Collections.emptyList())) {
                 if (action.survoler(vision, evenementSouris)) {
                     actionsSurvolees.add(action);
-                } else if (action.liaisons().stream().anyMatch(liaison -> liaison.survoler(vision, evenementSouris))) {
+                } else if (action.liaisons().stream().anyMatch(liaison -> liaison.visible() && liaison.survoler(vision, evenementSouris))) {
                     actionsLiees.add(action);
                 }
             }
-        } else {
-            actionsSurvolees.clear();
-            actionsLiees.clear();
         }
         return !actionsSurvolees.isEmpty();
     }
@@ -205,6 +204,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Am
     @Override
     public void desurvoler() {
         actionsSurvolees.clear();
+        actionsLiees.clear();
     }
 
     @Override
@@ -232,8 +232,9 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Am
 
     public void afficher(G groupe) {
         if (!Objects.equals(this.groupe, groupe)) {
+            groupes.getOrDefault(this.groupe, Collections.emptyList()).forEach(Action::masquer);
+            groupes.getOrDefault(groupe, Collections.emptyList()).forEach(Action::afficher);
             this.groupe = groupe;
-            actions = groupes.getOrDefault(groupe, Collections.emptyList());
             placerActions();
             placerInformations();
         }

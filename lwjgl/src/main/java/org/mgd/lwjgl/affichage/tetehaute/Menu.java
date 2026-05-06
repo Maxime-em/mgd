@@ -4,6 +4,7 @@ import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Fenetre.EvenementAmorcages;
 import org.mgd.lwjgl.Vision;
 import org.mgd.lwjgl.affichage.Animateur;
+import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
 import org.mgd.lwjgl.exception.LwjglException;
 import org.mgd.lwjgl.souscription.Amorcable;
 
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 
 import static org.lwjgl.nanovg.NanoVG.*;
 
-public class Menu extends AffichageTeteHaute implements Animateur, Amorcable<AffichageTeteHaute.Ecrit<?>> {
+public class Menu extends AffichageTeteHaute implements Animateur, Amorcable<Ecrit<?>> {
     public static final double PROPORTION_HAUTEUR_TITRE = 0.3;
     public static final double PROPORTION_HAUTEUR_BOUTONS = 0.3;
 

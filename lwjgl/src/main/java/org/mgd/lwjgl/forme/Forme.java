@@ -146,6 +146,11 @@ public abstract class Forme implements Identifiable, Survolable {
         return uuid;
     }
 
+    @Override
+    public boolean visible() {
+        return true;
+    }
+
     public void deplacer(float[] position, long duree) {
         float decalagex = position[0] - gravite[0];
         float decalagey = position[1] - gravite[1];
