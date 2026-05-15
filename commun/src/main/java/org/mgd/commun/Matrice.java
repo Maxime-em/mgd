@@ -52,15 +52,6 @@ public class Matrice<T> {
         return Matrice.parValeurs(Float.class, nombreLignes, nombreColonnes, 0f, (e1, e2) -> e1 * e2, Float::sum, valeurs);
     }
 
-    public static Matrice<Float> projection60() {
-        return Matrice.parValeurs(4,
-                4,
-                ConstantesMathematiques.RACINE_TROIS * 9f / 16f, 0f, 0f, 0f,
-                0f, ConstantesMathematiques.RACINE_TROIS, 0f, 0f,
-                0f, 0f, -1f, -2f,
-                0f, 0f, -1f, 0f);
-    }
-
     public static Matrice<Float> transformation(float[] translation, float[] agrandissement, float[] rotation) {
         float costhx = (float) Math.cos(rotation[0]);
         float costhy = (float) Math.cos(rotation[1]);

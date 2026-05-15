@@ -2,14 +2,12 @@ package org.mgd.lwjgl;
 
 import org.lwjgl.glfw.GLFWVidMode;
 import org.mgd.commun.ConstantesMathematiques;
-import org.mgd.commun.Matrice;
 import org.mgd.lwjgl.affichage.Primitif;
 import org.mgd.lwjgl.affichage.element.Element;
 import org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGImage;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
 import org.mgd.lwjgl.exception.LwjglException;
-import org.mgd.lwjgl.interne.Ombreur;
 import org.mgd.lwjgl.souscription.DetecteurAmorcage;
 import org.mgd.lwjgl.souscription.DetecteurService;
 import org.mgd.lwjgl.souscription.Identifiable;
@@ -43,6 +41,7 @@ public class Fenetre implements Identifiable {
     private final int largeur;
     private final int hauteur;
 
+    private final Projection projection;
     private final Vision vision;
     private final SortedSet<Element<?>> enfants;
     private final LinkedList<AffichageTeteHaute> affichages;
@@ -62,6 +61,7 @@ public class Fenetre implements Identifiable {
 
     protected Fenetre(String titre, int hauteur, int ratioNumerateur, int ratioDenominateur) throws LwjglException {
         this.uuid = UUID.randomUUID();
+        this.projection = new Projection();
         this.vision = new Vision();
         this.enfants = new TreeSet<>(Comparator.<Element<?>, Integer>comparing(Element::priorite).reversed().thenComparing(Element::identifiant));
         this.affichages = new LinkedList<>();
@@ -216,7 +216,7 @@ public class Fenetre implements Identifiable {
         if (menu != null && menu.visible()) {
             menu.produire(ellipse, vision);
         } else {
-            Ombreur.configurer("projection", Matrice.projection60());
+            projection.produire();
             vision.produire();
             enfants.forEach(enfant -> enfant.produire(ellipse, vision));
             affichages.forEach(affichage -> affichage.produire(ellipse, vision));
@@ -229,6 +229,7 @@ public class Fenetre implements Identifiable {
 
         nvgDelete(contexteNvg);
 
+        projection.liberer();
         vision.liberer();
         if (menu != null) {
             menu.liberer();
