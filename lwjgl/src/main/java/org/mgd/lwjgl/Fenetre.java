@@ -177,7 +177,7 @@ public class Fenetre implements Identifiable {
         EvenementSouris evenementSourisCourant = new EvenementSouris(evenementSouris);
         EvenementAmorcages evenementAmorcagesCourant = new EvenementAmorcages(evenementAmorcages);
         if (menu != null && menu.visible()) {
-            menu.maj(vision, evenementSourisCourant, evenementAmorcagesCourant);
+            menu.maj(this, vision, evenementSourisCourant, evenementAmorcagesCourant);
             notifier(evenementAmorcagesCourant);
         } else {
             float decalage = accumulateur * DEPLACEMENT_VITESSE / 1000;
@@ -203,11 +203,11 @@ public class Fenetre implements Identifiable {
 
             notifier(evenementAmorcagesCourant);
 
-            affichages.forEach(affichage -> affichage.maj(vision, evenementSourisCourant, evenementAmorcagesCourant));
-            enfants.forEach(enfant -> enfant.maj(vision, evenementSourisCourant, evenementAmorcagesCourant));
+            affichages.forEach(affichage -> affichage.maj(this, vision, evenementSourisCourant, evenementAmorcagesCourant));
+            enfants.forEach(enfant -> enfant.maj(this, vision, evenementSourisCourant, evenementAmorcagesCourant));
 
             if (evenementSourisCourant.inacheve() && evenementSourisCourant.selection()) {
-                gererAmorcages(Collections.singleton(uuid), evenementSourisCourant.droite());
+                amorcer(Collections.singleton(this), evenementSourisCourant.droite());
                 evenementSourisCourant.comsommer();
             }
         }
@@ -244,46 +244,46 @@ public class Fenetre implements Identifiable {
         glfwSetWindowShouldClose(identifiant, true);
     }
 
-    public void gererAmorcages(Collection<UUID> cles, boolean droite) {
-        evenementAmorcages.ajouter(cles, droite);
+    public void amorcer(Collection<Identifiable> cles, boolean droite) {
+        evenementAmorcages.ajouter(cles.stream().map(Identifiable::uuid).toList(), droite);
     }
 
-    public <T extends Identifiable> void souscrire(T objet, DetecteurAmorcage<T> gauche) {
-        souscrireInterne(objet, amorcage -> {
+    public <T extends Identifiable> void souscrire(T identifiable, DetecteurAmorcage<T> gauche) {
+        souscrireInterne(identifiable, amorcage -> {
             if (!amorcage.droite()) {
-                gauche.invoquer(objet);
+                gauche.invoquer(identifiable);
             }
         });
     }
 
-    public <T extends Identifiable> void souscrire(T objet, DetecteurAmorcage<T> gauche, DetecteurAmorcage<T> droite) {
-        souscrireInterne(objet, amorcage -> {
+    public <T extends Identifiable> void souscrire(T identifiable, DetecteurAmorcage<T> gauche, DetecteurAmorcage<T> droite) {
+        souscrireInterne(identifiable, amorcage -> {
             if (amorcage.droite()) {
-                droite.invoquer(objet);
+                droite.invoquer(identifiable);
             } else {
-                gauche.invoquer(objet);
+                gauche.invoquer(identifiable);
             }
         });
     }
 
-    private <T extends Identifiable> void souscrireInterne(T objet, Consumer<Amorcage> invocation) {
-        invocationsUnitaires.put(objet.uuid(), invocation);
+    private <T extends Identifiable> void souscrireInterne(T identifiable, Consumer<Amorcage> invocation) {
+        invocationsUnitaires.put(identifiable.uuid(), invocation);
     }
 
     public <T extends Identifiable> void souscrire(String groupe, Collection<T> identifiables, DetecteurAmorcage<T> gauche) {
-        souscrireInterne(groupe, identifiables, (amorcage, objet) -> {
+        souscrireInterne(groupe, identifiables, (amorcage, identifiable) -> {
             if (!amorcage.droite()) {
-                gauche.invoquer(objet);
+                gauche.invoquer(identifiable);
             }
         });
     }
 
     public <T extends Identifiable> void souscrire(String groupe, Collection<T> identifiables, DetecteurAmorcage<T> gauche, DetecteurAmorcage<T> droite) {
-        souscrireInterne(groupe, identifiables, (amorcage, objet) -> {
+        souscrireInterne(groupe, identifiables, (amorcage, identifiable) -> {
             if (amorcage.droite()) {
-                droite.invoquer(objet);
+                droite.invoquer(identifiable);
             } else {
-                gauche.invoquer(objet);
+                gauche.invoquer(identifiable);
             }
         });
     }
@@ -293,7 +293,7 @@ public class Fenetre implements Identifiable {
         invocationsGroupees.put(groupe, amorcage -> identifiables.stream()
                 .filter(identifiable -> identifiable.uuid().equals(amorcage.uuid()))
                 .findFirst()
-                .ifPresent(objet -> invocation.accept(amorcage, objet)));
+                .ifPresent(identifiable -> invocation.accept(amorcage, identifiable)));
     }
 
     public void souscrire(DetecteurAmorcage<Fenetre> detecteur) {

@@ -8,14 +8,14 @@ import org.mgd.lwjgl.affichage.Animateur;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Action;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Ecrit;
 import org.mgd.lwjgl.exception.LwjglException;
-import org.mgd.lwjgl.souscription.Amorcable;
+import org.mgd.lwjgl.souscription.Identifiable;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.lwjgl.nanovg.NanoVG.*;
 
-public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Amorcable<Action<?>> {
+public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
     private static final int MARGE_INFORMATIONS = 10;
     private static final Map<UUID, List<Ecrit<Void>>> informations = new HashMap<>();
     private static final Map<UUID, Integer> abscisseEcrits = new HashMap<>();
@@ -155,13 +155,8 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Am
     }
 
     @Override
-    public void amorcer(boolean droite) {
-        avertirAmorcages(parent, actionsSurvolees, droite);
-    }
-
-    @Override
-    public void desamorcer(boolean droite) {
-        avertirAmorcages(parent, actionsSurvolees, droite);
+    public Collection<Identifiable> amorcer(boolean droite) {
+        return actionsSurvolees.stream().map(Identifiable.class::cast).toList();
     }
 
     @Override

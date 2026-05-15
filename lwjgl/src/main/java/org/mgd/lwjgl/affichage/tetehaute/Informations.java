@@ -55,7 +55,7 @@ public class Informations extends AffichageTeteHaute {
     }
 
     @Override
-    public void maj(Vision vision, Fenetre.EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) {
+    public void maj(Fenetre fenetre, Vision vision, Fenetre.EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) {
         // Rien à faire
     }
 }

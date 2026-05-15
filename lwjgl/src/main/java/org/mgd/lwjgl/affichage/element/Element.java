@@ -9,12 +9,12 @@ import org.mgd.lwjgl.affichage.element.forme.Forme;
 import org.mgd.lwjgl.exception.LwjglException;
 import org.mgd.lwjgl.interne.Ombreur;
 import org.mgd.lwjgl.interne.Tisseur;
-import org.mgd.lwjgl.souscription.Amorcable;
+import org.mgd.lwjgl.souscription.Identifiable;
 
 import java.nio.file.Path;
 import java.util.*;
 
-public abstract class Element<G> extends Primitif implements Animateur, Amorcable<Forme> {
+public abstract class Element<G> extends Primitif implements Animateur {
     protected final Map<G, List<Forme>> groupes;
     private final int priorite;
     private final Matrice<Float> transformation;
@@ -68,13 +68,8 @@ public abstract class Element<G> extends Primitif implements Animateur, Amorcabl
     }
 
     @Override
-    public void amorcer(boolean droite) {
-        avertirAmorcages(parent, formesSurvoles, droite);
-    }
-
-    @Override
-    public void desamorcer(boolean droite) {
-        avertirAmorcages(parent, Collections.emptyList(), droite);
+    public Collection<Identifiable> amorcer(boolean droite) {
+        return formesSurvoles.stream().map(Identifiable.class::cast).toList();
     }
 
     @Override
