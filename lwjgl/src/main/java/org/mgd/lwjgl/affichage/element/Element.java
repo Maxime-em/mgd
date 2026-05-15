@@ -44,6 +44,11 @@ public abstract class Element<G> extends Primitif implements Animateur {
     }
 
     @Override
+    public Fenetre parent() {
+        return parent;
+    }
+
+    @Override
     public boolean survoler(Vision vision, Fenetre.EvenementSouris evenementSouris) {
         formesSurvoles = Collections.emptyList();
         if (visible) {
@@ -80,7 +85,7 @@ public abstract class Element<G> extends Primitif implements Animateur {
     @Override
     public void jouer(long ellipse, Vision vision) {
         Ombreur.configurer("transformation", transformation);
-        ordre.forEach(groupe -> groupes.get(groupe).forEach(forme -> forme.produire(ellipse)));
+        ordre.forEach(groupe -> groupes.get(groupe).forEach(forme -> forme.produire(ellipse, vision)));
     }
 
     public void nettoyer() {
@@ -120,5 +125,9 @@ public abstract class Element<G> extends Primitif implements Animateur {
 
     public Matrice<Float> transformation() {
         return transformation;
+    }
+
+    public void preparer(Vision vision) {
+        ordre.forEach(groupe -> groupes.get(groupe).forEach(forme -> forme.preparer(vision)));
     }
 }

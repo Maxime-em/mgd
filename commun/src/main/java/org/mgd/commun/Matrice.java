@@ -1,9 +1,10 @@
 package org.mgd.commun;
 
 import java.lang.reflect.Array;
-import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 
 /**
@@ -89,8 +90,9 @@ public class Matrice<T> {
                         .forEach(ligne -> traitement.recevoir(colonne, ligne, colonne * nombreColonnes + ligne, valeurs[ligne][colonne])));
     }
 
-    public void insererParLignes(MatriceInsertion<T> insertion) {
-        parcoursParLignes((ligne, colonne, index, valeur) -> valeurs[ligne][colonne] = insertion.obtenir(ligne, colonne, index));
+    public Matrice<T> insererParLignes(MatriceInsertion<T> insertion) {
+        parcoursParLignes((ligne, colonne, index, _) -> valeurs[ligne][colonne] = insertion.obtenir(ligne, colonne, index));
+        return this;
     }
 
     public void modifierValeur(int ligne, int colonne, T element, BinaryOperator<T> modifier) {
@@ -105,18 +107,33 @@ public class Matrice<T> {
         return nombreColonnes;
     }
 
-    @SuppressWarnings("unchecked")
-    public T[] appliquer(T[] vecteur) {
-        if (vecteur.length < nombreColonnes) {
-            throw new IllegalArgumentException(MessageFormat.format("La taille du vecteur doit être d''au moins {0}", nombreColonnes));
+    public Matrice<T> multiplication(Matrice<T> matrice) {
+        if (nombreColonnes != matrice.nombreLignes) {
+            throw new IllegalArgumentException("Les tailles des matrices ne sont pas compatibles");
         }
-        T[] resultat = (T[]) Array.newInstance(classe, nombreLignes);
-        IntStream.range(0, nombreLignes).forEach(ligne -> resultat[ligne] = neutre);
-        parcoursParLignes((ligne, colonne, index, valeur) -> resultat[ligne] = somme.apply(resultat[ligne], multiplication.apply(vecteur[colonne], valeur)));
-        return resultat;
+        Matrice<T> nouvelle = new Matrice<>(classe, nombreLignes, matrice.nombreColonnes, neutre, multiplication, somme);
+        IntStream.range(0, nombreLignes).forEach(ligne -> IntStream.range(0, matrice.nombreColonnes).forEach(colonne ->
+                nouvelle.valeurs[ligne][colonne] = IntStream.range(0, nombreColonnes)
+                        .mapToObj(rang -> multiplication.apply(valeurs[ligne][rang], matrice.valeurs[rang][colonne]))
+                        .reduce(somme)
+                        .orElse(neutre)));
+        return nouvelle;
     }
 
     public T valeur(int ligne, int colonne) {
         return valeurs[ligne][colonne];
+    }
+
+    @SuppressWarnings("unchecked")
+    public T[] colonne(int index) {
+        return IntStream.range(0, nombreLignes).mapToObj(ligne -> valeurs[ligne][index]).toArray(taille -> (T[]) Array.newInstance(classe, taille));
+    }
+
+    @SuppressWarnings("unchecked")
+    @SafeVarargs
+    public final Matrice<T> reduireParLigne(Function<T[], T>... operations) {
+        Matrice<T> nouvelle = new Matrice<>(classe, nombreLignes, operations.length, neutre, multiplication, somme);
+        IntStream.range(0, nombreLignes).forEach(ligne -> nouvelle.valeurs[ligne] = Arrays.stream(operations).map(operation -> operation.apply(valeurs[ligne])).toArray(taille -> (T[]) Array.newInstance(classe, taille)));
+        return nouvelle;
     }
 }

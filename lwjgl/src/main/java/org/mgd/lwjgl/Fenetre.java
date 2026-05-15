@@ -176,7 +176,7 @@ public class Fenetre implements Identifiable {
         EvenementSouris evenementSourisCourant = new EvenementSouris(evenementSouris);
         EvenementAmorcages evenementAmorcagesCourant = new EvenementAmorcages(evenementAmorcages);
         if (menu != null && menu.visible()) {
-            menu.maj(this, vision, evenementSourisCourant, evenementAmorcagesCourant);
+            menu.maj(vision, evenementSourisCourant, evenementAmorcagesCourant);
             notifier(evenementAmorcagesCourant);
         } else {
             float decalage = accumulateur * DEPLACEMENT_VITESSE / 1000;
@@ -202,8 +202,9 @@ public class Fenetre implements Identifiable {
 
             notifier(evenementAmorcagesCourant);
 
-            affichages.forEach(affichage -> affichage.maj(this, vision, evenementSourisCourant, evenementAmorcagesCourant));
-            enfants.forEach(enfant -> enfant.maj(this, vision, evenementSourisCourant, evenementAmorcagesCourant));
+            enfants.forEach(enfant -> enfant.preparer(vision));
+            affichages.forEach(affichage -> affichage.maj(vision, evenementSourisCourant, evenementAmorcagesCourant));
+            enfants.forEach(enfant -> enfant.maj(vision, evenementSourisCourant, evenementAmorcagesCourant));
 
             if (evenementSourisCourant.inacheve() && evenementSourisCourant.selection()) {
                 amorcer(Collections.singleton(this), evenementSourisCourant.droite());

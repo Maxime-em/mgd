@@ -130,6 +130,11 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
     }
 
     @Override
+    public Fenetre parent() {
+        return parent;
+    }
+
+    @Override
     public boolean survoler(Vision vision, EvenementSouris evenementSouris) {
         actionsSurvolees.clear();
         actionsLiees.clear();

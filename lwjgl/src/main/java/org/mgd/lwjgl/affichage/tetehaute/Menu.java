@@ -78,6 +78,11 @@ public class Menu extends AffichageTeteHaute implements Animateur {
     }
 
     @Override
+    public Fenetre parent() {
+        return parent;
+    }
+
+    @Override
     public boolean survoler(Vision vision, Fenetre.EvenementSouris evenementSouris) {
         if (visible) {
             ecritsSurvoles = pageCourante.textes
@@ -108,8 +113,8 @@ public class Menu extends AffichageTeteHaute implements Animateur {
     }
 
     @Override
-    public void maj(Fenetre parent, Vision vision, Fenetre.EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) {
-        Animateur.super.maj(parent, vision, evenementSouris, evenementAmorcagesCourant);
+    public void maj(Vision vision, Fenetre.EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) {
+        Animateur.super.maj(vision, evenementSouris, evenementAmorcagesCourant);
         evenementAmorcagesCourant.amorcages()
                 .stream()
                 .filter(amorcage -> !amorcage.droite() && pages.containsKey(amorcage.uuid()))

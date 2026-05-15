@@ -32,11 +32,10 @@ public class Quadrilatere extends Forme {
             if (direction[0] == 0.0 && direction[1] == 0.0) {
                 survole = false;
             } else {
-                Boite boiteTransforme = boite.transformer(parent.transformation()).transformer(deplacement);
-                double differencex = -(boiteTransforme.minimumz() + vision.translationz()) * direction[0] - vision.translationx() - boiteTransforme.minimumx();
-                double differencey = -(boiteTransforme.minimumz() + vision.translationz()) * direction[1] - vision.translationy() - boiteTransforme.minimumy();
-                survole = 0 <= differencex && differencex <= boiteTransforme.maximunx() - boiteTransforme.minimumx()
-                        && 0 <= differencey && differencey <= boiteTransforme.maximuny() - boiteTransforme.minimumy();
+                double differencex = -boite.minimumz() * direction[0] - boite.minimumx();
+                double differencey = -boite.minimumz() * direction[1] - boite.minimumy();
+                survole = 0 <= differencex && differencex <= boite.maximunx() - boite.minimumx()
+                        && 0 <= differencey && differencey <= boite.maximuny() - boite.minimumy();
             }
         } else {
             survole = false;

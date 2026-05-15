@@ -20,15 +20,7 @@ public class Vision {
         matrice.modifierValeur(2, 3, -decalagez, Float::sum);
     }
 
-    public float translationx() {
-        return matrice.valeur(0, 3);
-    }
-
-    public float translationy() {
-        return matrice.valeur(1, 3);
-    }
-
-    public float translationz() {
-        return matrice.valeur(2, 3);
+    public Matrice<Float> matrice() {
+        return matrice;
     }
 }

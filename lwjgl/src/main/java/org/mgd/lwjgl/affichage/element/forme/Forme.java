@@ -3,9 +3,13 @@ package org.mgd.lwjgl.affichage.element.forme;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.system.MemoryStack;
 import org.mgd.commun.Matrice;
+import org.mgd.lwjgl.Fenetre.EvenementAmorcages;
+import org.mgd.lwjgl.Fenetre.EvenementSouris;
 import org.mgd.lwjgl.Programme;
 import org.mgd.lwjgl.Pseudo;
 import org.mgd.lwjgl.Survolable;
+import org.mgd.lwjgl.Vision;
+import org.mgd.lwjgl.affichage.Sujet;
 import org.mgd.lwjgl.affichage.Transition;
 import org.mgd.lwjgl.affichage.element.Element;
 import org.mgd.lwjgl.interne.Ombreur;
@@ -19,17 +23,18 @@ import java.util.*;
 import static org.lwjgl.opengl.GL30.*;
 import static org.mgd.lwjgl.Programme.NOM_PAR_DEFAUT;
 
-public abstract class Forme implements Identifiable, Survolable {
+public abstract class Forme implements Identifiable, Survolable, Sujet {
     protected final UUID uuid;
     protected final Element<?> parent;
     protected final String nom;
-    protected final Boite boite;
     protected final Matrice<Float> deplacement;
+    private final Matrice<Float> sommets;
     private final LinkedList<Transition<Matrice<Float>, Float[]>> transitions;
     private final int taille;
     private final int vecteurs;
     private final Set<Integer> tanpom;
     private final Float[] gravite;
+    protected Boite boite;
     protected boolean survole;
     protected boolean active;
 
@@ -74,9 +79,8 @@ public abstract class Forme implements Identifiable, Survolable {
             glBindBuffer(GL_ARRAY_BUFFER, 0);
             glBindVertexArray(0);
         }
-
-        this.boite = new Boite(positions);
         this.deplacement = Matrice.identitef(4, 4);
+        this.sommets = Matrice.identitef(4, positions.length / 3).insererParLignes((ligne, colonne, _) -> ligne % 4 == 3 ? 1f : positions[colonne * 3 + ligne]);
         this.transitions = new LinkedList<>();
         this.gravite = new Float[]{
                 (positions[0] + positions[3] + positions[6] + positions[9]) / 4,
@@ -97,7 +101,28 @@ public abstract class Forme implements Identifiable, Survolable {
         active = false;
     }
 
-    public void produire(long ellipse) {
+    public void nettoyer() {
+        tanpom.forEach(GL15::glDeleteBuffers);
+        glDeleteVertexArrays(vecteurs);
+    }
+
+    @Override
+    public UUID uuid() {
+        return uuid;
+    }
+
+    @Override
+    public boolean visible() {
+        return true;
+    }
+
+    @Override
+    public void maj(Vision vision, EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) {
+        // Rien à faire
+    }
+
+    @Override
+    public void produire(long ellipse, Vision vision) {
         if (!transitions.isEmpty()) {
             transitions.getFirst().lineariser(ellipse);
             transitions.removeIf(Transition::finie);
@@ -136,21 +161,6 @@ public abstract class Forme implements Identifiable, Survolable {
         glBindVertexArray(0);
     }
 
-    public void nettoyer() {
-        tanpom.forEach(GL15::glDeleteBuffers);
-        glDeleteVertexArrays(vecteurs);
-    }
-
-    @Override
-    public UUID uuid() {
-        return uuid;
-    }
-
-    @Override
-    public boolean visible() {
-        return true;
-    }
-
     public void deplacer(float[] position, long duree) {
         float decalagex = position[0] - gravite[0];
         float decalagey = position[1] - gravite[1];
@@ -177,5 +187,9 @@ public abstract class Forme implements Identifiable, Survolable {
                 matrice.modifierValeur(2, 3, valeur[2], (_, nouvelle) -> nouvelle);
             }
         });
+    }
+
+    public void preparer(Vision vision) {
+        boite = new Boite(vision.matrice().multiplication(parent.transformation()).multiplication(deplacement).multiplication(sommets));
     }
 }
