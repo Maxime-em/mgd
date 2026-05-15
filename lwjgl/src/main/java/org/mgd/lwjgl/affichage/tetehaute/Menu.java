@@ -61,15 +61,9 @@ public class Menu extends AffichageTeteHaute implements Animateur {
         double interligne = (1 - PROPORTION_HAUTEUR_TITRE - PROPORTION_HAUTEUR_BOUTONS) * restant / 3;
 
         AtomicReference<Double> ordonneeCourante = new AtomicReference<>(margeTitres);
-        page.titres.forEach(titre -> {
-            titre.abscisse((parent.largeur() - titre.largeur()) / 2);
-            titre.ordonnee(ordonneeCourante.getAndAccumulate(titre.hauteur() + margeTitres, Double::sum).intValue());
-        });
+        page.titres.forEach(titre -> titre.placer((parent.largeur() - titre.largeur()) / 2, ordonneeCourante.getAndAccumulate(titre.hauteur() + margeTitres, Double::sum).intValue()));
         ordonneeCourante.getAndAccumulate(interligne, Double::sum);
-        page.textes.forEach(ecrit -> {
-            ecrit.abscisse((parent.largeur() - ecrit.largeur()) / 2);
-            ecrit.ordonnee(ordonneeCourante.getAndAccumulate(ecrit.hauteur() + margeBoutons, Double::sum).intValue());
-        });
+        page.textes.forEach(ecrit -> ecrit.placer((parent.largeur() - ecrit.largeur()) / 2, ordonneeCourante.getAndAccumulate(ecrit.hauteur() + margeBoutons, Double::sum).intValue()));
     }
 
     private double hauteur(Ecrit<?> ecrit) {
@@ -86,7 +80,10 @@ public class Menu extends AffichageTeteHaute implements Animateur {
     @Override
     public boolean survoler(Vision vision, Fenetre.EvenementSouris evenementSouris) {
         if (visible) {
-            ecritsSurvoles = pageCourante.textes.stream().filter(evenementSouris::inclus).collect(Collectors.toCollection(LinkedList::new));
+            ecritsSurvoles = pageCourante.textes
+                    .stream()
+                    .filter(ecrit -> evenementSouris.inclus(ecrit.abscisse(), ecrit.ordonnee(), ecrit.largeur(), ecrit.hauteur()))
+                    .collect(Collectors.toCollection(LinkedList::new));
         } else {
             ecritsSurvoles.clear();
         }

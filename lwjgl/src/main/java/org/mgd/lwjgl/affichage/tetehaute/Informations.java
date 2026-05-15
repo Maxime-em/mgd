@@ -2,6 +2,7 @@ package org.mgd.lwjgl.affichage.tetehaute;
 
 import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Fenetre.EvenementAmorcages;
+import org.mgd.lwjgl.Fenetre.EvenementSouris;
 import org.mgd.lwjgl.Vision;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Ecrit;
 import org.mgd.lwjgl.exception.LwjglException;
@@ -31,8 +32,7 @@ public class Informations extends AffichageTeteHaute {
         if (ecrit != null) {
             int largeurEcrit = ecrit.dimensionner(contexte).largeur();
             int hauteurEcrit = ecrit.hauteur();
-            ecrit.abscisse(abcsisse + Math.max(largeur - largeurEcrit, 0) / 2);
-            ecrit.ordonnee(ordonnee + Math.max(hauteur - hauteurEcrit, 0) / 2);
+            ecrit.placer(abcsisse + Math.max(largeur - largeurEcrit, 0) / 2, ordonnee + Math.max(hauteur - hauteurEcrit, 0) / 2);
         }
     }
 
@@ -55,7 +55,7 @@ public class Informations extends AffichageTeteHaute {
     }
 
     @Override
-    public void maj(Fenetre fenetre, Vision vision, Fenetre.EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) {
+    public void maj(Fenetre parent, Vision vision, EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) {
         // Rien à faire
     }
 }

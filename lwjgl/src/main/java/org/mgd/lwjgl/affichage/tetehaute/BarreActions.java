@@ -101,10 +101,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
             ordonneeEcrits.put(action.uuid(), ordonneeCourante.get());
             largeurEcrits.put(action.uuid(), largeur);
             hauteurEcrits.put(action.uuid(), hauteur);
-            ecrits.forEach(ecrit -> {
-                ecrit.abscisse(abscisseCourante);
-                ecrit.ordonnee(ordonneeCourante.getAndAdd(ecrit.hauteur()));
-            });
+            ecrits.forEach(ecrit -> ecrit.placer(abscisseCourante, ordonneeCourante.getAndAdd(ecrit.hauteur())));
         });
     }
 
@@ -137,13 +134,13 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         actionsSurvolees.clear();
         actionsLiees.clear();
         if (visible) {
-            for (Action<?> action : groupes.getOrDefault(groupe, Collections.emptyList())) {
+            groupes.getOrDefault(groupe, Collections.emptyList()).forEach(action -> {
                 if (action.survoler(vision, evenementSouris)) {
                     actionsSurvolees.add(action);
                 } else if (action.liaisons().stream().anyMatch(liaison -> liaison.visible() && liaison.survoler(vision, evenementSouris))) {
                     actionsLiees.add(action);
                 }
-            }
+            });
         }
         return !actionsSurvolees.isEmpty();
     }

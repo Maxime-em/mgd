@@ -6,7 +6,6 @@ import org.mgd.commun.Matrice;
 import org.mgd.lwjgl.affichage.Primitif;
 import org.mgd.lwjgl.affichage.element.Element;
 import org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute;
-import org.mgd.lwjgl.affichage.tetehaute.composant.Ecrit;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGImage;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
 import org.mgd.lwjgl.exception.LwjglException;
@@ -497,10 +496,6 @@ public class Fenetre implements Identifiable {
         public boolean inclus(float abscisse, float ordonnee, float largeur, float hauteur) {
             return abscisse <= coordonnees[0] && coordonnees[0] <= abscisse + largeur
                     && ordonnee <= coordonnees[1] && coordonnees[1] <= ordonnee + hauteur;
-        }
-
-        public boolean inclus(Ecrit<?> ecrit) {
-            return inclus(ecrit.abscisse(), ecrit.ordonnee(), ecrit.largeur(), ecrit.hauteur());
         }
 
         public float[] direction() {

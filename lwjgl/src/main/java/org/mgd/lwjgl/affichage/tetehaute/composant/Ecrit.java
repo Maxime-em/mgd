@@ -1,5 +1,8 @@
 package org.mgd.lwjgl.affichage.tetehaute.composant;
 
+import org.mgd.lwjgl.Fenetre.EvenementSouris;
+import org.mgd.lwjgl.Survolable;
+import org.mgd.lwjgl.Vision;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGCouleur;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
 import org.mgd.lwjgl.souscription.Identifiable;
@@ -9,7 +12,7 @@ import java.util.function.Supplier;
 
 import static org.lwjgl.nanovg.NanoVG.*;
 
-public class Ecrit<T> implements Identifiable {
+public class Ecrit<T> implements Identifiable, Survolable {
     private final UUID uuid;
     private final T objet;
     private final float[] dimensions;
@@ -42,6 +45,16 @@ public class Ecrit<T> implements Identifiable {
     }
 
     @Override
+    public boolean survoler(Vision vision, EvenementSouris evenementSouris) {
+        return evenementSouris.inclus(abscisse, ordonnee, largeur(), hauteur());
+    }
+
+    public void placer(int abscisse, int ordonnee) {
+        this.abscisse = abscisse;
+        this.ordonnee = ordonnee;
+    }
+
+    @Override
     public UUID uuid() {
         return uuid;
     }
@@ -58,16 +71,8 @@ public class Ecrit<T> implements Identifiable {
         return (int) Math.ceil(dimensions[3] - dimensions[1]);
     }
 
-    public void abscisse(int abscisse) {
-        this.abscisse = abscisse;
-    }
-
     public int abscisse() {
         return abscisse;
-    }
-
-    public void ordonnee(int ordonnee) {
-        this.ordonnee = ordonnee;
     }
 
     public int ordonnee() {
@@ -88,5 +93,10 @@ public class Ecrit<T> implements Identifiable {
 
     public Supplier<String> texte() {
         return texte;
+    }
+
+    @Override
+    public boolean visible() {
+        return true;
     }
 }
