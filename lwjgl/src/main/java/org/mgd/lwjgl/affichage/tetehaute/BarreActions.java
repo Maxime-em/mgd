@@ -5,6 +5,8 @@ import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Fenetre.EvenementSouris;
 import org.mgd.lwjgl.Vision;
 import org.mgd.lwjgl.affichage.Animateur;
+import org.mgd.lwjgl.affichage.tetehaute.composant.Action;
+import org.mgd.lwjgl.affichage.tetehaute.composant.Ecrit;
 import org.mgd.lwjgl.exception.LwjglException;
 import org.mgd.lwjgl.souscription.Amorcable;
 
@@ -106,61 +108,6 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Am
         });
     }
 
-    @Override
-    protected void dessiner(long ellipse) {
-        nvgBeginPath(contexte);
-        if (disposition.orientation() == Disposition.Orientation.HORIZONTAL) {
-            nvgRect(contexte, abcisses, ordonnee, longueur, epaisseurActions);
-        } else {
-            nvgRect(contexte, abcisses, ordonnee, epaisseurActions, longueur);
-        }
-        nvgFillColor(contexte, AUBURN.nvg());
-        nvgFill(contexte);
-        nvgClosePath(contexte);
-
-        groupes.getOrDefault(groupe, Collections.emptyList()).forEach(action -> {
-            nvgBeginPath(contexte);
-            nvgRect(contexte, action.abscisse(), action.ordonnee(), action.largeur(), action.hauteur());
-            nvgFillColor(contexte, BLANC.nvg());
-            nvgFill(contexte);
-            nvgClosePath(contexte);
-
-            nvgBeginPath(contexte);
-            nvgRect(contexte, action.abscisse(), action.ordonnee(), action.largeur(), action.hauteur());
-            nvgFillPaint(contexte, nvgImagePattern(contexte,
-                    action.abscisse(),
-                    action.ordonnee(),
-                    action.largeur(),
-                    action.hauteur(),
-                    0,
-                    action.image().nvg(),
-                    1,
-                    NVGPaint.create()));
-            nvgFill(contexte);
-            nvgClosePath(contexte);
-
-            if (action.active() && action.anime()) {
-                nvgBeginPath(contexte);
-                nvgRect(contexte, action.abscisse(), action.ordonnee(), action.largeur(), action.hauteur());
-                nvgFillColor(contexte, INDIGO_A50.nvg());
-                nvgFill(contexte);
-                nvgClosePath(contexte);
-            }
-        });
-
-        actionsSurvolees.forEach(action -> {
-            nvgBeginPath(contexte);
-            nvgRect(contexte, action.abscisse(), action.ordonnee(), action.largeur(), action.hauteur());
-            nvgFillColor(contexte, ROUGE_COQUELICOT_A50.nvg());
-            nvgFill(contexte);
-            nvgClosePath(contexte);
-
-            dessinerInfobulle(action);
-        });
-
-        actionsLiees.forEach(this::dessinerInfobulle);
-    }
-
     private void dessinerInfobulle(Action<?> action) {
         List<Ecrit<Void>> ecrits = informations.getOrDefault(action.uuid(), Collections.emptyList());
         if (!ecrits.isEmpty()) {
@@ -215,6 +162,61 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur, Am
     @Override
     public void desamorcer(boolean droite) {
         avertirAmorcages(parent, actionsSurvolees, droite);
+    }
+
+    @Override
+    protected void dessiner(long ellipse) {
+        nvgBeginPath(contexte);
+        if (disposition.orientation() == Disposition.Orientation.HORIZONTAL) {
+            nvgRect(contexte, abcisses, ordonnee, longueur, epaisseurActions);
+        } else {
+            nvgRect(contexte, abcisses, ordonnee, epaisseurActions, longueur);
+        }
+        nvgFillColor(contexte, AUBURN.nvg());
+        nvgFill(contexte);
+        nvgClosePath(contexte);
+
+        groupes.getOrDefault(groupe, Collections.emptyList()).forEach(action -> {
+            nvgBeginPath(contexte);
+            nvgRect(contexte, action.abscisse(), action.ordonnee(), action.largeur(), action.hauteur());
+            nvgFillColor(contexte, BLANC.nvg());
+            nvgFill(contexte);
+            nvgClosePath(contexte);
+
+            nvgBeginPath(contexte);
+            nvgRect(contexte, action.abscisse(), action.ordonnee(), action.largeur(), action.hauteur());
+            nvgFillPaint(contexte, nvgImagePattern(contexte,
+                    action.abscisse(),
+                    action.ordonnee(),
+                    action.largeur(),
+                    action.hauteur(),
+                    0,
+                    action.image().nvg(),
+                    1,
+                    NVGPaint.create()));
+            nvgFill(contexte);
+            nvgClosePath(contexte);
+
+            if (action.active() && action.anime()) {
+                nvgBeginPath(contexte);
+                nvgRect(contexte, action.abscisse(), action.ordonnee(), action.largeur(), action.hauteur());
+                nvgFillColor(contexte, INDIGO_A50.nvg());
+                nvgFill(contexte);
+                nvgClosePath(contexte);
+            }
+        });
+
+        actionsSurvolees.forEach(action -> {
+            nvgBeginPath(contexte);
+            nvgRect(contexte, action.abscisse(), action.ordonnee(), action.largeur(), action.hauteur());
+            nvgFillColor(contexte, ROUGE_COQUELICOT_A50.nvg());
+            nvgFill(contexte);
+            nvgClosePath(contexte);
+
+            dessinerInfobulle(action);
+        });
+
+        actionsLiees.forEach(this::dessinerInfobulle);
     }
 
     public <T> void ajouter(G groupe, Action<T> action) {

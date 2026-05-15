@@ -1,4 +1,4 @@
-package org.mgd.lwjgl.forme;
+package org.mgd.lwjgl.affichage.element.forme;
 
 import org.mgd.commun.Matrice;
 

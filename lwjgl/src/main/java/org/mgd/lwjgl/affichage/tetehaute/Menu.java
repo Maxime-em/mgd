@@ -4,6 +4,7 @@ import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Fenetre.EvenementAmorcages;
 import org.mgd.lwjgl.Vision;
 import org.mgd.lwjgl.affichage.Animateur;
+import org.mgd.lwjgl.affichage.tetehaute.composant.Ecrit;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
 import org.mgd.lwjgl.exception.LwjglException;
 import org.mgd.lwjgl.souscription.Amorcable;
@@ -75,13 +76,11 @@ public class Menu extends AffichageTeteHaute implements Animateur, Amorcable<Ecr
         return ecrit.dimensionner(contexte).hauteur();
     }
 
-    @Override
-    public void maj(Vision vision, Fenetre.EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) {
-        Animateur.super.maj(vision, evenementSouris, evenementAmorcagesCourant);
-        evenementAmorcagesCourant.amorcages()
-                .stream()
-                .filter(amorcage -> !amorcage.droite() && pages.containsKey(amorcage.uuid()))
-                .forEach(amorcage -> pageCourante = pages.get(amorcage.uuid()));
+    private void dessiner(Ecrit<?> ecrit) {
+        nvgFontSize(contexte, ecrit.taille());
+        nvgFontFace(contexte, ecrit.police().identifiant());
+        nvgFillColor(contexte, ecrit.couleur().nvg());
+        nvgText(contexte, ecrit.abscisse(), ecrit.ordonnee(), ecrit.texte().get());
     }
 
     @Override
@@ -116,11 +115,13 @@ public class Menu extends AffichageTeteHaute implements Animateur, Amorcable<Ecr
         pageCourante.textes.forEach(this::dessiner);
     }
 
-    private void dessiner(Ecrit<?> ecrit) {
-        nvgFontSize(contexte, ecrit.taille());
-        nvgFontFace(contexte, ecrit.police().identifiant());
-        nvgFillColor(contexte, ecrit.couleur().nvg());
-        nvgText(contexte, ecrit.abscisse(), ecrit.ordonnee(), ecrit.texte().get());
+    @Override
+    public void maj(Vision vision, Fenetre.EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) {
+        Animateur.super.maj(vision, evenementSouris, evenementAmorcagesCourant);
+        evenementAmorcagesCourant.amorcages()
+                .stream()
+                .filter(amorcage -> !amorcage.droite() && pages.containsKey(amorcage.uuid()))
+                .forEach(amorcage -> pageCourante = pages.get(amorcage.uuid()));
     }
 
     private record Page(List<Ecrit<?>> titres, List<Ecrit<?>> textes) {

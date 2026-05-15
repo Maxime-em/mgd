@@ -6,7 +6,7 @@ import org.mgd.commun.Matrice;
 import org.mgd.lwjgl.affichage.Primitif;
 import org.mgd.lwjgl.affichage.element.Element;
 import org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute;
-import org.mgd.lwjgl.affichage.tetehaute.Ecrit;
+import org.mgd.lwjgl.affichage.tetehaute.composant.Ecrit;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGImage;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
 import org.mgd.lwjgl.exception.LwjglException;

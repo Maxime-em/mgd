@@ -3,6 +3,7 @@ package org.mgd.lwjgl.affichage.tetehaute;
 import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Fenetre.EvenementAmorcages;
 import org.mgd.lwjgl.Vision;
+import org.mgd.lwjgl.affichage.tetehaute.composant.Ecrit;
 import org.mgd.lwjgl.exception.LwjglException;
 
 import static org.lwjgl.nanovg.NanoVG.*;
@@ -36,11 +37,6 @@ public class Informations extends AffichageTeteHaute {
     }
 
     @Override
-    public void maj(Vision vision, Fenetre.EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) {
-        // Rien à faire
-    }
-
-    @Override
     protected void dessiner(long ellipse) {
         if (ecrit != null) {
             nvgTextAlign(contexte, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
@@ -56,5 +52,10 @@ public class Informations extends AffichageTeteHaute {
             nvgFillColor(contexte, ecrit.couleur().nvg());
             nvgText(contexte, ecrit.abscisse(), ecrit.ordonnee(), ecrit.texte().get());
         }
+    }
+
+    @Override
+    public void maj(Vision vision, Fenetre.EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) {
+        // Rien à faire
     }
 }

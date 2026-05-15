@@ -1,4 +1,4 @@
-package org.mgd.lwjgl.affichage.tetehaute;
+package org.mgd.lwjgl.affichage.tetehaute.composant;
 
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGCouleur;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;

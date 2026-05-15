@@ -1,6 +1,7 @@
 package org.mgd.lwjgl.affichage;
 
-import org.mgd.lwjgl.Fenetre;
+import org.mgd.lwjgl.Fenetre.EvenementAmorcages;
+import org.mgd.lwjgl.Fenetre.EvenementSouris;
 import org.mgd.lwjgl.Vision;
 
 public interface Acteur {
@@ -8,7 +9,7 @@ public interface Acteur {
 
     void jouer(long ellipse, Vision vision);
 
-    void maj(Vision vision, Fenetre.EvenementSouris evenementSouris, Fenetre.EvenementAmorcages evenementAmorcagesCourant);
+    void maj(Vision vision, EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant);
 
     default void produire(long ellipse, Vision vision) {
         if (visible()) {

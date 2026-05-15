@@ -12,7 +12,8 @@ module org.mgd.lwjgl {
     exports org.mgd.lwjgl.affichage;
     exports org.mgd.lwjgl.affichage.element;
     exports org.mgd.lwjgl.affichage.tetehaute;
+    exports org.mgd.lwjgl.affichage.tetehaute.composant;
     exports org.mgd.lwjgl.affichage.tetehaute.nvg;
-    exports org.mgd.lwjgl.forme;
+    exports org.mgd.lwjgl.affichage.element.forme;
     exports org.mgd.lwjgl.souscription;
 }

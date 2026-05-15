@@ -1,4 +1,4 @@
-package org.mgd.lwjgl.affichage.tetehaute;
+package org.mgd.lwjgl.affichage.tetehaute.composant;
 
 import org.mgd.lwjgl.Fenetre.EvenementSouris;
 import org.mgd.lwjgl.Survolable;

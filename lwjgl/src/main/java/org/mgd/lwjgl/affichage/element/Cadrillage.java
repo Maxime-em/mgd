@@ -1,9 +1,9 @@
 package org.mgd.lwjgl.affichage.element;
 
 import org.mgd.lwjgl.Fenetre;
+import org.mgd.lwjgl.affichage.element.forme.Forme;
+import org.mgd.lwjgl.affichage.element.forme.Quadrilatere;
 import org.mgd.lwjgl.exception.LwjglException;
-import org.mgd.lwjgl.forme.Forme;
-import org.mgd.lwjgl.forme.Quadrilatere;
 import org.mgd.utilitaire.Flux;
 
 import java.nio.file.Path;

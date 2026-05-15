@@ -1,4 +1,4 @@
-package org.mgd.lwjgl.forme;
+package org.mgd.lwjgl.affichage.element.forme;
 
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.system.MemoryStack;
