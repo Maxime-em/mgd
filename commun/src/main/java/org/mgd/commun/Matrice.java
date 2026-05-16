@@ -34,14 +34,14 @@ public class Matrice<T> {
 
     public static <T> Matrice<T> identite(Class<T> classe, int nombreLignes, int nombreColonnes, T unite, T neutre, BinaryOperator<T> multiplication, BinaryOperator<T> somme) {
         Matrice<T> matrice = new Matrice<>(classe, nombreLignes, nombreColonnes, neutre, multiplication, somme);
-        matrice.insererParLignes((ligne, colonne, index) -> Objects.equals(ligne, colonne) ? unite : neutre);
+        matrice.insererParLignes((ligne, colonne, _) -> Objects.equals(ligne, colonne) ? unite : neutre);
         return matrice;
     }
 
     @SafeVarargs
     public static <T> Matrice<T> parValeurs(Class<T> classe, int nombreLignes, int nombreColonnes, T neutre, BinaryOperator<T> multiplication, BinaryOperator<T> somme, T... valeurs) {
         Matrice<T> matrice = new Matrice<>(classe, nombreLignes, nombreColonnes, neutre, multiplication, somme);
-        matrice.insererParLignes((ligne, colonne, index) -> index < valeurs.length ? valeurs[index] : neutre);
+        matrice.insererParLignes((_, _, index) -> index < valeurs.length ? valeurs[index] : neutre);
         return matrice;
     }
 
@@ -49,8 +49,8 @@ public class Matrice<T> {
         return Matrice.identite(Float.class, nombreLignes, nombreColonnes, 1f, 0f, (e1, e2) -> e1 * e2, Float::sum);
     }
 
-    public static Matrice<Float> parValeurs(int nombreLignes, int nombreColonnes, Float... valeurs) {
-        return Matrice.parValeurs(Float.class, nombreLignes, nombreColonnes, 0f, (e1, e2) -> e1 * e2, Float::sum, valeurs);
+    public static Matrice<Float> parValeurs(int nombreLignes, int nombreColonnes, float... valeurs) {
+        return Matrice.parValeurs(Float.class, nombreLignes, nombreColonnes, 0f, (e1, e2) -> e1 * e2, Float::sum, IntStream.range(0, valeurs.length).mapToObj(rang -> valeurs[rang]).toArray(Float[]::new));
     }
 
     public static Matrice<Float> transformation(float[] translation, float[] agrandissement, float[] rotation) {
@@ -71,11 +71,21 @@ public class Matrice<T> {
     public static Matrice<Float> transformation(float[] translation, float[] agrandissement) {
         return Matrice.parValeurs(4,
                 4,
-                1f,
                 agrandissement[0], 0f, 0f, translation[0],
                 0f, agrandissement[1], 0f, translation[1],
                 0f, 0f, agrandissement[2], translation[2],
                 0f, 0f, 0f, 1f);
+    }
+
+    public static Matrice<Float> translation(float[] translation) {
+        return Matrice.transformation(translation, new float[]{1f, 1f, 1f});
+    }
+
+    public static Matrice<Float> vecteur(float[] coordonnees) {
+        float[] coordonneesAvecPoids = new float[coordonnees.length + 1];
+        System.arraycopy(coordonnees, 0, coordonneesAvecPoids, 0, coordonnees.length);
+        coordonneesAvecPoids[coordonnees.length] = 1f;
+        return Matrice.parValeurs(coordonnees.length + 1, 1, coordonneesAvecPoids);
     }
 
     public void parcoursParLignes(MatriceIteration<T> traitement) {

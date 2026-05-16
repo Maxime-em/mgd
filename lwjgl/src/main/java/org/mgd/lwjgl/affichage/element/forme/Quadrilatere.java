@@ -13,16 +13,13 @@ public class Quadrilatere extends Forme {
                         float gauche,
                         float z,
                         float[] textures) {
-        super(parent,
-                nom,
-                new float[]{
-                        droite, haut, z,
-                        gauche, haut, z,
-                        gauche, bas, z,
-                        droite, bas, z
-                },
-                textures,
-                new int[]{0, 1, 3, 3, 1, 2});
+        float[] positions = {
+                droite, haut, z,
+                gauche, haut, z,
+                gauche, bas, z,
+                droite, bas, z
+        };
+        super(parent, nom, positions, textures, new int[]{0, 1, 3, 3, 1, 2}, positions);
     }
 
     @Override

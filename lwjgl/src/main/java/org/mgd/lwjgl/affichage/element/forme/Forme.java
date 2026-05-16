@@ -28,17 +28,17 @@ public abstract class Forme implements Identifiable, Survolable, Sujet {
     protected final Element<?> parent;
     protected final String nom;
     protected final Matrice<Float> deplacement;
-    private final Matrice<Float> sommets;
     private final LinkedList<Transition<Matrice<Float>, Float[]>> transitions;
     private final int taille;
     private final int vecteurs;
     private final Set<Integer> tanpom;
-    private final Float[] gravite;
+    private final Matrice<Float> gravite;
+    private final Matrice<Float> contour;
     protected Boite boite;
     protected boolean survole;
     protected boolean active;
 
-    protected Forme(Element<?> parent, String nom, float[] positions, float[] textures, int[] indices) {
+    protected Forme(Element<?> parent, String nom, float[] positions, float[] textures, int[] indices, float[] contour) {
         this.uuid = UUID.randomUUID();
         this.parent = parent;
         this.nom = nom;
@@ -80,13 +80,14 @@ public abstract class Forme implements Identifiable, Survolable, Sujet {
             glBindVertexArray(0);
         }
         this.deplacement = Matrice.identitef(4, 4);
-        this.sommets = Matrice.identitef(4, positions.length / 3).insererParLignes((ligne, colonne, _) -> ligne % 4 == 3 ? 1f : positions[colonne * 3 + ligne]);
         this.transitions = new LinkedList<>();
-        this.gravite = new Float[]{
-                (positions[0] + positions[3] + positions[6] + positions[9]) / 4,
-                (positions[1] + positions[4] + positions[7] + positions[10]) / 4,
-                (positions[2] + positions[5] + positions[8] + positions[11]) / 4
-        };
+        // TODO cas générale, ici fonctionne pour une forme à 4 sommets
+        this.gravite = Matrice.translation(new float[]{
+                -(positions[0] + positions[3] + positions[6] + positions[9]) / 4,
+                -(positions[1] + positions[4] + positions[7] + positions[10]) / 4,
+                -(positions[2] + positions[5] + positions[8] + positions[11]) / 4
+        });
+        this.contour = Matrice.identitef(4, positions.length / 3).insererParLignes((ligne, colonne, _) -> ligne % 4 == 3 ? 1f : contour[colonne * 3 + ligne]);
     }
 
     public void desurvoler() {
@@ -162,13 +163,10 @@ public abstract class Forme implements Identifiable, Survolable, Sujet {
     }
 
     public void deplacer(float[] position, long duree) {
-        float decalagex = position[0] - gravite[0];
-        float decalagey = position[1] - gravite[1];
-        float decalagez = position[2] - gravite[2];
         Float[] depart = transitions.isEmpty()
                 ? new Float[]{deplacement.valeur(0, 3), deplacement.valeur(1, 3), deplacement.valeur(2, 3)}
                 : transitions.getLast().arrive();
-        Float[] arrivee = {decalagex, decalagey, decalagez};
+        Float[] arrivee = gravite.multiplication(Matrice.vecteur(position)).colonne(0);
         transitions.addLast(new Transition<>(deplacement, depart, arrivee, duree) {
             @Override
             protected Float[] multiplierParScalaire(Double scalaire, Float[] valeur) {
@@ -190,6 +188,6 @@ public abstract class Forme implements Identifiable, Survolable, Sujet {
     }
 
     public void preparer(Vision vision) {
-        boite = new Boite(vision.matrice().multiplication(parent.transformation()).multiplication(deplacement).multiplication(sommets));
+        boite = new Boite(vision.matrice().multiplication(parent.transformation()).multiplication(deplacement).multiplication(contour));
     }
 }
