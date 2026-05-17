@@ -188,6 +188,7 @@ public abstract class Forme implements Identifiable, Survolable, Sujet {
     }
 
     public void preparer(Vision vision) {
+        // Coordonnées du contour de la forme dans le référentiel de la vision
         boite = new Boite(vision.matrice().multiplication(parent.transformation()).multiplication(deplacement).multiplication(contour));
     }
 }

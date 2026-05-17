@@ -50,7 +50,7 @@ rv:av*tv$
 bv:-tv$
 lv:-rv$
 define(perspectivefinale(an,ad), limit(perspectivefov(nv,f,av,thv),f,infinity))$
-define(homogeneisation(l,h), matrix([2/l,0,0,-1],[0,-2/h,0,1],[0,0,0,1],[0,0,0,1]))$
+define(homogeneisation(l,h), matrix([l/2,0,0,l/2],[0,-h/2,0,h/2],[0,0,1,0],[0,0,0,1]))$
 define(vecteurecran(rgx,rgy), matrix([rgx],[rgy],[0],[1]))$
 define(vision(vx,vy), translation(-vx,-vy,0))$
 
@@ -94,7 +94,7 @@ normecarre(vec) := produitscalaire(vec,vec)$
 decomposition(vec,vecsbase) := makelist(ratsimp(produitscalaire(vec,vecbase)/normecarre(vecbase)),vecbase,vecsbase)$
 coordonnees(vec) := makelist(vec[i,1]/vec[4,1],i,1,3)$
 
-define(direction(an,ad,l,h,vx,vy,rgx,rgy),invert(vision(vx,vy)).invert(perspectivefinale(an,ad)).homogeneisation(l,h).vecteurecran(rgx,rgy))$
+define(direction(an,ad,l,h,vx,vy,rgx,rgy),invert(vision(vx,vy)).invert(perspectivefinale(an,ad)).invert(homogeneisation(l,h)).vecteurecran(rgx,rgy))$
 define(rayonselection(ox,oy,oz,dirx,diry,dirz,t),t*vecteur(dirx,diry,-1,0) + vecteur(ox,oy,-oz,1))$
 define(baseboite(minx,miny,maxx,maxy,minz,maxz), [matrix([maxx - minx],[0],[0]),matrix([0],[maxy - miny],[0]),matrix([0],[0],[maxz - minz])])$
 ress:[
@@ -117,14 +117,13 @@ print("Matrice de translation : ", translation(dx,dy,dz));
 print("Matrice d'agrandissement' : ", agrandissement(sx,sy,sz));
 print("Matrice de rotation : ", rotation(thx,thy,thz));
 print("Matrice de transformation : ", transformation(dx,dy,dz,sx,sy,sz,thx,thy,thz));
-print("Matrice de projection : ", perspectivefinale(an,ad));
-print("Matrice d'homogénéisation des coordonnées de l'écran : ", homogeneisation(l,h));
+print("Matrice de projection : ", perspectivefinale(an,ad), invert(perspectivefinale(an,ad)));
+print("Matrice d'homogénéisation des coordonnées de l'écran : ", homogeneisation(l,h), invert(homogeneisation(l,h)));
 print("Matrice de vision : ", vision(dx,dy))$
-print("Matrice d'homogénéisation : ", homogeneisation(l,h))$
 print("Point fixe de la matrice de projection :", pointfixe(an,ad))$
 print("Coordonnées texture d'une case du cadrillage : ", f1(repx,repy,x,y), f2(repx,repy,x,y), f3(repx,repy,x,y), f4(repx,repy,x,y))$
 print("Distance maximale pour un cadrillage : ", distancecadrillage(an,ad,repx,repy,interval))$
-print("Direction de la ligne de sélection : ", direction(an,ad,l,h,vx,vy,rgx,rgy))$
+print("Direction de la ligne de sélection : ", invert(perspectivefinale(an,ad)).invert(homogeneisation(l,h)), direction(an,ad,l,h,vx,vy,rgx,rgy))$
 print("Rayon de sélection : ", rayonselection(ox,oy,oz,dirx,diry,dirz,t))$
 print("Base d'une boite : ", baseboite(minx,miny,maxx,maxy,minz,maxz))$
 print("Points d'intersections d'une boite : ", pointsintersectionsboite(ox,oy,oz,dirx,diry,dirz))$

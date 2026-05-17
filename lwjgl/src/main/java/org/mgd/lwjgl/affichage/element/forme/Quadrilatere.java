@@ -25,12 +25,12 @@ public class Quadrilatere extends Forme {
     @Override
     public boolean survoler(Vision vision, EvenementSouris evenementSouris) {
         if (evenementSouris.calcul()) {
-            float[] direction = evenementSouris.direction();
-            if (direction[0] == 0.0 && direction[1] == 0.0) {
+            float[] coordonneesVision = evenementSouris.coordonnesVision();
+            if (coordonneesVision[0] == 0.0 && coordonneesVision[1] == 0.0) {
                 survole = false;
             } else {
-                double differencex = -boite.minimumz() * direction[0] - boite.minimumx();
-                double differencey = -boite.minimumz() * direction[1] - boite.minimumy();
+                double differencex = -boite.minimumz() * coordonneesVision[0] - boite.minimumx();
+                double differencey = -boite.minimumz() * coordonneesVision[1] - boite.minimumy();
                 survole = 0 <= differencex && differencex <= boite.maximunx() - boite.minimumx()
                         && 0 <= differencey && differencey <= boite.maximuny() - boite.minimumy();
             }

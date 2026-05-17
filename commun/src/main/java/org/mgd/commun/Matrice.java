@@ -146,4 +146,17 @@ public class Matrice<T> {
         IntStream.range(0, nombreLignes).forEach(ligne -> nouvelle.valeurs[ligne] = Arrays.stream(operations).map(operation -> operation.apply(valeurs[ligne])).toArray(taille -> (T[]) Array.newInstance(classe, taille)));
         return nouvelle;
     }
+
+    public void copierf(float[] coordonneesMonde, VersFloatFonction<T> convertisseur) {
+        parcoursParLignes((_, _, index, valeur) -> {
+            if (index < coordonneesMonde.length) {
+                coordonneesMonde[index] = convertisseur.appliquer(valeur);
+            }
+        });
+    }
+
+    @FunctionalInterface
+    public interface VersFloatFonction<T> {
+        float appliquer(T valeur);
+    }
 }

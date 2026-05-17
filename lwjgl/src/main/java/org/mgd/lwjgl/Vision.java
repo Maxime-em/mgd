@@ -4,7 +4,11 @@ import org.mgd.commun.Matrice;
 import org.mgd.lwjgl.interne.Ombreur;
 
 public class Vision {
-    private final Matrice<Float> matrice = Matrice.identitef(4, 4);
+    private final Matrice<Float> matrice = Matrice.parValeurs(4, 4,
+            1f, 0f, 0f, 0f,
+            0f, 1f, 0f, 0f,
+            0f, 0f, 1f, -1f,
+            0f, 0f, 0f, 1f);
 
     public void produire() {
         Ombreur.configurer("vision", matrice);

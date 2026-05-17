@@ -1,7 +1,7 @@
 package org.mgd.lwjgl;
 
 import org.lwjgl.glfw.GLFWVidMode;
-import org.mgd.commun.ConstantesMathematiques;
+import org.mgd.commun.Matrice;
 import org.mgd.lwjgl.affichage.Primitif;
 import org.mgd.lwjgl.affichage.element.Element;
 import org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute;
@@ -41,12 +41,11 @@ public class Fenetre implements Identifiable {
     private final int largeur;
     private final int hauteur;
 
+    private final Homogeneite homogeneite;
     private final Projection projection;
     private final Vision vision;
     private final SortedSet<Element<?>> enfants;
     private final LinkedList<AffichageTeteHaute> affichages;
-    private final int ratioNumerateur;
-    private final int ratioDenominateur;
     private final EvenementSouris evenementSouris;
     private final EvenementClavier evenementClavier;
     private final EvenementAmorcages evenementAmorcages;
@@ -61,7 +60,6 @@ public class Fenetre implements Identifiable {
 
     protected Fenetre(String titre, int hauteur, int ratioNumerateur, int ratioDenominateur) throws LwjglException {
         this.uuid = UUID.randomUUID();
-        this.projection = new Projection();
         this.vision = new Vision();
         this.enfants = new TreeSet<>(Comparator.<Element<?>, Integer>comparing(Element::priorite).reversed().thenComparing(Element::identifiant));
         this.affichages = new LinkedList<>();
@@ -85,10 +83,10 @@ public class Fenetre implements Identifiable {
         glfwWindowHint(GLFW_SAMPLES, 4);
 
         // Création d'une nouvelle fenêtre
-        this.ratioNumerateur = ratioNumerateur;
-        this.ratioDenominateur = ratioDenominateur;
         this.hauteur = hauteur;
-        this.largeur = this.ratioNumerateur * this.hauteur / this.ratioDenominateur;
+        this.largeur = ratioNumerateur * this.hauteur / ratioDenominateur;
+        this.homogeneite = new Homogeneite(this.hauteur, this.largeur);
+        this.projection = new Projection(ratioNumerateur, ratioDenominateur);
         this.identifiant = glfwCreateWindow(this.largeur, this.hauteur, titre, NULL, NULL);
         if (this.identifiant == 0L) throw new LwjglException("Impossible de créer la fenêtre.");
 
@@ -230,6 +228,7 @@ public class Fenetre implements Identifiable {
 
         nvgDelete(contexteNvg);
 
+        homogeneite.liberer();
         projection.liberer();
         vision.liberer();
         if (menu != null) {
@@ -464,31 +463,27 @@ public class Fenetre implements Identifiable {
     }
 
     public class EvenementSouris extends Evenement {
-        private final float[] coordonnees;
-        private final float[] coordonneesHomogenes;
-        private final float[] direction;
+        private final float[] coordonneesEcran;
+        private final float[] coordonneesVision;
         private boolean calcul;
         private boolean selection;
         private boolean droite;
 
         public EvenementSouris() {
-            this.coordonnees = new float[2];
-            this.coordonneesHomogenes = new float[2];
-            this.direction = new float[3];
+            this.coordonneesEcran = new float[3];
+            this.coordonneesVision = new float[3];
         }
 
         public EvenementSouris(EvenementSouris evenement) {
             this.accompli = false;
-            this.coordonnees = new float[2];
-            this.coordonneesHomogenes = new float[2];
-            this.direction = new float[3];
+            this.coordonneesEcran = new float[3];
+            this.coordonneesVision = new float[3];
             this.calcul = evenement.calcul;
             this.selection = evenement.selection;
             this.droite = evenement.droite;
 
-            System.arraycopy(evenement.coordonnees, 0, this.coordonnees, 0, this.coordonnees.length);
-            System.arraycopy(evenement.coordonneesHomogenes, 0, this.coordonneesHomogenes, 0, this.coordonneesHomogenes.length);
-            System.arraycopy(evenement.direction, 0, this.direction, 0, this.direction.length);
+            System.arraycopy(evenement.coordonneesEcran, 0, this.coordonneesEcran, 0, this.coordonneesEcran.length);
+            System.arraycopy(evenement.coordonneesVision, 0, this.coordonneesVision, 0, this.coordonneesVision.length);
 
             evenement.selection = false;
             evenement.droite = false;
@@ -496,12 +491,12 @@ public class Fenetre implements Identifiable {
         }
 
         public boolean inclus(float abscisse, float ordonnee, float largeur, float hauteur) {
-            return abscisse <= coordonnees[0] && coordonnees[0] <= abscisse + largeur
-                    && ordonnee <= coordonnees[1] && coordonnees[1] <= ordonnee + hauteur;
+            return abscisse <= coordonneesEcran[0] && coordonneesEcran[0] <= abscisse + largeur
+                    && ordonnee <= coordonneesEcran[1] && coordonneesEcran[1] <= ordonnee + hauteur;
         }
 
-        public float[] direction() {
-            return direction;
+        public float[] coordonnesVision() {
+            return coordonneesVision;
         }
 
         public boolean calcul() {
@@ -517,13 +512,11 @@ public class Fenetre implements Identifiable {
         }
 
         protected void gererPosition(double abscisse, double ordonnee) {
-            coordonnees[0] = (float) abscisse;
-            coordonnees[1] = (float) ordonnee;
-            coordonneesHomogenes[0] = 2f * coordonnees[0] / largeur - 1f;
-            coordonneesHomogenes[1] = 1f - 2f * coordonnees[1] / hauteur;
-            direction[0] = ratioNumerateur * (2f * coordonnees[0] - largeur) / (ConstantesMathematiques.RACINE_TROIS * largeur * ratioDenominateur);
-            direction[1] = (hauteur - 2f * coordonnees[1]) / (ConstantesMathematiques.RACINE_TROIS * hauteur);
-            direction[2] = -1f;
+            coordonneesEcran[0] = (float) abscisse;
+            coordonneesEcran[1] = (float) ordonnee;
+            coordonneesEcran[2] = -1f;
+            // Coordonnées du clique dans le référentiel de la vision
+            projection.inverse.multiplication(homogeneite.inverse).multiplication(Matrice.vecteur(coordonneesEcran)).copierf(coordonneesVision, Float.class::cast);
         }
 
         protected void gererInterieur(boolean interieur) {
