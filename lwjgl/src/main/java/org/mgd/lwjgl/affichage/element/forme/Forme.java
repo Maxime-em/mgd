@@ -3,12 +3,9 @@ package org.mgd.lwjgl.affichage.element.forme;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.system.MemoryStack;
 import org.mgd.commun.Matrice;
+import org.mgd.lwjgl.*;
 import org.mgd.lwjgl.Fenetre.EvenementAmorcages;
 import org.mgd.lwjgl.Fenetre.EvenementSouris;
-import org.mgd.lwjgl.Programme;
-import org.mgd.lwjgl.Pseudo;
-import org.mgd.lwjgl.Survolable;
-import org.mgd.lwjgl.Vision;
 import org.mgd.lwjgl.affichage.Sujet;
 import org.mgd.lwjgl.affichage.Transition;
 import org.mgd.lwjgl.affichage.element.Element;
@@ -33,12 +30,12 @@ public abstract class Forme implements Identifiable, Survolable, Sujet {
     private final int vecteurs;
     private final Set<Integer> tanpom;
     private final Matrice<Float> gravite;
-    private final Matrice<Float> contour;
-    protected Boite boite;
+    private final Matrice<Float> boite;
+    protected Contour contour;
     protected boolean survole;
     protected boolean active;
 
-    protected Forme(Element<?> parent, String nom, float[] positions, float[] textures, int[] indices, float[] contour) {
+    protected Forme(Element<?> parent, String nom, float[] positions, float[] boite, float[] textures, int[] indices) {
         this.uuid = UUID.randomUUID();
         this.parent = parent;
         this.nom = nom;
@@ -87,7 +84,7 @@ public abstract class Forme implements Identifiable, Survolable, Sujet {
                 -(positions[1] + positions[4] + positions[7] + positions[10]) / 4,
                 -(positions[2] + positions[5] + positions[8] + positions[11]) / 4
         });
-        this.contour = Matrice.identitef(4, positions.length / 3).insererParLignes((ligne, colonne, _) -> ligne % 4 == 3 ? 1f : contour[colonne * 3 + ligne]);
+        this.boite = Matrice.identitef(4, boite.length / 3).insererParLignes((ligne, colonne, _) -> ligne % 4 == 3 ? 1f : boite[colonne * 3 + ligne]);
     }
 
     public void desurvoler() {
@@ -115,6 +112,12 @@ public abstract class Forme implements Identifiable, Survolable, Sujet {
     @Override
     public boolean visible() {
         return true;
+    }
+
+    @Override
+    public boolean survoler(Vision vision, EvenementSouris evenementSouris) {
+        survole = evenementSouris.calcul() && contour.intersecter(evenementSouris.coordonnesVision());
+        return survole;
     }
 
     @Override
@@ -189,6 +192,6 @@ public abstract class Forme implements Identifiable, Survolable, Sujet {
 
     public void preparer(Vision vision) {
         // Coordonnées du contour de la forme dans le référentiel de la vision
-        boite = new Boite(vision.matrice().multiplication(parent.transformation()).multiplication(deplacement).multiplication(contour));
+        contour = new Contour(vision.matrice().multiplication(parent.transformation()).multiplication(deplacement).multiplication(boite));
     }
 }
