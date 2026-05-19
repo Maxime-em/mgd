@@ -126,10 +126,10 @@ public class Fenetre implements Identifiable {
         this.menu = menu;
     }
 
-    public void basculer() {
-        menu.basculer();
-        enfants.forEach(Primitif::basculer);
-        affichages.forEach(Primitif::basculer);
+    public void apparaitre() {
+        menu.disparaitre();
+        enfants.forEach(Primitif::apparaitre);
+        affichages.stream().filter(Primitif::apparaitreParDefaut).forEach(Primitif::apparaitre);
     }
 
     public void creerContexteNvg() throws LwjglException {
@@ -169,7 +169,7 @@ public class Fenetre implements Identifiable {
         return polices.get(identifiant);
     }
 
-    public void maj(long accumulateur) {
+    public void maj(long accumulateur) throws LwjglException {
         EvenementClavier evenementClavierCourant = new EvenementClavier(evenementClavier);
         EvenementSouris evenementSourisCourant = new EvenementSouris(evenementSouris);
         EvenementAmorcages evenementAmorcagesCourant = new EvenementAmorcages(evenementAmorcages);
@@ -201,8 +201,12 @@ public class Fenetre implements Identifiable {
             notifier(evenementAmorcagesCourant);
 
             enfants.forEach(enfant -> enfant.preparer(vision));
-            affichages.forEach(affichage -> affichage.maj(vision, evenementSourisCourant, evenementAmorcagesCourant));
-            enfants.forEach(enfant -> enfant.maj(vision, evenementSourisCourant, evenementAmorcagesCourant));
+            for (AffichageTeteHaute affichage : affichages) {
+                affichage.maj(vision, evenementSourisCourant, evenementAmorcagesCourant);
+            }
+            for (Element<?> enfant : enfants) {
+                enfant.maj(vision, evenementSourisCourant, evenementAmorcagesCourant);
+            }
 
             if (evenementSourisCourant.inacheve() && evenementSourisCourant.selection()) {
                 amorcer(Collections.singleton(this), evenementSourisCourant.droite());
@@ -251,16 +255,6 @@ public class Fenetre implements Identifiable {
     public <T extends Identifiable> void souscrire(T identifiable, DetecteurAmorcage<T> gauche) {
         souscrireInterne(identifiable, amorcage -> {
             if (!amorcage.droite()) {
-                gauche.invoquer(identifiable);
-            }
-        });
-    }
-
-    public <T extends Identifiable> void souscrire(T identifiable, DetecteurAmorcage<T> gauche, DetecteurAmorcage<T> droite) {
-        souscrireInterne(identifiable, amorcage -> {
-            if (amorcage.droite()) {
-                droite.invoquer(identifiable);
-            } else {
                 gauche.invoquer(identifiable);
             }
         });
@@ -332,6 +326,14 @@ public class Fenetre implements Identifiable {
 
     public int hauteur() {
         return hauteur;
+    }
+
+    public Homogeneite homogeneite() {
+        return homogeneite;
+    }
+
+    public Projection projection() {
+        return projection;
     }
 
     public SortedSet<Element<?>> enfants() {

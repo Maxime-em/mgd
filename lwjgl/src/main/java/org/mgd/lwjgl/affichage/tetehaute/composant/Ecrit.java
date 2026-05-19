@@ -54,6 +54,10 @@ public class Ecrit<T> implements Identifiable, Survolable {
         this.ordonnee = ordonnee;
     }
 
+    public void elargir(int largeur) {
+        dimensions[2] = largeur - dimensions[0];
+    }
+
     @Override
     public UUID uuid() {
         return uuid;
@@ -61,6 +65,10 @@ public class Ecrit<T> implements Identifiable, Survolable {
 
     public T objet() {
         return objet;
+    }
+
+    public float[] dimensions() {
+        return dimensions;
     }
 
     public int largeur() {

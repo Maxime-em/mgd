@@ -400,7 +400,7 @@ public class Jeu {
         return partieEnCours.getMonde().getRegion(ligne, colonne);
     }
 
-    public Stream<Region> fluxRegionsOccuper() {
-        return partieEnCours.getMonde().fluxRegions().filter(region -> !region.getArmees().isEmpty());
+    public List<Region> fluxRegionsOccuper() {
+        return partieEnCours.getMonde().fluxRegions().filter(region -> !region.getArmees().isEmpty()).toList();
     }
 }

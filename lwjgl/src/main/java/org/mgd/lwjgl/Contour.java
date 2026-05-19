@@ -69,6 +69,8 @@ public class Contour {
      * @param direction Coordonnées en x et y du vecteur directeur de la droite.
      * @return Vrai si la droite de vecteur directeur d = (dirx, diry, -1) intersecte au moins un plan (u, v, w) à
      * l'intérieur du parallélogramme formé par les points u, v, w.
+     * TODO Si test de profondeur conserver la coordonnées en z du point d'intersection (dirx * alpha, diry * alpha, -alpha).
+     * Puis associer un poids en fonction de cette coordonnées au survole de la forme.
      */
     public boolean intersecter(float... direction) {
         return plans.stream().anyMatch(plan -> {
@@ -96,6 +98,17 @@ public class Contour {
                     (-alpha - plan[0][2]) * (plan[2][2] - plan[0][2]) + (direction[1] * alpha - plan[0][1]) * (plan[2][1] - plan[0][1]) + (direction[0] * alpha - plan[0][0]) * (plan[2][0] - plan[0][0])
             };
             return (0 <= scalaires[0] && scalaires[0] <= normeCarreUV) && (0 <= scalaires[1] && scalaires[1] <= normeCarreUW);
+        });
+    }
+
+    public Matrice<Float> projeterPlanEcran() {
+        return Matrice.identitef(4, plans.size() * 3).insererParLignes((ligne, colonne, _) -> {
+            if (ligne < 2) {
+                Float[] vecteur = plans.get(colonne / 3)[colonne % 3];
+                return -vecteur[ligne] / vecteur[2];
+            } else {
+                return -1f;
+            }
         });
     }
 }

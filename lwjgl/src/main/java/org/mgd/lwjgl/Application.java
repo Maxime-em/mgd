@@ -62,7 +62,7 @@ public abstract class Application {
         fenetre.montrer();
     }
 
-    private void boucler() {
+    private void boucler() throws LwjglException {
         /*
          * Run the rendering loop until the user has attempted to close
          * the window or has pressed the ESCAPE key.
@@ -105,7 +105,7 @@ public abstract class Application {
         fenetre.liberer();
     }
 
-    private void maj(long accumulateur) {
+    private void maj(long accumulateur) throws LwjglException {
         fenetre.maj(accumulateur);
     }
 

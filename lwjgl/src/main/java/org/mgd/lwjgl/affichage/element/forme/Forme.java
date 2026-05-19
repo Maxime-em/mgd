@@ -194,4 +194,8 @@ public abstract class Forme implements Identifiable, Survolable, Sujet {
         // Coordonnées du contour de la forme dans le référentiel de la vision
         contour = new Contour(vision.matrice().multiplication(parent.transformation()).multiplication(deplacement).multiplication(boite));
     }
+
+    public Matrice<Float> projeterPlanEcran() {
+        return contour.projeterPlanEcran();
+    }
 }

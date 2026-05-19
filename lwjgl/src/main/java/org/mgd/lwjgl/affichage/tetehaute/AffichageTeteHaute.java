@@ -17,6 +17,7 @@ public abstract class AffichageTeteHaute extends Primitif implements Acteur {
     public static final NVGCouleur ROUGE_COQUELICOT_A50;
     public static final NVGCouleur INDIGO_A50;
     public static final NVGCouleur AUBURN;
+    public static final NVGCouleur NOIR_A15;
 
     static {
         NVGColor nvg = NVGColor.create();
@@ -53,12 +54,19 @@ public abstract class AffichageTeteHaute extends Primitif implements Acteur {
         nvg.b(12f / 255);
         nvg.a(1f);
         AUBURN = new NVGCouleur("Auburn", nvg);
+
+        nvg = NVGColor.create();
+        nvg.r(0f);
+        nvg.g(0f);
+        nvg.b(0f);
+        nvg.a(0.15f);
+        NOIR_A15 = new NVGCouleur("Noir 15% transparent", nvg);
     }
 
     protected final long contexte;
 
-    protected AffichageTeteHaute(Fenetre parent, boolean estMenu) throws LwjglException {
-        super(parent);
+    protected AffichageTeteHaute(Fenetre parent, boolean estMenu, boolean apparaitreParDefaut) throws LwjglException {
+        super(parent, apparaitreParDefaut);
         this.contexte = parent.contexteNvg();
         if (this.contexte == 0L) {
             throw new LwjglException("Il faut créer un contexte NVG avant d'instancier un affichage.");

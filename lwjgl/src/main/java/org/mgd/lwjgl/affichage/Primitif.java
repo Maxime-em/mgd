@@ -4,17 +4,23 @@ import org.mgd.lwjgl.Fenetre;
 
 public abstract class Primitif {
     protected final Fenetre parent;
+    protected final boolean apparaitreParDefaut;
     protected boolean visible;
 
-    protected Primitif(Fenetre parent) {
+    protected Primitif(Fenetre parent, boolean apparaitreParDefaut) {
         this.parent = parent;
-    }
-
-    public void basculer() {
-        visible = !visible;
+        this.apparaitreParDefaut = apparaitreParDefaut;
     }
 
     public void apparaitre() {
         visible = true;
+    }
+
+    public void disparaitre() {
+        visible = false;
+    }
+
+    public boolean apparaitreParDefaut() {
+        return apparaitreParDefaut;
     }
 }

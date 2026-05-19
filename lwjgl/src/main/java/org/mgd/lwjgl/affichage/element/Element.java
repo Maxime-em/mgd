@@ -2,6 +2,7 @@ package org.mgd.lwjgl.affichage.element;
 
 import org.mgd.commun.Matrice;
 import org.mgd.lwjgl.Fenetre;
+import org.mgd.lwjgl.Fenetre.EvenementSouris;
 import org.mgd.lwjgl.Vision;
 import org.mgd.lwjgl.affichage.Animateur;
 import org.mgd.lwjgl.affichage.Primitif;
@@ -29,7 +30,7 @@ public abstract class Element<G> extends Primitif implements Animateur {
                       float[] agrandissement,
                       float[] rotation,
                       Map<String, Path> textures) throws LwjglException {
-        super(parent);
+        super(parent, true);
         this.nom = nom;
         this.priorite = priorite;
         this.transformation = Matrice.transformation(translation, agrandissement, rotation);
@@ -49,7 +50,7 @@ public abstract class Element<G> extends Primitif implements Animateur {
     }
 
     @Override
-    public boolean survoler(Vision vision, Fenetre.EvenementSouris evenementSouris) {
+    public boolean survoler(Vision vision, EvenementSouris evenementSouris) {
         formesSurvoles = Collections.emptyList();
         if (visible) {
             for (G groupe : ordre) {
@@ -67,7 +68,7 @@ public abstract class Element<G> extends Primitif implements Animateur {
     }
 
     @Override
-    public void desurvoler() {
+    public void retirer(Vision vision, EvenementSouris evenementSouris) {
         formesSurvoles.forEach(Forme::desurvoler);
         formesSurvoles = Collections.emptyList();
     }

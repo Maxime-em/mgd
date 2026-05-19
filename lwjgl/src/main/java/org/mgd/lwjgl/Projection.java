@@ -30,4 +30,8 @@ public class Projection {
     public void liberer() {
         // Rien à faire
     }
+
+    public Matrice<Float> matrice() {
+        return matrice;
+    }
 }

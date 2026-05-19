@@ -25,7 +25,7 @@ public class Menu extends AffichageTeteHaute implements Animateur {
     private LinkedList<Ecrit<?>> ecritsSurvoles;
 
     public Menu(Fenetre parent, Collection<Ecrit<?>> titres, Collection<Ecrit<?>> textes) throws LwjglException {
-        super(parent, true);
+        super(parent, true, true);
         this.identifiantPremierePage = UUID.randomUUID();
         this.pages = new HashMap<>();
         this.ecritsSurvoles = new LinkedList<>();
@@ -96,7 +96,7 @@ public class Menu extends AffichageTeteHaute implements Animateur {
     }
 
     @Override
-    public void desurvoler() {
+    public void retirer(Vision vision, Fenetre.EvenementSouris evenementSouris) {
         ecritsSurvoles.clear();
     }
 
@@ -113,7 +113,7 @@ public class Menu extends AffichageTeteHaute implements Animateur {
     }
 
     @Override
-    public void maj(Vision vision, Fenetre.EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) {
+    public void maj(Vision vision, Fenetre.EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) throws LwjglException {
         Animateur.super.maj(vision, evenementSouris, evenementAmorcagesCourant);
         evenementAmorcagesCourant.amorcages()
                 .stream()

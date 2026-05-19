@@ -34,7 +34,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
     private G groupe;
 
     public BarreActions(Fenetre parent, Disposition disposition, int abcisses, int ordonnee, int longueur) throws LwjglException {
-        super(parent, false);
+        super(parent, false, true);
         this.disposition = disposition;
         this.abcisses = abcisses;
         this.ordonnee = ordonnee;
@@ -135,23 +135,31 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
     }
 
     @Override
+    public void maj(Vision vision, EvenementSouris evenementSouris, Fenetre.EvenementAmorcages evenementAmorcagesCourant) throws LwjglException {
+        Animateur.super.maj(vision, evenementSouris, evenementAmorcagesCourant);
+        actionsLiees.addAll(
+                groupes.getOrDefault(groupe, Collections.emptyList())
+                        .stream()
+                        .filter(action -> action.liaisons().stream().anyMatch(liaison -> liaison.visible() && liaison.survoler(vision, evenementSouris)))
+                        .toList());
+    }
+
+    @Override
     public boolean survoler(Vision vision, EvenementSouris evenementSouris) {
         actionsSurvolees.clear();
         actionsLiees.clear();
         if (visible) {
-            groupes.getOrDefault(groupe, Collections.emptyList()).forEach(action -> {
-                if (action.survoler(vision, evenementSouris)) {
-                    actionsSurvolees.add(action);
-                } else if (action.liaisons().stream().anyMatch(liaison -> liaison.visible() && liaison.survoler(vision, evenementSouris))) {
-                    actionsLiees.add(action);
-                }
-            });
+            actionsSurvolees.addAll(
+                    groupes.getOrDefault(groupe, Collections.emptyList())
+                            .stream()
+                            .filter(action -> action.survoler(vision, evenementSouris))
+                            .toList());
         }
         return !actionsSurvolees.isEmpty();
     }
 
     @Override
-    public void desurvoler() {
+    public void retirer(Vision vision, EvenementSouris evenementSouris) {
         actionsSurvolees.clear();
         actionsLiees.clear();
     }

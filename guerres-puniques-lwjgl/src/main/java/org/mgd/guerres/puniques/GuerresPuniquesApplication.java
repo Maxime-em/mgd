@@ -11,10 +11,8 @@ import org.mgd.lwjgl.Programme;
 import org.mgd.lwjgl.Pseudo;
 import org.mgd.lwjgl.affichage.element.Cadrillage;
 import org.mgd.lwjgl.affichage.element.forme.Forme;
-import org.mgd.lwjgl.affichage.tetehaute.BarreActions;
-import org.mgd.lwjgl.affichage.tetehaute.Disposition;
+import org.mgd.lwjgl.affichage.tetehaute.*;
 import org.mgd.lwjgl.affichage.tetehaute.Informations;
-import org.mgd.lwjgl.affichage.tetehaute.Menu;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Action;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Ecrit;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
@@ -60,6 +58,7 @@ public class GuerresPuniquesApplication extends Application {
     private final List<Ecrit<UUID>> identifiablesChargementsParties;
     private final List<Action<CivilisationArmeeTypeUnite>> identifiablesArmeeAjouterUnite;
     private final List<Action<CivilisationArmee>> identifiablesArmeesDeployer;
+    private final List<Ecrit<Armee>> identifiablesArmeesAttaquer;
     private final List<Action<CivilisationArmee>> identifiablesArmees;
     private final Map<Forme, Armee> identifiablesJeton;
     private final Map<Forme, Integer[]> identifiablesCase;
@@ -69,6 +68,7 @@ public class GuerresPuniquesApplication extends Application {
     private final Map<Armee, Action<CivilisationArmee>> actionsArmeesDeployer;
     private final Map<Armee, Action<CivilisationArmee>> actionsArmees;
     private final Map<Civilisation, BarreActions<String>> barresActionsCivilisations;
+    private final Map<Armee, ListeActions<Armee>> listesActionsArmees;
     private Action<Void> lancerDes;
     private Action<Void> finirTour;
     private Ecrit<Void> nouvellePartie;
@@ -108,6 +108,7 @@ public class GuerresPuniquesApplication extends Application {
             this.identifiablesChargementsParties = new ArrayList<>();
             this.identifiablesArmeeAjouterUnite = new ArrayList<>();
             this.identifiablesArmeesDeployer = new ArrayList<>();
+            this.identifiablesArmeesAttaquer = new ArrayList<>();
             this.identifiablesArmees = new ArrayList<>();
             this.identifiablesJeton = new HashMap<>();
             this.identifiablesCase = new HashMap<>();
@@ -117,6 +118,7 @@ public class GuerresPuniquesApplication extends Application {
             this.barresActionsCivilisations = new HashMap<>();
             this.actionsArmeeAjouterUnite = new HashMap<>();
             this.actionsArmeesDeployer = new HashMap<>();
+            this.listesActionsArmees = new HashMap<>();
         } catch (JeuException e) {
             throw new LwjglException(e);
         }
@@ -148,7 +150,7 @@ public class GuerresPuniquesApplication extends Application {
         try {
             DetecteurService.obtenir().souscrire(fenetre, (cle, _, action, _) -> {
                 if (cle == GLFW_KEY_ESCAPE && action == GLFW_PRESS && jeu.avecPartieEnCours()) {
-                    fenetre.basculer();
+                    fenetre.apparaitre();
                 }
             });
             construireMenu();
@@ -159,11 +161,18 @@ public class GuerresPuniquesApplication extends Application {
         }
     }
 
-    private void placer(Armee armee, Region region) {
+    private void placer(Armee armee, Region region) throws LwjglException {
         Forme jeton = cadrillage.ajouterJeton(region.ligne(), region.colonne(), armee.getType().ligne(), armee.getType().colonne());
         identifiablesJeton.put(jeton, armee);
         jetonsParArmee.put(armee, jeton);
         actionsArmees.get(armee).lier(jeton);
+
+        Ecrit<Armee> actionAttaqueArmee = new Ecrit<>(armee, 24f, fenetre.obtenirPolice(POLICE_DEFAUT), BLANC, () -> "Attaquer");
+        identifiablesArmeesAttaquer.add(actionAttaqueArmee);
+
+        ListeActions<Armee> listeActionsArmee = new ListeActions<>(fenetre, 10, 10, actionAttaqueArmee);
+        listeActionsArmee.lier(jeton);
+        listesActionsArmees.put(armee, listeActionsArmee);
     }
 
     private Ecrit<UUID> ecritSauvegarde(UUID uuidFichier, String nom, NVGPolice police) {
@@ -204,7 +213,7 @@ public class GuerresPuniquesApplication extends Application {
                 menu.premierePage();
                 barreActionsGenerale.afficher(fenetre.uuid());
                 barresActionsCivilisations.forEach((civilisation, barreActions) -> barreActions.afficher(civilisation.getNom()));
-                fenetre.basculer();
+                fenetre.apparaitre();
             } catch (LwjglException e) {
                 LOGGER.error("Impossible de construire le jeu", e);
             }
@@ -212,8 +221,12 @@ public class GuerresPuniquesApplication extends Application {
         jeu.souscription((ChangementDesCivilisation) _ -> informationsDesCivilisation.afficher());
         jeu.souscription((ChangementDesActions) _ -> informationDesActions.afficher());
         jeu.souscription((ChangementDeploiementArmee) (armee, region) -> {
-            placer(armee, region);
-            jetonsParArmee.get(armee).activer();
+            try {
+                placer(armee, region);
+                jetonsParArmee.get(armee).activer();
+            } catch (LwjglException e) {
+                LOGGER.error("Impossible de déployer une armée", e);
+            }
         });
         jeu.souscription((ChangementDeplacementArmee) (armee, region) -> cadrillage.deplacer(jetonsParArmee.get(armee), region.ligne(), region.colonne()));
         jeu.souscription((ChangementSelectionArmee) armee -> {
@@ -252,16 +265,15 @@ public class GuerresPuniquesApplication extends Application {
             CivilisationArmeeTypeUnite objet = action.objet();
             jeu.rattacher(objet.civilisation, objet.armee, objet.typeUnite);
         });
-        fenetre.souscrire("Armées", identifiablesArmees,
-                action -> jeu.amorcer(action.objet().armee),
-                action -> jeu.attaquer(action.objet().armee));
+        fenetre.souscrire("Armées", identifiablesArmees, action -> jeu.amorcer(action.objet().armee));
         fenetre.souscrire("Déploiements de armée", identifiablesArmeesDeployer, action -> {
             CivilisationArmee objet = action.objet();
             jeu.deployerArmee(objet.civilisation, objet.armee);
         });
+        fenetre.souscrire("Attaques d'armée", identifiablesArmeesAttaquer, action -> jeu.attaquer(action.objet()));
         fenetre.souscrire("Jetons", identifiablesJeton.keySet(),
                 forme -> jeu.amorcer(identifiablesJeton.get(forme)),
-                forme -> jeu.attaquer(identifiablesJeton.get(forme)));
+                forme -> listesActionsArmees.get(identifiablesJeton.get(forme)).placer(fenetre.projection(), fenetre.homogeneite(), forme).apparaitre());
         fenetre.souscrire("Cases", identifiablesCase.keySet(), forme -> {
             Integer[] index = identifiablesCase.get(forme);
             jeu.deplacer(index[0], index[1]);
@@ -297,7 +309,12 @@ public class GuerresPuniquesApplication extends Application {
                 new float[]{-tailleCadrillage[1] / 2f, -tailleCadrillage[0] / 2f, PROFONDEUR},
                 Map.of(Pseudo.PSEUDO_BASE, cheminMonde.resolve("monde.png")));
         identifiablesCase.putAll(cadrillage.indexParCase());
-        jeu.fluxRegionsOccuper().forEach(region -> region.getArmees().forEach(armee -> placer(armee, region)));
+
+        for (Region region : jeu.fluxRegionsOccuper()) {
+            for (Armee armee : region.getArmees()) {
+                placer(armee, region);
+            }
+        }
     }
 
     private void construireBarreActions() throws LwjglException {

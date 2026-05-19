@@ -17,7 +17,7 @@ public class Informations extends AffichageTeteHaute {
     private Ecrit<Void> ecrit;
 
     public Informations(Fenetre parent, int abcsisse, int ordonnee, int largeur, int hauteur) throws LwjglException {
-        super(parent, false);
+        super(parent, false, true);
         this.abcsisse = abcsisse;
         this.ordonnee = ordonnee;
         this.largeur = largeur;
