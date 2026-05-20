@@ -17,7 +17,6 @@ import org.mgd.lwjgl.affichage.tetehaute.composant.Action;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Ecrit;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
 import org.mgd.lwjgl.exception.LwjglException;
-import org.mgd.lwjgl.souscription.DetecteurService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,8 +29,6 @@ import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_PRESS;
 import static org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute.BLANC;
 
 public class GuerresPuniquesApplication extends Application {
@@ -83,14 +80,24 @@ public class GuerresPuniquesApplication extends Application {
 
     protected GuerresPuniquesApplication() throws LwjglException, IOException {
         super("Guerres puniques", 960, 16, 9);
+        LOGGER.info("Récupération du chemin du fichier de configuration.");
         Path configuration = Paths.get(System.getProperty(APPLICATION_CONFIGURATION, "./"));
         Path fichier = Files.isRegularFile(configuration) ? configuration : configuration.resolve("configuration.properties");
+        LOGGER.info("Lecture du fichier de configuration : {}.", fichier.toAbsolutePath());
         try (BufferedReader lecteur = Files.newBufferedReader(fichier, StandardCharsets.UTF_8)) {
             Properties proprietes = new Properties();
             proprietes.load(lecteur);
+
+            LOGGER.info("Création du moteur de jeu.");
             this.jeu = new Jeu(proprietes);
 
+            LOGGER.info("Récupération du chemin du dossier racine.");
             Path dossierRacine = Path.of(proprietes.getProperty(APPLICATION_RACINE));
+
+            LOGGER.info("Configuration interne de l'application.");
+            configurer(dossierRacine);
+
+            LOGGER.info("Chargement des programmes d'ombrages de l'application.");
             for (String ombrage : proprietes.getProperty(APPLICATION_OMBRAGES).split(",")) {
                 String[] description = ombrage.split("#");
                 String[] selecteur = description[0].split(":");
@@ -101,6 +108,8 @@ public class GuerresPuniquesApplication extends Application {
                         description[1].split(":"),
                         description[2].split(":"));
             }
+
+            LOGGER.info("Autre configuration de l'application.");
             this.dossierTextures = dossierRacine.resolve("textures");
             this.tailleCadrillage = Arrays.stream(proprietes.getProperty(APPLICATION_TAILLE_CADRILLAGE).split(";")).mapToInt(Integer::parseInt).toArray();
             this.tailleJetons = Arrays.stream(proprietes.getProperty(APPLICATION_TAILLE_JETONS).split(";")).mapToInt(Integer::parseInt).toArray();
@@ -124,8 +133,12 @@ public class GuerresPuniquesApplication extends Application {
         }
     }
 
-    static void main() throws LwjglException, IOException {
-        new GuerresPuniquesApplication().demarrer();
+    static void main() {
+        try {
+            new GuerresPuniquesApplication().demarrer();
+        } catch (Exception e) {
+            LOGGER.error(e);
+        }
     }
 
     private static Ecrit<Void> creerInformations(NVGPolice police, Supplier<String> texte) {
@@ -148,11 +161,6 @@ public class GuerresPuniquesApplication extends Application {
         fenetre.creerImage(IMAGE_FINIR_LE_TOUR, dossierTextures.resolve("generales", "fin_de_tour.png"));
 
         try {
-            DetecteurService.obtenir().souscrire(fenetre, (cle, _, action, _) -> {
-                if (cle == GLFW_KEY_ESCAPE && action == GLFW_PRESS && jeu.avecPartieEnCours()) {
-                    fenetre.apparaitre();
-                }
-            });
             construireMenu();
             construireJeu();
             menu.apparaitre();

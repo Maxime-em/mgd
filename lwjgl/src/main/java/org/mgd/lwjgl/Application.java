@@ -8,13 +8,11 @@ import org.mgd.lwjgl.exception.LwjglException;
 import org.mgd.lwjgl.interne.Ombreur;
 import org.mgd.lwjgl.souscription.DetecteurService;
 
-import java.net.URISyntaxException;
 import java.nio.file.Path;
-import java.util.Objects;
 
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.opengl.GL11.*;
-import static org.mgd.lwjgl.Programme.NOM_PAR_DEFAUT;
+import static org.mgd.lwjgl.Programme.NOM_OMBRAGE_PAR_DEFAUT;
 
 public abstract class Application {
     private static final Logger LOGGER = LogManager.getLogger(Application.class);
@@ -26,20 +24,21 @@ public abstract class Application {
     protected final Fenetre fenetre;
 
     protected Application(String titre, int hauteur, int ratioNumerateur, int ratioDenominateur) throws LwjglException {
-        try {
-            this.fenetre = new Fenetre(titre, hauteur, ratioNumerateur, ratioDenominateur);
-            Programme.nouveau(
-                    NOM_PAR_DEFAUT,
-                    Pseudo.DEFAUT,
-                    Path.of(Objects.requireNonNull(Ombreur.class.getResource("")).toURI()),
-                    new String[]{"vecteur", "fragment"},
-                    new String[]{"projection", "vision", "transformation", "echantillonneur"});
-            DetecteurService.obtenir().souscrire((erreur, description) -> LOGGER.error("Erreur {} lors de l''éxecution de LWJGL - {}", erreur, description));
-        } catch (URISyntaxException e) {
-            throw new LwjglException(e);
-        }
+        LOGGER.info("Inscription au service de détection d'erreurs.");
+        DetecteurService.obtenir().souscrire((erreur, description) -> LOGGER.error("Erreur {} lors de l''éxecution de LWJGL - {}.", erreur, description));
+        LOGGER.info("Construction de la fenêtre.");
+        this.fenetre = new Fenetre(titre, hauteur, ratioNumerateur, ratioDenominateur);
     }
 
+    protected void configurer(Path dossier) {
+        LOGGER.info("Initialisation du programme d'ombrage par défaut depuis {}.", dossier);
+        Programme.nouveau(
+                NOM_OMBRAGE_PAR_DEFAUT,
+                Pseudo.PSEUDO_BASE,
+                dossier,
+                new String[]{"vecteur", "fragment"},
+                new String[]{"projection", "vision", "transformation", "echantillonneur"});
+    }
 
     protected abstract void peupler() throws LwjglException;
 
@@ -52,13 +51,18 @@ public abstract class Application {
     }
 
     private void initialiser() throws LwjglException {
+        LOGGER.info("Initialisation d'OpenGL.");
         GL.createCapabilities();
 
+        LOGGER.info("Création des programmes d'ombrages.");
         for (Programme programme : Ombreur.programmes()) {
             Ombreur.creer(programme);
         }
 
+        LOGGER.info("Peuplement de la fenêtre.");
         peupler();
+
+        LOGGER.info("Affichage de la fenêtre.");
         fenetre.montrer();
     }
 

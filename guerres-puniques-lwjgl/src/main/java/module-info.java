@@ -1,4 +1,4 @@
-module guerres.puniques.lwjgl {
+module org.mgd.guerres.puniques.lwjgl {
     requires org.apache.logging.log4j;
     requires org.lwjgl.glfw;
     requires org.mgd.lwjgl;

@@ -14,7 +14,7 @@ import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
 
 public record Programme(String nom, Map<Integer, Path> cheminsOmbrages, Collection<String> nomsUniformes) {
     public static final String NOM_DOSSIER_OMBRAGES = "ombrages";
-    public static final String NOM_PAR_DEFAUT = "programme";
+    public static final String NOM_OMBRAGE_PAR_DEFAUT = "defaut";
 
     public static String nommer(String nom, String pseudo) {
         return MessageFormat.format("{0}-{1}", nom, pseudo);

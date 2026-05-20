@@ -132,6 +132,12 @@ public class Fenetre implements Identifiable {
         affichages.stream().filter(Primitif::apparaitreParDefaut).forEach(Primitif::apparaitre);
     }
 
+    public void disparaitre() {
+        menu.apparaitre();
+        enfants.forEach(Primitif::disparaitre);
+        affichages.forEach(Primitif::disparaitre);
+    }
+
     public void creerContexteNvg() throws LwjglException {
         this.contexteNvg = nvgCreate(NVG_ANTIALIAS | NVG_STENCIL_STROKES);
         if (this.contexteNvg == 0L) {
@@ -173,6 +179,13 @@ public class Fenetre implements Identifiable {
         EvenementClavier evenementClavierCourant = new EvenementClavier(evenementClavier);
         EvenementSouris evenementSourisCourant = new EvenementSouris(evenementSouris);
         EvenementAmorcages evenementAmorcagesCourant = new EvenementAmorcages(evenementAmorcages);
+
+        if (evenementClavierCourant.basculer && menu.visible()) {
+            apparaitre();
+        } else if (evenementClavierCourant.basculer) {
+            disparaitre();
+        }
+
         if (menu != null && menu.visible()) {
             menu.maj(vision, evenementSourisCourant, evenementAmorcagesCourant);
             notifier(evenementAmorcagesCourant);
@@ -359,6 +372,7 @@ public class Fenetre implements Identifiable {
     private static final class EvenementClavier extends Evenement {
         private int deplacement;
         private int zoom;
+        private boolean basculer;
 
         public EvenementClavier() {
             this.deplacement = DEPLACEMENT_VISION_AUCUN;
@@ -369,8 +383,10 @@ public class Fenetre implements Identifiable {
             this.accompli = false;
             this.deplacement = evenement.deplacement;
             this.zoom = evenement.zoom;
+            this.basculer = evenement.basculer;
 
             evenement.comsommer();
+            evenement.basculer = false;
         }
 
         public void gerer(int cle, int code, int action, int modifications) {
@@ -398,6 +414,10 @@ public class Fenetre implements Identifiable {
 
                     case GLFW_KEY_E:
                         zoom |= ZOOM_VISION_ARRIERE;
+                        break;
+
+                    case GLFW_KEY_ESCAPE:
+                        basculer = true;
                         break;
 
                     default:

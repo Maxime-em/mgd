@@ -6,6 +6,7 @@ module org.mgd.lwjgl {
     requires org.lwjgl.stb;
     requires org.lwjgl.nanovg;
     requires org.mgd.commun;
+    requires org.jetbrains.annotations;
 
     exports org.mgd.lwjgl;
     exports org.mgd.lwjgl.exception;

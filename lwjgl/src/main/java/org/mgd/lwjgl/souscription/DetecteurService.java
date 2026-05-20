@@ -1,5 +1,7 @@
 package org.mgd.lwjgl.souscription;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.lwjgl.glfw.*;
 import org.mgd.lwjgl.Fenetre;
 
@@ -8,6 +10,7 @@ import java.util.*;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class DetecteurService {
+    private static final Logger LOGGER = LogManager.getLogger(DetecteurService.class);
     private static DetecteurService detecteurService;
     private final Set<DetecteurErreur> erreurs;
     private final Map<Long, Fenetre> fenetres;
@@ -15,36 +18,11 @@ public class DetecteurService {
     private final Map<Fenetre, List<DetecteurPositionSouris>> positionsSouris;
     private final Map<Fenetre, List<DetecteurInterieurSouris>> interieursSouris;
     private final Map<Fenetre, List<DetecteurBoutonSouris>> boutonsSouris;
-    private final GLFWErrorCallback gestionErreurs = new GLFWErrorCallback() {
-        @Override
-        public void invoke(int erreur, long description) {
-            erreurs.forEach(dectecteur -> dectecteur.invoquer(erreur, description));
-        }
-    };
-    private final GLFWKeyCallback gestionClavier = new GLFWKeyCallback() {
-        @Override
-        public void invoke(long identifiant, int cle, int code, int action, int modifications) {
-            claviers.getOrDefault(fenetres.get(identifiant), Collections.emptyList()).forEach(dectecteur -> dectecteur.invoquer(cle, code, action, modifications));
-        }
-    };
-    private final GLFWMouseButtonCallback gestionBoutonSouris = new GLFWMouseButtonCallback() {
-        @Override
-        public void invoke(long identifiant, int bouton, int action, int mode) {
-            boutonsSouris.getOrDefault(fenetres.get(identifiant), Collections.emptyList()).forEach(dectecteur -> dectecteur.invoquer(bouton, action, mode));
-        }
-    };
-    private final GLFWCursorPosCallback gestionPositionSouris = new GLFWCursorPosCallback() {
-        @Override
-        public void invoke(long identifiant, double abscisse, double ordonnee) {
-            positionsSouris.getOrDefault(fenetres.get(identifiant), Collections.emptyList()).forEach(dectecteur -> dectecteur.invoquer(abscisse, ordonnee));
-        }
-    };
-    private final GLFWCursorEnterCallback gestionInterieurSouris = new GLFWCursorEnterCallback() {
-        @Override
-        public void invoke(long identifiant, boolean interieur) {
-            interieursSouris.getOrDefault(fenetres.get(identifiant), Collections.emptyList()).forEach(dectecteur -> dectecteur.invoquer(interieur));
-        }
-    };
+    private final GLFWErrorCallback gestionErreurs;
+    private final GLFWKeyCallback gestionClavier;
+    private final GLFWMouseButtonCallback gestionBoutonSouris;
+    private final GLFWCursorPosCallback gestionPositionSouris;
+    private final GLFWCursorEnterCallback gestionInterieurSouris;
 
     private DetecteurService() {
         this.fenetres = new HashMap<>();
@@ -54,7 +32,48 @@ public class DetecteurService {
         this.interieursSouris = new HashMap<>();
         this.boutonsSouris = new HashMap<>();
 
+        LOGGER.info("Création du gestionnaire d'erreurs.");
+        gestionErreurs = new GLFWErrorCallback() {
+            @Override
+            public void invoke(int erreur, long description) {
+                erreurs.forEach(dectecteur -> dectecteur.invoquer(erreur, description));
+            }
+        };
+
+        LOGGER.info("Configuration du gestionnaire d'erreurs.");
         glfwSetErrorCallback(gestionErreurs);
+
+        LOGGER.info("Configuration du gestionnaire des évènements clavier.");
+        gestionClavier = new GLFWKeyCallback() {
+            @Override
+            public void invoke(long identifiant, int cle, int code, int action, int modifications) {
+                claviers.getOrDefault(fenetres.get(identifiant), Collections.emptyList()).forEach(dectecteur -> dectecteur.invoquer(cle, code, action, modifications));
+            }
+        };
+
+        LOGGER.info("Configuration du gestionnaire des évènements des boutons de la souris.");
+        gestionBoutonSouris = new GLFWMouseButtonCallback() {
+            @Override
+            public void invoke(long identifiant, int bouton, int action, int mode) {
+                boutonsSouris.getOrDefault(fenetres.get(identifiant), Collections.emptyList()).forEach(dectecteur -> dectecteur.invoquer(bouton, action, mode));
+            }
+        };
+
+        LOGGER.info("Configuration du gestionnaire des évènements de la position de la souris.");
+        gestionPositionSouris = new GLFWCursorPosCallback() {
+            @Override
+            public void invoke(long identifiant, double abscisse, double ordonnee) {
+                positionsSouris.getOrDefault(fenetres.get(identifiant), Collections.emptyList()).forEach(dectecteur -> dectecteur.invoquer(abscisse, ordonnee));
+            }
+        };
+
+        LOGGER.info("Configuration du gestionnaire des évènements du zonage de la souris.");
+        gestionInterieurSouris = new GLFWCursorEnterCallback() {
+            @Override
+            public void invoke(long identifiant, boolean interieur) {
+                interieursSouris.getOrDefault(fenetres.get(identifiant), Collections.emptyList()).forEach(dectecteur -> dectecteur.invoquer(interieur));
+            }
+        };
     }
 
     public static DetecteurService obtenir() {

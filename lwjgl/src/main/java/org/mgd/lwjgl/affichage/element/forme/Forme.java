@@ -18,7 +18,7 @@ import java.nio.IntBuffer;
 import java.util.*;
 
 import static org.lwjgl.opengl.GL30.*;
-import static org.mgd.lwjgl.Programme.NOM_PAR_DEFAUT;
+import static org.mgd.lwjgl.Programme.NOM_OMBRAGE_PAR_DEFAUT;
 
 public abstract class Forme implements Identifiable, Survolable, Sujet {
     protected final UUID uuid;
@@ -157,7 +157,7 @@ public abstract class Forme implements Identifiable, Survolable, Sujet {
         } else if (programmes.containsKey(Pseudo.PSEUDO_BASE)) {
             Ombreur.utiliser(programmes.get(Pseudo.PSEUDO_BASE));
         } else {
-            Ombreur.utiliser(Ombreur.programmes(NOM_PAR_DEFAUT).get(Pseudo.DEFAUT));
+            Ombreur.utiliser(Ombreur.programmes(NOM_OMBRAGE_PAR_DEFAUT).get(Pseudo.PSEUDO_BASE));
         }
 
         glBindVertexArray(vecteurs);
