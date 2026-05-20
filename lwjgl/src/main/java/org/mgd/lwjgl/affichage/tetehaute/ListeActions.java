@@ -58,6 +58,7 @@ public class ListeActions<T> extends AffichageTeteHaute implements Animateur {
 
     @Override
     public Collection<Identifiable> amorcer(boolean droite) {
+        visible = ecritsSurvoles.isEmpty();
         return Stream.concat(ecritsSurvoles.stream(), Stream.of(liste)).toList();
     }
 
