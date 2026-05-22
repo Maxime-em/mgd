@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 import static org.lwjgl.nanovg.NanoVG.*;
 
-public class Ecrit<T> implements Identifiable, Survolable {
+public class ActionTextutelle<T> implements Identifiable, Survolable {
     private final UUID uuid;
     private final T objet;
     private final float[] dimensions;
@@ -23,7 +23,7 @@ public class Ecrit<T> implements Identifiable, Survolable {
     private int abscisse;
     private int ordonnee;
 
-    public Ecrit(T objet, float taille, NVGPolice police, NVGCouleur couleur, Supplier<String> texte) {
+    public ActionTextutelle(T objet, float taille, NVGPolice police, NVGCouleur couleur, Supplier<String> texte) {
         this.uuid = UUID.randomUUID();
         this.objet = objet;
         this.dimensions = new float[4];
@@ -33,11 +33,11 @@ public class Ecrit<T> implements Identifiable, Survolable {
         this.texte = texte;
     }
 
-    public Ecrit(float taille, NVGPolice police, NVGCouleur couleur, Supplier<String> texte) {
+    public ActionTextutelle(float taille, NVGPolice police, NVGCouleur couleur, Supplier<String> texte) {
         this(null, taille, police, couleur, texte);
     }
 
-    public Ecrit<T> dimensionner(long contexte) {
+    public ActionTextutelle<T> dimensionner(long contexte) {
         nvgFontSize(contexte, taille);
         nvgFontFace(contexte, police.identifiant());
         nvgTextBounds(contexte, 0f, 0f, texte.get(), dimensions);

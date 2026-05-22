@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Action<T> implements Identifiable, Survolable {
+public class ActionImagee<T> implements Identifiable, Survolable {
     private final NVGImage image;
     private final UUID uuid;
     private final T objet;
@@ -23,7 +23,7 @@ public class Action<T> implements Identifiable, Survolable {
     private boolean active;
     private boolean visible;
 
-    public Action(T objet, int largeur, int hauteur, boolean anime, NVGImage image) {
+    public ActionImagee(T objet, int largeur, int hauteur, boolean anime, NVGImage image) {
         this.image = image;
         this.uuid = UUID.randomUUID();
         this.objet = objet;
@@ -33,7 +33,7 @@ public class Action<T> implements Identifiable, Survolable {
         this.liaisons = new ArrayList<>();
     }
 
-    public Action(int largeur, int hauteur, boolean anime, NVGImage image) {
+    public ActionImagee(int largeur, int hauteur, boolean anime, NVGImage image) {
         this(null, largeur, hauteur, anime, image);
     }
 

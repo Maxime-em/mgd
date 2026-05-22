@@ -4,7 +4,7 @@ import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Fenetre.EvenementAmorcages;
 import org.mgd.lwjgl.Fenetre.EvenementSouris;
 import org.mgd.lwjgl.Vision;
-import org.mgd.lwjgl.affichage.tetehaute.composant.Ecrit;
+import org.mgd.lwjgl.affichage.tetehaute.composant.ActionTextutelle;
 import org.mgd.lwjgl.exception.LwjglException;
 
 import static org.lwjgl.nanovg.NanoVG.*;
@@ -14,7 +14,7 @@ public class Informations extends AffichageTeteHaute {
     private final int ordonnee;
     private final int largeur;
     private final int hauteur;
-    private Ecrit<Void> ecrit;
+    private ActionTextutelle<Void> actionTextutelle;
 
     public Informations(Fenetre parent, int abcsisse, int ordonnee, int largeur, int hauteur) throws LwjglException {
         super(parent, false, true);
@@ -24,21 +24,21 @@ public class Informations extends AffichageTeteHaute {
         this.hauteur = hauteur;
     }
 
-    public void ajouter(Ecrit<Void> ecrit) {
-        this.ecrit = ecrit;
+    public void ajouter(ActionTextutelle<Void> actionTextutelle) {
+        this.actionTextutelle = actionTextutelle;
     }
 
     public void afficher() {
-        if (ecrit != null) {
-            int largeurEcrit = ecrit.dimensionner(contexte).largeur();
-            int hauteurEcrit = ecrit.hauteur();
-            ecrit.placer(abcsisse + Math.max(largeur - largeurEcrit, 0) / 2, ordonnee + Math.max(hauteur - hauteurEcrit, 0) / 2);
+        if (actionTextutelle != null) {
+            int largeurAction = actionTextutelle.dimensionner(contexte).largeur();
+            int hauteurAction = actionTextutelle.hauteur();
+            actionTextutelle.placer(abcsisse + Math.max(largeur - largeurAction, 0) / 2, ordonnee + Math.max(hauteur - hauteurAction, 0) / 2);
         }
     }
 
     @Override
     protected void dessiner(long ellipse) {
-        if (ecrit != null) {
+        if (actionTextutelle != null) {
             nvgTextAlign(contexte, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
 
             nvgBeginPath(contexte);
@@ -47,10 +47,10 @@ public class Informations extends AffichageTeteHaute {
             nvgFill(contexte);
             nvgClosePath(contexte);
 
-            nvgFontSize(contexte, ecrit.taille());
-            nvgFontFace(contexte, ecrit.police().identifiant());
-            nvgFillColor(contexte, ecrit.couleur().nvg());
-            nvgText(contexte, ecrit.abscisse(), ecrit.ordonnee(), ecrit.texte().get());
+            nvgFontSize(contexte, actionTextutelle.taille());
+            nvgFontFace(contexte, actionTextutelle.police().identifiant());
+            nvgFillColor(contexte, actionTextutelle.couleur().nvg());
+            nvgText(contexte, actionTextutelle.abscisse(), actionTextutelle.ordonnee(), actionTextutelle.texte().get());
         }
     }
 

@@ -5,8 +5,8 @@ import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Fenetre.EvenementSouris;
 import org.mgd.lwjgl.Vision;
 import org.mgd.lwjgl.affichage.Animateur;
-import org.mgd.lwjgl.affichage.tetehaute.composant.Action;
-import org.mgd.lwjgl.affichage.tetehaute.composant.Ecrit;
+import org.mgd.lwjgl.affichage.tetehaute.composant.ActionImagee;
+import org.mgd.lwjgl.affichage.tetehaute.composant.ActionTextutelle;
 import org.mgd.lwjgl.exception.LwjglException;
 import org.mgd.lwjgl.souscription.Identifiable;
 
@@ -17,19 +17,19 @@ import static org.lwjgl.nanovg.NanoVG.*;
 
 public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
     private static final int MARGE_INFORMATIONS = 10;
-    private static final Map<UUID, List<Ecrit<Void>>> informations = new HashMap<>();
-    private static final Map<UUID, Integer> abscisseEcrits = new HashMap<>();
-    private static final Map<UUID, Integer> ordonneeEcrits = new HashMap<>();
-    private static final Map<UUID, Integer> largeurEcrits = new HashMap<>();
-    private static final Map<UUID, Integer> hauteurEcrits = new HashMap<>();
+    private static final Map<UUID, List<ActionTextutelle<Void>>> informations = new HashMap<>();
+    private static final Map<UUID, Integer> abscisseActions = new HashMap<>();
+    private static final Map<UUID, Integer> ordonneeActions = new HashMap<>();
+    private static final Map<UUID, Integer> largeurActions = new HashMap<>();
+    private static final Map<UUID, Integer> hauteurActions = new HashMap<>();
 
     private final Disposition disposition;
     private final int abcisses;
     private final int ordonnee;
     private final int longueur;
-    private final Map<G, List<Action<?>>> groupes;
-    private final List<Action<?>> actionsSurvolees;
-    private final List<Action<?>> actionsLiees;
+    private final Map<G, List<ActionImagee<?>>> groupes;
+    private final List<ActionImagee<?>> actionsSurvolees;
+    private final List<ActionImagee<?>> actionsLiees;
     private int epaisseurActions;
     private G groupe;
 
@@ -46,85 +46,85 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
     }
 
     private void placerActions() {
-        List<Action<?>> actions = groupes.getOrDefault(groupe, Collections.emptyList());
-        int longueurActions = actions.stream()
-                .mapToInt(action -> disposition.orientation() == Disposition.Orientation.HORIZONTAL ? action.largeur() : action.hauteur())
+        List<ActionImagee<?>> actionImagees = groupes.getOrDefault(groupe, Collections.emptyList());
+        int longueurActions = actionImagees.stream()
+                .mapToInt(actionImagee -> disposition.orientation() == Disposition.Orientation.HORIZONTAL ? actionImagee.largeur() : actionImagee.hauteur())
                 .sum();
-        epaisseurActions = actions.stream()
-                .mapToInt(action -> disposition.orientation() == Disposition.Orientation.HORIZONTAL ? action.hauteur() : action.largeur())
+        epaisseurActions = actionImagees.stream()
+                .mapToInt(actionImagee -> disposition.orientation() == Disposition.Orientation.HORIZONTAL ? actionImagee.hauteur() : actionImagee.largeur())
                 .max()
                 .orElse(0);
-        int espacementMaximal = actions.size() > 1 ? (longueur - longueurActions) / (actions.size() - 1) : 0;
+        int espacementMaximal = actionImagees.size() > 1 ? (longueur - longueurActions) / (actionImagees.size() - 1) : 0;
         int espacementReel = disposition.justification() == Disposition.Justification.CENTRAL ? espacementMaximal : Math.min(espacementMaximal, disposition.espacement());
 
         AtomicInteger longueurCourante = new AtomicInteger(0);
         if (disposition.orientation() == Disposition.Orientation.HORIZONTAL) {
-            actions.forEach(action -> {
+            actionImagees.forEach(actionImagee -> {
                 int decalage = switch (disposition.alignement()) {
                     case DEBUT -> 0;
-                    case CENTRAL -> (epaisseurActions - action.hauteur()) / 2;
-                    case FIN -> epaisseurActions - action.hauteur();
+                    case CENTRAL -> (epaisseurActions - actionImagee.hauteur()) / 2;
+                    case FIN -> epaisseurActions - actionImagee.hauteur();
                 };
-                action.placer(abcisses + longueurCourante.get(), ordonnee + decalage);
-                longueurCourante.getAndAdd(espacementReel + action.largeur());
+                actionImagee.placer(abcisses + longueurCourante.get(), ordonnee + decalage);
+                longueurCourante.getAndAdd(espacementReel + actionImagee.largeur());
             });
         } else {
-            actions.forEach(action -> {
+            actionImagees.forEach(actionImagee -> {
                 int decalage = switch (disposition.alignement()) {
                     case DEBUT -> 0;
-                    case CENTRAL -> (epaisseurActions - action.largeur()) / 2;
-                    case FIN -> epaisseurActions - action.largeur();
+                    case CENTRAL -> (epaisseurActions - actionImagee.largeur()) / 2;
+                    case FIN -> epaisseurActions - actionImagee.largeur();
                 };
-                action.placer(abcisses + decalage, ordonnee + longueurCourante.get());
-                longueurCourante.getAndAdd(espacementReel + action.hauteur());
+                actionImagee.placer(abcisses + decalage, ordonnee + longueurCourante.get());
+                longueurCourante.getAndAdd(espacementReel + actionImagee.hauteur());
             });
         }
     }
 
     private void placerInformations() {
-        List<Action<?>> actions = groupes.getOrDefault(groupe, Collections.emptyList());
-        actions.forEach(action -> {
-            List<Ecrit<Void>> ecrits = informations.getOrDefault(action.uuid(), Collections.emptyList());
-            int largeur = ecrits.stream().mapToInt(ecrit -> ecrit.dimensionner(contexte).largeur()).max().orElse(0);
-            int hauteur = ecrits.stream().mapToInt(Ecrit::hauteur).sum();
+        List<ActionImagee<?>> actionImagees = groupes.getOrDefault(groupe, Collections.emptyList());
+        actionImagees.forEach(actionImagee -> {
+            List<ActionTextutelle<Void>> actionTextutelles = informations.getOrDefault(actionImagee.uuid(), Collections.emptyList());
+            int largeur = actionTextutelles.stream().mapToInt(element -> element.dimensionner(contexte).largeur()).max().orElse(0);
+            int hauteur = actionTextutelles.stream().mapToInt(ActionTextutelle::hauteur).sum();
             int abscisseCourante = switch (disposition.position()) {
-                case HAUT, BAS -> action.abscisse();
+                case HAUT, BAS -> actionImagee.abscisse();
                 case DROITE -> abcisses + epaisseurActions + MARGE_INFORMATIONS;
                 case GAUCHE -> abcisses - largeur - MARGE_INFORMATIONS;
             };
             AtomicInteger ordonneeCourante = new AtomicInteger(switch (disposition.position()) {
                 case HAUT -> ordonnee - hauteur - MARGE_INFORMATIONS;
                 case BAS -> ordonnee + epaisseurActions + MARGE_INFORMATIONS;
-                case DROITE, GAUCHE -> action.ordonnee();
+                case DROITE, GAUCHE -> actionImagee.ordonnee();
             });
-            abscisseEcrits.put(action.uuid(), abscisseCourante);
-            ordonneeEcrits.put(action.uuid(), ordonneeCourante.get());
-            largeurEcrits.put(action.uuid(), largeur);
-            hauteurEcrits.put(action.uuid(), hauteur);
-            ecrits.forEach(ecrit -> ecrit.placer(abscisseCourante, ordonneeCourante.getAndAdd(ecrit.hauteur())));
+            abscisseActions.put(actionImagee.uuid(), abscisseCourante);
+            ordonneeActions.put(actionImagee.uuid(), ordonneeCourante.get());
+            largeurActions.put(actionImagee.uuid(), largeur);
+            hauteurActions.put(actionImagee.uuid(), hauteur);
+            actionTextutelles.forEach(element -> element.placer(abscisseCourante, ordonneeCourante.getAndAdd(element.hauteur())));
         });
     }
 
-    private void dessinerInfobulle(Action<?> action) {
-        List<Ecrit<Void>> ecrits = informations.getOrDefault(action.uuid(), Collections.emptyList());
-        if (!ecrits.isEmpty()) {
+    private void dessinerInfobulle(ActionImagee<?> actionImagee) {
+        List<ActionTextutelle<Void>> actionTextutelles = informations.getOrDefault(actionImagee.uuid(), Collections.emptyList());
+        if (!actionTextutelles.isEmpty()) {
             nvgTextAlign(contexte, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
 
             nvgBeginPath(contexte);
             nvgRect(contexte,
-                    abscisseEcrits.getOrDefault(action.uuid(), 0),
-                    ordonneeEcrits.getOrDefault(action.uuid(), 0),
-                    largeurEcrits.getOrDefault(action.uuid(), 0),
-                    hauteurEcrits.getOrDefault(action.uuid(), 0));
+                    abscisseActions.getOrDefault(actionImagee.uuid(), 0),
+                    ordonneeActions.getOrDefault(actionImagee.uuid(), 0),
+                    largeurActions.getOrDefault(actionImagee.uuid(), 0),
+                    hauteurActions.getOrDefault(actionImagee.uuid(), 0));
             nvgFillColor(contexte, EMERAUDE.nvg());
             nvgFill(contexte);
             nvgClosePath(contexte);
 
-            ecrits.forEach(ecrit -> {
-                nvgFontSize(contexte, ecrit.taille());
-                nvgFontFace(contexte, ecrit.police().identifiant());
-                nvgFillColor(contexte, ecrit.couleur().nvg());
-                nvgText(contexte, ecrit.abscisse(), ecrit.ordonnee(), ecrit.texte().get());
+            actionTextutelles.forEach(element -> {
+                nvgFontSize(contexte, element.taille());
+                nvgFontFace(contexte, element.police().identifiant());
+                nvgFillColor(contexte, element.couleur().nvg());
+                nvgText(contexte, element.abscisse(), element.ordonnee(), element.texte().get());
             });
         }
     }
@@ -140,7 +140,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         actionsLiees.addAll(
                 groupes.getOrDefault(groupe, Collections.emptyList())
                         .stream()
-                        .filter(action -> action.liaisons().stream().anyMatch(liaison -> liaison.visible() && liaison.survoler(vision, evenementSouris)))
+                        .filter(actionImagee -> actionImagee.liaisons().stream().anyMatch(liaison -> liaison.visible() && liaison.survoler(vision, evenementSouris)))
                         .toList());
     }
 
@@ -152,7 +152,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
             actionsSurvolees.addAll(
                     groupes.getOrDefault(groupe, Collections.emptyList())
                             .stream()
-                            .filter(action -> action.survoler(vision, evenementSouris))
+                            .filter(actionImagee -> actionImagee.survoler(vision, evenementSouris))
                             .toList());
         }
         return !actionsSurvolees.isEmpty();
@@ -181,66 +181,66 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         nvgFill(contexte);
         nvgClosePath(contexte);
 
-        groupes.getOrDefault(groupe, Collections.emptyList()).forEach(action -> {
+        groupes.getOrDefault(groupe, Collections.emptyList()).forEach(actionImagee -> {
             nvgBeginPath(contexte);
-            nvgRect(contexte, action.abscisse(), action.ordonnee(), action.largeur(), action.hauteur());
+            nvgRect(contexte, actionImagee.abscisse(), actionImagee.ordonnee(), actionImagee.largeur(), actionImagee.hauteur());
             nvgFillColor(contexte, BLANC.nvg());
             nvgFill(contexte);
             nvgClosePath(contexte);
 
             nvgBeginPath(contexte);
-            nvgRect(contexte, action.abscisse(), action.ordonnee(), action.largeur(), action.hauteur());
+            nvgRect(contexte, actionImagee.abscisse(), actionImagee.ordonnee(), actionImagee.largeur(), actionImagee.hauteur());
             nvgFillPaint(contexte, nvgImagePattern(contexte,
-                    action.abscisse(),
-                    action.ordonnee(),
-                    action.largeur(),
-                    action.hauteur(),
+                    actionImagee.abscisse(),
+                    actionImagee.ordonnee(),
+                    actionImagee.largeur(),
+                    actionImagee.hauteur(),
                     0,
-                    action.image().nvg(),
+                    actionImagee.image().nvg(),
                     1,
                     NVGPaint.create()));
             nvgFill(contexte);
             nvgClosePath(contexte);
 
-            if (action.active() && action.anime()) {
+            if (actionImagee.active() && actionImagee.anime()) {
                 nvgBeginPath(contexte);
-                nvgRect(contexte, action.abscisse(), action.ordonnee(), action.largeur(), action.hauteur());
+                nvgRect(contexte, actionImagee.abscisse(), actionImagee.ordonnee(), actionImagee.largeur(), actionImagee.hauteur());
                 nvgFillColor(contexte, INDIGO_A50.nvg());
                 nvgFill(contexte);
                 nvgClosePath(contexte);
             }
         });
 
-        actionsSurvolees.forEach(action -> {
+        actionsSurvolees.forEach(actionImagee -> {
             nvgBeginPath(contexte);
-            nvgRect(contexte, action.abscisse(), action.ordonnee(), action.largeur(), action.hauteur());
+            nvgRect(contexte, actionImagee.abscisse(), actionImagee.ordonnee(), actionImagee.largeur(), actionImagee.hauteur());
             nvgFillColor(contexte, ROUGE_COQUELICOT_A50.nvg());
             nvgFill(contexte);
             nvgClosePath(contexte);
 
-            dessinerInfobulle(action);
+            dessinerInfobulle(actionImagee);
         });
 
         actionsLiees.forEach(this::dessinerInfobulle);
     }
 
-    public <T> void ajouter(G groupe, Action<T> action) {
-        groupes.computeIfAbsent(groupe, _ -> new ArrayList<>()).add(action);
+    public <T> void ajouter(G groupe, ActionImagee<T> actionImagee) {
+        groupes.computeIfAbsent(groupe, _ -> new ArrayList<>()).add(actionImagee);
     }
 
     @SafeVarargs
-    public final <T> void ajouter(G groupe, Action<T>... actions) {
-        groupes.computeIfAbsent(groupe, _ -> new ArrayList<>()).addAll(List.of(actions));
+    public final <T> void ajouter(G groupe, ActionImagee<T>... actionImagees) {
+        groupes.computeIfAbsent(groupe, _ -> new ArrayList<>()).addAll(List.of(actionImagees));
     }
 
-    public void ajouter(UUID uuid, Ecrit<Void> nouveau) {
+    public void ajouter(UUID uuid, ActionTextutelle<Void> nouveau) {
         informations.computeIfAbsent(uuid, _ -> new LinkedList<>()).add(nouveau);
     }
 
     public void afficher(G groupe) {
         if (!Objects.equals(this.groupe, groupe)) {
-            groupes.getOrDefault(this.groupe, Collections.emptyList()).forEach(Action::masquer);
-            groupes.getOrDefault(groupe, Collections.emptyList()).forEach(Action::afficher);
+            groupes.getOrDefault(this.groupe, Collections.emptyList()).forEach(ActionImagee::masquer);
+            groupes.getOrDefault(groupe, Collections.emptyList()).forEach(ActionImagee::afficher);
             this.groupe = groupe;
             placerActions();
             placerInformations();
@@ -248,6 +248,6 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
     }
 
     public void desactiverActions() {
-        groupes.values().stream().flatMap(Collection::stream).forEach(Action::desactiver);
+        groupes.values().stream().flatMap(Collection::stream).forEach(ActionImagee::desactiver);
     }
 }

@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Liste<T> implements Identifiable {
     private final UUID uuid;
-    private final List<Ecrit<T>> ecrits;
+    private final List<ActionTextutelle<T>> actionTextutelles;
     private final List<Survolable> liaisons;
     private final float[] dimensions;
     private final int espacement;
@@ -21,9 +21,9 @@ public class Liste<T> implements Identifiable {
     private int ordonnee;
 
     @SafeVarargs
-    public Liste(int espacement, int marge, Ecrit<T>... ecrits) {
+    public Liste(int espacement, int marge, ActionTextutelle<T>... actionTextutelles) {
         this.uuid = UUID.randomUUID();
-        this.ecrits = Arrays.asList(ecrits);
+        this.actionTextutelles = Arrays.asList(actionTextutelles);
         this.liaisons = new LinkedList<>();
         this.dimensions = new float[4];
         this.espacement = espacement;
@@ -32,30 +32,30 @@ public class Liste<T> implements Identifiable {
 
     public void dimensionner(long contexte) {
         AtomicBoolean premier = new AtomicBoolean(true);
-        ecrits.forEach(ecrit -> {
-            ecrit.dimensionner(contexte);
-            float[] dimensionsEcrit = ecrit.dimensions();
+        actionTextutelles.forEach(action -> {
+            action.dimensionner(contexte);
+            float[] dimensionsAction = action.dimensions();
             if (premier.compareAndSet(true, false)) {
-                dimensions[0] = dimensionsEcrit[0];
-                dimensions[1] = dimensionsEcrit[1];
-                dimensions[2] = dimensionsEcrit[2];
-                dimensions[3] = dimensionsEcrit[3];
+                dimensions[0] = dimensionsAction[0];
+                dimensions[1] = dimensionsAction[1];
+                dimensions[2] = dimensionsAction[2];
+                dimensions[3] = dimensionsAction[3];
             } else {
-                dimensions[0] = Math.min(dimensions[0], dimensionsEcrit[0]);
-                dimensions[1] = Math.min(dimensions[1], dimensionsEcrit[1]);
-                dimensions[2] = Math.max(dimensions[2], dimensionsEcrit[2]);
-                dimensions[3] = dimensions[3] + espacement + dimensionsEcrit[3] - dimensionsEcrit[1];
+                dimensions[0] = Math.min(dimensions[0], dimensionsAction[0]);
+                dimensions[1] = Math.min(dimensions[1], dimensionsAction[1]);
+                dimensions[2] = Math.max(dimensions[2], dimensionsAction[2]);
+                dimensions[3] = dimensions[3] + espacement + dimensionsAction[3] - dimensionsAction[1];
             }
         });
         dimensions[2] += 2 * marge;
-        ecrits.forEach(ecrit -> ecrit.elargir(largeur()));
+        actionTextutelles.forEach(action -> action.elargir(largeur()));
     }
 
     public void placer(int abscisse, int ordonnee) {
         this.abscisse = abscisse;
         this.ordonnee = ordonnee;
         AtomicInteger ordonneeCourante = new AtomicInteger();
-        this.ecrits.forEach(ecrit -> ecrit.placer(abscisse + marge, ordonnee + ordonneeCourante.getAndAdd(ecrit.hauteur() + espacement)));
+        this.actionTextutelles.forEach(action -> action.placer(abscisse + marge, ordonnee + ordonneeCourante.getAndAdd(action.hauteur() + espacement)));
     }
 
     public void lier(Survolable liaison) {
@@ -67,8 +67,8 @@ public class Liste<T> implements Identifiable {
         return uuid;
     }
 
-    public List<Ecrit<T>> ecrits() {
-        return ecrits;
+    public List<ActionTextutelle<T>> actions() {
+        return actionTextutelles;
     }
 
     public List<Survolable> liaisons() {

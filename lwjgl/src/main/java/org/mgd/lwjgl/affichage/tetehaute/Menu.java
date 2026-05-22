@@ -4,7 +4,7 @@ import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Fenetre.EvenementAmorcages;
 import org.mgd.lwjgl.Vision;
 import org.mgd.lwjgl.affichage.Animateur;
-import org.mgd.lwjgl.affichage.tetehaute.composant.Ecrit;
+import org.mgd.lwjgl.affichage.tetehaute.composant.ActionTextutelle;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
 import org.mgd.lwjgl.exception.LwjglException;
 import org.mgd.lwjgl.souscription.Identifiable;
@@ -22,24 +22,24 @@ public class Menu extends AffichageTeteHaute implements Animateur {
     private final UUID identifiantPremierePage;
     private final Map<UUID, Page> pages;
     private Page pageCourante;
-    private LinkedList<Ecrit<?>> ecritsSurvoles;
+    private LinkedList<ActionTextutelle<?>> actionsSurvoles;
 
-    public Menu(Fenetre parent, Collection<Ecrit<?>> titres, Collection<Ecrit<?>> textes) throws LwjglException {
+    public Menu(Fenetre parent, Collection<ActionTextutelle<?>> titres, Collection<ActionTextutelle<?>> textes) throws LwjglException {
         super(parent, true, true);
         this.identifiantPremierePage = UUID.randomUUID();
         this.pages = new HashMap<>();
-        this.ecritsSurvoles = new LinkedList<>();
+        this.actionsSurvoles = new LinkedList<>();
         this.pageCourante = new Page(new ArrayList<>(titres), new ArrayList<>(textes));
         this.pages.put(this.identifiantPremierePage, pageCourante);
 
         placer(this.pageCourante);
     }
 
-    public <T, U> void ajouterPage(Ecrit<T> declencheur, Collection<Ecrit<U>> textes, NVGPolice police) {
+    public <T, U> void ajouterPage(ActionTextutelle<T> declencheur, Collection<ActionTextutelle<U>> textes, NVGPolice police) {
         Page page = new Page(Collections.emptyList(), new ArrayList<>(textes));
         pages.put(declencheur.uuid(), page);
 
-        Ecrit<Void> retour = new Ecrit<>(24f, police, AffichageTeteHaute.BLANC, () -> "Retour");
+        ActionTextutelle<Void> retour = new ActionTextutelle<>(24f, police, AffichageTeteHaute.BLANC, () -> "Retour");
         page.textes.add(retour);
         pages.put(retour.uuid(), pages.get(this.identifiantPremierePage));
 
@@ -63,18 +63,18 @@ public class Menu extends AffichageTeteHaute implements Animateur {
         AtomicReference<Double> ordonneeCourante = new AtomicReference<>(margeTitres);
         page.titres.forEach(titre -> titre.placer((parent.largeur() - titre.largeur()) / 2, ordonneeCourante.getAndAccumulate(titre.hauteur() + margeTitres, Double::sum).intValue()));
         ordonneeCourante.getAndAccumulate(interligne, Double::sum);
-        page.textes.forEach(ecrit -> ecrit.placer((parent.largeur() - ecrit.largeur()) / 2, ordonneeCourante.getAndAccumulate(ecrit.hauteur() + margeBoutons, Double::sum).intValue()));
+        page.textes.forEach(action -> action.placer((parent.largeur() - action.largeur()) / 2, ordonneeCourante.getAndAccumulate(action.hauteur() + margeBoutons, Double::sum).intValue()));
     }
 
-    private double hauteur(Ecrit<?> ecrit) {
-        return ecrit.dimensionner(contexte).hauteur();
+    private double hauteur(ActionTextutelle<?> actionTextutelle) {
+        return actionTextutelle.dimensionner(contexte).hauteur();
     }
 
-    private void dessiner(Ecrit<?> ecrit) {
-        nvgFontSize(contexte, ecrit.taille());
-        nvgFontFace(contexte, ecrit.police().identifiant());
-        nvgFillColor(contexte, ecrit.couleur().nvg());
-        nvgText(contexte, ecrit.abscisse(), ecrit.ordonnee(), ecrit.texte().get());
+    private void dessiner(ActionTextutelle<?> actionTextutelle) {
+        nvgFontSize(contexte, actionTextutelle.taille());
+        nvgFontFace(contexte, actionTextutelle.police().identifiant());
+        nvgFillColor(contexte, actionTextutelle.couleur().nvg());
+        nvgText(contexte, actionTextutelle.abscisse(), actionTextutelle.ordonnee(), actionTextutelle.texte().get());
     }
 
     @Override
@@ -85,24 +85,24 @@ public class Menu extends AffichageTeteHaute implements Animateur {
     @Override
     public boolean survoler(Vision vision, Fenetre.EvenementSouris evenementSouris) {
         if (visible) {
-            ecritsSurvoles = pageCourante.textes
+            actionsSurvoles = pageCourante.textes
                     .stream()
-                    .filter(ecrit -> evenementSouris.inclus(ecrit.abscisse(), ecrit.ordonnee(), ecrit.largeur(), ecrit.hauteur()))
+                    .filter(action -> evenementSouris.inclus(action.abscisse(), action.ordonnee(), action.largeur(), action.hauteur()))
                     .collect(Collectors.toCollection(LinkedList::new));
         } else {
-            ecritsSurvoles.clear();
+            actionsSurvoles.clear();
         }
-        return !ecritsSurvoles.isEmpty();
+        return !actionsSurvoles.isEmpty();
     }
 
     @Override
     public void retirer(Vision vision, Fenetre.EvenementSouris evenementSouris) {
-        ecritsSurvoles.clear();
+        actionsSurvoles.clear();
     }
 
     @Override
     public Collection<Identifiable> amorcer(boolean droite) {
-        return ecritsSurvoles.stream().map(Identifiable.class::cast).toList();
+        return actionsSurvoles.stream().map(Identifiable.class::cast).toList();
     }
 
     @Override
@@ -121,6 +121,6 @@ public class Menu extends AffichageTeteHaute implements Animateur {
                 .forEach(amorcage -> pageCourante = pages.get(amorcage.uuid()));
     }
 
-    private record Page(List<Ecrit<?>> titres, List<Ecrit<?>> textes) {
+    private record Page(List<ActionTextutelle<?>> titres, List<ActionTextutelle<?>> textes) {
     }
 }

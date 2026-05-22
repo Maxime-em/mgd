@@ -5,7 +5,7 @@ import org.mgd.lwjgl.*;
 import org.mgd.lwjgl.Fenetre.EvenementSouris;
 import org.mgd.lwjgl.affichage.Animateur;
 import org.mgd.lwjgl.affichage.element.forme.Forme;
-import org.mgd.lwjgl.affichage.tetehaute.composant.Ecrit;
+import org.mgd.lwjgl.affichage.tetehaute.composant.ActionTextutelle;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Liste;
 import org.mgd.lwjgl.exception.LwjglException;
 import org.mgd.lwjgl.souscription.Identifiable;
@@ -17,15 +17,15 @@ import static org.lwjgl.nanovg.NanoVG.*;
 
 public class ListeActions<T> extends AffichageTeteHaute implements Animateur {
     private final Liste<T> liste;
-    private final List<Identifiable> ecritsSurvoles;
+    private final List<Identifiable> identifiables;
     private boolean survole;
     private boolean liaisonsSurvoles;
 
     @SafeVarargs
-    public ListeActions(Fenetre parent, int espacement, int marge, Ecrit<T>... ecrits) throws LwjglException {
+    public ListeActions(Fenetre parent, int espacement, int marge, ActionTextutelle<T>... actionTextutelles) throws LwjglException {
         super(parent, false, false);
-        this.liste = new Liste<>(espacement, marge, ecrits);
-        this.ecritsSurvoles = new LinkedList<>();
+        this.liste = new Liste<>(espacement, marge, actionTextutelles);
+        this.identifiables = new LinkedList<>();
     }
 
     public void lier(Survolable liaison) {
@@ -39,11 +39,11 @@ public class ListeActions<T> extends AffichageTeteHaute implements Animateur {
 
     @Override
     public boolean survoler(Vision vision, EvenementSouris evenementSouris) {
-        ecritsSurvoles.clear();
+        identifiables.clear();
         survole = false;
         liaisonsSurvoles = false;
         if (visible) {
-            ecritsSurvoles.addAll(liste.ecrits().stream().filter(ecrit -> ecrit.survoler(vision, evenementSouris)).map(Identifiable.class::cast).toList());
+            identifiables.addAll(liste.actions().stream().filter(action -> action.survoler(vision, evenementSouris)).map(Identifiable.class::cast).toList());
             survole = evenementSouris.inclus(liste.abscisse(), liste.ordonnee(), liste.largeur(), liste.hauteur());
             liaisonsSurvoles = liste.liaisons().stream().anyMatch(liaison -> liaison.visible() && liaison.survoler(vision, evenementSouris));
         }
@@ -52,14 +52,14 @@ public class ListeActions<T> extends AffichageTeteHaute implements Animateur {
 
     @Override
     public void retirer(Vision vision, EvenementSouris evenementSouris) {
-        ecritsSurvoles.clear();
+        identifiables.clear();
         visible = survole || liaisonsSurvoles;
     }
 
     @Override
     public Collection<Identifiable> amorcer(boolean droite) {
-        visible = ecritsSurvoles.isEmpty();
-        return Stream.concat(ecritsSurvoles.stream(), Stream.of(liste)).toList();
+        visible = identifiables.isEmpty();
+        return Stream.concat(identifiables.stream(), Stream.of(liste)).toList();
     }
 
     @Override
@@ -72,17 +72,17 @@ public class ListeActions<T> extends AffichageTeteHaute implements Animateur {
             nvgFill(contexte);
             nvgClosePath(contexte);
 
-            liste.ecrits().forEach(ecrit -> {
+            liste.actions().forEach(action -> {
                 nvgBeginPath(contexte);
-                nvgRect(contexte, ecrit.abscisse(), ecrit.ordonnee(), liste.largeur(), ecrit.hauteur());
+                nvgRect(contexte, action.abscisse(), action.ordonnee(), liste.largeur(), action.hauteur());
                 nvgFillColor(contexte, EMERAUDE.nvg());
                 nvgFill(contexte);
                 nvgClosePath(contexte);
 
-                nvgFontSize(contexte, ecrit.taille());
-                nvgFontFace(contexte, ecrit.police().identifiant());
-                nvgFillColor(contexte, ecrit.couleur().nvg());
-                nvgText(contexte, ecrit.abscisse(), ecrit.ordonnee(), ecrit.texte().get());
+                nvgFontSize(contexte, action.taille());
+                nvgFontFace(contexte, action.police().identifiant());
+                nvgFillColor(contexte, action.couleur().nvg());
+                nvgText(contexte, action.abscisse(), action.ordonnee(), action.texte().get());
             });
         }
     }
