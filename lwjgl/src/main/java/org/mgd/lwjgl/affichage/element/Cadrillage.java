@@ -31,7 +31,7 @@ public class Cadrillage extends Element<String> {
     private final int largeur;
     private final int hauteur;
     private final int nombreLignes;
-    private final Map<Forme, Integer[]> indexParCase;
+    private final Map<Integer[], Forme> casesParIndex;
     private final Map<Forme, Integer[]> indexParJetons;
 
     public Cadrillage(Fenetre parent, int priorite, int[] tailleCadrillage, int[] tailleJetons, float[] translation, Map<String, Path> textures) throws LwjglException {
@@ -50,8 +50,10 @@ public class Cadrillage extends Element<String> {
         this.nombreLignes = tailleCadrillage[0];
         int largeurCase = largeurCarte / tailleCadrillage[1];
         int hauteurCase = tailleCadrillage[3] / nombreLignes;
-        this.indexParCase = Flux.fluxPairesEntiers(tailleCadrillage[1], nombreLignes)
-                .collect(Collectors.toMap(index -> new Quadrilatere(this,
+        this.casesParIndex = Flux.fluxPairesEntiers(tailleCadrillage[1], nombreLignes)
+                .collect(Collectors.toMap(
+                        index -> new Integer[]{nombreLignes - index[1] - 1, index[0]},
+                        index -> new Quadrilatere(this,
                                 "case",
                                 index[1] + 1f,
                                 index[0] + 1f,
@@ -63,9 +65,8 @@ public class Cadrillage extends Element<String> {
                                         (float) index[0] * largeurCase / this.largeur, (float) (nombreLignes - index[1] - 1) * hauteurCase / this.hauteur,
                                         (float) index[0] * largeurCase / this.largeur, (float) (nombreLignes - index[1]) * hauteurCase / this.hauteur,
                                         (float) (index[0] + 1) * largeurCase / this.largeur, (float) (nombreLignes - index[1]) * hauteurCase / this.hauteur
-                                }),
-                        index -> new Integer[]{nombreLignes - index[1] - 1, index[0]}));
-        ajouter(GROUPE_CASES, this.indexParCase.keySet());
+                                })));
+        ajouter(GROUPE_CASES, this.casesParIndex.values());
         this.indexParJetons = new HashMap<>();
     }
 
@@ -106,10 +107,6 @@ public class Cadrillage extends Element<String> {
         return jeton;
     }
 
-    public Map<Forme, Integer[]> indexParCase() {
-        return this.indexParCase;
-    }
-
     public void desactiverJetons() {
         indexParJetons.keySet().forEach(Forme::desactiver);
     }
@@ -119,5 +116,9 @@ public class Cadrillage extends Element<String> {
         ajuster(index[0], index[1], supprimer(genererGroupeJetons(index[0], index[1]), jeton));
         ajuster(ligneCase, colonneCase, ajouter(genererGroupeJetons(ligneCase, colonneCase), jeton));
         indexParJetons.put(jeton, new Integer[]{ligneCase, colonneCase});
+    }
+
+    public Map<Integer[], Forme> casesParIndex() {
+        return this.casesParIndex;
     }
 }
