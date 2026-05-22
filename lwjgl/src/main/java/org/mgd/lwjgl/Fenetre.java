@@ -180,51 +180,62 @@ public class Fenetre implements Identifiable {
         EvenementSouris evenementSourisCourant = new EvenementSouris(evenementSouris);
         EvenementAmorcages evenementAmorcagesCourant = new EvenementAmorcages(evenementAmorcages);
 
+        basculer(evenementClavierCourant);
+
+        if (menu != null && menu.visible()) {
+            majMenu(evenementSourisCourant, evenementAmorcagesCourant);
+        } else {
+            majJeu(accumulateur, evenementClavierCourant, evenementSourisCourant, evenementAmorcagesCourant);
+        }
+
+        if (evenementSourisCourant.inacheve() && evenementSourisCourant.selection()) {
+            amorcer(Collections.singleton(this), evenementSourisCourant.droite());
+            evenementSourisCourant.comsommer();
+        }
+
+        notifier(evenementAmorcagesCourant);
+    }
+
+    private void basculer(EvenementClavier evenementClavierCourant) {
         if (evenementClavierCourant.basculer && menu.visible()) {
             apparaitre();
         } else if (evenementClavierCourant.basculer) {
             disparaitre();
         }
+    }
 
-        if (menu != null && menu.visible()) {
-            menu.maj(vision, evenementSourisCourant, evenementAmorcagesCourant);
-            notifier(evenementAmorcagesCourant);
-        } else {
-            float decalage = accumulateur * DEPLACEMENT_VITESSE / 1000;
-            switch (evenementClavierCourant.deplacement) {
-                case DEPLACEMENT_VISION_HAUT -> vision.translater(0f, decalage, 0f);
-                case DEPLACEMENT_VISION_HAUT | DEPLACEMENT_VISION_DROITE -> vision.translater(decalage, decalage, 0f);
-                case DEPLACEMENT_VISION_DROITE -> vision.translater(decalage, 0f, 0f);
-                case DEPLACEMENT_VISION_BAS | DEPLACEMENT_VISION_DROITE -> vision.translater(decalage, -decalage, 0f);
-                case DEPLACEMENT_VISION_BAS -> vision.translater(0f, -decalage, 0f);
-                case DEPLACEMENT_VISION_BAS | DEPLACEMENT_VISION_GAUCHE -> vision.translater(-decalage, -decalage, 0f);
-                case DEPLACEMENT_VISION_GAUCHE -> vision.translater(-decalage, 0f, 0f);
-                case DEPLACEMENT_VISION_HAUT | DEPLACEMENT_VISION_GAUCHE -> vision.translater(-decalage, decalage, 0f);
-                default -> {// Rien à faire
-                }
-            }
+    private void majMenu(EvenementSouris evenementSourisCourant, EvenementAmorcages evenementAmorcagesCourant) throws LwjglException {
+        menu.maj(vision, evenementSourisCourant, evenementAmorcagesCourant);
+    }
 
-            switch (evenementClavierCourant.zoom) {
-                case ZOOM_VISION_ARRIERE -> vision.translater(0f, 0f, decalage);
-                case ZOOM_VISION_AVANT -> vision.translater(0f, 0f, -decalage);
-                default -> {// Rien à faire
-                }
+    private void majJeu(long accumulateur, EvenementClavier evenementClavierCourant, EvenementSouris evenementSourisCourant, EvenementAmorcages evenementAmorcagesCourant) throws LwjglException {
+        float decalage = accumulateur * DEPLACEMENT_VITESSE / 1000;
+        switch (evenementClavierCourant.deplacement) {
+            case DEPLACEMENT_VISION_HAUT -> vision.translater(0f, decalage, 0f);
+            case DEPLACEMENT_VISION_HAUT | DEPLACEMENT_VISION_DROITE -> vision.translater(decalage, decalage, 0f);
+            case DEPLACEMENT_VISION_DROITE -> vision.translater(decalage, 0f, 0f);
+            case DEPLACEMENT_VISION_BAS | DEPLACEMENT_VISION_DROITE -> vision.translater(decalage, -decalage, 0f);
+            case DEPLACEMENT_VISION_BAS -> vision.translater(0f, -decalage, 0f);
+            case DEPLACEMENT_VISION_BAS | DEPLACEMENT_VISION_GAUCHE -> vision.translater(-decalage, -decalage, 0f);
+            case DEPLACEMENT_VISION_GAUCHE -> vision.translater(-decalage, 0f, 0f);
+            case DEPLACEMENT_VISION_HAUT | DEPLACEMENT_VISION_GAUCHE -> vision.translater(-decalage, decalage, 0f);
+            default -> {// Rien à faire
             }
+        }
 
-            notifier(evenementAmorcagesCourant);
+        switch (evenementClavierCourant.zoom) {
+            case ZOOM_VISION_ARRIERE -> vision.translater(0f, 0f, decalage);
+            case ZOOM_VISION_AVANT -> vision.translater(0f, 0f, -decalage);
+            default -> {// Rien à faire
+            }
+        }
 
-            enfants.forEach(enfant -> enfant.preparer(vision));
-            for (AffichageTeteHaute affichage : affichages) {
-                affichage.maj(vision, evenementSourisCourant, evenementAmorcagesCourant);
-            }
-            for (Element<?> enfant : enfants) {
-                enfant.maj(vision, evenementSourisCourant, evenementAmorcagesCourant);
-            }
-
-            if (evenementSourisCourant.inacheve() && evenementSourisCourant.selection()) {
-                amorcer(Collections.singleton(this), evenementSourisCourant.droite());
-                evenementSourisCourant.comsommer();
-            }
+        enfants.forEach(enfant -> enfant.preparer(vision));
+        for (AffichageTeteHaute affichage : affichages) {
+            affichage.maj(vision, evenementSourisCourant, evenementAmorcagesCourant);
+        }
+        for (Element<?> enfant : enfants) {
+            enfant.maj(vision, evenementSourisCourant, evenementAmorcagesCourant);
         }
     }
 
