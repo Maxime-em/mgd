@@ -67,7 +67,8 @@ public class Menu extends AffichageTeteHaute implements Animateur {
     }
 
     private double hauteur(ActionTextutelle<?> actionTextutelle) {
-        return actionTextutelle.dimensionner(contexte).hauteur();
+        actionTextutelle.dimensionner(contexte);
+        return actionTextutelle.hauteur();
     }
 
     private void dessiner(ActionTextutelle<?> actionTextutelle) {

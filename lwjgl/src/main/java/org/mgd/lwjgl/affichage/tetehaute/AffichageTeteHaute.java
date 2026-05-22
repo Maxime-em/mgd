@@ -17,7 +17,7 @@ public abstract class AffichageTeteHaute extends Primitif implements Acteur {
     public static final NVGCouleur ROUGE_COQUELICOT_A50;
     public static final NVGCouleur INDIGO_A50;
     public static final NVGCouleur AUBURN;
-    public static final NVGCouleur NOIR_A15;
+    public static final NVGCouleur NOIR_A50;
 
     static {
         NVGColor nvg = NVGColor.create();
@@ -59,8 +59,8 @@ public abstract class AffichageTeteHaute extends Primitif implements Acteur {
         nvg.r(0f);
         nvg.g(0f);
         nvg.b(0f);
-        nvg.a(0.15f);
-        NOIR_A15 = new NVGCouleur("Noir 15% transparent", nvg);
+        nvg.a(0.5f);
+        NOIR_A50 = new NVGCouleur("Noir 50% transparent", nvg);
     }
 
     protected final long contexte;

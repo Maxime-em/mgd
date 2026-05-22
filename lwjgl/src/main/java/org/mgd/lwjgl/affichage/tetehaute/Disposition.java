@@ -3,8 +3,10 @@ package org.mgd.lwjgl.affichage.tetehaute;
 public record Disposition(Orientation orientation,
                           Justification justification,
                           Alignement alignement,
-                          Position position,
-                          int espacement) {
+                          Dimensionnement dimensionnement,
+                          int espacement,
+                          int marge,
+                          int longueur) {
     public enum Orientation {
         HORIZONTAL, VERTICAL
     }
@@ -17,7 +19,7 @@ public record Disposition(Orientation orientation,
         DEBUT, CENTRAL, FIN
     }
 
-    public enum Position {
-        HAUT, DROITE, BAS, GAUCHE
+    public enum Dimensionnement {
+        FIXE, VARIABLE
     }
 }

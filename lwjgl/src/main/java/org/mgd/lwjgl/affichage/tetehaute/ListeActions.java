@@ -5,6 +5,11 @@ import org.mgd.lwjgl.*;
 import org.mgd.lwjgl.Fenetre.EvenementSouris;
 import org.mgd.lwjgl.affichage.Animateur;
 import org.mgd.lwjgl.affichage.element.forme.Forme;
+import org.mgd.lwjgl.affichage.tetehaute.Disposition.Alignement;
+import org.mgd.lwjgl.affichage.tetehaute.Disposition.Dimensionnement;
+import org.mgd.lwjgl.affichage.tetehaute.Disposition.Justification;
+import org.mgd.lwjgl.affichage.tetehaute.Disposition.Orientation;
+import org.mgd.lwjgl.affichage.tetehaute.composant.Action;
 import org.mgd.lwjgl.affichage.tetehaute.composant.ActionTextutelle;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Liste;
 import org.mgd.lwjgl.exception.LwjglException;
@@ -16,7 +21,7 @@ import java.util.stream.Stream;
 import static org.lwjgl.nanovg.NanoVG.*;
 
 public class ListeActions<T> extends AffichageTeteHaute implements Animateur {
-    private final Liste<T> liste;
+    private final Liste<Action<T>> liste;
     private final List<Identifiable> identifiables;
     private boolean survole;
     private boolean liaisonsSurvoles;
@@ -24,7 +29,8 @@ public class ListeActions<T> extends AffichageTeteHaute implements Animateur {
     @SafeVarargs
     public ListeActions(Fenetre parent, int espacement, int marge, ActionTextutelle<T>... actionTextutelles) throws LwjglException {
         super(parent, false, false);
-        this.liste = new Liste<>(espacement, marge, actionTextutelles);
+        this.liste = new Liste<>(new Disposition(Orientation.VERTICAL, Justification.DEBUT, Alignement.DEBUT, Dimensionnement.VARIABLE, espacement, marge, 0));
+        this.liste.actions().addAll(Arrays.asList(actionTextutelles));
         this.identifiables = new LinkedList<>();
     }
 
@@ -66,24 +72,9 @@ public class ListeActions<T> extends AffichageTeteHaute implements Animateur {
     protected void dessiner(long ellipse) {
         if ((survole || liaisonsSurvoles) && visible) {
             nvgTextAlign(contexte, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
-            nvgBeginPath(contexte);
-            nvgRect(contexte, liste.abscisse(), liste.ordonnee(), liste.largeur(), liste.hauteur());
-            nvgFillColor(contexte, NOIR_A15.nvg());
-            nvgFill(contexte);
-            nvgClosePath(contexte);
 
-            liste.actions().forEach(action -> {
-                nvgBeginPath(contexte);
-                nvgRect(contexte, action.abscisse(), action.ordonnee(), liste.largeur(), action.hauteur());
-                nvgFillColor(contexte, EMERAUDE.nvg());
-                nvgFill(contexte);
-                nvgClosePath(contexte);
-
-                nvgFontSize(contexte, action.taille());
-                nvgFontFace(contexte, action.police().identifiant());
-                nvgFillColor(contexte, action.couleur().nvg());
-                nvgText(contexte, action.abscisse(), action.ordonnee(), action.texte().get());
-            });
+            liste.colorier(contexte, NOIR_A50);
+            liste.dessiner(contexte);
         }
     }
 

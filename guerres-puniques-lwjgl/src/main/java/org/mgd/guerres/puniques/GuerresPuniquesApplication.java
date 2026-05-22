@@ -12,6 +12,10 @@ import org.mgd.lwjgl.Pseudo;
 import org.mgd.lwjgl.affichage.element.Cadrillage;
 import org.mgd.lwjgl.affichage.element.forme.Forme;
 import org.mgd.lwjgl.affichage.tetehaute.*;
+import org.mgd.lwjgl.affichage.tetehaute.Disposition.Alignement;
+import org.mgd.lwjgl.affichage.tetehaute.Disposition.Dimensionnement;
+import org.mgd.lwjgl.affichage.tetehaute.Disposition.Justification;
+import org.mgd.lwjgl.affichage.tetehaute.Disposition.Orientation;
 import org.mgd.lwjgl.affichage.tetehaute.Informations;
 import org.mgd.lwjgl.affichage.tetehaute.composant.ActionImagee;
 import org.mgd.lwjgl.affichage.tetehaute.composant.ActionTextutelle;
@@ -317,14 +321,16 @@ public class GuerresPuniquesApplication extends Application {
 
     private void construireBarreActions() throws LwjglException {
         barreActionsGenerale = new BarreActions<>(fenetre,
-                new Disposition(Disposition.Orientation.HORIZONTAL,
-                        Disposition.Justification.DEBUT,
-                        Disposition.Alignement.DEBUT,
-                        Disposition.Position.HAUT,
-                        20),
+                new Disposition(Orientation.HORIZONTAL,
+                        Justification.DEBUT,
+                        Alignement.DEBUT,
+                        Dimensionnement.FIXE,
+                        20,
+                        0,
+                        fenetre.largeur() - 240),
+                Position.HAUT,
                 120,
-                fenetre.hauteur() - 110,
-                fenetre.largeur() - 240);
+                fenetre.hauteur() - 110);
 
         partie.getCivilisations().forEach(civilisation -> civilisation.getArmees().forEach(armee -> {
             civilisation.getTypesUnites().forEach(type -> {
@@ -349,14 +355,16 @@ public class GuerresPuniquesApplication extends Application {
 
     private void construireBarreActions(Civilisation civilisation, int ordre) throws LwjglException {
         BarreActions<String> barreActionsCivilisation = new BarreActions<>(fenetre,
-                new Disposition(Disposition.Orientation.VERTICAL,
-                        Disposition.Justification.DEBUT,
-                        Disposition.Alignement.CENTRAL,
-                        ordre == 0 ? Disposition.Position.DROITE : Disposition.Position.GAUCHE,
-                        30),
+                new Disposition(Orientation.VERTICAL,
+                        Justification.DEBUT,
+                        Alignement.CENTRAL,
+                        Dimensionnement.FIXE,
+                        30,
+                        0,
+                        fenetre.hauteur() - 130),
+                ordre == 0 ? Position.DROITE : Position.GAUCHE,
                 ordre == 0 ? 10 : fenetre.largeur() - 110,
-                10,
-                fenetre.hauteur() - 130);
+                10);
 
         ActionImagee<Civilisation> actionImageeCivilisation = new ActionImagee<>(civilisation, 100, 100, false, fenetre.obtenirImage(identifiantImageCite(civilisation)));
         actionsCivilisations.ajouter(civilisation, actionImageeCivilisation);
