@@ -10,7 +10,6 @@ import org.mgd.lwjgl.affichage.tetehaute.Disposition.Justification;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition.Orientation;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Action;
 import org.mgd.lwjgl.affichage.tetehaute.composant.ActionTextutelle;
-import org.mgd.lwjgl.affichage.tetehaute.composant.Entite;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Liste;
 import org.mgd.lwjgl.exception.LwjglException;
 import org.mgd.lwjgl.souscription.Identifiable;
@@ -53,24 +52,8 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         return Optional.ofNullable(groupes.get(groupe)).map(liste -> force || liste.visible() ? liste : null);
     }
 
-    private List<Action<?>> actions(boolean force) {
-        return liste(force).map(Liste::actions).orElse(Collections.emptyList());
-    }
-
     private Optional<Liste<ActionTextutelle<Void>>> information(UUID uuid, boolean force) {
         return Optional.ofNullable(informations.get(uuid)).map(liste -> force || liste.visible() ? liste : null);
-    }
-
-    private List<Liste<ActionTextutelle<Void>>> informations() {
-        return actions(true).stream().map(action -> information(action.uuid(), true)).filter(Optional::isPresent).map(Optional::get).toList();
-    }
-
-    private List<ActionTextutelle<Void>> textes() {
-        return actions(true)
-                .stream()
-                .map(action -> information(action.uuid(), true))
-                .filter(Optional::isPresent)
-                .flatMap(option -> option.get().actions().stream()).toList();
     }
 
     private void placer() {
@@ -108,10 +91,12 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
     public void maj(Vision vision, EvenementSouris evenementSouris, Fenetre.EvenementAmorcages evenementAmorcagesCourant) throws LwjglException {
         Animateur.super.maj(vision, evenementSouris, evenementAmorcagesCourant);
         actionsLiees.clear();
-        actionsLiees.addAll(actions(false)
-                .stream()
-                .filter(action -> action.liaisons().stream().anyMatch(liaison -> liaison.visible() && liaison.survoler(vision, evenementSouris)))
-                .toList());
+        liste(false).ifPresent(liste ->
+                actionsLiees.addAll(liste
+                        .actionsAffichables()
+                        .stream()
+                        .filter(action -> action.liaisons().stream().anyMatch(liaison -> liaison.visible() && liaison.survoler(vision, evenementSouris)))
+                        .toList()));
     }
 
     @Override
@@ -119,10 +104,12 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         actionsSurvolees.clear();
         actionsLiees.clear();
         if (visible) {
-            actionsSurvolees.addAll(actions(false)
-                    .stream()
-                    .filter(actionImagee -> actionImagee.survoler(vision, evenementSouris))
-                    .toList());
+            liste(false).ifPresent(liste ->
+                    actionsSurvolees.addAll(liste
+                            .actionsAffichables()
+                            .stream()
+                            .filter(actionImagee -> actionImagee.survoler(vision, evenementSouris))
+                            .toList()));
         }
         return !actionsSurvolees.isEmpty();
     }
@@ -143,9 +130,9 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         nvgTextAlign(contexte, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
         liste(false).ifPresent(liste -> {
             liste.colorier(contexte, AUBURN);
-            liste.actions().forEach(action -> action.colorier(contexte, NOIR_A50));
+            liste.actionsAffichables().forEach(action -> action.colorier(contexte, NOIR_A50));
             liste.dessiner(contexte);
-            liste.actions()
+            liste.actionsAffichables()
                     .stream()
                     .filter(action -> action.active() && action.anime())
                     .forEach(action -> action.colorier(contexte, INDIGO_A50));
@@ -167,12 +154,12 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
     }
 
     public void ajouter(G groupe, Action<?> action) {
-        groupes.computeIfAbsent(groupe, _ -> new Liste<>(disposition)).actions().add(action);
+        groupes.computeIfAbsent(groupe, _ -> new Liste<>(disposition, 4)).actions().add(action);
     }
 
     @SafeVarargs
     public final <A extends Action<?>> void ajouter(G groupe, A... actions) {
-        groupes.computeIfAbsent(groupe, _ -> new Liste<>(disposition)).actions().addAll(List.of(actions));
+        groupes.computeIfAbsent(groupe, _ -> new Liste<>(disposition, 4)).actions().addAll(List.of(actions));
     }
 
     public void ajouter(UUID uuid, ActionTextutelle<Void> nouveau) {
@@ -183,15 +170,27 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
 
     public void afficher(G groupe) {
         if (!Objects.equals(this.groupe, groupe)) {
-            liste(true).ifPresent(Entite::masquer);
-            actions(true).forEach(Action::masquer);
-            informations().forEach(Entite::masquer);
-            textes().forEach(Action::masquer);
+            liste(true).ifPresent(liste -> {
+                liste.masquer();
+                liste.actions().forEach(action -> {
+                    action.masquer();
+                    information(action.uuid(), true).ifPresent(information -> {
+                        information.masquer();
+                        information.actions().forEach(Action::masquer);
+                    });
+                });
+            });
             this.groupe = groupe;
-            liste(true).ifPresent(Liste::afficher);
-            actions(true).forEach(Action::afficher);
-            informations().forEach(Entite::afficher);
-            textes().forEach(Action::afficher);
+            liste(true).ifPresent(liste -> {
+                liste.afficher();
+                liste.actions().forEach(action -> {
+                    action.afficher();
+                    information(action.uuid(), true).ifPresent(information -> {
+                        information.afficher();
+                        information.actions().forEach(Action::afficher);
+                    });
+                });
+            });
             placer();
         }
     }
