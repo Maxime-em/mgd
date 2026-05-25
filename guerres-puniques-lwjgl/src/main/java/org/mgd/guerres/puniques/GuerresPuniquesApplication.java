@@ -330,7 +330,8 @@ public class GuerresPuniquesApplication extends Application {
                         fenetre.largeur() - 240),
                 Position.HAUT,
                 120,
-                fenetre.hauteur() - 110);
+                fenetre.hauteur() - 110,
+                10);
 
         partie.getCivilisations().forEach(civilisation -> civilisation.getArmees().forEach(armee -> {
             civilisation.getTypesUnites().forEach(type -> {
@@ -364,7 +365,8 @@ public class GuerresPuniquesApplication extends Application {
                         fenetre.hauteur() - 130),
                 ordre == 0 ? Position.DROITE : Position.GAUCHE,
                 ordre == 0 ? 10 : fenetre.largeur() - 110,
-                10);
+                10,
+                4);
 
         ActionImagee<Civilisation> actionImageeCivilisation = new ActionImagee<>(civilisation, 100, 100, false, fenetre.obtenirImage(identifiantImageCite(civilisation)));
         actionsCivilisations.ajouter(civilisation, actionImageeCivilisation);

@@ -26,6 +26,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
     private final Position position;
     private final int abcisses;
     private final int ordonnee;
+    private final int taille;
     private final Map<G, Liste<Action<?>>> groupes;
     private final Map<UUID, Liste<ActionTextutelle<Void>>> informations;
     private final List<Action<?>> actionsSurvolees;
@@ -36,12 +37,14 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
                         Disposition disposition,
                         Position position,
                         int abcisses,
-                        int ordonnee) throws LwjglException {
+                        int ordonnee,
+                        int taille) throws LwjglException {
         super(parent, false, true);
         this.disposition = disposition;
         this.position = position;
         this.abcisses = abcisses;
         this.ordonnee = ordonnee;
+        this.taille = taille;
         this.groupes = new HashMap<>();
         this.informations = new HashMap<>();
         this.actionsSurvolees = new LinkedList<>();
@@ -93,8 +96,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         actionsLiees.clear();
         liste(false).ifPresent(liste ->
                 actionsLiees.addAll(liste
-                        .actionsAffichables()
-                        .stream()
+                        .fluxActionsAffichables()
                         .filter(action -> action.liaisons().stream().anyMatch(liaison -> liaison.visible() && liaison.survoler(vision, evenementSouris)))
                         .toList()));
     }
@@ -106,8 +108,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         if (visible) {
             liste(false).ifPresent(liste ->
                     actionsSurvolees.addAll(liste
-                            .actionsAffichables()
-                            .stream()
+                            .fluxActionsAffichables()
                             .filter(actionImagee -> actionImagee.survoler(vision, evenementSouris))
                             .toList()));
         }
@@ -130,10 +131,9 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         nvgTextAlign(contexte, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
         liste(false).ifPresent(liste -> {
             liste.colorier(contexte, AUBURN);
-            liste.actionsAffichables().forEach(action -> action.colorier(contexte, NOIR_A50));
+            liste.fluxActionsAffichables().forEach(action -> action.colorier(contexte, NOIR_A50));
             liste.dessiner(contexte);
-            liste.actionsAffichables()
-                    .stream()
+            liste.fluxActionsAffichables()
                     .filter(action -> action.active() && action.anime())
                     .forEach(action -> action.colorier(contexte, INDIGO_A50));
 
@@ -154,12 +154,12 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
     }
 
     public void ajouter(G groupe, Action<?> action) {
-        groupes.computeIfAbsent(groupe, _ -> new Liste<>(disposition, 4)).actions().add(action);
+        groupes.computeIfAbsent(groupe, _ -> new Liste<>(disposition, taille)).actions().add(action);
     }
 
     @SafeVarargs
     public final <A extends Action<?>> void ajouter(G groupe, A... actions) {
-        groupes.computeIfAbsent(groupe, _ -> new Liste<>(disposition, 4)).actions().addAll(List.of(actions));
+        groupes.computeIfAbsent(groupe, _ -> new Liste<>(disposition, taille)).actions().addAll(List.of(actions));
     }
 
     public void ajouter(UUID uuid, ActionTextutelle<Void> nouveau) {

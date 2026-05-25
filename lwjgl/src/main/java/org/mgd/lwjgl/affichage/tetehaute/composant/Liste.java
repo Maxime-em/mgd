@@ -62,7 +62,8 @@ public class Liste<A extends Action<?>> extends Entite {
             };
         }).sum();
 
-        pagination.total(actions.size() / pagination.taille());
+        int nombreActions = Math.toIntExact(fluxActionsAffichables().count());
+        pagination.total(nombreActions / pagination.taille());
 
         switch (disposition.dimensionnement()) {
             case VARIABLE -> {
@@ -70,21 +71,21 @@ public class Liste<A extends Action<?>> extends Entite {
                 espacementDebut = 0;
                 switch (disposition.orientation()) {
                     case HORIZONTAL -> {
-                        hauteur = disposition.marge() + actions.stream().mapToInt(action -> action.hauteur).max().orElse(0);
-                        largeur = actions.stream().mapToInt(action -> action.largeur).sum()
+                        hauteur = disposition.marge() + fluxActionsAffichables().mapToInt(action -> action.hauteur).max().orElse(0);
+                        largeur = fluxActionsAffichables().mapToInt(action -> action.largeur).sum()
                                 + espacementDebut
-                                + (actions.size() - 1) * espacementInterne;
+                                + (nombreActions - 1) * espacementInterne;
                     }
                     case VERTICAL -> {
-                        hauteur = actions.stream().mapToInt(action -> action.hauteur).sum()
+                        hauteur = fluxActionsAffichables().mapToInt(action -> action.hauteur).sum()
                                 + espacementDebut
-                                + (actions.size() - 1) * espacementInterne;
-                        largeur = disposition.marge() + actions.stream().mapToInt(action -> action.largeur).max().orElse(0);
+                                + (nombreActions - 1) * espacementInterne;
+                        largeur = disposition.marge() + fluxActionsAffichables().mapToInt(action -> action.largeur).max().orElse(0);
                     }
                 }
             }
             case FIXE -> {
-                int espacementMaximal = actions.size() > 1 ? (disposition.longueur() - longueurActions) / (actions.size() - 1) : 0;
+                int espacementMaximal = nombreActions > 1 ? (disposition.longueur() - longueurActions) / (nombreActions - 1) : 0;
                 switch (disposition.justification()) {
                     case DEBUT -> {
                         espacementInterne = Math.min(espacementMaximal, disposition.espacement());
@@ -92,21 +93,21 @@ public class Liste<A extends Action<?>> extends Entite {
                     }
                     case CENTRAL -> {
                         espacementInterne = Math.min(espacementMaximal, disposition.espacement());
-                        espacementDebut = (disposition.longueur() - longueurActions - (actions.size() - 1) * espacementInterne) / 2;
+                        espacementDebut = (disposition.longueur() - longueurActions - (nombreActions - 1) * espacementInterne) / 2;
                     }
                     case ETENDU -> {
                         espacementInterne = espacementMaximal;
-                        espacementDebut = (disposition.longueur() - longueurActions - (actions.size() - 1) * espacementInterne) / 2;
+                        espacementDebut = (disposition.longueur() - longueurActions - (nombreActions - 1) * espacementInterne) / 2;
                     }
                 }
                 switch (disposition.orientation()) {
                     case HORIZONTAL -> {
-                        hauteur = disposition.marge() + actions.stream().mapToInt(action -> action.hauteur).max().orElse(0);
+                        hauteur = disposition.marge() + fluxActionsAffichables().mapToInt(action -> action.hauteur).max().orElse(0);
                         largeur = disposition.longueur();
                     }
                     case VERTICAL -> {
                         hauteur = disposition.longueur();
-                        largeur = disposition.marge() + actions.stream().mapToInt(action -> action.largeur).max().orElse(0);
+                        largeur = disposition.marge() + fluxActionsAffichables().mapToInt(action -> action.largeur).max().orElse(0);
                     }
                 }
             }
@@ -118,15 +119,11 @@ public class Liste<A extends Action<?>> extends Entite {
         fluxActionsAffichables().forEach(action -> action.dessiner(contexte));
     }
 
-    private Stream<A> fluxActionsAffichables() {
+    public Stream<A> fluxActionsAffichables() {
         return actions.stream().filter(Entite::visible).skip((long) pagination.page() * pagination.taille()).limit(pagination.taille());
     }
 
     public List<A> actions() {
         return actions;
-    }
-
-    public List<A> actionsAffichables() {
-        return fluxActionsAffichables().toList();
     }
 }
