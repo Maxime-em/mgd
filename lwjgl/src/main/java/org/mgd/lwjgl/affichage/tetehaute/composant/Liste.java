@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 
 public class Liste<A extends Action<?>> extends Entite {
     private final Disposition disposition;
+    private final List<A> persistantes;
     private final List<A> actions;
     private final Pagination pagination;
     private int espacementDebut;
@@ -17,6 +18,7 @@ public class Liste<A extends Action<?>> extends Entite {
 
     public Liste(Disposition disposition, int taille) {
         this.disposition = disposition;
+        this.persistantes = new LinkedList<>();
         this.actions = new LinkedList<>();
         this.pagination = new Pagination(taille, 0, 1);
     }
@@ -120,7 +122,11 @@ public class Liste<A extends Action<?>> extends Entite {
     }
 
     public Stream<A> fluxActionsAffichables() {
-        return actions.stream().filter(Entite::visible).skip((long) pagination.page() * pagination.taille()).limit(pagination.taille());
+        return Stream.concat(persistantes.stream(), actions.stream().filter(Entite::visible).skip((long) pagination.page() * pagination.taille()).limit(pagination.taille()));
+    }
+
+    public List<A> persistantes() {
+        return persistantes;
     }
 
     public List<A> actions() {

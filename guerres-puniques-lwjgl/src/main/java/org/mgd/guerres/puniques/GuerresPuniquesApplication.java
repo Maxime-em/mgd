@@ -391,7 +391,7 @@ public class GuerresPuniquesApplication extends Application {
         partie.getCivilisations().forEach(civilisation -> {
             BarreActions<String> barreActionsCivilisation = barresActionsCivilisations.get(civilisation);
             ActionImagee<Civilisation> actionImageeCivilisation = actionsCivilisations.identifiable(civilisation);
-            barreActionsCivilisation.ajouter(civilisation.getNom(), actionImageeCivilisation);
+            barreActionsCivilisation.ajouter(actionImageeCivilisation);
             barreActionsCivilisation.ajouter(actionImageeCivilisation.uuid(), creerInformations(police, civilisation::getNom));
             barreActionsCivilisation.ajouter(actionImageeCivilisation.uuid(), informationType(police, civilisation.getTypesUnites(), civilisation.getReserve().getUnites()));
             barreActionsCivilisation.ajouter(actionImageeCivilisation.uuid(), informationType(police, civilisation.getTypesTransports(), civilisation.getTransports()));

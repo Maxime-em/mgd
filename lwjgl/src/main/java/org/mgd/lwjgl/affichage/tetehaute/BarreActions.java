@@ -27,6 +27,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
     private final int abcisses;
     private final int ordonnee;
     private final int taille;
+    private final List<Action<?>> persistantes;
     private final Map<G, Liste<Action<?>>> groupes;
     private final Map<UUID, Liste<ActionTextutelle<Void>>> informations;
     private final List<Action<?>> actionsSurvolees;
@@ -45,6 +46,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         this.abcisses = abcisses;
         this.ordonnee = ordonnee;
         this.taille = taille;
+        this.persistantes = new LinkedList<>();
         this.groupes = new HashMap<>();
         this.informations = new HashMap<>();
         this.actionsSurvolees = new LinkedList<>();
@@ -153,13 +155,25 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         });
     }
 
+    public void ajouter(Action<?> action) {
+        persistantes.add(action);
+    }
+
     public void ajouter(G groupe, Action<?> action) {
-        groupes.computeIfAbsent(groupe, _ -> new Liste<>(disposition, taille)).actions().add(action);
+        groupes.computeIfAbsent(groupe, _ -> {
+            Liste<Action<?>> liste = new Liste<>(disposition, taille);
+            liste.persistantes().addAll(persistantes);
+            return liste;
+        }).actions().add(action);
     }
 
     @SafeVarargs
     public final <A extends Action<?>> void ajouter(G groupe, A... actions) {
-        groupes.computeIfAbsent(groupe, _ -> new Liste<>(disposition, taille)).actions().addAll(List.of(actions));
+        groupes.computeIfAbsent(groupe, _ -> {
+            Liste<Action<?>> liste = new Liste<>(disposition, taille);
+            liste.persistantes().addAll(persistantes);
+            return liste;
+        }).actions().addAll(List.of(actions));
     }
 
     public void ajouter(UUID uuid, ActionTextutelle<Void> nouveau) {
@@ -179,11 +193,25 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
                         information.actions().forEach(Action::masquer);
                     });
                 });
+                liste.persistantes().forEach(action -> {
+                    action.masquer();
+                    information(action.uuid(), true).ifPresent(information -> {
+                        information.masquer();
+                        information.actions().forEach(Action::masquer);
+                    });
+                });
             });
             this.groupe = groupe;
             liste(true).ifPresent(liste -> {
                 liste.afficher();
                 liste.actions().forEach(action -> {
+                    action.afficher();
+                    information(action.uuid(), true).ifPresent(information -> {
+                        information.afficher();
+                        information.actions().forEach(Action::afficher);
+                    });
+                });
+                liste.persistantes().forEach(action -> {
                     action.afficher();
                     information(action.uuid(), true).ifPresent(information -> {
                         information.afficher();
