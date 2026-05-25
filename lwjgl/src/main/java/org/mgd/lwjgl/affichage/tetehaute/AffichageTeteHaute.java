@@ -6,10 +6,17 @@ import org.mgd.lwjgl.Vision;
 import org.mgd.lwjgl.affichage.Acteur;
 import org.mgd.lwjgl.affichage.Primitif;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGCouleur;
+import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGImage;
+import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
 import org.mgd.lwjgl.exception.LwjglException;
 
-import static org.lwjgl.nanovg.NanoVG.nvgBeginFrame;
-import static org.lwjgl.nanovg.NanoVG.nvgEndFrame;
+import java.nio.file.Path;
+import java.text.MessageFormat;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
+
+import static org.lwjgl.nanovg.NanoVG.*;
 
 public abstract class AffichageTeteHaute extends Primitif implements Acteur {
     public static final NVGCouleur BLANC;
@@ -18,6 +25,8 @@ public abstract class AffichageTeteHaute extends Primitif implements Acteur {
     public static final NVGCouleur INDIGO_A50;
     public static final NVGCouleur AUBURN;
     public static final NVGCouleur NOIR_A50;
+    private static final Map<String, NVGPolice> POLICES;
+    private static final Map<String, NVGImage> IMAGES;
 
     static {
         NVGColor nvg = NVGColor.create();
@@ -61,6 +70,10 @@ public abstract class AffichageTeteHaute extends Primitif implements Acteur {
         nvg.b(0f);
         nvg.a(0.5f);
         NOIR_A50 = new NVGCouleur("Noir 50% transparent", nvg);
+
+        POLICES = new HashMap<>();
+
+        IMAGES = new HashMap<>();
     }
 
     protected final long contexte;
@@ -77,6 +90,40 @@ public abstract class AffichageTeteHaute extends Primitif implements Acteur {
         } else {
             parent.affichages().add(this);
         }
+    }
+
+    private static String contextualiser(long contexte, String identifiant) {
+        return MessageFormat.format("{0}:{1}", contexte, identifiant);
+    }
+
+    public static void creerPolice(long contexte, String identifiant, Path fichier) {
+        POLICES.computeIfAbsent(contextualiser(contexte, identifiant), _ -> new NVGPolice(identifiant, fichier, nvgCreateFont(contexte, identifiant, fichier.toString())));
+    }
+
+    public static void creerImage(long contexte, String identifiant, Path fichier) {
+        IMAGES.computeIfAbsent(contextualiser(contexte, identifiant), _ -> {
+            int nvg = nvgCreateImage(contexte, fichier.toString(), NVG_IMAGE_NEAREST);
+            int[] largeurImage = new int[1];
+            int[] hauteurImage = new int[1];
+            nvgImageSize(contexte, nvg, largeurImage, hauteurImage);
+            return new NVGImage(identifiant, fichier, largeurImage[0], hauteurImage[0], nvg);
+        });
+    }
+
+    public static NVGImage obtenirImage(long contexte, String identifiant) {
+        String cle = contextualiser(contexte, identifiant);
+        if (!IMAGES.containsKey(cle)) {
+            throw new NoSuchElementException(MessageFormat.format("L''image \"{0}\" est introuvable.", identifiant));
+        }
+        return IMAGES.get(cle);
+    }
+
+    public static NVGPolice obtenirPolice(long contexte, String identifiant) {
+        String cle = contextualiser(contexte, identifiant);
+        if (!POLICES.containsKey(cle)) {
+            throw new NoSuchElementException(MessageFormat.format("La police \"{0}\" est introuvable.", identifiant));
+        }
+        return POLICES.get(cle);
     }
 
     protected abstract void dessiner(long ellipse);

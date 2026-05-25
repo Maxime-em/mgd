@@ -5,22 +5,17 @@ import org.mgd.commun.Matrice;
 import org.mgd.lwjgl.affichage.Primitif;
 import org.mgd.lwjgl.affichage.element.Element;
 import org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute;
-import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGImage;
-import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
 import org.mgd.lwjgl.exception.LwjglException;
 import org.mgd.lwjgl.souscription.DetecteurAmorcage;
 import org.mgd.lwjgl.souscription.DetecteurService;
 import org.mgd.lwjgl.souscription.Identifiable;
 
-import java.nio.file.Path;
-import java.text.MessageFormat;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.nanovg.NanoVG.*;
 import static org.lwjgl.nanovg.NanoVGGL3.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -54,8 +49,6 @@ public class Fenetre implements Identifiable {
     private final Map<String, Consumer<Amorcage>> invocationsGroupees;
 
     private long contexteNvg;
-    private Map<String, NVGPolice> polices;
-    private Map<String, NVGImage> images;
     private AffichageTeteHaute menu;
 
     protected Fenetre(String titre, int hauteur, int ratioNumerateur, int ratioDenominateur) throws LwjglException {
@@ -143,36 +136,6 @@ public class Fenetre implements Identifiable {
         if (this.contexteNvg == 0L) {
             throw new LwjglException("Impossible d'initialiser NanoVG.");
         }
-        this.polices = new HashMap<>();
-        this.images = new HashMap<>();
-    }
-
-    public void creerPolice(String identifiant, Path fichier) {
-        polices.computeIfAbsent(identifiant, _ -> new NVGPolice(identifiant, fichier, nvgCreateFont(contexteNvg, identifiant, fichier.toString())));
-    }
-
-    public void creerImage(String identifiant, Path fichier) {
-        images.computeIfAbsent(identifiant, _ -> {
-            int nvg = nvgCreateImage(contexteNvg, fichier.toString(), NVG_IMAGE_NEAREST);
-            int[] largeurImage = new int[1];
-            int[] hauteurImage = new int[1];
-            nvgImageSize(contexteNvg, nvg, largeurImage, hauteurImage);
-            return new NVGImage(identifiant, fichier, largeurImage[0], hauteurImage[0], nvg);
-        });
-    }
-
-    public NVGImage obtenirImage(String identifiant) {
-        if (!images.containsKey(identifiant)) {
-            throw new NoSuchElementException(MessageFormat.format("L''image \"{0}\" est introuvable.", identifiant));
-        }
-        return images.get(identifiant);
-    }
-
-    public NVGPolice obtenirPolice(String identifiant) {
-        if (!polices.containsKey(identifiant)) {
-            throw new NoSuchElementException(MessageFormat.format("La police \"{0}\" est introuvable.", identifiant));
-        }
-        return polices.get(identifiant);
     }
 
     public void maj(long accumulateur) throws LwjglException {

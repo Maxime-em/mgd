@@ -151,9 +151,9 @@ public class GuerresPuniquesApplication extends Application {
     @Override
     protected void peupler() throws LwjglException {
         fenetre.creerContexteNvg();
-        fenetre.creerPolice(POLICE_DEFAUT, Path.of("C:\\Windows\\Fonts\\Calibri.ttf"));
-        fenetre.creerImage(IMAGE_LANCER_DEX, dossierTextures.resolve("generales", "des.png"));
-        fenetre.creerImage(IMAGE_FINIR_LE_TOUR, dossierTextures.resolve("generales", "fin_de_tour.png"));
+        AffichageTeteHaute.creerPolice(fenetre.contexteNvg(), POLICE_DEFAUT, Path.of("C:\\Windows\\Fonts\\Calibri.ttf"));
+        AffichageTeteHaute.creerImage(fenetre.contexteNvg(), IMAGE_LANCER_DEX, dossierTextures.resolve("generales", "des.png"));
+        AffichageTeteHaute.creerImage(fenetre.contexteNvg(), IMAGE_FINIR_LE_TOUR, dossierTextures.resolve("generales", "fin_de_tour.png"));
 
         try {
             construireMenu();
@@ -169,7 +169,7 @@ public class GuerresPuniquesApplication extends Application {
         actionsArmees.identifiable(armee).lier(jeton);
         jetonsArmees.ajouter(armee, jeton);
 
-        ActionTextutelle<Armee> actionAttaqueArmee = new ActionTextutelle<>(armee, 24f, fenetre.obtenirPolice(POLICE_DEFAUT), BLANC, () -> "Attaquer");
+        ActionTextutelle<Armee> actionAttaqueArmee = new ActionTextutelle<>(armee, 24f, AffichageTeteHaute.obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), BLANC, () -> "Attaquer");
         actionsArmeesAttaquer.ajouter(armee, actionAttaqueArmee);
 
         ListeActions<Armee> listeActionsArmee = new ListeActions<>(fenetre, 10, 10, actionAttaqueArmee);
@@ -184,7 +184,7 @@ public class GuerresPuniquesApplication extends Application {
     }
 
     private void construireMenu() throws LwjglException, JeuException {
-        NVGPolice police = fenetre.obtenirPolice(POLICE_DEFAUT);
+        NVGPolice police = AffichageTeteHaute.obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT);
         ActionTextutelle<Void> titre = new ActionTextutelle<>(64f, police, BLANC, () -> "Guerres puniques");
         ActionTextutelle<Void> charger = new ActionTextutelle<>(BOUTON_TAILLE_POLICE, police, BLANC, () -> "Charger la partie");
         nouvellePartie = new ActionTextutelle<>(BOUTON_TAILLE_POLICE, police, BLANC, () -> "Nouvelle partie");
@@ -202,8 +202,8 @@ public class GuerresPuniquesApplication extends Application {
     }
 
     private void construireJeu() {
-        lancerDes = new ActionImagee<>(100, 100, true, fenetre.obtenirImage(IMAGE_LANCER_DEX));
-        finirTour = new ActionImagee<>(100, 100, true, fenetre.obtenirImage(IMAGE_FINIR_LE_TOUR));
+        lancerDes = new ActionImagee<>(100, 100, true, AffichageTeteHaute.obtenirImage(fenetre.contexteNvg(), IMAGE_LANCER_DEX));
+        finirTour = new ActionImagee<>(100, 100, true, AffichageTeteHaute.obtenirImage(fenetre.contexteNvg(), IMAGE_FINIR_LE_TOUR));
 
         jeu.souscription((ChangementPartie) nouvelle -> {
             try {
@@ -295,11 +295,11 @@ public class GuerresPuniquesApplication extends Application {
     }
 
     private void construireImages(Civilisation civilisation) {
-        fenetre.creerImage(identifiantImageCite(civilisation), cheminImageCite(civilisation));
-        civilisation.getTypesUnites().forEach(type -> fenetre.creerImage(identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_UNITES, type), cheminImageType(civilisation, Jeu.NOM_GROUPE_TYPES_UNITES, type)));
-        civilisation.getTypeArmees().forEach(type -> fenetre.creerImage(identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_ARMEES, type), cheminImageType(civilisation, Jeu.NOM_GROUPE_TYPES_ARMEES, type)));
-        civilisation.getTypesTransports().forEach(type -> fenetre.creerImage(identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_TRANSPORTS, type), cheminImageType(civilisation, Jeu.NOM_GROUPE_TYPES_TRANSPORTS, type)));
-        fenetre.creerImage(identifiantImageDeploiementArmee(civilisation), cheminImageDeploiementArmee(civilisation));
+        AffichageTeteHaute.creerImage(fenetre.contexteNvg(), identifiantImageCite(civilisation), cheminImageCite(civilisation));
+        civilisation.getTypesUnites().forEach(type -> AffichageTeteHaute.creerImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_UNITES, type), cheminImageType(civilisation, Jeu.NOM_GROUPE_TYPES_UNITES, type)));
+        civilisation.getTypeArmees().forEach(type -> AffichageTeteHaute.creerImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_ARMEES, type), cheminImageType(civilisation, Jeu.NOM_GROUPE_TYPES_ARMEES, type)));
+        civilisation.getTypesTransports().forEach(type -> AffichageTeteHaute.creerImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_TRANSPORTS, type), cheminImageType(civilisation, Jeu.NOM_GROUPE_TYPES_TRANSPORTS, type)));
+        AffichageTeteHaute.creerImage(fenetre.contexteNvg(), identifiantImageDeploiementArmee(civilisation), cheminImageDeploiementArmee(civilisation));
     }
 
     private void construirePlateauJeu() throws LwjglException {
@@ -340,7 +340,7 @@ public class GuerresPuniquesApplication extends Application {
                         100,
                         100,
                         false,
-                        fenetre.obtenirImage(identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_UNITES, type)));
+                        AffichageTeteHaute.obtenirImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_UNITES, type)));
                 actionsArmeesAjouterUnite.ajouter(armee, type, actionImageeArmeeAjouterUnite);
             });
 
@@ -349,7 +349,7 @@ public class GuerresPuniquesApplication extends Application {
                     100,
                     100,
                     false,
-                    fenetre.obtenirImage(identifiantImageDeploiementArmee(civilisation)));
+                    AffichageTeteHaute.obtenirImage(fenetre.contexteNvg(), identifiantImageDeploiementArmee(civilisation)));
             actionsArmeesDeployer.ajouter(armee, actionImageeDeployerArmee);
         }));
     }
@@ -368,7 +368,7 @@ public class GuerresPuniquesApplication extends Application {
                 10,
                 4);
 
-        ActionImagee<Civilisation> actionImageeCivilisation = new ActionImagee<>(civilisation, 100, 100, false, fenetre.obtenirImage(identifiantImageCite(civilisation)));
+        ActionImagee<Civilisation> actionImageeCivilisation = new ActionImagee<>(civilisation, 100, 100, false, AffichageTeteHaute.obtenirImage(fenetre.contexteNvg(), identifiantImageCite(civilisation)));
         actionsCivilisations.ajouter(civilisation, actionImageeCivilisation);
 
         civilisation.getArmees().forEach(armee -> {
@@ -377,7 +377,7 @@ public class GuerresPuniquesApplication extends Application {
                     50,
                     50,
                     true,
-                    fenetre.obtenirImage(identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_ARMEES, armee.getType())));
+                    AffichageTeteHaute.obtenirImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_ARMEES, armee.getType())));
             actionsArmees.ajouter(armee, actionImageeArmee);
         });
 
@@ -387,7 +387,7 @@ public class GuerresPuniquesApplication extends Application {
     private void configurerBarresActions() {
         barreActionsGenerale.ajouter(fenetre.uuid(), lancerDes, finirTour);
 
-        NVGPolice police = fenetre.obtenirPolice(POLICE_DEFAUT);
+        NVGPolice police = AffichageTeteHaute.obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT);
         partie.getCivilisations().forEach(civilisation -> {
             BarreActions<String> barreActionsCivilisation = barresActionsCivilisations.get(civilisation);
             ActionImagee<Civilisation> actionImageeCivilisation = actionsCivilisations.identifiable(civilisation);
@@ -432,13 +432,13 @@ public class GuerresPuniquesApplication extends Application {
 
     private void construireDesCivilisation() throws LwjglException {
         informationsDesCivilisation = new Informations(fenetre, 10, fenetre.hauteur() - 110, 100, 100);
-        informationsDesCivilisation.ajouter(creerValeurDes(fenetre.obtenirPolice(POLICE_DEFAUT), () -> partie.getDesCivilisation().getValeur() != null ? partie.getDesCivilisation().getValeur().toString() : ""));
+        informationsDesCivilisation.ajouter(creerValeurDes(AffichageTeteHaute.obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), () -> partie.getDesCivilisation().getValeur() != null ? partie.getDesCivilisation().getValeur().toString() : ""));
         informationsDesCivilisation.afficher();
     }
 
     private void construireDesActions() throws LwjglException {
         informationDesActions = new Informations(fenetre, fenetre.largeur() - 110, fenetre.hauteur() - 110, 100, 100);
-        informationDesActions.ajouter(creerValeurDes(fenetre.obtenirPolice(POLICE_DEFAUT), () -> partie.getDesActions().getValeur() != null ? partie.getDesActions().getValeur().toString() : ""));
+        informationDesActions.ajouter(creerValeurDes(AffichageTeteHaute.obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), () -> partie.getDesActions().getValeur() != null ? partie.getDesActions().getValeur().toString() : ""));
         informationDesActions.afficher();
     }
 
