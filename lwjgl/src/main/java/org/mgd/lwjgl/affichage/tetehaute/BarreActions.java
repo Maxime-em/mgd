@@ -63,7 +63,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         liste(false).ifPresent(liste -> {
             liste.dimensionner(contexte);
             liste.placer(abcisses, ordonnee);
-            liste.actions().forEach(action -> information(action.uuid(), false).ifPresent(information -> {
+            liste.fluxActionsAffichables().forEach(action -> information(action.uuid(), false).ifPresent(information -> {
                 information.dimensionner(contexte);
                 int epaisseur = switch (disposition.orientation()) {
                     case HORIZONTAL -> liste.hauteur();

@@ -49,7 +49,7 @@ public class ListeActions<T> extends AffichageTeteHaute implements Animateur {
         survole = false;
         liaisonsSurvoles = false;
         if (visible) {
-            identifiables.addAll(liste.actions().stream().filter(action -> action.survoler(vision, evenementSouris)).map(Identifiable.class::cast).toList());
+            identifiables.addAll(liste.fluxActionsAffichables().filter(action -> action.survoler(vision, evenementSouris)).map(Identifiable.class::cast).toList());
             survole = evenementSouris.inclus(liste.abscisse(), liste.ordonnee(), liste.largeur(), liste.hauteur());
             liaisonsSurvoles = liste.liaisons().stream().anyMatch(liaison -> liaison.visible() && liaison.survoler(vision, evenementSouris));
         }
