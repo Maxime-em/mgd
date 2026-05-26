@@ -161,7 +161,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
 
     public void ajouter(G groupe, Action<?> action) {
         groupes.computeIfAbsent(groupe, _ -> {
-            Liste<Action<?>> liste = new Liste<>(disposition, taille);
+            Liste<Action<?>> liste = new Liste<>(parent.contexteNvg(), disposition, taille);
             liste.persistantes().addAll(persistantes);
             return liste;
         }).actions().add(action);
@@ -170,14 +170,14 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
     @SafeVarargs
     public final <A extends Action<?>> void ajouter(G groupe, A... actions) {
         groupes.computeIfAbsent(groupe, _ -> {
-            Liste<Action<?>> liste = new Liste<>(disposition, taille);
+            Liste<Action<?>> liste = new Liste<>(parent.contexteNvg(), disposition, taille);
             liste.persistantes().addAll(persistantes);
             return liste;
         }).actions().addAll(List.of(actions));
     }
 
     public void ajouter(UUID uuid, ActionTextutelle<Void> nouveau) {
-        informations.computeIfAbsent(uuid, _ -> new Liste<>(new Disposition(Orientation.VERTICAL, Justification.DEBUT, Alignement.DEBUT, Dimensionnement.VARIABLE, 0, MARGE_TEXTES, 0)))
+        informations.computeIfAbsent(uuid, _ -> new Liste<>(parent.contexteNvg(), new Disposition(Orientation.VERTICAL, Justification.DEBUT, Alignement.DEBUT, Dimensionnement.VARIABLE, 0, MARGE_TEXTES, 0)))
                 .actions()
                 .add(nouveau);
     }

@@ -27,6 +27,10 @@ public final class Pagination {
         page = Math.min(page + 1, total);
     }
 
+    public void precedent() {
+        page = Math.max(page - 1, 0);
+    }
+
     public void total(int total) {
         this.total = total;
     }

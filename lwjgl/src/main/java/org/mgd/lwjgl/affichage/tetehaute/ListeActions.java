@@ -29,7 +29,7 @@ public class ListeActions<T> extends AffichageTeteHaute implements Animateur {
     @SafeVarargs
     public ListeActions(Fenetre parent, int espacement, int marge, ActionTextutelle<T>... actionTextutelles) throws LwjglException {
         super(parent, false, false);
-        this.liste = new Liste<>(new Disposition(Orientation.VERTICAL, Justification.DEBUT, Alignement.DEBUT, Dimensionnement.VARIABLE, espacement, marge, 0));
+        this.liste = new Liste<>(parent.contexteNvg(), new Disposition(Orientation.VERTICAL, Justification.DEBUT, Alignement.DEBUT, Dimensionnement.VARIABLE, espacement, marge, 0));
         this.liste.actions().addAll(Arrays.asList(actionTextutelles));
         this.identifiables = new LinkedList<>();
     }

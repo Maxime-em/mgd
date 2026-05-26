@@ -1,5 +1,6 @@
 package org.mgd.lwjgl.affichage.tetehaute.composant;
 
+import org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition;
 import org.mgd.lwjgl.affichage.tetehaute.Pagination;
 
@@ -8,23 +9,29 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
+import static org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute.BLANC;
+
 public class Liste<A extends Action<?>> extends Entite {
     private final Disposition disposition;
     private final List<A> persistantes;
     private final List<A> actions;
     private final Pagination pagination;
+    private final Action<Void> suivante;
+    private final Action<Void> precedente;
     private int espacementDebut;
     private int espacementInterne;
 
-    public Liste(Disposition disposition, int taille) {
+    public Liste(long contexte, Disposition disposition, int taille) {
         this.disposition = disposition;
         this.persistantes = new LinkedList<>();
         this.actions = new LinkedList<>();
         this.pagination = new Pagination(taille, 0, 1);
+        this.suivante = new ActionTextutelle<>(24f, AffichageTeteHaute.obtenirPolice(contexte, "Calibri"), BLANC, () -> "Suivant");
+        this.precedente = new ActionTextutelle<>(24f, AffichageTeteHaute.obtenirPolice(contexte, "Calibri"), BLANC, () -> "Précedent");
     }
 
-    public Liste(Disposition disposition) {
-        this(disposition, Integer.MAX_VALUE);
+    public Liste(long contexte, Disposition disposition) {
+        this(contexte, disposition, Integer.MAX_VALUE);
     }
 
     @Override
@@ -64,8 +71,8 @@ public class Liste<A extends Action<?>> extends Entite {
             };
         }).sum();
 
+        pagination.total(Math.toIntExact(actions.stream().filter(Entite::visible).count() / pagination.taille()));
         int nombreActions = Math.toIntExact(fluxActionsAffichables().count());
-        pagination.total(nombreActions / pagination.taille());
 
         switch (disposition.dimensionnement()) {
             case VARIABLE -> {
@@ -114,6 +121,9 @@ public class Liste<A extends Action<?>> extends Entite {
                 }
             }
         }
+
+        this.suivante.dimensionner(contexte);
+        this.precedente.dessiner(contexte);
     }
 
     @Override
@@ -121,8 +131,11 @@ public class Liste<A extends Action<?>> extends Entite {
         fluxActionsAffichables().forEach(action -> action.dessiner(contexte));
     }
 
-    public Stream<A> fluxActionsAffichables() {
-        return Stream.concat(persistantes.stream(), actions.stream().filter(Entite::visible).skip((long) pagination.page() * pagination.taille()).limit(pagination.taille()));
+    public Stream<Action<?>> fluxActionsAffichables() {
+        Stream<Action<?>> fluxPagination = Stream.concat(
+                pagination.page() > 0 ? Stream.of(precedente) : Stream.empty(),
+                pagination.page() < pagination.total() - 1 ? Stream.of(suivante) : Stream.empty());
+        return Stream.concat(Stream.concat(persistantes.stream(), fluxPagination), actions.stream().filter(Entite::visible).skip((long) pagination.page() * pagination.taille()).limit(pagination.taille()));
     }
 
     public List<A> persistantes() {
