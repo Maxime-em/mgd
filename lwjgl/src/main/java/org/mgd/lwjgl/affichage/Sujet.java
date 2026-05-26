@@ -7,7 +7,7 @@ import org.mgd.lwjgl.exception.LwjglException;
 public interface Sujet {
     boolean visible();
 
-    void maj(Vision vision, Fenetre.EvenementSouris evenementSouris, Fenetre.EvenementAmorcages evenementAmorcagesCourant) throws LwjglException;
+    void maj(long accumulateur, Vision vision, Fenetre.EvenementSouris evenementSouris, Fenetre.EvenementAmorcages evenementAmorcagesCourant) throws LwjglException;
 
     void produire(long ellipse, Vision vision);
 }

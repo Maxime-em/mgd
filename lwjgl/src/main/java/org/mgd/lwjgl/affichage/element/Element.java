@@ -79,6 +79,12 @@ public abstract class Element<G> extends Primitif implements Animateur {
     }
 
     @Override
+    public void maj(long accumulateur, Vision vision, EvenementSouris evenementSouris, Fenetre.EvenementAmorcages evenementAmorcagesCourant) throws LwjglException {
+        Animateur.super.maj(accumulateur, vision, evenementSouris, evenementAmorcagesCourant);
+        ordre.forEach(groupe -> groupes.get(groupe).forEach(forme -> forme.maj(accumulateur, vision, evenementSouris, evenementAmorcagesCourant)));
+    }
+
+    @Override
     public boolean visible() {
         return visible;
     }

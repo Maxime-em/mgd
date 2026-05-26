@@ -19,7 +19,7 @@ public interface Animateur extends Acteur {
 
     Collection<Identifiable> amorcer(boolean droite) throws LwjglException;
 
-    default void maj(Vision vision, EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) throws LwjglException {
+    default void maj(long accumulateur, Vision vision, EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) throws LwjglException {
         if (evenementSouris.inacheve()) {
             if (survoler(vision, evenementSouris)) {
                 if (evenementSouris.selection()) {

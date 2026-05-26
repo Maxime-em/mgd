@@ -73,7 +73,7 @@ public class ListeActions<T> extends AffichageTeteHaute implements Animateur {
         if ((survole || liaisonsSurvoles) && visible) {
             nvgTextAlign(contexte, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
 
-            liste.colorier(contexte, NOIR_A50);
+            liste.colorier(contexte, EMERAUDE);
             liste.dessiner(contexte);
         }
     }

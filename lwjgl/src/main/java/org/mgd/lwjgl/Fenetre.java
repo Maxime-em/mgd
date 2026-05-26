@@ -146,7 +146,7 @@ public class Fenetre implements Identifiable {
         basculer(evenementClavierCourant);
 
         if (menu != null && menu.visible()) {
-            majMenu(evenementSourisCourant, evenementAmorcagesCourant);
+            majMenu(accumulateur, evenementSourisCourant, evenementAmorcagesCourant);
         } else {
             majJeu(accumulateur, evenementClavierCourant, evenementSourisCourant, evenementAmorcagesCourant);
         }
@@ -167,8 +167,8 @@ public class Fenetre implements Identifiable {
         }
     }
 
-    private void majMenu(EvenementSouris evenementSourisCourant, EvenementAmorcages evenementAmorcagesCourant) throws LwjglException {
-        menu.maj(vision, evenementSourisCourant, evenementAmorcagesCourant);
+    private void majMenu(long accumulateur, EvenementSouris evenementSourisCourant, EvenementAmorcages evenementAmorcagesCourant) throws LwjglException {
+        menu.maj(accumulateur, vision, evenementSourisCourant, evenementAmorcagesCourant);
     }
 
     private void majJeu(long accumulateur, EvenementClavier evenementClavierCourant, EvenementSouris evenementSourisCourant, EvenementAmorcages evenementAmorcagesCourant) throws LwjglException {
@@ -195,10 +195,10 @@ public class Fenetre implements Identifiable {
 
         enfants.forEach(enfant -> enfant.preparer(vision));
         for (AffichageTeteHaute affichage : affichages) {
-            affichage.maj(vision, evenementSourisCourant, evenementAmorcagesCourant);
+            affichage.maj(accumulateur, vision, evenementSourisCourant, evenementAmorcagesCourant);
         }
         for (Element<?> enfant : enfants) {
-            enfant.maj(vision, evenementSourisCourant, evenementAmorcagesCourant);
+            enfant.maj(accumulateur, vision, evenementSourisCourant, evenementAmorcagesCourant);
         }
     }
 

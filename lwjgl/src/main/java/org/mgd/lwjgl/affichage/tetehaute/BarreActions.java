@@ -93,8 +93,8 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
     }
 
     @Override
-    public void maj(Vision vision, EvenementSouris evenementSouris, Fenetre.EvenementAmorcages evenementAmorcagesCourant) throws LwjglException {
-        Animateur.super.maj(vision, evenementSouris, evenementAmorcagesCourant);
+    public void maj(long accumulateur, Vision vision, EvenementSouris evenementSouris, Fenetre.EvenementAmorcages evenementAmorcagesCourant) throws LwjglException {
+        Animateur.super.maj(accumulateur, vision, evenementSouris, evenementAmorcagesCourant);
         actionsLiees.clear();
         liste(false).ifPresent(liste ->
                 actionsLiees.addAll(liste
@@ -159,7 +159,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
 
     private void dessinerInfobulle(Action<?> action) {
         information(action.uuid(), false).ifPresent(liste -> {
-            liste.colorier(contexte, NOIR_A50);
+            liste.colorier(contexte, EMERAUDE);
             liste.dessiner(contexte);
         });
     }

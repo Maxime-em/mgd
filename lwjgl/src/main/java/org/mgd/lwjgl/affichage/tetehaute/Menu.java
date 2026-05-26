@@ -114,8 +114,8 @@ public class Menu extends AffichageTeteHaute implements Animateur {
     }
 
     @Override
-    public void maj(Vision vision, Fenetre.EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) throws LwjglException {
-        Animateur.super.maj(vision, evenementSouris, evenementAmorcagesCourant);
+    public void maj(long accumulateur, Vision vision, Fenetre.EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) throws LwjglException {
+        Animateur.super.maj(accumulateur, vision, evenementSouris, evenementAmorcagesCourant);
         evenementAmorcagesCourant.amorcages()
                 .stream()
                 .filter(amorcage -> !amorcage.droite() && pages.containsKey(amorcage.uuid()))

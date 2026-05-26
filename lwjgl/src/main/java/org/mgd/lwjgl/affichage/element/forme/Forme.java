@@ -122,17 +122,15 @@ public abstract class Forme implements Identifiable, Survolable, Sujet {
     }
 
     @Override
-    public void maj(Vision vision, EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) {
-        // Rien à faire
+    public void maj(long accumulateur, Vision vision, EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) {
+        if (!transitions.isEmpty()) {
+            transitions.getFirst().lineariser(accumulateur);
+            transitions.removeIf(Transition::finie);
+        }
     }
 
     @Override
     public void produire(long ellipse, Vision vision) {
-        if (!transitions.isEmpty()) {
-            transitions.getFirst().lineariser(ellipse);
-            transitions.removeIf(Transition::finie);
-        }
-
         Optional<Integer> textureBase = Tisseur.obtenir(parent.identifiant(), Pseudo.PSEUDO_BASE);
         Optional<Integer> textureSurvole = Tisseur.obtenir(parent.identifiant(), Pseudo.PSEUDO_SURVOLE);
         Optional<Integer> textureActiver = Tisseur.obtenir(parent.identifiant(), Pseudo.PSEUDO_ACTIVER);
