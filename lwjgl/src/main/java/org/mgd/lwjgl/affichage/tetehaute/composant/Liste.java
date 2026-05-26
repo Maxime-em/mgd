@@ -22,6 +22,7 @@ public class Liste<A extends Action<?>> extends Entite {
     private int espacementInterne;
 
     public Liste(long contexte, Disposition disposition, int taille) {
+        super();
         this.disposition = disposition;
         this.persistantes = new LinkedList<>();
         this.actions = new LinkedList<>();
@@ -43,8 +44,8 @@ public class Liste<A extends Action<?>> extends Entite {
             fluxActionsAffichables().forEach(action -> {
                 int decalage = switch (disposition.alignement()) {
                     case DEBUT -> 0;
-                    case CENTRAL -> (hauteur - action.hauteur) / 2;
-                    case FIN -> hauteur - action.hauteur;
+                    case CENTRAL -> (hauteur() - action.hauteur()) / 2;
+                    case FIN -> hauteur() - action.hauteur();
                 };
                 action.placer(abscisse + largeurCourante.getAndAdd(espacementInterne + action.largeur()), ordonnee + disposition.marge() + decalage);
             });
@@ -53,10 +54,10 @@ public class Liste<A extends Action<?>> extends Entite {
             fluxActionsAffichables().forEach(action -> {
                 int decalage = switch (disposition.alignement()) {
                     case DEBUT -> 0;
-                    case CENTRAL -> (largeur - action.largeur) / 2;
-                    case FIN -> largeur - action.largeur;
+                    case CENTRAL -> (largeur() - action.largeur()) / 2;
+                    case FIN -> largeur() - action.largeur();
                 };
-                action.placer(abscisse + disposition.marge() + decalage, ordonnee + hauteurCourante.getAndAdd(espacementInterne + action.hauteur));
+                action.placer(abscisse + disposition.marge() + decalage, ordonnee + hauteurCourante.getAndAdd(espacementInterne + action.hauteur()));
             });
         }
     }
@@ -66,8 +67,8 @@ public class Liste<A extends Action<?>> extends Entite {
         int longueurActions = fluxActionsAffichables().mapToInt(action -> {
             action.dimensionner(contexte);
             return switch (disposition.orientation()) {
-                case HORIZONTAL -> action.largeur;
-                case VERTICAL -> action.hauteur;
+                case HORIZONTAL -> action.largeur();
+                case VERTICAL -> action.hauteur();
             };
         }).sum();
 
@@ -79,18 +80,12 @@ public class Liste<A extends Action<?>> extends Entite {
                 espacementInterne = disposition.espacement();
                 espacementDebut = 0;
                 switch (disposition.orientation()) {
-                    case HORIZONTAL -> {
-                        hauteur = disposition.marge() + fluxActionsAffichables().mapToInt(action -> action.hauteur).max().orElse(0);
-                        largeur = fluxActionsAffichables().mapToInt(action -> action.largeur).sum()
-                                + espacementDebut
-                                + (nombreActions - 1) * espacementInterne;
-                    }
-                    case VERTICAL -> {
-                        hauteur = fluxActionsAffichables().mapToInt(action -> action.hauteur).sum()
-                                + espacementDebut
-                                + (nombreActions - 1) * espacementInterne;
-                        largeur = disposition.marge() + fluxActionsAffichables().mapToInt(action -> action.largeur).max().orElse(0);
-                    }
+                    case HORIZONTAL ->
+                            proportionner(fluxActionsAffichables().mapToInt(Entite::largeur).sum() + espacementDebut + (nombreActions - 1) * espacementInterne,
+                                    disposition.marge() + fluxActionsAffichables().mapToInt(Entite::hauteur).max().orElse(0));
+                    case VERTICAL ->
+                            proportionner(disposition.marge() + fluxActionsAffichables().mapToInt(Entite::largeur).max().orElse(0),
+                                    fluxActionsAffichables().mapToInt(Entite::hauteur).sum() + espacementDebut + (nombreActions - 1) * espacementInterne);
                 }
             }
             case FIXE -> {
@@ -110,14 +105,10 @@ public class Liste<A extends Action<?>> extends Entite {
                     }
                 }
                 switch (disposition.orientation()) {
-                    case HORIZONTAL -> {
-                        hauteur = disposition.marge() + fluxActionsAffichables().mapToInt(action -> action.hauteur).max().orElse(0);
-                        largeur = disposition.longueur();
-                    }
-                    case VERTICAL -> {
-                        hauteur = disposition.longueur();
-                        largeur = disposition.marge() + fluxActionsAffichables().mapToInt(action -> action.largeur).max().orElse(0);
-                    }
+                    case HORIZONTAL ->
+                            proportionner(disposition.longueur(), disposition.marge() + fluxActionsAffichables().mapToInt(Entite::hauteur).max().orElse(0));
+                    case VERTICAL ->
+                            proportionner(disposition.marge() + fluxActionsAffichables().mapToInt(Entite::largeur).max().orElse(0), disposition.longueur());
                 }
             }
         }

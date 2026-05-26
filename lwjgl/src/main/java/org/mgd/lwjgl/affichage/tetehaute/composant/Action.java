@@ -11,6 +11,12 @@ public abstract class Action<T> extends Entite {
         this.anime = anime;
     }
 
+    protected Action(T objet, int largeur, int hauteur, boolean anime) {
+        super(largeur, hauteur);
+        this.objet = objet;
+        this.anime = anime;
+    }
+
     public void activer() {
         this.active = true;
     }

@@ -3,6 +3,7 @@ package org.mgd.lwjgl.affichage.tetehaute.composant;
 import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Vision;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGCouleur;
+import org.mgd.lwjgl.commun.Dimension;
 import org.mgd.lwjgl.commun.Survolable;
 
 import java.util.ArrayList;
@@ -14,15 +15,18 @@ import static org.lwjgl.nanovg.NanoVG.*;
 public abstract class Entite implements Survolable {
     protected final UUID uuid;
     protected final List<Survolable> liaisons;
-    protected int abscisse;
-    protected int ordonnee;
-    protected int largeur;
-    protected int hauteur;
+    protected final Dimension dimension;
     protected boolean visible;
 
     protected Entite() {
         this.uuid = UUID.randomUUID();
         this.liaisons = new ArrayList<>();
+        this.dimension = new Dimension();
+    }
+
+    protected Entite(int largeur, int hauteur) {
+        this();
+        proportionner(largeur, hauteur);
     }
 
     public void lier(Survolable liaison) {
@@ -30,8 +34,11 @@ public abstract class Entite implements Survolable {
     }
 
     public void placer(int abscisse, int ordonnee) {
-        this.abscisse = abscisse;
-        this.ordonnee = ordonnee;
+        dimension.placer(abscisse, ordonnee);
+    }
+
+    public void proportionner(int largeur, int hauteur) {
+        dimension.proportionner(largeur, hauteur);
     }
 
     public void dimensionner(long contexte) {
@@ -44,7 +51,7 @@ public abstract class Entite implements Survolable {
 
     public void colorier(long contexte, NVGCouleur couleur) {
         nvgBeginPath(contexte);
-        nvgRect(contexte, abscisse, ordonnee, largeur, hauteur);
+        nvgRect(contexte, abscisse(), ordonnee(), largeur(), hauteur());
         nvgFillColor(contexte, couleur.nvg());
         nvgFill(contexte);
         nvgClosePath(contexte);
@@ -60,7 +67,7 @@ public abstract class Entite implements Survolable {
 
     @Override
     public boolean survoler(Vision vision, Fenetre.EvenementSouris evenementSouris) {
-        return evenementSouris.inclus(abscisse, ordonnee, largeur, hauteur);
+        return evenementSouris.inclus(abscisse(), ordonnee(), largeur(), hauteur());
     }
 
     @Override
@@ -73,19 +80,19 @@ public abstract class Entite implements Survolable {
     }
 
     public int abscisse() {
-        return abscisse;
+        return dimension.abscisse();
     }
 
     public int ordonnee() {
-        return ordonnee;
+        return dimension.ordonnee();
     }
 
     public int largeur() {
-        return largeur;
+        return dimension.largeur();
     }
 
     public int hauteur() {
-        return hauteur;
+        return dimension.hauteur();
     }
 
     @Override

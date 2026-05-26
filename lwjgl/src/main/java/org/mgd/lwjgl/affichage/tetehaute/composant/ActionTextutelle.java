@@ -32,8 +32,7 @@ public class ActionTextutelle<T> extends Action<T> {
         nvgFontSize(contexte, taille);
         nvgFontFace(contexte, police.identifiant());
         nvgTextBounds(contexte, 0f, 0f, texte.get(), dimensions);
-        largeur = (int) Math.ceil(dimensions[2] - dimensions[0]);
-        hauteur = (int) Math.ceil(dimensions[3] - dimensions[1]);
+        proportionner((int) Math.ceil(dimensions[2] - dimensions[0]), (int) Math.ceil(dimensions[3] - dimensions[1]));
     }
 
     @Override
