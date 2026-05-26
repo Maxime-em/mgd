@@ -11,6 +11,18 @@ public final class Pagination {
         this.total = total;
     }
 
+    public void suivant() {
+        page = Math.min(page + 1, total);
+    }
+
+    public void precedent() {
+        page = Math.max(page - 1, 0);
+    }
+
+    public void calculer(long quantite) {
+        total = Math.toIntExact(quantite / taille + (quantite % taille > 0 ? 1 : 0));
+    }
+
     public int taille() {
         return taille;
     }
@@ -21,17 +33,5 @@ public final class Pagination {
 
     public int total() {
         return total;
-    }
-
-    public void suivant() {
-        page = Math.min(page + 1, total);
-    }
-
-    public void precedent() {
-        page = Math.max(page - 1, 0);
-    }
-
-    public void total(int total) {
-        this.total = total;
     }
 }

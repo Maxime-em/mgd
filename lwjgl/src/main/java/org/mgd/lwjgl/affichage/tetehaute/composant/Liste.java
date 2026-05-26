@@ -71,7 +71,7 @@ public class Liste<A extends Action<?>> extends Entite {
             };
         }).sum();
 
-        pagination.total(Math.toIntExact(actions.stream().filter(Entite::visible).count() / pagination.taille()));
+        pagination.calculer(actions.stream().filter(Entite::visible).count());
         int nombreActions = Math.toIntExact(fluxActionsAffichables().count());
 
         switch (disposition.dimensionnement()) {
@@ -144,5 +144,17 @@ public class Liste<A extends Action<?>> extends Entite {
 
     public List<A> actions() {
         return actions;
+    }
+
+    public Pagination pagination() {
+        return pagination;
+    }
+
+    public Action<Void> suivante() {
+        return suivante;
+    }
+
+    public Action<Void> precedente() {
+        return precedente;
     }
 }

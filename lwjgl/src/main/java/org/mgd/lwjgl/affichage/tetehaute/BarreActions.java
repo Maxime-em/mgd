@@ -108,11 +108,20 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         actionsSurvolees.clear();
         actionsLiees.clear();
         if (visible) {
-            liste(false).ifPresent(liste ->
+            liste(false).ifPresent(liste -> {
+                if (liste.suivante().survoler(vision, evenementSouris) && evenementSouris.selection()) {
+                    liste.pagination().suivant();
+                    placer();
+                } else if (liste.precedente().survoler(vision, evenementSouris) && evenementSouris.selection()) {
+                    liste.pagination().precedent();
+                    placer();
+                } else {
                     actionsSurvolees.addAll(liste
                             .fluxActionsAffichables()
                             .filter(actionImagee -> actionImagee.survoler(vision, evenementSouris))
-                            .toList()));
+                            .toList());
+                }
+            });
         }
         return !actionsSurvolees.isEmpty();
     }
