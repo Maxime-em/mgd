@@ -1,4 +1,4 @@
-package org.mgd.lwjgl.affichage;
+package org.mgd.lwjgl.affichage.transition;
 
 public abstract class Transition<O, T> {
     private final O objet;

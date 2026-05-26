@@ -7,8 +7,9 @@ import org.mgd.lwjgl.*;
 import org.mgd.lwjgl.Fenetre.EvenementAmorcages;
 import org.mgd.lwjgl.Fenetre.EvenementSouris;
 import org.mgd.lwjgl.affichage.Sujet;
-import org.mgd.lwjgl.affichage.Transition;
 import org.mgd.lwjgl.affichage.element.Element;
+import org.mgd.lwjgl.affichage.transition.Transition;
+import org.mgd.lwjgl.affichage.transition.TransitionTableauFlottants;
 import org.mgd.lwjgl.interne.Ombreur;
 import org.mgd.lwjgl.interne.Tisseur;
 import org.mgd.lwjgl.souscription.Identifiable;
@@ -170,24 +171,7 @@ public abstract class Forme implements Identifiable, Survolable, Sujet {
                 ? new Float[]{deplacement.valeur(0, 3), deplacement.valeur(1, 3), deplacement.valeur(2, 3)}
                 : transitions.getLast().arrive();
         Float[] arrivee = gravite.multiplication(Matrice.vecteur(position)).colonne(0);
-        transitions.addLast(new Transition<>(deplacement, depart, arrivee, duree) {
-            @Override
-            protected Float[] multiplierParScalaire(Double scalaire, Float[] valeur) {
-                return new Float[]{(float) (scalaire * valeur[0]), (float) (scalaire * valeur[1]), (float) (scalaire * valeur[2])};
-            }
-
-            @Override
-            protected Float[] sommer(Float[] valeur1, Float[] valeur2) {
-                return new Float[]{valeur1[0] + valeur2[0], valeur1[1] + valeur2[1], valeur1[2] + valeur2[2]};
-            }
-
-            @Override
-            protected void appliquer(Matrice<Float> matrice, Float[] valeur) {
-                matrice.modifierValeur(0, 3, valeur[0], (_, nouvelle) -> nouvelle);
-                matrice.modifierValeur(1, 3, valeur[1], (_, nouvelle) -> nouvelle);
-                matrice.modifierValeur(2, 3, valeur[2], (_, nouvelle) -> nouvelle);
-            }
-        });
+        transitions.addLast(new TransitionDeplacement(depart, arrivee, duree));
     }
 
     public void preparer(Vision vision) {
@@ -197,5 +181,18 @@ public abstract class Forme implements Identifiable, Survolable, Sujet {
 
     public Matrice<Float> projeterPlanEcran() {
         return contour.projeterPlanEcran();
+    }
+
+    private class TransitionDeplacement extends TransitionTableauFlottants<Matrice<Float>> {
+        public TransitionDeplacement(Float[] depart, Float[] arrivee, long duree) {
+            super(deplacement, depart, arrivee, duree);
+        }
+
+        @Override
+        protected void appliquer(Matrice<Float> matrice, Float[] valeur) {
+            matrice.modifierValeur(0, 3, valeur[0], (_, nouvelle) -> nouvelle);
+            matrice.modifierValeur(1, 3, valeur[1], (_, nouvelle) -> nouvelle);
+            matrice.modifierValeur(2, 3, valeur[2], (_, nouvelle) -> nouvelle);
+        }
     }
 }
