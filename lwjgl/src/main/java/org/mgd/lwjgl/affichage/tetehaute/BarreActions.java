@@ -3,7 +3,6 @@ package org.mgd.lwjgl.affichage.tetehaute;
 import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Fenetre.EvenementSouris;
 import org.mgd.lwjgl.Vision;
-import org.mgd.lwjgl.affichage.Animateur;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition.Alignement;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition.Dimensionnement;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition.Justification;
@@ -11,8 +10,9 @@ import org.mgd.lwjgl.affichage.tetehaute.Disposition.Orientation;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Action;
 import org.mgd.lwjgl.affichage.tetehaute.composant.ActionTextutelle;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Liste;
+import org.mgd.lwjgl.commun.Animateur;
+import org.mgd.lwjgl.commun.Identifiable;
 import org.mgd.lwjgl.exception.LwjglException;
-import org.mgd.lwjgl.souscription.Identifiable;
 
 import java.util.*;
 
@@ -138,7 +138,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
     }
 
     @Override
-    protected void dessiner(long ellipse) {
+    protected void dessiner() {
         nvgTextAlign(contexte, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
         liste(false).ifPresent(liste -> {
             liste.colorier(contexte, AUBURN);

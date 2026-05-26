@@ -3,11 +3,11 @@ package org.mgd.lwjgl.affichage.tetehaute;
 import org.lwjgl.nanovg.NVGColor;
 import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Vision;
-import org.mgd.lwjgl.affichage.Acteur;
 import org.mgd.lwjgl.affichage.Primitif;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGCouleur;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGImage;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
+import org.mgd.lwjgl.commun.Acteur;
 import org.mgd.lwjgl.exception.LwjglException;
 
 import java.nio.file.Path;
@@ -15,6 +15,7 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 import static org.lwjgl.nanovg.NanoVG.*;
 
@@ -77,9 +78,11 @@ public abstract class AffichageTeteHaute extends Primitif implements Acteur {
     }
 
     protected final long contexte;
+    private final UUID uuid;
 
     protected AffichageTeteHaute(Fenetre parent, boolean estMenu, boolean apparaitreParDefaut) throws LwjglException {
         super(parent, apparaitreParDefaut);
+        this.uuid = UUID.randomUUID();
         this.contexte = parent.contexteNvg();
         if (this.contexte == 0L) {
             throw new LwjglException("Il faut créer un contexte NVG avant d'instancier un affichage.");
@@ -126,7 +129,12 @@ public abstract class AffichageTeteHaute extends Primitif implements Acteur {
         return POLICES.get(cle);
     }
 
-    protected abstract void dessiner(long ellipse);
+    protected abstract void dessiner();
+
+    @Override
+    public UUID uuid() {
+        return uuid;
+    }
 
     @Override
     public boolean visible() {
@@ -136,7 +144,7 @@ public abstract class AffichageTeteHaute extends Primitif implements Acteur {
     @Override
     public void jouer(long ellipse, Vision vision) {
         nvgBeginFrame(contexte, parent.largeur(), parent.hauteur(), 1f);
-        dessiner(ellipse);
+        dessiner();
         nvgEndFrame(contexte);
     }
 

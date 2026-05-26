@@ -4,19 +4,20 @@ import org.mgd.commun.Matrice;
 import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Fenetre.EvenementSouris;
 import org.mgd.lwjgl.Vision;
-import org.mgd.lwjgl.affichage.Animateur;
 import org.mgd.lwjgl.affichage.Primitif;
 import org.mgd.lwjgl.affichage.element.forme.Forme;
+import org.mgd.lwjgl.commun.Animateur;
+import org.mgd.lwjgl.commun.Identifiable;
 import org.mgd.lwjgl.exception.LwjglException;
 import org.mgd.lwjgl.interne.Ombreur;
 import org.mgd.lwjgl.interne.Tisseur;
-import org.mgd.lwjgl.souscription.Identifiable;
 
 import java.nio.file.Path;
 import java.util.*;
 
 public abstract class Element<G> extends Primitif implements Animateur {
     protected final Map<G, List<Forme>> groupes;
+    private final UUID uuid;
     private final int priorite;
     private final Matrice<Float> transformation;
     private final LinkedList<G> ordre;
@@ -31,6 +32,7 @@ public abstract class Element<G> extends Primitif implements Animateur {
                       float[] rotation,
                       Map<String, Path> textures) throws LwjglException {
         super(parent, true);
+        this.uuid = UUID.randomUUID();
         this.nom = nom;
         this.priorite = priorite;
         this.transformation = Matrice.transformation(translation, agrandissement, rotation);
@@ -42,6 +44,11 @@ public abstract class Element<G> extends Primitif implements Animateur {
             Tisseur.compiler(nom, textures);
         }
         parent.enfants().add(this);
+    }
+
+    @Override
+    public UUID uuid() {
+        return uuid;
     }
 
     @Override

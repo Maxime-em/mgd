@@ -5,10 +5,10 @@ import org.mgd.commun.Matrice;
 import org.mgd.lwjgl.affichage.Primitif;
 import org.mgd.lwjgl.affichage.element.Element;
 import org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute;
+import org.mgd.lwjgl.commun.Identifiable;
 import org.mgd.lwjgl.exception.LwjglException;
 import org.mgd.lwjgl.souscription.DetecteurAmorcage;
 import org.mgd.lwjgl.souscription.DetecteurService;
-import org.mgd.lwjgl.souscription.Identifiable;
 
 import java.util.*;
 import java.util.function.BiConsumer;

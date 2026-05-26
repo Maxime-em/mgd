@@ -1,10 +1,9 @@
 package org.mgd.lwjgl.affichage.tetehaute.composant;
 
 import org.mgd.lwjgl.Fenetre;
-import org.mgd.lwjgl.Survolable;
 import org.mgd.lwjgl.Vision;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGCouleur;
-import org.mgd.lwjgl.souscription.Identifiable;
+import org.mgd.lwjgl.commun.Survolable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.UUID;
 
 import static org.lwjgl.nanovg.NanoVG.*;
 
-public abstract class Entite implements Identifiable, Survolable {
+public abstract class Entite implements Survolable {
     protected final UUID uuid;
     protected final List<Survolable> liaisons;
     protected int abscisse;

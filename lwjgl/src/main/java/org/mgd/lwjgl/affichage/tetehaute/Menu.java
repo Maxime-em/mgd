@@ -3,11 +3,11 @@ package org.mgd.lwjgl.affichage.tetehaute;
 import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Fenetre.EvenementAmorcages;
 import org.mgd.lwjgl.Vision;
-import org.mgd.lwjgl.affichage.Animateur;
 import org.mgd.lwjgl.affichage.tetehaute.composant.ActionTextutelle;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
+import org.mgd.lwjgl.commun.Animateur;
+import org.mgd.lwjgl.commun.Identifiable;
 import org.mgd.lwjgl.exception.LwjglException;
-import org.mgd.lwjgl.souscription.Identifiable;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -107,7 +107,7 @@ public class Menu extends AffichageTeteHaute implements Animateur {
     }
 
     @Override
-    protected void dessiner(long ellipse) {
+    protected void dessiner() {
         nvgTextAlign(contexte, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
         pageCourante.titres.forEach(this::dessiner);
         pageCourante.textes.forEach(this::dessiner);

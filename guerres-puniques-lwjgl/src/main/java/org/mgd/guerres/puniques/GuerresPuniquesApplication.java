@@ -20,8 +20,8 @@ import org.mgd.lwjgl.affichage.tetehaute.Informations;
 import org.mgd.lwjgl.affichage.tetehaute.composant.ActionImagee;
 import org.mgd.lwjgl.affichage.tetehaute.composant.ActionTextutelle;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
+import org.mgd.lwjgl.commun.Identifiable;
 import org.mgd.lwjgl.exception.LwjglException;
-import org.mgd.lwjgl.souscription.Identifiable;
 
 import java.io.BufferedReader;
 import java.io.IOException;

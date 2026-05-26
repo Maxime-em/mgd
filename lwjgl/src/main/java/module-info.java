@@ -9,6 +9,7 @@ module org.mgd.lwjgl {
     requires org.jetbrains.annotations;
 
     exports org.mgd.lwjgl;
+    exports org.mgd.lwjgl.commun;
     exports org.mgd.lwjgl.exception;
     exports org.mgd.lwjgl.affichage;
     exports org.mgd.lwjgl.affichage.element;

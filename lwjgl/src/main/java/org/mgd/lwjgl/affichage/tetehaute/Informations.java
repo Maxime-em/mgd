@@ -43,7 +43,7 @@ public class Informations extends AffichageTeteHaute {
     }
 
     @Override
-    protected void dessiner(long ellipse) {
+    protected void dessiner() {
         if (actionTextutelle != null) {
             nvgTextAlign(contexte, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
             fond.colorier(contexte, EMERAUDE);
@@ -54,5 +54,10 @@ public class Informations extends AffichageTeteHaute {
     @Override
     public void maj(long accumulateur, Vision vision, EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) {
         // Rien à faire
+    }
+
+    @Override
+    public boolean survoler(Vision vision, EvenementSouris evenementSouris) {
+        return false;
     }
 }

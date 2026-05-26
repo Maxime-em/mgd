@@ -1,4 +1,4 @@
-package org.mgd.lwjgl.souscription;
+package org.mgd.lwjgl.commun;
 
 import java.util.UUID;
 

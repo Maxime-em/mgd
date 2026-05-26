@@ -1,4 +1,4 @@
-package org.mgd.lwjgl.affichage;
+package org.mgd.lwjgl.commun;
 
 import org.mgd.lwjgl.Vision;
 

@@ -1,9 +1,11 @@
 package org.mgd.lwjgl.affichage.tetehaute;
 
 import org.mgd.commun.Matrice;
-import org.mgd.lwjgl.*;
+import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Fenetre.EvenementSouris;
-import org.mgd.lwjgl.affichage.Animateur;
+import org.mgd.lwjgl.Homogeneite;
+import org.mgd.lwjgl.Projection;
+import org.mgd.lwjgl.Vision;
 import org.mgd.lwjgl.affichage.element.forme.Forme;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition.Alignement;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition.Dimensionnement;
@@ -12,8 +14,10 @@ import org.mgd.lwjgl.affichage.tetehaute.Disposition.Orientation;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Action;
 import org.mgd.lwjgl.affichage.tetehaute.composant.ActionTextutelle;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Liste;
+import org.mgd.lwjgl.commun.Animateur;
+import org.mgd.lwjgl.commun.Identifiable;
+import org.mgd.lwjgl.commun.Survolable;
 import org.mgd.lwjgl.exception.LwjglException;
-import org.mgd.lwjgl.souscription.Identifiable;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -69,7 +73,7 @@ public class ListeActions<T> extends AffichageTeteHaute implements Animateur {
     }
 
     @Override
-    protected void dessiner(long ellipse) {
+    protected void dessiner() {
         if ((survole || liaisonsSurvoles) && visible) {
             nvgTextAlign(contexte, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
 

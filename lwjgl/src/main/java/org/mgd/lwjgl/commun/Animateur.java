@@ -1,11 +1,10 @@
-package org.mgd.lwjgl.affichage;
+package org.mgd.lwjgl.commun;
 
 import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Fenetre.EvenementAmorcages;
 import org.mgd.lwjgl.Fenetre.EvenementSouris;
 import org.mgd.lwjgl.Vision;
 import org.mgd.lwjgl.exception.LwjglException;
-import org.mgd.lwjgl.souscription.Identifiable;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -13,11 +12,9 @@ import java.util.Collections;
 public interface Animateur extends Acteur {
     Fenetre parent();
 
-    boolean survoler(Vision vision, EvenementSouris evenementSouris);
-
     void retirer(Vision vision, EvenementSouris evenementSouris);
 
-    Collection<Identifiable> amorcer(boolean droite) throws LwjglException;
+    Collection<Identifiable> amorcer(boolean droite);
 
     default void maj(long accumulateur, Vision vision, EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) throws LwjglException {
         if (evenementSouris.inacheve()) {

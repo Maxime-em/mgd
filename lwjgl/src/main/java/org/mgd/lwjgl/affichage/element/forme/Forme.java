@@ -3,16 +3,18 @@ package org.mgd.lwjgl.affichage.element.forme;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.system.MemoryStack;
 import org.mgd.commun.Matrice;
-import org.mgd.lwjgl.*;
+import org.mgd.lwjgl.Contour;
 import org.mgd.lwjgl.Fenetre.EvenementAmorcages;
 import org.mgd.lwjgl.Fenetre.EvenementSouris;
-import org.mgd.lwjgl.affichage.Sujet;
+import org.mgd.lwjgl.Programme;
+import org.mgd.lwjgl.Pseudo;
+import org.mgd.lwjgl.Vision;
 import org.mgd.lwjgl.affichage.element.Element;
 import org.mgd.lwjgl.affichage.transition.Transition;
 import org.mgd.lwjgl.affichage.transition.TransitionTableauFlottants;
+import org.mgd.lwjgl.commun.Sujet;
 import org.mgd.lwjgl.interne.Ombreur;
 import org.mgd.lwjgl.interne.Tisseur;
-import org.mgd.lwjgl.souscription.Identifiable;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -21,7 +23,7 @@ import java.util.*;
 import static org.lwjgl.opengl.GL30.*;
 import static org.mgd.lwjgl.Programme.NOM_OMBRAGE_PAR_DEFAUT;
 
-public abstract class Forme implements Identifiable, Survolable, Sujet {
+public abstract class Forme implements Sujet {
     protected final UUID uuid;
     protected final Element<?> parent;
     protected final String nom;
