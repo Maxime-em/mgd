@@ -26,7 +26,7 @@ public abstract class Forme implements Identifiable, Survolable, Sujet {
     protected final Element<?> parent;
     protected final String nom;
     protected final Matrice<Float> deplacement;
-    private final LinkedList<Transition<Matrice<Float>, Float[]>> transitions;
+    private final LinkedList<TransitionDeplacement> transitions;
     private final int taille;
     private final int vecteurs;
     private final Set<Integer> tanpom;
