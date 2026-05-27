@@ -7,6 +7,7 @@ import org.mgd.lwjgl.affichage.tetehaute.Pagination;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute.BLANC;
@@ -64,6 +65,8 @@ public class Liste<A extends Action<?>> extends Entite {
 
     @Override
     public void dimensionner(long contexte) {
+        pagination.calculer(actions.stream().filter(Entite::visible).count());
+        int nombreActions = Math.toIntExact(fluxActionsAffichables().count());
         int longueurActions = fluxActionsAffichables().mapToInt(action -> {
             action.dimensionner(contexte);
             return switch (disposition.orientation()) {
@@ -71,9 +74,6 @@ public class Liste<A extends Action<?>> extends Entite {
                 case VERTICAL -> action.hauteur();
             };
         }).sum();
-
-        pagination.calculer(actions.stream().filter(Entite::visible).count());
-        int nombreActions = Math.toIntExact(fluxActionsAffichables().count());
 
         switch (disposition.dimensionnement()) {
             case VARIABLE -> {
@@ -122,11 +122,25 @@ public class Liste<A extends Action<?>> extends Entite {
         fluxActionsAffichables().forEach(action -> action.dessiner(contexte));
     }
 
+    @SuppressWarnings("unchecked")
     public Stream<Action<?>> fluxActionsAffichables() {
-        Stream<Action<?>> fluxPagination = Stream.concat(
-                pagination.page() > 0 ? Stream.of(precedente) : Stream.empty(),
-                pagination.page() < pagination.total() - 1 ? Stream.of(suivante) : Stream.empty());
-        return Stream.concat(Stream.concat(persistantes.stream(), fluxPagination), actions.stream().filter(Entite::visible).skip((long) pagination.page() * pagination.taille()).limit(pagination.taille()));
+        if (pagination().total() == 1) {
+            return (Stream<Action<?>>) actions.stream().filter(Entite::visible);
+        } else if (pagination.page() == 0) {
+            return Stream.of(persistantes.stream(), Stream.of(suivante), actions.stream().filter(Entite::visible).limit(pagination.taille() + 1L))
+                    .flatMap(Function.identity());
+        } else if (pagination().page() == pagination.total() - 1) {
+            return Stream.of(persistantes.stream(),
+                            actions.stream().filter(Entite::visible).skip((long) pagination.page() * pagination.taille() + 1L).limit(pagination.taille() + 1L),
+                            Stream.of(precedente))
+                    .flatMap(Function.identity());
+        } else {
+            return Stream.of(persistantes.stream(),
+                            Stream.of(suivante),
+                            actions.stream().filter(Entite::visible).skip((long) pagination.page() * pagination.taille() + 1L).limit(pagination.taille()),
+                            Stream.of(precedente))
+                    .flatMap(Function.identity());
+        }
     }
 
     public List<A> persistantes() {

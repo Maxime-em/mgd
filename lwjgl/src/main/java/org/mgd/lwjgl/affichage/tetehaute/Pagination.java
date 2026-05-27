@@ -21,6 +21,9 @@ public final class Pagination {
 
     public void calculer(long quantite) {
         total = Math.toIntExact(quantite / taille + (quantite % taille > 0 ? 1 : 0));
+        if (page >= total) {
+            page = total - 1;
+        }
     }
 
     public int taille() {
