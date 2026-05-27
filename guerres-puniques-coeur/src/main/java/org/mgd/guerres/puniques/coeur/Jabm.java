@@ -1,7 +1,5 @@
 package org.mgd.guerres.puniques.coeur;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.mgd.guerres.puniques.coeur.commun.Posture;
 import org.mgd.guerres.puniques.coeur.objet.*;
 import org.mgd.guerres.puniques.coeur.persistence.*;
@@ -14,14 +12,12 @@ import org.mgd.jab.persistence.exception.JaoParseException;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.IntStream;
 
 public class Jabm extends Jab {
-    private static final Logger LOGGER = LogManager.getLogger(Jabm.class);
     private static final String NOM_PAR_DEFAUT = "defaut";
 
     protected Jabm(Path chemin) throws JabException {
@@ -76,59 +72,44 @@ public class Jabm extends Jab {
                                           Collection<TypeTransport> typesTransports,
                                           Collection<TypeArmee> typeArmees,
                                           Region capitale) throws JaoExecutionException, JaoParseException {
-        List<Transport> transports = typesTransports.stream().flatMap(type -> IntStream.range(0, type.getMaximum()).mapToObj(_ -> {
-            try {
-                return new TransportJao().nouveau(nouveauTransport -> nouveauTransport.setType(type));
-            } catch (JaoExecutionException | JaoParseException e) {
-                LOGGER.error("Impossible de créer un nouveau transport.", e);
-                return null;
+        List<Unite> unites = new ArrayList<>();
+        for (TypeUnite type : typesUnites) {
+            int maximum = type.getMaximum();
+            for (int rang = 0; rang < maximum; rang++) {
+                unites.add(creerUnite(type));
             }
-        })).filter(Objects::nonNull).toList();
-
-        List<Armee> armees = typeArmees.stream().flatMap(type -> IntStream.range(0, type.getMaximum()).mapToObj(_ -> {
-            try {
-                return new ArmeeJao().nouveau(nouvelleArmee -> nouvelleArmee.setType(type));
-            } catch (JaoExecutionException | JaoParseException e) {
-                LOGGER.error("Impossible de créer une nouvelle armée.", e);
-                return null;
-            }
-        })).filter(Objects::nonNull).toList();
-
-        List<Unite> unites = typesUnites.stream().flatMap(type -> IntStream.range(0, type.getMaximum()).mapToObj(_ -> {
-            try {
-                return new UniteJao().nouveau(nouvelleUnite -> {
-                    nouvelleUnite.setType(type);
-                    nouvelleUnite.setVie(type.getConstitution());
-                });
-            } catch (JaoExecutionException | JaoParseException e) {
-                LOGGER.error("Impossible de créer une nouvelle unité.", e);
-                return null;
-            }
-        }).filter(Objects::nonNull)).toList();
+        }
 
         Reserve reserve = new ReserveJao().nouveau(nouvelleReserve -> nouvelleReserve.getUnites().addAll(unites));
 
-        Civilisation civilisation = new CivilisationJao().nouveau(nouvelleCivilisation -> {
+        return new CivilisationJao().nouveau(nouvelleCivilisation -> {
             nouvelleCivilisation.getTypesUnites().addAll(typesUnites);
             nouvelleCivilisation.getTypesTransports().addAll(typesTransports);
-            nouvelleCivilisation.getTransports().addAll(transports);
             nouvelleCivilisation.getTypeArmees().addAll(typeArmees);
-            nouvelleCivilisation.getArmees().addAll(armees);
             nouvelleCivilisation.setNom(nom);
             nouvelleCivilisation.setReserve(reserve);
             nouvelleCivilisation.setCapitale(capitale);
         });
-        civilisation.getArmees().forEach(armee -> {
-            try {
-                armee.getAlignements().add(new AlignementJao().nouveau(nouveauAlignement -> {
-                    nouveauAlignement.setCivilisation(civilisation);
-                    nouveauAlignement.setPosture(Posture.AMI);
-                }));
-            } catch (JaoExecutionException | JaoParseException e) {
-                LOGGER.error("Impossible de créer un nouveau alignement.", e);
-            }
+    }
+
+    public Unite creerUnite(TypeUnite type) throws JaoExecutionException, JaoParseException {
+        return new UniteJao().nouveau(nouvelleUnite -> {
+            nouvelleUnite.setType(type);
+            nouvelleUnite.setVie(type.getConstitution());
         });
-        return civilisation;
+    }
+
+    public Armee creerArmee(Civilisation civilisation, TypeArmee type) throws JaoExecutionException, JaoParseException {
+        Armee armee = new ArmeeJao().nouveau(nouvelleArmee -> nouvelleArmee.setType(type));
+        armee.getAlignements().add(new AlignementJao().nouveau(nouveauAlignement -> {
+            nouveauAlignement.setCivilisation(civilisation);
+            nouveauAlignement.setPosture(Posture.AMI);
+        }));
+        return armee;
+    }
+
+    public Transport creerTransport(TypeTransport type) throws JaoExecutionException, JaoParseException {
+        return new TransportJao().nouveau(nouveauTransport -> nouveauTransport.setType(type));
     }
 
     public Des creerDesDegats() throws JaoExecutionException, JaoParseException {

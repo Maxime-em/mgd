@@ -4,7 +4,7 @@ import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Fenetre.EvenementAmorcages;
 import org.mgd.lwjgl.Fenetre.EvenementSouris;
 import org.mgd.lwjgl.Vision;
-import org.mgd.lwjgl.affichage.tetehaute.composant.ActionTextutelle;
+import org.mgd.lwjgl.affichage.tetehaute.composant.Action;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Fond;
 import org.mgd.lwjgl.exception.LwjglException;
 
@@ -16,7 +16,7 @@ public class Informations extends AffichageTeteHaute {
     private final int largeur;
     private final int hauteur;
     private final Fond fond;
-    private ActionTextutelle<Void> actionTextutelle;
+    private Action<Void> actionTextutelle;
 
     public Informations(Fenetre parent, int abcsisse, int ordonnee, int largeur, int hauteur) throws LwjglException {
         super(parent, false, true);
@@ -28,7 +28,7 @@ public class Informations extends AffichageTeteHaute {
         this.fond.placer(abcsisse, ordonnee);
     }
 
-    public void ajouter(ActionTextutelle<Void> actionTextutelle) {
+    public void ajouter(Action<Void> actionTextutelle) {
         this.actionTextutelle = actionTextutelle;
     }
 

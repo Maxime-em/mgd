@@ -8,7 +8,6 @@ import org.mgd.lwjgl.affichage.tetehaute.Disposition.Dimensionnement;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition.Justification;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition.Orientation;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Action;
-import org.mgd.lwjgl.affichage.tetehaute.composant.ActionTextutelle;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Liste;
 import org.mgd.lwjgl.commun.Animateur;
 import org.mgd.lwjgl.commun.Identifiable;
@@ -29,7 +28,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
     private final int taille;
     private final List<Action<?>> persistantes;
     private final Map<G, Liste<Action<?>>> groupes;
-    private final Map<UUID, Liste<ActionTextutelle<Void>>> informations;
+    private final Map<UUID, Liste<Action<Void>>> informations;
     private final List<Action<?>> actionsSurvolees;
     private final List<Action<?>> actionsLiees;
     private G groupe;
@@ -57,7 +56,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         return Optional.ofNullable(groupes.get(groupe)).map(liste -> force || liste.visible() ? liste : null);
     }
 
-    private Optional<Liste<ActionTextutelle<Void>>> information(UUID uuid, boolean force) {
+    private Optional<Liste<Action<Void>>> information(UUID uuid, boolean force) {
         return Optional.ofNullable(informations.get(uuid)).map(liste -> force || liste.visible() ? liste : null);
     }
 
@@ -168,6 +167,14 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         persistantes.add(action);
     }
 
+    public void ajouter(G groupe) {
+        groupes.computeIfAbsent(groupe, _ -> {
+            Liste<Action<?>> liste = new Liste<>(parent.contexteNvg(), disposition, taille);
+            liste.persistantes().addAll(persistantes);
+            return liste;
+        });
+    }
+
     public void ajouter(G groupe, Action<?> action) {
         groupes.computeIfAbsent(groupe, _ -> {
             Liste<Action<?>> liste = new Liste<>(parent.contexteNvg(), disposition, taille);
@@ -185,14 +192,18 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         }).actions().addAll(List.of(actions));
     }
 
-    public void ajouter(UUID uuid, ActionTextutelle<Void> nouveau) {
+    public void ajouter(UUID uuid, Action<Void> nouveau) {
         informations.computeIfAbsent(uuid, _ -> new Liste<>(parent.contexteNvg(), new Disposition(Orientation.VERTICAL, Justification.DEBUT, Alignement.DEBUT, Dimensionnement.VARIABLE, 0, MARGE_TEXTES, 0)))
                 .actions()
                 .add(nouveau);
     }
 
     public void afficher(G groupe) {
-        if (!Objects.equals(this.groupe, groupe)) {
+        afficher(groupe, false);
+    }
+
+    public void afficher(G groupe, boolean force) {
+        if (force || !Objects.equals(this.groupe, groupe)) {
             liste(true).ifPresent(liste -> {
                 liste.masquer();
                 liste.actions().forEach(action -> {

@@ -12,7 +12,6 @@ import org.mgd.lwjgl.affichage.tetehaute.Disposition.Dimensionnement;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition.Justification;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition.Orientation;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Action;
-import org.mgd.lwjgl.affichage.tetehaute.composant.ActionTextutelle;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Liste;
 import org.mgd.lwjgl.commun.Animateur;
 import org.mgd.lwjgl.commun.Identifiable;
@@ -31,10 +30,10 @@ public class ListeActions<T> extends AffichageTeteHaute implements Animateur {
     private boolean liaisonsSurvoles;
 
     @SafeVarargs
-    public ListeActions(Fenetre parent, int espacement, int marge, ActionTextutelle<T>... actionTextutelles) throws LwjglException {
+    public ListeActions(Fenetre parent, int espacement, int marge, Action<T>... actions) throws LwjglException {
         super(parent, false, false);
         this.liste = new Liste<>(parent.contexteNvg(), new Disposition(Orientation.VERTICAL, Justification.DEBUT, Alignement.DEBUT, Dimensionnement.VARIABLE, espacement, marge, 0));
-        this.liste.actions().addAll(Arrays.asList(actionTextutelles));
+        this.liste.actions().addAll(Arrays.asList(actions));
         this.identifiables = new LinkedList<>();
     }
 

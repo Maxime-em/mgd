@@ -3,6 +3,7 @@ package org.mgd.lwjgl.affichage.tetehaute;
 import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Fenetre.EvenementAmorcages;
 import org.mgd.lwjgl.Vision;
+import org.mgd.lwjgl.affichage.tetehaute.composant.Action;
 import org.mgd.lwjgl.affichage.tetehaute.composant.ActionTextutelle;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
 import org.mgd.lwjgl.commun.Animateur;
@@ -22,9 +23,9 @@ public class Menu extends AffichageTeteHaute implements Animateur {
     private final UUID identifiantPremierePage;
     private final Map<UUID, Page> pages;
     private Page pageCourante;
-    private LinkedList<ActionTextutelle<?>> actionsSurvoles;
+    private LinkedList<Action<?>> actionsSurvoles;
 
-    public Menu(Fenetre parent, Collection<ActionTextutelle<?>> titres, Collection<ActionTextutelle<?>> textes) throws LwjglException {
+    public Menu(Fenetre parent, Collection<Action<?>> titres, Collection<Action<?>> textes) throws LwjglException {
         super(parent, true, true);
         this.identifiantPremierePage = UUID.randomUUID();
         this.pages = new HashMap<>();
@@ -35,11 +36,11 @@ public class Menu extends AffichageTeteHaute implements Animateur {
         placer(this.pageCourante);
     }
 
-    public <T, U> void ajouterPage(ActionTextutelle<T> declencheur, Collection<ActionTextutelle<U>> textes, NVGPolice police) {
+    public <T, U> void ajouterPage(Action<T> declencheur, Collection<Action<U>> textes, NVGPolice police) {
         Page page = new Page(Collections.emptyList(), new ArrayList<>(textes));
         pages.put(declencheur.uuid(), page);
 
-        ActionTextutelle<Void> retour = new ActionTextutelle<>(24f, police, AffichageTeteHaute.BLANC, () -> "Retour");
+        Action<Void> retour = new ActionTextutelle<>(24f, police, AffichageTeteHaute.BLANC, () -> "Retour");
         page.textes.add(retour);
         pages.put(retour.uuid(), pages.get(this.identifiantPremierePage));
 
@@ -66,16 +67,9 @@ public class Menu extends AffichageTeteHaute implements Animateur {
         page.textes.forEach(action -> action.placer((parent.largeur() - action.largeur()) / 2, ordonneeCourante.getAndAccumulate(action.hauteur() + margeBoutons, Double::sum).intValue()));
     }
 
-    private double hauteur(ActionTextutelle<?> actionTextutelle) {
-        actionTextutelle.dimensionner(contexte);
-        return actionTextutelle.hauteur();
-    }
-
-    private void dessiner(ActionTextutelle<?> actionTextutelle) {
-        nvgFontSize(contexte, actionTextutelle.taille());
-        nvgFontFace(contexte, actionTextutelle.police().identifiant());
-        nvgFillColor(contexte, actionTextutelle.couleur().nvg());
-        nvgText(contexte, actionTextutelle.abscisse(), actionTextutelle.ordonnee(), actionTextutelle.texte().get());
+    private double hauteur(Action<?> action) {
+        action.dimensionner(contexte);
+        return action.hauteur();
     }
 
     @Override
@@ -109,8 +103,8 @@ public class Menu extends AffichageTeteHaute implements Animateur {
     @Override
     protected void dessiner() {
         nvgTextAlign(contexte, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
-        pageCourante.titres.forEach(this::dessiner);
-        pageCourante.textes.forEach(this::dessiner);
+        pageCourante.titres.forEach(action -> action.dessiner(contexte));
+        pageCourante.textes.forEach(action -> action.dessiner(contexte));
     }
 
     @Override
@@ -122,6 +116,6 @@ public class Menu extends AffichageTeteHaute implements Animateur {
                 .forEach(amorcage -> pageCourante = pages.get(amorcage.uuid()));
     }
 
-    private record Page(List<ActionTextutelle<?>> titres, List<ActionTextutelle<?>> textes) {
+    private record Page(List<Action<?>> titres, List<Action<?>> textes) {
     }
 }

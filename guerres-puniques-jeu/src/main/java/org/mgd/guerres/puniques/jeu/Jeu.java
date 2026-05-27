@@ -31,6 +31,7 @@ public class Jeu {
     private final Jabm jabm;
     private final Registre registre;
     private final LinkedList<ChangementPartie> changementsParties;
+    private final LinkedList<ChangementSelectionCivilisation> changementsSelectionCivilisation;
     private final LinkedList<ChangementDesCivilisation> changementsDesCivilisation;
     private final LinkedList<ChangementDesActions> changementsDesActions;
     private final LinkedList<ChangementDeploiementArmee> changementsDeploiementArmee;
@@ -51,6 +52,7 @@ public class Jeu {
             this.jabm = new JabmConnexion(proprietes).ouvrir().getInstance();
             this.registre = this.jabm.registre();
             this.changementsParties = new LinkedList<>();
+            this.changementsSelectionCivilisation = new LinkedList<>();
             this.changementsDesCivilisation = new LinkedList<>();
             this.changementsDesActions = new LinkedList<>();
             this.changementsDeploiementArmee = new LinkedList<>();
@@ -87,14 +89,7 @@ public class Jeu {
             registre.ajouterEnfant(informations);
             registre.sauvegarder();
 
-            List<TypeRegion> typeRegions = Arrays.stream(obtenirTypesRegions()).map(nom -> {
-                try {
-                    return jabm.creerTypeRegion(obtenirCodeTypeRegion(nom));
-                } catch (JaoExecutionException | JaoParseException e) {
-                    LOGGER.error("Impossible de construire le type de région {}.", nom, e);
-                    return null;
-                }
-            }).filter(Objects::nonNull).toList();
+            List<TypeRegion> typeRegions = Arrays.stream(obtenirTypesRegions()).map(this::nouveauTypeRegion).filter(Optional::isPresent).map(Optional::get).toList();
 
             partieEnCours = jabm.creerPartie(informations, typeRegions, taille);
             partieEnCours.setInformations(informations);
@@ -102,9 +97,24 @@ public class Jeu {
             Map<String, Civilisation> civilisations = new HashMap<>();
             Arrays.stream(aliass).forEach(alias -> {
                 try {
-                    List<TypeUnite> typesUnites = fluxTypes(alias, NOM_GROUPE_TYPES_UNITES).map(type -> nouveauTypeUnite(alias, type, typeRegions)).filter(Objects::nonNull).toList();
-                    List<TypeTransport> typesTransports = fluxTypes(alias, NOM_GROUPE_TYPES_TRANSPORTS).map(type -> nouveauTypeTransport(alias, type, typeRegions)).filter(Objects::nonNull).toList();
-                    List<TypeArmee> typeArmees = fluxTypes(alias, NOM_GROUPE_TYPES_ARMEES).map(type -> nouveauTypeArmee(alias, type)).filter(Objects::nonNull).toList();
+                    List<TypeUnite> typesUnites = fluxTypes(alias, NOM_GROUPE_TYPES_UNITES)
+                            .map(type -> nouveauTypeUnite(alias, type, typeRegions))
+                            .filter(Optional::isPresent).
+                            map(Optional::get)
+                            .toList();
+
+                    List<TypeTransport> typesTransports = fluxTypes(alias, NOM_GROUPE_TYPES_TRANSPORTS)
+                            .map(type -> nouveauTypeTransport(alias, type, typeRegions))
+                            .filter(Optional::isPresent)
+                            .map(Optional::get)
+                            .toList();
+
+                    List<TypeArmee> typeArmees = fluxTypes(alias, NOM_GROUPE_TYPES_ARMEES)
+                            .map(type -> nouveauTypeArmee(alias, type))
+                            .filter(Optional::isPresent)
+                            .map(Optional::get)
+                            .toList();
+
                     Civilisation civilisation = jabm.creerCivilisation(obtenirProprieteCivilisation(alias, "nom"),
                             typesUnites,
                             typesTransports,
@@ -136,21 +146,30 @@ public class Jeu {
         }
     }
 
-    private TypeArmee nouveauTypeArmee(String alias, String type) {
+    private Optional<TypeRegion> nouveauTypeRegion(String nom) {
+        try {
+            return Optional.of(jabm.creerTypeRegion(obtenirCodeTypeRegion(nom)));
+        } catch (JaoExecutionException | JaoParseException e) {
+            LOGGER.error("Impossible de construire le type de région {}.", nom, e);
+            return Optional.empty();
+        }
+    }
+
+    private Optional<TypeArmee> nouveauTypeArmee(String alias, String type) {
         try {
             TypeArmee typeTransport = jabm.creerTypeArmee(type,
                     obtenirTextureType(alias, NOM_GROUPE_TYPES_ARMEES, type),
                     obtenirLibelleType(alias, NOM_GROUPE_TYPES_ARMEES, type),
                     obtenirMaximumType(alias, NOM_GROUPE_TYPES_ARMEES, type));
             partieEnCours.ajouterEnfant(typeTransport);
-            return typeTransport;
+            return Optional.of(typeTransport);
         } catch (JaoExecutionException | JaoParseException e) {
             LOGGER.error("Impossible de construire le type d'armée {} de la civilisation {}.", type, alias, e);
-            return null;
+            return Optional.empty();
         }
     }
 
-    private TypeTransport nouveauTypeTransport(String alias, String type, List<TypeRegion> typeRegions) {
+    private Optional<TypeTransport> nouveauTypeTransport(String alias, String type, Collection<TypeRegion> typeRegions) {
         try {
             TypeTransport typeTransport = jabm.creerTypeTransport(type,
                     obtenirPraticablesType(alias, NOM_GROUPE_TYPES_TRANSPORTS, type, typeRegions),
@@ -158,14 +177,14 @@ public class Jeu {
                     obtenirLibelleType(alias, NOM_GROUPE_TYPES_TRANSPORTS, type),
                     obtenirMaximumType(alias, NOM_GROUPE_TYPES_TRANSPORTS, type));
             partieEnCours.ajouterEnfant(typeTransport);
-            return typeTransport;
+            return Optional.of(typeTransport);
         } catch (JaoExecutionException | JaoParseException e) {
             LOGGER.error("Impossible de construire le type de transport {} de la civilisation {}.", type, alias, e);
-            return null;
+            return Optional.empty();
         }
     }
 
-    private TypeUnite nouveauTypeUnite(String alias, String type, List<TypeRegion> typeRegions) {
+    private Optional<TypeUnite> nouveauTypeUnite(String alias, String type, Collection<TypeRegion> typeRegions) {
         try {
             TypeUnite typeUnite = jabm.creerTypeUnite(type,
                     obtenirPraticablesType(alias, NOM_GROUPE_TYPES_UNITES, type, typeRegions),
@@ -174,10 +193,10 @@ public class Jeu {
                     obtenirNombreType(alias, NOM_GROUPE_TYPES_UNITES, type, "vie"),
                     obtenirNombreType(alias, NOM_GROUPE_TYPES_UNITES, type, "force"));
             partieEnCours.ajouterEnfant(typeUnite);
-            return typeUnite;
+            return Optional.of(typeUnite);
         } catch (JaoExecutionException | JaoParseException e) {
             LOGGER.error("Impossible de construire le type d'unité {} de la civilisation {}.", type, alias, e);
-            return null;
+            return Optional.empty();
         }
     }
 
@@ -232,8 +251,9 @@ public class Jeu {
 
     private List<TypeRegion> obtenirPraticablesType(String alias, String groupe, String type, Collection<TypeRegion> typeRegions) {
         return Arrays.stream(obtenirProprieteType(alias, groupe, type, "praticables").split(";"))
-                .map(praticable -> typeRegions.stream().filter(typeRegion -> Objects.equals(praticable, typeRegion.getCode())).findFirst().orElse(null))
-                .filter(Objects::nonNull)
+                .map(praticable -> typeRegions.stream().filter(typeRegion -> Objects.equals(praticable, typeRegion.getCode())).findFirst())
+                .filter(Optional::isPresent)
+                .map(Optional::get)
                 .toList();
     }
 
@@ -268,12 +288,19 @@ public class Jeu {
         changementsDesActions.forEach(changement -> changement.traiter(partieEnCours.getDesActions()));
     }
 
-    public void deployerArmee(Civilisation civilisation, Armee armee) {
-        if (partieEnCours.getMonde().fluxRegions().noneMatch(region -> region.getArmees().contains(armee))) {
-            Optional.ofNullable(civilisation.getCapitale()).ifPresent(region -> {
-                region.getArmees().add(armee);
-                changementsDeploiementArmee.forEach(changement -> changement.traiter(armee, region));
-            });
+    public void deployerArmee(Civilisation civilisation, TypeArmee type) {
+        try {
+            if (civilisation.getArmees().stream().filter(armee -> armee.getType() == type).count() < type.getMaximum()) {
+                Region region = civilisation.getCapitale();
+                if (region != null) {
+                    Armee armee = jabm.creerArmee(civilisation, type);
+                    region.getArmees().add(armee);
+                    civilisation.getArmees().add(armee);
+                    changementsDeploiementArmee.forEach(changement -> changement.traiter(civilisation, armee, region));
+                }
+            }
+        } catch (JaoExecutionException | JaoParseException e) {
+            LOGGER.error("Impossible de déployer une armée", e);
         }
     }
 
@@ -294,6 +321,11 @@ public class Jeu {
                         LOGGER.error("Impossible d'ajouter un dés de dégâts", e);
                     }
                 });
+    }
+
+    public void amorcer(Civilisation civilisation) {
+        Objects.requireNonNull(civilisation);
+        changementsSelectionCivilisation.forEach(changement -> changement.traiter(civilisation));
     }
 
     public void amorcer(Armee armee) {
@@ -352,12 +384,12 @@ public class Jeu {
         partieEnCours.sauvegarder();
     }
 
-    public boolean avecPartieEnCours() {
-        return Objects.nonNull(partieEnCours);
+    public void souscription(ChangementPartie changement) {
+        changementsParties.add(changement);
     }
 
-    public void souscription(ChangementPartie changementPartie) {
-        changementsParties.add(changementPartie);
+    public void souscription(ChangementSelectionCivilisation changement) {
+        changementsSelectionCivilisation.add(changement);
     }
 
     public void souscription(ChangementDesCivilisation changement) {

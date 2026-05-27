@@ -122,10 +122,9 @@ public class Liste<A extends Action<?>> extends Entite {
         fluxActionsAffichables().forEach(action -> action.dessiner(contexte));
     }
 
-    @SuppressWarnings("unchecked")
     public Stream<Action<?>> fluxActionsAffichables() {
         if (pagination().total() == 1) {
-            return (Stream<Action<?>>) actions.stream().filter(Entite::visible);
+            return Stream.of(persistantes.stream(), actions.stream().filter(Entite::visible)).flatMap(Function.identity());
         } else if (pagination.page() == 0) {
             return Stream.of(persistantes.stream(), Stream.of(suivante), actions.stream().filter(Entite::visible).limit(pagination.taille() + 1L))
                     .flatMap(Function.identity());
