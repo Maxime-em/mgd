@@ -299,7 +299,7 @@ public abstract class Jao<D extends Dto, O extends Jo> {
                 .stream()
                 .filter(element -> objet.racines(classeRacine).stream().anyMatch(racine -> racine.getIdentifiant().equals(element.getKey())))
                 .findFirst()
-                .orElseThrow()
+                .orElseThrow(() -> new IllegalStateException(MessageFormat.format("L''objet {0} de type {1} n''a pas de racine de type {2}.", objet.getIdentifiant(), objet.getClass().getSimpleName(), classeRacine.getSimpleName())))
                 .getValue());
         referenceDto.setClasseFournisseur(classeFournisseur);
         return referenceDto;

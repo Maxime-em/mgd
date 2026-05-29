@@ -35,7 +35,7 @@ import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute.BLANC;
+import static org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute.*;
 
 public class GuerresPuniquesApplication extends Application {
     private static final Logger LOGGER = LogManager.getLogger(GuerresPuniquesApplication.class);
@@ -49,6 +49,7 @@ public class GuerresPuniquesApplication extends Application {
     private static final String IMAGE_FINIR_LE_TOUR = "Finir le tour";
     private static final String IMAGE_CIVILISATION_PREFIX = "Civilisation";
     private static final String IMAGE_DEPLOIEMENT_ARMEE_PREFIX = "Déploiement d'une armée";
+    private static final String IMAGE_DEPLOIEMENT_TRANSPORT_PREFIX = "Déploiement d'un transport";
     private static final String POLICE_DEFAUT = "Calibri";
     private static final float PROFONDEUR = -21.5f;
     private static final float BOUTON_TAILLE_POLICE = 48f;
@@ -63,10 +64,15 @@ public class GuerresPuniquesApplication extends Application {
     private final BiIdentificateur<Armee, TypeUnite, Action<CivilisationArmeeTypeUnite>> actionsArmeesAjouterUnite;
     private final Identificateur<TypeArmee, Action<CivilisationTypeArmee>> actionsArmeesDeployer;
     private final Identificateur<Armee, Action<Armee>> actionsArmeesAttaquer;
+    private final Identificateur<Transport, Action<CivilisationTransport>> actionsTransports;
+    private final Identificateur<TypeTransport, Action<CivilisationTypeTransport>> actionsTransportDeployer;
+    private final Identificateur<Transport, Action<Transport>> actionsTransportsAttaquer;
     private final Identificateur<Armee, Forme> jetonsArmees;
+    private final Identificateur<Transport, Forme> jetonsTransports;
     private final Identificateur<Integer[], Forme> cases;
     private final Map<Civilisation, BarreActions<String>> barresActionsCivilisations;
     private final Map<Armee, ListeActions<Armee>> listesActionsArmees;
+    private final Map<Transport, ListeActions<Transport>> listesActionsTransports;
     private Action<Void> lancerDes;
     private Action<Void> finirTour;
     private Action<Void> nouvellePartie;
@@ -120,10 +126,15 @@ public class GuerresPuniquesApplication extends Application {
             this.actionsArmeesAjouterUnite = new BiIdentificateur<>();
             this.actionsArmeesDeployer = new Identificateur<>();
             this.actionsArmeesAttaquer = new Identificateur<>();
+            this.actionsTransports = new Identificateur<>();
+            this.actionsTransportDeployer = new Identificateur<>();
+            this.actionsTransportsAttaquer = new Identificateur<>();
             this.jetonsArmees = new Identificateur<>();
+            this.jetonsTransports = new Identificateur<>();
             this.cases = new Identificateur<>();
             this.barresActionsCivilisations = new HashMap<>();
             this.listesActionsArmees = new HashMap<>();
+            this.listesActionsTransports = new HashMap<>();
         } catch (JeuException e) {
             throw new LwjglException(e);
         }
@@ -152,9 +163,9 @@ public class GuerresPuniquesApplication extends Application {
     @Override
     protected void peupler() throws LwjglException {
         fenetre.creerContexteNvg();
-        AffichageTeteHaute.creerPolice(fenetre.contexteNvg(), POLICE_DEFAUT, Path.of("C:\\Windows\\Fonts\\Calibri.ttf"));
-        AffichageTeteHaute.creerImage(fenetre.contexteNvg(), IMAGE_LANCER_DEX, dossierTextures.resolve("generales", "des.png"));
-        AffichageTeteHaute.creerImage(fenetre.contexteNvg(), IMAGE_FINIR_LE_TOUR, dossierTextures.resolve("generales", "fin_de_tour.png"));
+        creerPolice(fenetre.contexteNvg(), POLICE_DEFAUT, Path.of("C:\\Windows\\Fonts\\Calibri.ttf"));
+        creerImage(fenetre.contexteNvg(), IMAGE_LANCER_DEX, dossierTextures.resolve("generales", "des.png"));
+        creerImage(fenetre.contexteNvg(), IMAGE_FINIR_LE_TOUR, dossierTextures.resolve("generales", "fin_de_tour.png"));
 
         try {
             construireMenu();
@@ -165,18 +176,20 @@ public class GuerresPuniquesApplication extends Application {
         }
     }
 
-    private void ajouterActions(Civilisation civilisation, Armee armee) throws LwjglException {
+    private void ajouterActions(Armee armee) throws LwjglException {
+        Civilisation civilisation = armee.getOrigine();
         BarreActions<String> barreActionsCivilisation = barresActionsCivilisations.get(civilisation);
-        NVGPolice police = AffichageTeteHaute.obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT);
+        NVGPolice police = obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT);
 
         Action<CivilisationArmee> actionArmee = new ActionImagee<>(
                 new CivilisationArmee(civilisation, armee),
                 50,
                 50,
                 true,
-                AffichageTeteHaute.obtenirImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_ARMEES, armee.getType())));
+                obtenirImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_ARMEES, armee.getType())));
         actionsArmees.ajouter(armee, actionArmee);
         barreActionsCivilisation.ajouter(civilisation.getNom(), actionArmee);
+        formatterInformations(barreActionsCivilisation, actionArmee, police, () -> armee.getType().getNom());
         formatterInformations(barreActionsCivilisation, actionArmee, police, () -> MessageFormat.format("Force : {0}", armee.getUnites().stream().mapToLong(unite -> unite.getType().getForce()).sum()));
 
         Action<Civilisation> actionCivilisation = actionsCivilisations.identifiable(civilisation);
@@ -186,7 +199,7 @@ public class GuerresPuniquesApplication extends Application {
                     100,
                     100,
                     false,
-                    AffichageTeteHaute.obtenirImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_UNITES, type)));
+                    obtenirImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_UNITES, type)));
             actionsArmeesAjouterUnite.ajouter(armee, type, actionArmeeAjouterUnite);
             barreActionsGenerale.ajouter(actionArmee.uuid(), actionArmeeAjouterUnite);
             formatterInformations(barreActionsGenerale, actionArmeeAjouterUnite, police, () -> MessageFormat.format("Ajouter l''unité {0}", type.getNom()));
@@ -199,17 +212,31 @@ public class GuerresPuniquesApplication extends Application {
             actionCivilisation.lier(actionArmeeAjouterUnite);
         });
 
-        Action<Armee> actionAttaqueArmee = new ActionTextutelle<>(armee, 24f, AffichageTeteHaute.obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), BLANC, () -> "Attaquer");
+        Action<Armee> actionAttaqueArmee = new ActionTextutelle<>(armee, 24f, obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), BLANC, () -> "Attaquer");
         actionsArmeesAttaquer.ajouter(armee, actionAttaqueArmee);
 
         listesActionsArmees.put(armee, new ListeActions<>(fenetre, 10, 10, actionAttaqueArmee));
     }
 
-    private void placer(Armee armee, Region region) {
-        Forme jeton = cadrillage.ajouterJeton(region.ligne(), region.colonne(), armee.getType().ligne(), armee.getType().colonne());
-        actionsArmees.identifiable(armee).lier(jeton);
-        listesActionsArmees.get(armee).lier(jeton);
-        jetonsArmees.ajouter(armee, jeton);
+    private void ajouterActions(Transport transport) throws LwjglException {
+        Civilisation civilisation = transport.getOrigine();
+        BarreActions<String> barreActionsCivilisation = barresActionsCivilisations.get(civilisation);
+        NVGPolice police = obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT);
+
+        Action<CivilisationTransport> actionTransport = new ActionImagee<>(
+                new CivilisationTransport(civilisation, transport),
+                50,
+                50,
+                true,
+                obtenirImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_TRANSPORTS, transport.getType())));
+        actionsTransports.ajouter(transport, actionTransport);
+        barreActionsCivilisation.ajouter(civilisation.getNom(), actionTransport);
+        formatterInformations(barreActionsCivilisation, actionTransport, police, () -> transport.getType().getNom());
+
+        Action<Transport> actionAttaqueTransport = new ActionTextutelle<>(transport, 24f, obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), BLANC, () -> "Attaquer");
+        actionsTransportsAttaquer.ajouter(transport, actionAttaqueTransport);
+
+        listesActionsTransports.put(transport, new ListeActions<>(fenetre, 10, 10, actionAttaqueTransport));
     }
 
     private Action<UUID> actionSauvegarde(UUID uuidFichier, String nom, NVGPolice police) {
@@ -219,7 +246,7 @@ public class GuerresPuniquesApplication extends Application {
     }
 
     private void construireMenu() throws LwjglException, JeuException {
-        NVGPolice police = AffichageTeteHaute.obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT);
+        NVGPolice police = obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT);
         Action<Void> titre = new ActionTextutelle<>(64f, police, BLANC, () -> "Guerres puniques");
         Action<Void> charger = new ActionTextutelle<>(BOUTON_TAILLE_POLICE, police, BLANC, () -> "Charger la partie");
         nouvellePartie = new ActionTextutelle<>(BOUTON_TAILLE_POLICE, police, BLANC, () -> "Nouvelle partie");
@@ -237,8 +264,8 @@ public class GuerresPuniquesApplication extends Application {
     }
 
     private void construireJeu() {
-        lancerDes = new ActionImagee<>(100, 100, true, AffichageTeteHaute.obtenirImage(fenetre.contexteNvg(), IMAGE_LANCER_DEX));
-        finirTour = new ActionImagee<>(100, 100, true, AffichageTeteHaute.obtenirImage(fenetre.contexteNvg(), IMAGE_FINIR_LE_TOUR));
+        lancerDes = new ActionImagee<>(100, 100, true, obtenirImage(fenetre.contexteNvg(), IMAGE_LANCER_DEX));
+        finirTour = new ActionImagee<>(100, 100, true, obtenirImage(fenetre.contexteNvg(), IMAGE_FINIR_LE_TOUR));
 
         jeu.souscription((ChangementPartie) nouvelle -> {
             try {
@@ -264,37 +291,17 @@ public class GuerresPuniquesApplication extends Application {
         });
         jeu.souscription((ChangementDesCivilisation) _ -> informationsDesCivilisation.afficher());
         jeu.souscription((ChangementDesActions) _ -> informationDesActions.afficher());
-        jeu.souscription((civilisation, armee, region) -> {
-            try {
-                ajouterActions(civilisation, armee);
-                placer(armee, region);
-                jeu.amorcer(armee);
-                barresActionsCivilisations.get(civilisation).afficher(civilisation.getNom(), true);
-            } catch (LwjglException e) {
-                LOGGER.error("Impossible de déployer une armée", e);
-            }
-        });
-        jeu.souscription((ChangementDeplacementArmee) (armee, region) -> cadrillage.deplacer(jetonsArmees.identifiable(armee), region.ligne(), region.colonne()));
-        jeu.souscription((ChangementSelectionArmee) armee -> {
-            Action<CivilisationArmee> action = actionsArmees.identifiable(armee);
-            barreActionsGenerale.desactiverActions();
-            barreActionsGenerale.afficher(action.uuid());
-            barresActionsCivilisations.values().forEach(BarreActions::desactiverActions);
-            cadrillage.desactiverJetons();
-            Forme forme = jetonsArmees.identifiable(armee);
-            if (forme != null) {
-                forme.activer();
-            }
-            action.activer();
-        });
-        jeu.souscription((ChangementDeselectionArmee) () -> {
+        jeu.souscription(this::deployer);
+        jeu.souscription((ChangementDeplacement) this::deplacer);
+        jeu.souscription((ChangementSelection) this::selectionner);
+        jeu.souscription((ChangementDeselection) () -> {
             barreActionsGenerale.desactiverActions();
             barreActionsGenerale.afficher(fenetre.uuid());
             barresActionsCivilisations.values().forEach(BarreActions::desactiverActions);
             cadrillage.desactiverJetons();
         });
-        jeu.souscription((ChangementAttaqueArmee) (attaquant, defenseur) -> System.out.println(MessageFormat.format("{0} attaque {1}", attaquant, defenseur)));
-        jeu.souscription((ChangementAttaqueCivilisation) (armee, civilisation) -> System.out.println(MessageFormat.format("{0} attaque {1}", armee, civilisation)));
+        jeu.souscription((ChangementAttaque) this::attaquer);
+        jeu.souscription((ChangementAttaqueCivilisation) this::attaquer);
         jeu.souscription((ChangementFinTour) () -> System.out.println("Fin de tour"));
 
         fenetre.souscrire(_ -> jeu.deselectionner());
@@ -314,16 +321,102 @@ public class GuerresPuniquesApplication extends Application {
         });
         fenetre.souscrire("Déploiements de armée", actionsArmeesDeployer.identifiables, action -> {
             CivilisationTypeArmee objet = action.objet();
-            jeu.deployerArmee(objet.civilisation, objet.type);
+            jeu.deployer(objet.civilisation, objet.type);
+        });
+        fenetre.souscrire("Déploiements de transport", actionsTransportDeployer.identifiables, action -> {
+            CivilisationTypeTransport objet = action.objet();
+            jeu.deployer(objet.civilisation, objet.type);
         });
         fenetre.souscrire("Attaques d'armée", actionsArmeesAttaquer.identifiables, action -> jeu.attaquer(action.objet()));
-        fenetre.souscrire("Jetons", jetonsArmees.identifiables,
+        fenetre.souscrire("Jetons armées", jetonsArmees.identifiables,
                 forme -> jeu.amorcer(jetonsArmees.objet(forme)),
                 forme -> listesActionsArmees.get(jetonsArmees.objet(forme)).placer(fenetre.projection(), fenetre.homogeneite(), forme).apparaitre());
+        fenetre.souscrire("Transports", actionsTransports.identifiables, action -> jeu.amorcer(action.objet().transport));
+        fenetre.souscrire("Attaques de transport", actionsTransportsAttaquer.identifiables, action -> jeu.attaquer(action.objet()));
+        fenetre.souscrire("Jetons transports", jetonsTransports.identifiables,
+                forme -> jeu.amorcer(jetonsTransports.objet(forme)),
+                forme -> listesActionsTransports.get(jetonsTransports.objet(forme)).placer(fenetre.projection(), fenetre.homogeneite(), forme).apparaitre());
         fenetre.souscrire("Cases", cases.identifiables, forme -> {
             Integer[] index = cases.objet(forme);
             jeu.deplacer(index[0], index[1]);
         });
+    }
+
+    private <T extends Type> Forme obtenirJeton(Tangible<T> objet) {
+        return switch (objet.getType()) {
+            case TypeArmee _ -> jetonsArmees.identifiable((Armee) objet);
+            case TypeTransport _ -> jetonsTransports.identifiable((Transport) objet);
+            default ->
+                    throw new IllegalStateException(MessageFormat.format("Le jeton du type {0} ne peut pas être obtenu", objet.getType()));
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends Type, U> Action<U> obtenirIdentifiable(Tangible<T> objet) {
+        return (Action<U>) switch (objet.getType()) {
+            case TypeArmee _ -> actionsArmees.identifiable((Armee) objet);
+            case TypeTransport _ -> actionsTransports.identifiable((Transport) objet);
+            default ->
+                    throw new IllegalStateException(MessageFormat.format("L''action du type {0} ne peut pas être obtenue", objet.getType()));
+        };
+    }
+
+    private <T extends Type> void placer(Tangible<T> objet, Region region) throws LwjglException {
+        Forme jeton = cadrillage.ajouterJeton(region.ligne(), region.colonne(), objet.getType().ligne(), objet.getType().colonne());
+        switch (objet.getType()) {
+            case TypeArmee _ -> {
+                Armee armee = (Armee) objet;
+                ajouterActions(armee);
+                actionsArmees.identifiable(armee).lier(jeton);
+                listesActionsArmees.get(armee).lier(jeton);
+                jetonsArmees.ajouter(armee, jeton);
+            }
+            case TypeTransport _ -> {
+                Transport transport = (Transport) objet;
+                ajouterActions(transport);
+                actionsTransports.identifiable(transport).lier(jeton);
+                listesActionsTransports.get(transport).lier(jeton);
+                jetonsTransports.ajouter(transport, jeton);
+            }
+            default -> {
+                // Rien à faire
+            }
+        }
+    }
+
+    private <T extends Type> void deployer(Civilisation civilisation, Tangible<T> objet, Region region) {
+        try {
+            placer(objet, region);
+            jeu.amorcer(objet);
+            barresActionsCivilisations.get(civilisation).afficher(civilisation.getNom(), true);
+        } catch (LwjglException e) {
+            LOGGER.error("Impossible de déployer une armée", e);
+        }
+    }
+
+    private <T extends Type> void deplacer(Tangible<T> objet, Region region) {
+        cadrillage.deplacer(obtenirJeton(objet), region.ligne(), region.colonne());
+    }
+
+    private <T extends Type> void selectionner(Tangible<T> objet) {
+        Action<?> action = obtenirIdentifiable(objet);
+        barreActionsGenerale.desactiverActions();
+        barreActionsGenerale.afficher(action.uuid());
+        barresActionsCivilisations.values().forEach(BarreActions::desactiverActions);
+        cadrillage.desactiverJetons();
+        Forme forme = obtenirJeton(objet);
+        if (forme != null) {
+            forme.activer();
+        }
+        action.activer();
+    }
+
+    private <T extends Type, U extends Type> void attaquer(Tangible<T> attaquant, Tangible<U> defenseur) {
+        System.out.println(MessageFormat.format("{0} attaque {1}", attaquant, defenseur));
+    }
+
+    private <T extends Type> void attaquer(Tangible<T> armee, Civilisation civilisation) {
+        System.out.println(MessageFormat.format("{0} attaque {1}", armee, civilisation));
     }
 
     private void construireInterfaceTeteHaute() throws LwjglException {
@@ -339,11 +432,12 @@ public class GuerresPuniquesApplication extends Application {
     }
 
     private void construireImages(Civilisation civilisation) {
-        AffichageTeteHaute.creerImage(fenetre.contexteNvg(), identifiantImageCite(civilisation), cheminImageCite(civilisation));
-        civilisation.getTypesUnites().forEach(type -> AffichageTeteHaute.creerImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_UNITES, type), cheminImageType(civilisation, Jeu.NOM_GROUPE_TYPES_UNITES, type)));
-        civilisation.getTypeArmees().forEach(type -> AffichageTeteHaute.creerImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_ARMEES, type), cheminImageType(civilisation, Jeu.NOM_GROUPE_TYPES_ARMEES, type)));
-        civilisation.getTypesTransports().forEach(type -> AffichageTeteHaute.creerImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_TRANSPORTS, type), cheminImageType(civilisation, Jeu.NOM_GROUPE_TYPES_TRANSPORTS, type)));
-        AffichageTeteHaute.creerImage(fenetre.contexteNvg(), identifiantImageDeploiementArmee(civilisation), cheminImageDeploiementArmee(civilisation));
+        creerImage(fenetre.contexteNvg(), identifiantImageCite(civilisation), cheminImageCite(civilisation));
+        civilisation.getTypesUnites().forEach(type -> creerImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_UNITES, type), cheminImageType(civilisation, Jeu.NOM_GROUPE_TYPES_UNITES, type)));
+        civilisation.getTypeArmees().forEach(type -> creerImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_ARMEES, type), cheminImageType(civilisation, Jeu.NOM_GROUPE_TYPES_ARMEES, type)));
+        civilisation.getTypesTransports().forEach(type -> creerImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_TRANSPORTS, type), cheminImageType(civilisation, Jeu.NOM_GROUPE_TYPES_TRANSPORTS, type)));
+        creerImage(fenetre.contexteNvg(), identifiantImageDeploiementArmee(civilisation), cheminImageDeploiementArmee(civilisation));
+        creerImage(fenetre.contexteNvg(), identifiantImageDeploiementTransport(civilisation), cheminImageDeploiementTransport(civilisation));
     }
 
     private void construirePlateauJeu() throws LwjglException {
@@ -356,15 +450,12 @@ public class GuerresPuniquesApplication extends Application {
                 Map.of(Pseudo.PSEUDO_BASE, cheminMonde.resolve("monde.png")));
         cases.ajouter(cadrillage.casesParIndex());
 
-        for (Region region : jeu.fluxRegionsOccuper()) {
+        for (Region region : jeu.regionsOccuper()) {
             for (Armee armee : region.getArmees()) {
-                for (Civilisation civilisation : partie.getCivilisations()) {
-                    if (civilisation.getArmees().contains(armee)) {
-                        ajouterActions(civilisation, armee);
-                        break;
-                    }
-                }
                 placer(armee, region);
+            }
+            for (Transport transport : region.getTransports()) {
+                placer(transport, region);
             }
         }
     }
@@ -399,7 +490,7 @@ public class GuerresPuniquesApplication extends Application {
                 7);
         barresActionsCivilisations.put(civilisation, barreActionsCivilisation);
 
-        ActionImagee<Civilisation> actionCivilisation = new ActionImagee<>(civilisation, 100, 100, false, AffichageTeteHaute.obtenirImage(fenetre.contexteNvg(), identifiantImageCite(civilisation)));
+        ActionImagee<Civilisation> actionCivilisation = new ActionImagee<>(civilisation, 100, 100, false, obtenirImage(fenetre.contexteNvg(), identifiantImageCite(civilisation)));
         actionsCivilisations.ajouter(civilisation, actionCivilisation);
 
         civilisation.getArmees().forEach(armee -> {
@@ -408,25 +499,35 @@ public class GuerresPuniquesApplication extends Application {
                     50,
                     50,
                     true,
-                    AffichageTeteHaute.obtenirImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_ARMEES, armee.getType())));
+                    obtenirImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_ARMEES, armee.getType())));
             actionsArmees.ajouter(armee, actionArmee);
         });
 
         civilisation.getTypeArmees().forEach(type -> {
-            Action<CivilisationTypeArmee> actionDeployerArmee = new ActionImagee<>(
+            Action<CivilisationTypeArmee> actionArmeeDeployer = new ActionImagee<>(
                     new CivilisationTypeArmee(civilisation, type),
                     100,
                     100,
                     false,
-                    AffichageTeteHaute.obtenirImage(fenetre.contexteNvg(), identifiantImageDeploiementArmee(civilisation)));
-            actionsArmeesDeployer.ajouter(type, actionDeployerArmee);
+                    obtenirImage(fenetre.contexteNvg(), identifiantImageDeploiementArmee(civilisation)));
+            actionsArmeesDeployer.ajouter(type, actionArmeeDeployer);
+        });
+
+        civilisation.getTypesTransports().forEach(type -> {
+            Action<CivilisationTypeTransport> actionTransportDeployer = new ActionImagee<>(
+                    new CivilisationTypeTransport(civilisation, type),
+                    100,
+                    100,
+                    false,
+                    obtenirImage(fenetre.contexteNvg(), identifiantImageDeploiementTransport(civilisation)));
+            actionsTransportDeployer.ajouter(type, actionTransportDeployer);
         });
     }
 
     private void configurerBarresActions() {
         barreActionsGenerale.ajouter(fenetre.uuid(), lancerDes, finirTour);
 
-        NVGPolice police = AffichageTeteHaute.obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT);
+        NVGPolice police = obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT);
         partie.getCivilisations().forEach(civilisation -> {
             BarreActions<String> barreActionsCivilisation = barresActionsCivilisations.get(civilisation);
             Action<Civilisation> actionCivilisation = actionsCivilisations.identifiable(civilisation);
@@ -437,30 +538,36 @@ public class GuerresPuniquesApplication extends Application {
             barreActionsCivilisation.ajouter(civilisation.getNom());
 
             civilisation.getTypeArmees().forEach(type -> {
-                Action<CivilisationTypeArmee> actionDeployerArmee = actionsArmeesDeployer.identifiable(type);
-                barreActionsGenerale.ajouter(actionCivilisation.uuid(), actionDeployerArmee);
-                barreActionsGenerale.ajouter(actionDeployerArmee.uuid(), creerInformations(police, () -> "Deployer une nouvelle armée"));
+                Action<CivilisationTypeArmee> actionArmeeDeployer = actionsArmeesDeployer.identifiable(type);
+                barreActionsGenerale.ajouter(actionCivilisation.uuid(), actionArmeeDeployer);
+                barreActionsGenerale.ajouter(actionArmeeDeployer.uuid(), creerInformations(police, () -> "Deployer une nouvelle armée"));
+            });
+
+            civilisation.getTypesTransports().forEach(type -> {
+                Action<CivilisationTypeTransport> actionTransportDeployer = actionsTransportDeployer.identifiable(type);
+                barreActionsGenerale.ajouter(actionCivilisation.uuid(), actionTransportDeployer);
+                barreActionsGenerale.ajouter(actionTransportDeployer.uuid(), creerInformations(police, () -> "Deployer un nouveau transport"));
             });
         });
     }
 
-    private Action<Void> informationType(NVGPolice police, Collection<? extends Type> types, Collection<? extends Typable> typables) {
+    private <T extends Type, O extends Tangible<T>> Action<Void> informationType(NVGPolice police, Collection<T> types, Collection<O> objets) {
         return creerInformations(police, () -> types.stream().map(type -> MessageFormat.format("{0} ({1}/{2})",
                         type.getLibelle(),
-                        typables.stream().filter(unite -> unite.getType() == type).count(),
+                        objets.stream().filter(objet -> objet.getType() == type).count(),
                         type.getMaximum()))
                 .collect(Collectors.joining(", ")));
     }
 
     private void construireDesCivilisation() throws LwjglException {
         informationsDesCivilisation = new Informations(fenetre, 10, fenetre.hauteur() - 110, 100, 100);
-        informationsDesCivilisation.ajouter(creerValeurDes(AffichageTeteHaute.obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), () -> partie.getDesCivilisation().getValeur() != null ? partie.getDesCivilisation().getValeur().toString() : ""));
+        informationsDesCivilisation.ajouter(creerValeurDes(obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), () -> partie.getDesCivilisation().getValeur() != null ? partie.getDesCivilisation().getValeur().toString() : ""));
         informationsDesCivilisation.afficher();
     }
 
     private void construireDesActions() throws LwjglException {
         informationDesActions = new Informations(fenetre, fenetre.largeur() - 110, fenetre.hauteur() - 110, 100, 100);
-        informationDesActions.ajouter(creerValeurDes(AffichageTeteHaute.obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), () -> partie.getDesActions().getValeur() != null ? partie.getDesActions().getValeur().toString() : ""));
+        informationDesActions.ajouter(creerValeurDes(obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), () -> partie.getDesActions().getValeur() != null ? partie.getDesActions().getValeur().toString() : ""));
         informationDesActions.afficher();
     }
 
@@ -476,6 +583,10 @@ public class GuerresPuniquesApplication extends Application {
         return String.join(":", IMAGE_DEPLOIEMENT_ARMEE_PREFIX, civilisation.getIdentifiant().toString());
     }
 
+    private String identifiantImageDeploiementTransport(Civilisation civilisation) {
+        return String.join(":", IMAGE_DEPLOIEMENT_TRANSPORT_PREFIX, civilisation.getIdentifiant().toString());
+    }
+
     private Path cheminImageCite(Civilisation civilisation) {
         return dossierTextures.resolve(civilisation.getNom().toLowerCase(), "cite.png");
     }
@@ -486,6 +597,10 @@ public class GuerresPuniquesApplication extends Application {
 
     private Path cheminImageDeploiementArmee(Civilisation civilisation) {
         return dossierTextures.resolve(civilisation.getNom().toLowerCase(), "armees", "deployer.png");
+    }
+
+    private Path cheminImageDeploiementTransport(Civilisation civilisation) {
+        return dossierTextures.resolve(civilisation.getNom().toLowerCase(), "transports", "deployer.png");
     }
 
     public static class Identificateur<T, I extends Identifiable> {
@@ -544,5 +659,11 @@ public class GuerresPuniquesApplication extends Application {
     }
 
     private record CivilisationTypeArmee(Civilisation civilisation, TypeArmee type) {
+    }
+
+    private record CivilisationTransport(Civilisation civilisation, Transport transport) {
+    }
+
+    private record CivilisationTypeTransport(Civilisation civilisation, TypeTransport type) {
     }
 }

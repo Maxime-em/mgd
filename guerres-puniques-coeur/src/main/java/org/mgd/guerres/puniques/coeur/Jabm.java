@@ -1,6 +1,5 @@
 package org.mgd.guerres.puniques.coeur;
 
-import org.mgd.guerres.puniques.coeur.commun.Posture;
 import org.mgd.guerres.puniques.coeur.objet.*;
 import org.mgd.guerres.puniques.coeur.persistence.*;
 import org.mgd.guerres.puniques.coeur.source.PartieAd;
@@ -12,9 +11,7 @@ import org.mgd.jab.persistence.exception.JaoParseException;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 public class Jabm extends Jab {
@@ -40,10 +37,8 @@ public class Jabm extends Jab {
         return new InformationsJao().nouveau(nouvellesInformations -> nouvellesInformations.setNom(nom));
     }
 
-    public Partie creerPartie(Informations informations, Collection<TypeRegion> typesRegions, int[] taille) throws JaoExecutionException, JaoParseException {
+    public Partie creerPartie(Informations informations, int[] taille) throws JaoExecutionException, JaoParseException {
         Monde monde = new MondeJao().nouveau(nouveauMonde -> {
-            nouveauMonde.getTypes().addAll(typesRegions);
-
             Region[][] regions = new Region[taille[0]][taille[1]];
             for (int ligne = 0; ligne < taille[0]; ligne++) {
                 for (int colonne = 0; colonne < taille[1]; colonne++) {
@@ -72,15 +67,7 @@ public class Jabm extends Jab {
                                           Collection<TypeTransport> typesTransports,
                                           Collection<TypeArmee> typeArmees,
                                           Region capitale) throws JaoExecutionException, JaoParseException {
-        List<Unite> unites = new ArrayList<>();
-        for (TypeUnite type : typesUnites) {
-            int maximum = type.getMaximum();
-            for (int rang = 0; rang < maximum; rang++) {
-                unites.add(creerUnite(type));
-            }
-        }
-
-        Reserve reserve = new ReserveJao().nouveau(nouvelleReserve -> nouvelleReserve.getUnites().addAll(unites));
+        Reserve reserve = new ReserveJao().nouveau();
 
         return new CivilisationJao().nouveau(nouvelleCivilisation -> {
             nouvelleCivilisation.getTypesUnites().addAll(typesUnites);
@@ -92,24 +79,26 @@ public class Jabm extends Jab {
         });
     }
 
-    public Unite creerUnite(TypeUnite type) throws JaoExecutionException, JaoParseException {
+    public Unite creerUnite(Civilisation civilisation, TypeUnite type) throws JaoExecutionException, JaoParseException {
         return new UniteJao().nouveau(nouvelleUnite -> {
             nouvelleUnite.setType(type);
+            nouvelleUnite.setOrigine(civilisation);
             nouvelleUnite.setVie(type.getConstitution());
         });
     }
 
     public Armee creerArmee(Civilisation civilisation, TypeArmee type) throws JaoExecutionException, JaoParseException {
-        Armee armee = new ArmeeJao().nouveau(nouvelleArmee -> nouvelleArmee.setType(type));
-        armee.getAlignements().add(new AlignementJao().nouveau(nouveauAlignement -> {
-            nouveauAlignement.setCivilisation(civilisation);
-            nouveauAlignement.setPosture(Posture.AMI);
-        }));
-        return armee;
+        return new ArmeeJao().nouveau(nouvelleArmee -> {
+            nouvelleArmee.setType(type);
+            nouvelleArmee.setOrigine(civilisation);
+        });
     }
 
-    public Transport creerTransport(TypeTransport type) throws JaoExecutionException, JaoParseException {
-        return new TransportJao().nouveau(nouveauTransport -> nouveauTransport.setType(type));
+    public Transport creerTransport(Civilisation civilisation, TypeTransport type) throws JaoExecutionException, JaoParseException {
+        return new TransportJao().nouveau(nouveauTransport -> {
+            nouveauTransport.setType(type);
+            nouveauTransport.setOrigine(civilisation);
+        });
     }
 
     public Des creerDesDegats() throws JaoExecutionException, JaoParseException {

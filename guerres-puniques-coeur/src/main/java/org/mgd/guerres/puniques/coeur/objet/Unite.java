@@ -1,24 +1,10 @@
 package org.mgd.guerres.puniques.coeur.objet;
 
-import org.jetbrains.annotations.NotNull;
-import org.mgd.jab.objet.Jo;
-
-import java.util.Comparator;
 import java.util.Objects;
 
 @SuppressWarnings({"java:S2160", "java:S1210"})
-public class Unite extends Jo implements Comparable<Unite>, Typable {
-    private TypeUnite type;
+public class Unite extends Tangible<TypeUnite> {
     private Integer vie;
-
-    @Override
-    public TypeUnite getType() {
-        return type;
-    }
-
-    public void setType(TypeUnite type) {
-        this.type = type;
-    }
 
     public Integer getVie() {
         return vie;
@@ -33,10 +19,5 @@ public class Unite extends Jo implements Comparable<Unite>, Typable {
         if (this == objet) return true;
         if (!(objet instanceof Unite unite)) return false;
         return type == unite.type && Objects.equals(vie, unite.vie);
-    }
-
-    @Override
-    public int compareTo(@NotNull Unite unite) {
-        return Comparator.comparing(Unite::getIdentifiant).compare(this, unite);
     }
 }

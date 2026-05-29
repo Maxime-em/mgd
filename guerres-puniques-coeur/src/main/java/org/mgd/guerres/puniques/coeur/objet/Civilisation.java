@@ -3,11 +3,13 @@ package org.mgd.guerres.puniques.coeur.objet;
 import org.jetbrains.annotations.NotNull;
 import org.mgd.jab.objet.Jo;
 
+import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 
-@SuppressWarnings("java:S2160")
+@SuppressWarnings({"java:S2160", "java:S1210"})
 public class Civilisation extends Jo implements Comparable<Civilisation> {
     private final Set<TypeUnite> typesUnites = new TreeSet<>();
     private final Set<TypeTransport> typesTransports = new TreeSet<>();
@@ -17,6 +19,16 @@ public class Civilisation extends Jo implements Comparable<Civilisation> {
     private String nom;
     private Reserve reserve;
     private Region capitale;
+
+    @SuppressWarnings("unchecked")
+    public <T extends Type, O extends Tangible<T>> Collection<O> getTangible(T type) {
+        return (Collection<O>) switch (type) {
+            case TypeArmee _ -> armees;
+            case TypeTransport _ -> transports;
+            case TypeUnite _ -> reserve.getUnites();
+            default -> throw new IllegalStateException(MessageFormat.format("Le type {0} est inconnu", type));
+        };
+    }
 
     public Set<TypeUnite> getTypesUnites() {
         return typesUnites;
@@ -72,15 +84,5 @@ public class Civilisation extends Jo implements Comparable<Civilisation> {
     @Override
     public int compareTo(@NotNull Civilisation civilisation) {
         return Comparator.comparing(Civilisation::getNom).compare(this, civilisation);
-    }
-
-    @Override
-    public boolean equals(Object objet) {
-        return super.equals(objet);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
     }
 }

@@ -1,6 +1,7 @@
 package org.mgd.guerres.puniques.coeur.persistence;
 
 import org.mgd.guerres.puniques.coeur.dto.TypeUniteDto;
+import org.mgd.guerres.puniques.coeur.objet.Partie;
 import org.mgd.guerres.puniques.coeur.objet.TypeUnite;
 import org.mgd.jab.persistence.Jao;
 import org.mgd.jab.persistence.exception.JaoExecutionException;
@@ -12,26 +13,27 @@ public class TypeUniteJao extends Jao<TypeUniteDto, TypeUnite> {
     }
 
     @Override
-    public TypeUniteDto dto(TypeUnite typeUnite) {
+    public TypeUniteDto dto(TypeUnite type) {
         TypeUniteDto typeUniteDto = new TypeUniteDto();
-        typeUniteDto.setPraticables(new TypeRegionJao().decharger(typeUnite.getPraticables()));
-        typeUniteDto.setNom(typeUnite.getNom());
-        typeUniteDto.setLibelle(typeUnite.getLibelle());
-        typeUniteDto.setMaximum(typeUnite.getMaximum());
-        typeUniteDto.setConstitution(typeUnite.getConstitution());
-        typeUniteDto.setForce(typeUnite.getForce());
+        typeUniteDto.setPraticables(new TypeRegionJao().dechargerVersReferences(type.getPraticables(), Partie.class, PartieJao.class));
+        typeUniteDto.setNom(type.getNom());
+        typeUniteDto.setLibelle(type.getLibelle());
+        typeUniteDto.setMaximum(type.getMaximum());
+        typeUniteDto.setConstitution(type.getConstitution());
+        typeUniteDto.setForce(type.getForce());
 
         return typeUniteDto;
     }
 
     @Override
-    public void enrichir(TypeUniteDto dto, TypeUnite typeUnite) throws JaoExecutionException, JaoParseException {
-        typeUnite.getPraticables().addAll(new TypeRegionJao().charger(dto.getPraticables(), typeUnite));
-        typeUnite.setNom(dto.getNom());
-        typeUnite.setLibelle(dto.getLibelle());
-        typeUnite.setMaximum(dto.getMaximum());
-        typeUnite.setConstitution(dto.getConstitution());
-        typeUnite.setForce(dto.getForce());
+    public void enrichir(TypeUniteDto dto, TypeUnite type) throws JaoExecutionException, JaoParseException {
+        type.setNom(dto.getNom());
+        type.setLibelle(dto.getLibelle());
+        type.setMaximum(dto.getMaximum());
+        type.setConstitution(dto.getConstitution());
+        type.setForce(dto.getForce());
+
+        postChargement(type, objet -> objet.getPraticables().addAll(new TypeRegionJao().chargerParReferences(dto.getPraticables())));
     }
 
     @Override

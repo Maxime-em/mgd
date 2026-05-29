@@ -1,6 +1,7 @@
 package org.mgd.guerres.puniques.coeur.persistence;
 
 import org.mgd.guerres.puniques.coeur.dto.RegionDto;
+import org.mgd.guerres.puniques.coeur.objet.Partie;
 import org.mgd.guerres.puniques.coeur.objet.Region;
 import org.mgd.jab.persistence.Jao;
 import org.mgd.jab.persistence.exception.JaoExecutionException;
@@ -15,9 +16,9 @@ public class RegionJao extends Jao<RegionDto, Region> {
     public RegionDto dto(Region region) {
         RegionDto regionDto = new RegionDto();
         regionDto.setAlignements(new AlignementJao().decharger(region.getAlignements()));
-        regionDto.setTypes(new TypeRegionJao().decharger(region.getTypes()));
-        regionDto.setArmee(new ArmeeJao().decharger(region.getArmees()));
-        regionDto.setTransports(new TransportJao().decharger(region.getTransports()));
+        regionDto.setTypes(new TypeRegionJao().dechargerVersReferences(region.getTypes(), Partie.class, PartieJao.class));
+        regionDto.setArmee(new ArmeeJao().dechargerVersReferences(region.getArmees(), Partie.class, PartieJao.class));
+        regionDto.setTransports(new TransportJao().dechargerVersReferences(region.getTransports(), Partie.class, PartieJao.class));
 
         return regionDto;
     }
@@ -25,9 +26,12 @@ public class RegionJao extends Jao<RegionDto, Region> {
     @Override
     public void enrichir(RegionDto dto, Region region) throws JaoExecutionException, JaoParseException {
         region.getAlignements().addAll(new AlignementJao().charger(dto.getAlignements(), region));
-        region.getTypes().addAll(new TypeRegionJao().charger(dto.getTypes(), region));
-        region.getArmees().addAll(new ArmeeJao().charger(dto.getArmee(), region));
-        region.getTransports().addAll(new TransportJao().charger(dto.getTransports(), region));
+
+        postChargement(region, objet -> {
+            objet.getTypes().addAll(new TypeRegionJao().chargerParReferences(dto.getTypes()));
+            objet.getArmees().addAll(new ArmeeJao().chargerParReferences(dto.getArmee()));
+            objet.getTransports().addAll(new TransportJao().chargerParReferences(dto.getTransports()));
+        });
     }
 
     @Override

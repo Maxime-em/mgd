@@ -1,47 +1,22 @@
 package org.mgd.guerres.puniques.coeur.dto;
 
-import org.mgd.jab.dto.Dto;
+import org.mgd.guerres.puniques.coeur.objet.Partie;
+import org.mgd.guerres.puniques.coeur.persistence.PartieJao;
+import org.mgd.jab.dto.ReferenceDto;
 
 import java.util.List;
 
-public class TypeUniteDto extends Dto {
-    private List<TypeRegionDto> praticables;
-    private String nom;
-    private String libelle;
-    private Integer maximum;
+public class TypeUniteDto extends TypeDto {
+    private List<ReferenceDto<PartieDto, Partie, PartieJao>> praticables;
     private Integer constitution;
     private Integer force;
 
-    public List<TypeRegionDto> getPraticables() {
+    public List<ReferenceDto<PartieDto, Partie, PartieJao>> getPraticables() {
         return praticables;
     }
 
-    public void setPraticables(List<TypeRegionDto> praticables) {
+    public void setPraticables(List<ReferenceDto<PartieDto, Partie, PartieJao>> praticables) {
         this.praticables = praticables;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getLibelle() {
-        return libelle;
-    }
-
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
-    }
-
-    public Integer getMaximum() {
-        return maximum;
-    }
-
-    public void setMaximum(Integer maximum) {
-        this.maximum = maximum;
     }
 
     public Integer getConstitution() {

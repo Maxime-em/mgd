@@ -1,6 +1,9 @@
 package org.mgd.guerres.puniques.coeur.dto;
 
+import org.mgd.guerres.puniques.coeur.objet.Partie;
+import org.mgd.guerres.puniques.coeur.persistence.PartieJao;
 import org.mgd.jab.dto.Dto;
+import org.mgd.jab.dto.ReferenceDto;
 
 import java.util.List;
 
@@ -12,7 +15,7 @@ public class CivilisationDto extends Dto {
     private List<ArmeeDto> armees;
     private String nom;
     private ReserveDto reserve;
-    private RegionDto capitale;
+    private ReferenceDto<PartieDto, Partie, PartieJao> capitale;
 
     public List<TypeUniteDto> getTypesUnites() {
         return typesUnites;
@@ -70,11 +73,11 @@ public class CivilisationDto extends Dto {
         this.reserve = reserve;
     }
 
-    public RegionDto getCapitale() {
+    public ReferenceDto<PartieDto, Partie, PartieJao> getCapitale() {
         return capitale;
     }
 
-    public void setCapitale(RegionDto capitale) {
+    public void setCapitale(ReferenceDto<PartieDto, Partie, PartieJao> capitale) {
         this.capitale = capitale;
     }
 }

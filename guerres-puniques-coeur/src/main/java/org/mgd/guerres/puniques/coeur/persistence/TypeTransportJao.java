@@ -1,6 +1,7 @@
 package org.mgd.guerres.puniques.coeur.persistence;
 
 import org.mgd.guerres.puniques.coeur.dto.TypeTransportDto;
+import org.mgd.guerres.puniques.coeur.objet.Partie;
 import org.mgd.guerres.puniques.coeur.objet.TypeTransport;
 import org.mgd.jab.persistence.Jao;
 import org.mgd.jab.persistence.exception.JaoExecutionException;
@@ -14,7 +15,7 @@ public class TypeTransportJao extends Jao<TypeTransportDto, TypeTransport> {
     @Override
     public TypeTransportDto dto(TypeTransport type) {
         TypeTransportDto typeTransportDto = new TypeTransportDto();
-        typeTransportDto.setPraticables(new TypeRegionJao().decharger(type.getPraticables()));
+        typeTransportDto.setPraticables(new TypeRegionJao().dechargerVersReferences(type.getPraticables(), Partie.class, PartieJao.class));
         typeTransportDto.setTexture(new Integer[]{type.ligne(), type.colonne()});
         typeTransportDto.setNom(type.getNom());
         typeTransportDto.setLibelle(type.getLibelle());
@@ -25,12 +26,13 @@ public class TypeTransportJao extends Jao<TypeTransportDto, TypeTransport> {
 
     @Override
     public void enrichir(TypeTransportDto dto, TypeTransport type) throws JaoExecutionException, JaoParseException {
-        type.getPraticables().addAll(new TypeRegionJao().charger(dto.getPraticables(), type));
         type.ligne(dto.getTexture()[0]);
         type.colonne(dto.getTexture()[1]);
         type.setNom(dto.getNom());
         type.setLibelle(dto.getLibelle());
         type.setMaximum(dto.getMaximum());
+
+        postChargement(type, objet -> objet.getPraticables().addAll(new TypeRegionJao().chargerParReferences(dto.getPraticables())));
     }
 
     @Override

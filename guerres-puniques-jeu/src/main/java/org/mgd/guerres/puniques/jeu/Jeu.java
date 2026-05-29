@@ -19,6 +19,7 @@ import java.text.MessageFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Jeu {
@@ -31,20 +32,20 @@ public class Jeu {
     private final Jabm jabm;
     private final Registre registre;
     private final LinkedList<ChangementPartie> changementsParties;
+    private final LinkedList<ChangementSelection> changementsSelection;
+    private final LinkedList<ChangementDeselection> changementsDeselection;
     private final LinkedList<ChangementSelectionCivilisation> changementsSelectionCivilisation;
     private final LinkedList<ChangementDesCivilisation> changementsDesCivilisation;
     private final LinkedList<ChangementDesActions> changementsDesActions;
-    private final LinkedList<ChangementDeploiementArmee> changementsDeploiementArmee;
-    private final LinkedList<ChangementDeplacementArmee> changementsDeplacementArmee;
-    private final LinkedList<ChangementSelectionArmee> changementsSelectionArmee;
-    private final LinkedList<ChangementDeselectionArmee> changementsDeselectionArmee;
-    private final LinkedList<ChangementAttaqueArmee> changementsAttaqueArmee;
+    private final LinkedList<ChangementDeploiement> changementsDeploiement;
+    private final LinkedList<ChangementDeplacement> changementsDeplacement;
+    private final LinkedList<ChangementAttaque> changementsAttaque;
     private final LinkedList<ChangementAttaqueCivilisation> changementsAttaqueCivilisation;
     private final LinkedList<ChangementFinTour> changementsFinTour;
     private final String[] aliass;
 
     private Partie partieEnCours;
-    private Armee armeeSelectionnee;
+    private Tangible<? extends Type> selection;
 
     public Jeu(Properties proprietes) throws JeuException {
         try {
@@ -52,14 +53,14 @@ public class Jeu {
             this.jabm = new JabmConnexion(proprietes).ouvrir().getInstance();
             this.registre = this.jabm.registre();
             this.changementsParties = new LinkedList<>();
+            this.changementsSelection = new LinkedList<>();
+            this.changementsDeselection = new LinkedList<>();
             this.changementsSelectionCivilisation = new LinkedList<>();
             this.changementsDesCivilisation = new LinkedList<>();
             this.changementsDesActions = new LinkedList<>();
-            this.changementsDeploiementArmee = new LinkedList<>();
-            this.changementsDeplacementArmee = new LinkedList<>();
-            this.changementsSelectionArmee = new LinkedList<>();
-            this.changementsDeselectionArmee = new LinkedList<>();
-            this.changementsAttaqueArmee = new LinkedList<>();
+            this.changementsDeploiement = new LinkedList<>();
+            this.changementsDeplacement = new LinkedList<>();
+            this.changementsAttaque = new LinkedList<>();
             this.changementsAttaqueCivilisation = new LinkedList<>();
             this.changementsFinTour = new LinkedList<>();
             this.aliass = obtenirCivilisations();
@@ -89,22 +90,31 @@ public class Jeu {
             registre.ajouterEnfant(informations);
             registre.sauvegarder();
 
-            List<TypeRegion> typeRegions = Arrays.stream(obtenirTypesRegions()).map(this::nouveauTypeRegion).filter(Optional::isPresent).map(Optional::get).toList();
-
-            partieEnCours = jabm.creerPartie(informations, typeRegions, taille);
+            partieEnCours = jabm.creerPartie(informations, taille);
             partieEnCours.setInformations(informations);
+
+            List<TypeRegion> typesRegion = Arrays.stream(obtenirTypesRegions())
+                    .map(this::nouveauTypeRegion)
+                    .filter(Optional::isPresent)
+                    .map(option -> {
+                        TypeRegion type = option.get();
+                        type.ajouterParent(partieEnCours);
+                        return type;
+                    })
+                    .toList();
+            partieEnCours.getMonde().getTypes().addAll(typesRegion);
 
             Map<String, Civilisation> civilisations = new HashMap<>();
             Arrays.stream(aliass).forEach(alias -> {
                 try {
                     List<TypeUnite> typesUnites = fluxTypes(alias, NOM_GROUPE_TYPES_UNITES)
-                            .map(type -> nouveauTypeUnite(alias, type, typeRegions))
-                            .filter(Optional::isPresent).
-                            map(Optional::get)
+                            .map(type -> nouveauTypeUnite(alias, type, typesRegion))
+                            .filter(Optional::isPresent)
+                            .map(Optional::get)
                             .toList();
 
                     List<TypeTransport> typesTransports = fluxTypes(alias, NOM_GROUPE_TYPES_TRANSPORTS)
-                            .map(type -> nouveauTypeTransport(alias, type, typeRegions))
+                            .map(type -> nouveauTypeTransport(alias, type, typesRegion))
                             .filter(Optional::isPresent)
                             .map(Optional::get)
                             .toList();
@@ -120,6 +130,15 @@ public class Jeu {
                             typesTransports,
                             typeArmees,
                             partieEnCours.getMonde().getRegion(obtenirIndexCapitaleCivilisation(alias)));
+
+                    List<Unite> unites = typesUnites.stream()
+                            .flatMap(type -> IntStream.range(0, type.getMaximum())
+                                    .mapToObj(_ -> nouvelleUnite(civilisation, type))
+                                    .filter(Optional::isPresent)
+                                    .map(Optional::get))
+                            .toList();
+                    civilisation.getReserve().getUnites().addAll(unites);
+
                     partieEnCours.getCivilisations().add(civilisation);
                     partieEnCours.ajouterEnfant(civilisation);
                     civilisations.put(obtenirProprieteCivilisation(alias, "code"), civilisation);
@@ -132,6 +151,7 @@ public class Jeu {
             parcourirRegionCarte("alignements", (Region region, String codes) -> {
                 try {
                     region.ajouterAlignementAmi(codes, civilisations);
+                    region.ajouterParent(partieEnCours);
                 } catch (JaoExecutionException | JaoParseException e) {
                     LOGGER.error("Impossible d'ajouter les alignements", e);
                 }
@@ -140,7 +160,7 @@ public class Jeu {
             jabm.persister(uuidFichier.toString(), partieEnCours);
 
             changementsParties.forEach(changement -> changement.traiter(partieEnCours));
-            armeeSelectionnee = null;
+            selection = null;
         } catch (IOException | JaoExecutionException | JaoParseException e) {
             LOGGER.error("Impossible de créer une nouvelle partie.", e);
         }
@@ -196,6 +216,17 @@ public class Jeu {
             return Optional.of(typeUnite);
         } catch (JaoExecutionException | JaoParseException e) {
             LOGGER.error("Impossible de construire le type d'unité {} de la civilisation {}.", type, alias, e);
+            return Optional.empty();
+        }
+    }
+
+    private Optional<Unite> nouvelleUnite(Civilisation civilisation, TypeUnite type) {
+        try {
+            Unite unite = jabm.creerUnite(civilisation, type);
+            partieEnCours.ajouterEnfant(unite);
+            return Optional.of(unite);
+        } catch (JaoExecutionException | JaoParseException e) {
+            LOGGER.error("Impossible de construire une unité de type {}.", type, e);
             return Optional.empty();
         }
     }
@@ -288,15 +319,29 @@ public class Jeu {
         changementsDesActions.forEach(changement -> changement.traiter(partieEnCours.getDesActions()));
     }
 
-    public void deployerArmee(Civilisation civilisation, TypeArmee type) {
+    public <T extends Type> void deployer(Civilisation civilisation, T type) {
         try {
-            if (civilisation.getArmees().stream().filter(armee -> armee.getType() == type).count() < type.getMaximum()) {
+            if (civilisation.getTangible(type).stream().filter(transport -> transport.getType() == type).count() < type.getMaximum()) {
                 Region region = civilisation.getCapitale();
                 if (region != null) {
-                    Armee armee = jabm.creerArmee(civilisation, type);
-                    region.getArmees().add(armee);
-                    civilisation.getArmees().add(armee);
-                    changementsDeploiementArmee.forEach(changement -> changement.traiter(civilisation, armee, region));
+                    switch (type) {
+                        case TypeArmee typeArmee -> {
+                            Armee armee = jabm.creerArmee(civilisation, typeArmee);
+                            armee.ajouterParent(partieEnCours);
+                            region.getArmees().add(armee);
+                            civilisation.getArmees().add(armee);
+                            changementsDeploiement.forEach(changement -> changement.traiter(civilisation, armee, region));
+                        }
+                        case TypeTransport typeTransport -> {
+                            Transport transport = jabm.creerTransport(civilisation, typeTransport);
+                            transport.ajouterParent(partieEnCours);
+                            region.getTransports().add(transport);
+                            civilisation.getTransports().add(transport);
+                            changementsDeploiement.forEach(changement -> changement.traiter(civilisation, transport, region));
+                        }
+                        default ->
+                                throw new IllegalStateException(MessageFormat.format("Le type {0} ne peut être déployé", type));
+                    }
                 }
             }
         } catch (JaoExecutionException | JaoParseException e) {
@@ -328,51 +373,70 @@ public class Jeu {
         changementsSelectionCivilisation.forEach(changement -> changement.traiter(civilisation));
     }
 
-    public void amorcer(Armee armee) {
-        Objects.requireNonNull(armee);
-        if (Objects.equals(armeeSelectionnee, armee)) {
-            armeeSelectionnee = null;
-            changementsDeselectionArmee.forEach(ChangementDeselectionArmee::traiter);
+    public <T extends Type> void amorcer(Tangible<T> objet) {
+        Objects.requireNonNull(objet);
+        if (Objects.equals(selection, objet)) {
+            selection = null;
+            changementsDeselection.forEach(ChangementDeselection::traiter);
         } else {
-            armeeSelectionnee = armee;
-            changementsSelectionArmee.forEach(changement -> changement.traiter(armee));
+            selection = objet;
+            changementsSelection.forEach(changement -> changement.traiter(objet));
         }
     }
 
     public void deselectionner() {
-        if (armeeSelectionnee != null) {
-            armeeSelectionnee = null;
-            changementsDeselectionArmee.forEach(ChangementDeselectionArmee::traiter);
+        if (selection != null) {
+            selection = null;
+            changementsDeselection.forEach(ChangementDeselection::traiter);
         }
     }
 
     public void deplacer(Integer ligne, Integer colonne) {
-        if (armeeSelectionnee != null) {
-            partieEnCours.getMonde()
-                    .fluxRegions()
-                    .filter(region -> region.getArmees().contains(armeeSelectionnee)
-                            && !(Objects.equals(region.ligne(), ligne) && Objects.equals(region.colonne(), colonne)))
-                    .findFirst()
-                    .ifPresent(region -> {
-                        region.getArmees().remove(armeeSelectionnee);
-                        Region cible = region(ligne, colonne);
-                        cible.getArmees().add(armeeSelectionnee);
-                        changementsDeplacementArmee.forEach(changement -> changement.traiter(armeeSelectionnee, cible));
-                    });
+        if (selection != null) {
+            switch (selection.getType()) {
+                case TypeArmee _ -> {
+                    Armee armee = (Armee) selection;
+                    partieEnCours.getMonde()
+                            .fluxRegions()
+                            .filter(region -> region.getArmees().contains(armee))
+                            .findFirst()
+                            .ifPresent(source -> {
+                                Region cible = region(ligne, colonne);
+                                source.getArmees().remove(armee);
+                                cible.getArmees().add(armee);
+                                changementsDeplacement.forEach(changement -> changement.traiter(selection, cible));
+                            });
+                }
+                case TypeTransport _ -> {
+                    Transport transport = (Transport) selection;
+                    partieEnCours.getMonde()
+                            .fluxRegions()
+                            .filter(region -> region.getTransports().contains(transport))
+                            .findFirst()
+                            .ifPresent(region -> {
+                                Region cible = region(ligne, colonne);
+                                region.getTransports().remove(transport);
+                                cible.getTransports().add(transport);
+                                changementsDeplacement.forEach(changement -> changement.traiter(selection, cible));
+                            });
+                }
+                default ->
+                        throw new IllegalStateException(MessageFormat.format("Le type {0} ne peut pas se déplacer", selection.getType()));
+            }
         }
     }
 
-    public void attaquer(Armee armee) {
-        Objects.requireNonNull(armee);
-        if (armeeSelectionnee != null && armeeSelectionnee != armee) {
-            changementsAttaqueArmee.forEach(changement -> changement.traiter(armeeSelectionnee, armee));
+    public <T extends Type> void attaquer(Tangible<T> cible) {
+        Objects.requireNonNull(cible);
+        if (selection != null && selection != cible) {
+            changementsAttaque.forEach(changement -> changement.traiter(selection, cible));
         }
     }
 
     public void attaquer(Civilisation civilisation) {
         Objects.requireNonNull(civilisation);
-        if (armeeSelectionnee != null) {
-            changementsAttaqueCivilisation.forEach(changement -> changement.traiter(armeeSelectionnee, civilisation));
+        if (selection != null) {
+            changementsAttaqueCivilisation.forEach(changement -> changement.traiter(selection, civilisation));
         }
     }
 
@@ -400,24 +464,24 @@ public class Jeu {
         changementsDesActions.add(changement);
     }
 
-    public void souscription(ChangementDeploiementArmee changement) {
-        changementsDeploiementArmee.add(changement);
+    public void souscription(ChangementDeploiement changement) {
+        changementsDeploiement.add(changement);
     }
 
-    public void souscription(ChangementDeplacementArmee changement) {
-        changementsDeplacementArmee.add(changement);
+    public void souscription(ChangementDeplacement changement) {
+        changementsDeplacement.add(changement);
     }
 
-    public void souscription(ChangementSelectionArmee changement) {
-        changementsSelectionArmee.add(changement);
+    public void souscription(ChangementSelection changement) {
+        changementsSelection.add(changement);
     }
 
-    public void souscription(ChangementAttaqueArmee changement) {
-        changementsAttaqueArmee.add(changement);
+    public void souscription(ChangementAttaque changement) {
+        changementsAttaque.add(changement);
     }
 
-    public void souscription(ChangementDeselectionArmee changement) {
-        changementsDeselectionArmee.add(changement);
+    public void souscription(ChangementDeselection changement) {
+        changementsDeselection.add(changement);
     }
 
     public void souscription(ChangementAttaqueCivilisation changement) {
@@ -432,7 +496,10 @@ public class Jeu {
         return partieEnCours.getMonde().getRegion(ligne, colonne);
     }
 
-    public List<Region> fluxRegionsOccuper() {
-        return partieEnCours.getMonde().fluxRegions().filter(region -> !region.getArmees().isEmpty()).toList();
+    public List<Region> regionsOccuper() {
+        return partieEnCours.getMonde()
+                .fluxRegions()
+                .filter(region -> !region.getArmees().isEmpty() || !region.getTransports().isEmpty())
+                .toList();
     }
 }

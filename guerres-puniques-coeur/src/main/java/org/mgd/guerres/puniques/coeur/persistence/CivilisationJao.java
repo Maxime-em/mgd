@@ -2,6 +2,7 @@ package org.mgd.guerres.puniques.coeur.persistence;
 
 import org.mgd.guerres.puniques.coeur.dto.CivilisationDto;
 import org.mgd.guerres.puniques.coeur.objet.Civilisation;
+import org.mgd.guerres.puniques.coeur.objet.Partie;
 import org.mgd.jab.persistence.Jao;
 import org.mgd.jab.persistence.exception.JaoExecutionException;
 import org.mgd.jab.persistence.exception.JaoParseException;
@@ -21,7 +22,7 @@ public class CivilisationJao extends Jao<CivilisationDto, Civilisation> {
         civilisationDto.setArmees(new ArmeeJao().decharger(civilisation.getArmees()));
         civilisationDto.setNom(civilisation.getNom());
         civilisationDto.setReserve(new ReserveJao().decharger(civilisation.getReserve()));
-        civilisationDto.setCapitale(new RegionJao().decharger(civilisation.getCapitale()));
+        civilisationDto.setCapitale(new RegionJao().dechargerVersReference(civilisation.getCapitale(), Partie.class, PartieJao.class));
 
         return civilisationDto;
     }
@@ -35,7 +36,8 @@ public class CivilisationJao extends Jao<CivilisationDto, Civilisation> {
         civilisation.getArmees().addAll(new ArmeeJao().charger(dto.getArmees(), civilisation));
         civilisation.setNom(dto.getNom());
         civilisation.setReserve(new ReserveJao().charger(dto.getReserve(), civilisation));
-        civilisation.setCapitale(new RegionJao().charger(dto.getCapitale(), civilisation));
+
+        postChargement(civilisation, objet -> objet.setCapitale(new RegionJao().chargerParReference(dto.getCapitale())));
     }
 
     @Override
