@@ -493,16 +493,6 @@ public class GuerresPuniquesApplication extends Application {
         ActionImagee<Civilisation> actionCivilisation = new ActionImagee<>(civilisation, 100, 100, false, obtenirImage(fenetre.contexteNvg(), identifiantImageCite(civilisation)));
         actionsCivilisations.ajouter(civilisation, actionCivilisation);
 
-        civilisation.getArmees().forEach(armee -> {
-            Action<CivilisationArmee> actionArmee = new ActionImagee<>(
-                    new CivilisationArmee(civilisation, armee),
-                    50,
-                    50,
-                    true,
-                    obtenirImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_ARMEES, armee.getType())));
-            actionsArmees.ajouter(armee, actionArmee);
-        });
-
         civilisation.getTypeArmees().forEach(type -> {
             Action<CivilisationTypeArmee> actionArmeeDeployer = new ActionImagee<>(
                     new CivilisationTypeArmee(civilisation, type),
