@@ -11,7 +11,7 @@ import org.mgd.lwjgl.affichage.tetehaute.Disposition.Alignement;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition.Dimensionnement;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition.Justification;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition.Orientation;
-import org.mgd.lwjgl.affichage.tetehaute.composant.Action;
+import org.mgd.lwjgl.affichage.tetehaute.composant.Entite;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Liste;
 import org.mgd.lwjgl.commun.Animateur;
 import org.mgd.lwjgl.commun.Identifiable;
@@ -23,18 +23,17 @@ import java.util.stream.Stream;
 
 import static org.lwjgl.nanovg.NanoVG.*;
 
-public class ListeActions<T> extends AffichageTeteHaute implements Animateur {
-    private final Liste<Action<T>> liste;
-    private final List<Identifiable> identifiables;
-    private boolean survole;
+public class Ephemere extends AffichageTeteHaute implements Animateur {
+    private final Liste liste;
+    private final List<Identifiable> entitesSurvolees;
     private boolean liaisonsSurvoles;
+    private boolean survole;
 
-    @SafeVarargs
-    public ListeActions(Fenetre parent, int espacement, int marge, Action<T>... actions) throws LwjglException {
+    public Ephemere(Fenetre parent, int espacement, int marge, Entite... entites) throws LwjglException {
         super(parent, false, false);
-        this.liste = new Liste<>(parent.contexteNvg(), new Disposition(Orientation.VERTICAL, Justification.DEBUT, Alignement.DEBUT, Dimensionnement.VARIABLE, espacement, marge, 0));
-        this.liste.actions().addAll(Arrays.asList(actions));
-        this.identifiables = new LinkedList<>();
+        this.liste = new Liste(parent.contexteNvg(), new Disposition(Orientation.VERTICAL, Justification.DEBUT, Alignement.DEBUT, Dimensionnement.VARIABLE, espacement, marge, 0));
+        this.liste.entites().addAll(Arrays.asList(entites));
+        this.entitesSurvolees = new LinkedList<>();
     }
 
     public void lier(Survolable liaison) {
@@ -48,27 +47,27 @@ public class ListeActions<T> extends AffichageTeteHaute implements Animateur {
 
     @Override
     public boolean survoler(Vision vision, EvenementSouris evenementSouris) {
-        identifiables.clear();
-        survole = false;
+        entitesSurvolees.clear();
         liaisonsSurvoles = false;
+        survole = false;
         if (visible) {
-            identifiables.addAll(liste.fluxActionsAffichables().filter(action -> action.survoler(vision, evenementSouris)).map(Identifiable.class::cast).toList());
-            survole = evenementSouris.inclus(liste.abscisse(), liste.ordonnee(), liste.largeur(), liste.hauteur());
+            entitesSurvolees.addAll(liste.fluxEntitesAffichables().filter(entite -> entite.survoler(vision, evenementSouris)).map(Identifiable.class::cast).toList());
             liaisonsSurvoles = liste.liaisons().stream().anyMatch(liaison -> liaison.visible() && liaison.survoler(vision, evenementSouris));
+            survole = evenementSouris.inclus(liste.abscisse(), liste.ordonnee(), liste.largeur(), liste.hauteur());
         }
         return survole;
     }
 
     @Override
     public void retirer(Vision vision, EvenementSouris evenementSouris) {
-        identifiables.clear();
+        entitesSurvolees.clear();
         visible = survole || liaisonsSurvoles;
     }
 
     @Override
     public Collection<Identifiable> amorcer(boolean droite) {
-        visible = identifiables.isEmpty();
-        return Stream.concat(identifiables.stream(), Stream.of(liste)).toList();
+        visible = entitesSurvolees.isEmpty();
+        return Stream.concat(entitesSurvolees.stream(), Stream.of(liste)).toList();
     }
 
     @Override
@@ -81,7 +80,7 @@ public class ListeActions<T> extends AffichageTeteHaute implements Animateur {
         }
     }
 
-    public ListeActions<T> placer(Projection projection, Homogeneite homogeneite, Forme forme) {
+    public Ephemere placer(Projection projection, Homogeneite homogeneite, Forme forme) {
         Matrice<Float> reduction = forme.projeterPlanEcran().reduireParLigne(ligne -> Collections.max(Arrays.asList(ligne)));
         Float[] homogene = homogeneite.matrice().multiplication(projection.matrice()).multiplication(reduction).colonne(0);
         liste.dimensionner(contexte);

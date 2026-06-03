@@ -20,6 +20,7 @@ import org.mgd.lwjgl.affichage.tetehaute.Informations;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Action;
 import org.mgd.lwjgl.affichage.tetehaute.composant.ActionImagee;
 import org.mgd.lwjgl.affichage.tetehaute.composant.ActionTextutelle;
+import org.mgd.lwjgl.affichage.tetehaute.composant.Entite;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
 import org.mgd.lwjgl.commun.Identifiable;
 import org.mgd.lwjgl.exception.LwjglException;
@@ -70,9 +71,9 @@ public class GuerresPuniquesApplication extends Application {
     private final Identificateur<Armee, Forme> jetonsArmees;
     private final Identificateur<Transport, Forme> jetonsTransports;
     private final Identificateur<Integer[], Forme> cases;
-    private final Map<Civilisation, BarreActions<String>> barresActionsCivilisations;
-    private final Map<Armee, ListeActions<Armee>> listesActionsArmees;
-    private final Map<Transport, ListeActions<Transport>> listesActionsTransports;
+    private final Map<Civilisation, Barre<String>> barresActionsCivilisations;
+    private final Map<Armee, Ephemere> listesActionsArmees;
+    private final Map<Transport, Ephemere> listesActionsTransports;
     private Action<Void> lancerDes;
     private Action<Void> finirTour;
     private Action<Void> nouvellePartie;
@@ -80,7 +81,7 @@ public class GuerresPuniquesApplication extends Application {
     private Action<Void> quitter;
     private Cadrillage cadrillage;
     private Menu menu;
-    private BarreActions<UUID> barreActionsGenerale;
+    private Barre<UUID> barreGenerale;
     private Informations informationsDesCivilisation;
     private Informations informationDesActions;
     private Partie partie;
@@ -148,15 +149,11 @@ public class GuerresPuniquesApplication extends Application {
         }
     }
 
-    private static Action<Void> creerInformations(NVGPolice police, Supplier<String> texte) {
+    private static Entite creerInformations(NVGPolice police, Supplier<String> texte) {
         return new ActionTextutelle<>(24f, police, BLANC, texte);
     }
 
-    public static <G, T> void formatterInformations(BarreActions<G> barreActions, Action<T> actionImagee, NVGPolice police, Supplier<String> texte) {
-        barreActions.ajouter(actionImagee.uuid(), new ActionTextutelle<>(24f, police, BLANC, texte));
-    }
-
-    private static Action<Void> creerValeurDes(NVGPolice police, Supplier<String> texte) {
+    private static Entite creerValeurDes(NVGPolice police, Supplier<String> texte) {
         return new ActionTextutelle<>(48f, police, BLANC, texte);
     }
 
@@ -178,19 +175,18 @@ public class GuerresPuniquesApplication extends Application {
 
     private void ajouterActions(Armee armee) throws LwjglException {
         Civilisation civilisation = armee.getOrigine();
-        BarreActions<String> barreActionsCivilisation = barresActionsCivilisations.get(civilisation);
+        Barre<String> barreCivilisation = barresActionsCivilisations.get(civilisation);
         NVGPolice police = obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT);
 
         Action<CivilisationArmee> actionArmee = new ActionImagee<>(
                 new CivilisationArmee(civilisation, armee),
                 50,
                 50,
-                true,
                 obtenirImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_ARMEES, armee.getType())));
         actionsArmees.ajouter(armee, actionArmee);
-        barreActionsCivilisation.ajouter(civilisation.getNom(), actionArmee);
-        formatterInformations(barreActionsCivilisation, actionArmee, police, () -> armee.getType().getNom());
-        formatterInformations(barreActionsCivilisation, actionArmee, police, () -> MessageFormat.format("Force : {0}", armee.getUnites().stream().mapToLong(unite -> unite.getType().getForce()).sum()));
+        barreCivilisation.ajouter(civilisation.getNom(), actionArmee);
+        barreCivilisation.informer(actionArmee.uuid(), creerInformations(police, () -> armee.getType().getNom()));
+        barreCivilisation.informer(actionArmee.uuid(), creerInformations(police, () -> MessageFormat.format("Force : {0}", armee.getUnites().stream().mapToLong(unite -> unite.getType().getForce()).sum())));
 
         Action<Civilisation> actionCivilisation = actionsCivilisations.identifiable(civilisation);
         civilisation.getTypesUnites().forEach(type -> {
@@ -198,15 +194,14 @@ public class GuerresPuniquesApplication extends Application {
                     new CivilisationArmeeTypeUnite(civilisation, armee, type),
                     100,
                     100,
-                    false,
                     obtenirImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_UNITES, type)));
             actionsArmeesAjouterUnite.ajouter(armee, type, actionArmeeAjouterUnite);
-            barreActionsGenerale.ajouter(actionArmee.uuid(), actionArmeeAjouterUnite);
-            formatterInformations(barreActionsGenerale, actionArmeeAjouterUnite, police, () -> MessageFormat.format("Ajouter l''unité {0}", type.getNom()));
-            formatterInformations(barreActionsGenerale, actionArmeeAjouterUnite, police, () -> MessageFormat.format("Constitution : {0}", type.getConstitution()));
-            formatterInformations(barreActionsGenerale, actionArmeeAjouterUnite, police, () -> MessageFormat.format("Force : {0}", type.getForce()));
+            barreGenerale.ajouter(actionArmee.uuid(), actionArmeeAjouterUnite);
+            barreGenerale.informer(actionArmeeAjouterUnite.uuid(), creerInformations(police, () -> MessageFormat.format("Ajouter l''unité {0}", type.getNom())));
+            barreGenerale.informer(actionArmeeAjouterUnite.uuid(), creerInformations(police, () -> MessageFormat.format("Constitution : {0}", type.getConstitution())));
+            barreGenerale.informer(actionArmeeAjouterUnite.uuid(), creerInformations(police, () -> MessageFormat.format("Force : {0}", type.getForce())));
 
-            formatterInformations(barreActionsCivilisation, actionArmee, police, () -> MessageFormat.format("{0}: {1}", type.getLibelle(), armee.getUnites().stream().filter(unite -> unite.getType() == type).count()));
+            barreCivilisation.informer(actionArmee.uuid(), creerInformations(police, () -> MessageFormat.format("{0}: {1}", type.getLibelle(), armee.getUnites().stream().filter(unite -> unite.getType() == type).count())));
 
             actionArmee.lier(actionArmeeAjouterUnite);
             actionCivilisation.lier(actionArmeeAjouterUnite);
@@ -215,31 +210,30 @@ public class GuerresPuniquesApplication extends Application {
         Action<Armee> actionAttaqueArmee = new ActionTextutelle<>(armee, 24f, obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), BLANC, () -> "Attaquer");
         actionsArmeesAttaquer.ajouter(armee, actionAttaqueArmee);
 
-        listesActionsArmees.put(armee, new ListeActions<>(fenetre, 10, 10, actionAttaqueArmee));
+        listesActionsArmees.put(armee, new Ephemere(fenetre, 10, 10, actionAttaqueArmee));
     }
 
     private void ajouterActions(Transport transport) throws LwjglException {
         Civilisation civilisation = transport.getOrigine();
-        BarreActions<String> barreActionsCivilisation = barresActionsCivilisations.get(civilisation);
+        Barre<String> barreCivilisation = barresActionsCivilisations.get(civilisation);
         NVGPolice police = obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT);
 
         Action<CivilisationTransport> actionTransport = new ActionImagee<>(
                 new CivilisationTransport(civilisation, transport),
                 50,
                 50,
-                true,
                 obtenirImage(fenetre.contexteNvg(), identifiantImageType(civilisation, Jeu.NOM_GROUPE_TYPES_TRANSPORTS, transport.getType())));
         actionsTransports.ajouter(transport, actionTransport);
-        barreActionsCivilisation.ajouter(civilisation.getNom(), actionTransport);
-        formatterInformations(barreActionsCivilisation, actionTransport, police, () -> transport.getType().getNom());
+        barreCivilisation.ajouter(civilisation.getNom(), actionTransport);
+        barreCivilisation.informer(actionTransport.uuid(), creerInformations(police, () -> transport.getType().getNom()));
 
         Action<Transport> actionAttaqueTransport = new ActionTextutelle<>(transport, 24f, obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), BLANC, () -> "Attaquer");
         actionsTransportsAttaquer.ajouter(transport, actionAttaqueTransport);
 
-        listesActionsTransports.put(transport, new ListeActions<>(fenetre, 10, 10, actionAttaqueTransport));
+        listesActionsTransports.put(transport, new Ephemere(fenetre, 10, 10, actionAttaqueTransport));
     }
 
-    private Action<UUID> actionSauvegarde(UUID uuidFichier, String nom, NVGPolice police) {
+    private Entite actionSauvegarde(UUID uuidFichier, String nom, NVGPolice police) {
         Action<UUID> action = new ActionTextutelle<>(uuidFichier, 48f, police, BLANC, () -> nom);
         actionsPartiesCharger.ajouter(uuidFichier, action);
         return action;
@@ -264,8 +258,8 @@ public class GuerresPuniquesApplication extends Application {
     }
 
     private void construireJeu() {
-        lancerDes = new ActionImagee<>(100, 100, true, obtenirImage(fenetre.contexteNvg(), IMAGE_LANCER_DEX));
-        finirTour = new ActionImagee<>(100, 100, true, obtenirImage(fenetre.contexteNvg(), IMAGE_FINIR_LE_TOUR));
+        lancerDes = new ActionImagee<>(100, 100, obtenirImage(fenetre.contexteNvg(), IMAGE_LANCER_DEX));
+        finirTour = new ActionImagee<>(100, 100, obtenirImage(fenetre.contexteNvg(), IMAGE_FINIR_LE_TOUR));
 
         jeu.souscription((ChangementPartie) nouvelle -> {
             try {
@@ -275,8 +269,8 @@ public class GuerresPuniquesApplication extends Application {
                 construireInterfaceTeteHaute();
                 construirePlateauJeu();
                 menu.premierePage();
-                barreActionsGenerale.afficher(fenetre.uuid());
-                barresActionsCivilisations.forEach((civilisation, barreActions) -> barreActions.afficher(civilisation.getNom()));
+                barreGenerale.afficher(fenetre.uuid());
+                barresActionsCivilisations.forEach((civilisation, barre) -> barre.afficher(civilisation.getNom()));
                 fenetre.apparaitre();
             } catch (LwjglException e) {
                 LOGGER.error("Impossible de construire le jeu", e);
@@ -284,9 +278,9 @@ public class GuerresPuniquesApplication extends Application {
         });
         jeu.souscription((ChangementSelectionCivilisation) civilisation -> {
             Action<Civilisation> action = actionsCivilisations.identifiable(civilisation);
-            barreActionsGenerale.desactiverActions();
-            barreActionsGenerale.afficher(action.uuid());
-            barresActionsCivilisations.values().forEach(BarreActions::desactiverActions);
+            barreGenerale.desactiverEntites();
+            barreGenerale.afficher(action.uuid());
+            barresActionsCivilisations.values().forEach(Barre::desactiverEntites);
             cadrillage.desactiverJetons();
         });
         jeu.souscription((ChangementDesCivilisation) _ -> informationsDesCivilisation.afficher());
@@ -295,9 +289,9 @@ public class GuerresPuniquesApplication extends Application {
         jeu.souscription((ChangementDeplacement) this::deplacer);
         jeu.souscription((ChangementSelection) this::selectionner);
         jeu.souscription((ChangementDeselection) () -> {
-            barreActionsGenerale.desactiverActions();
-            barreActionsGenerale.afficher(fenetre.uuid());
-            barresActionsCivilisations.values().forEach(BarreActions::desactiverActions);
+            barreGenerale.desactiverEntites();
+            barreGenerale.afficher(fenetre.uuid());
+            barresActionsCivilisations.values().forEach(Barre::desactiverEntites);
             cadrillage.desactiverJetons();
         });
         jeu.souscription((ChangementAttaque) this::attaquer);
@@ -400,9 +394,9 @@ public class GuerresPuniquesApplication extends Application {
 
     private <T extends Type> void selectionner(Tangible<T> objet) {
         Action<?> action = obtenirIdentifiable(objet);
-        barreActionsGenerale.desactiverActions();
-        barreActionsGenerale.afficher(action.uuid());
-        barresActionsCivilisations.values().forEach(BarreActions::desactiverActions);
+        barreGenerale.desactiverEntites();
+        barreGenerale.afficher(action.uuid());
+        barresActionsCivilisations.values().forEach(Barre::desactiverEntites);
         cadrillage.desactiverJetons();
         Forme forme = obtenirJeton(objet);
         if (forme != null) {
@@ -461,7 +455,7 @@ public class GuerresPuniquesApplication extends Application {
     }
 
     private void construireBarreActions() throws LwjglException {
-        barreActionsGenerale = new BarreActions<>(fenetre,
+        barreGenerale = new Barre<>(fenetre,
                 new Disposition(Orientation.HORIZONTAL,
                         Justification.DEBUT,
                         Alignement.DEBUT,
@@ -476,7 +470,7 @@ public class GuerresPuniquesApplication extends Application {
     }
 
     private void construireBarreActions(Civilisation civilisation, int ordre) throws LwjglException {
-        BarreActions<String> barreActionsCivilisation = new BarreActions<>(fenetre,
+        Barre<String> barreCivilisation = new Barre<>(fenetre,
                 new Disposition(Orientation.VERTICAL,
                         Justification.DEBUT,
                         Alignement.CENTRAL,
@@ -488,9 +482,9 @@ public class GuerresPuniquesApplication extends Application {
                 ordre == 0 ? 10 : fenetre.largeur() - 110,
                 10,
                 7);
-        barresActionsCivilisations.put(civilisation, barreActionsCivilisation);
+        barresActionsCivilisations.put(civilisation, barreCivilisation);
 
-        ActionImagee<Civilisation> actionCivilisation = new ActionImagee<>(civilisation, 100, 100, false, obtenirImage(fenetre.contexteNvg(), identifiantImageCite(civilisation)));
+        ActionImagee<Civilisation> actionCivilisation = new ActionImagee<>(civilisation, 100, 100, obtenirImage(fenetre.contexteNvg(), identifiantImageCite(civilisation)));
         actionsCivilisations.ajouter(civilisation, actionCivilisation);
 
         civilisation.getTypeArmees().forEach(type -> {
@@ -498,7 +492,6 @@ public class GuerresPuniquesApplication extends Application {
                     new CivilisationTypeArmee(civilisation, type),
                     100,
                     100,
-                    false,
                     obtenirImage(fenetre.contexteNvg(), identifiantImageDeploiementArmee(civilisation)));
             actionsArmeesDeployer.ajouter(type, actionArmeeDeployer);
         });
@@ -508,40 +501,39 @@ public class GuerresPuniquesApplication extends Application {
                     new CivilisationTypeTransport(civilisation, type),
                     100,
                     100,
-                    false,
                     obtenirImage(fenetre.contexteNvg(), identifiantImageDeploiementTransport(civilisation)));
             actionsTransportDeployer.ajouter(type, actionTransportDeployer);
         });
     }
 
     private void configurerBarresActions() {
-        barreActionsGenerale.ajouter(fenetre.uuid(), lancerDes, finirTour);
+        barreGenerale.ajouter(fenetre.uuid(), lancerDes, finirTour);
 
         NVGPolice police = obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT);
         partie.getCivilisations().forEach(civilisation -> {
-            BarreActions<String> barreActionsCivilisation = barresActionsCivilisations.get(civilisation);
+            Barre<String> barreCivilisation = barresActionsCivilisations.get(civilisation);
             Action<Civilisation> actionCivilisation = actionsCivilisations.identifiable(civilisation);
-            barreActionsCivilisation.ajouter(actionCivilisation);
-            barreActionsCivilisation.ajouter(actionCivilisation.uuid(), creerInformations(police, civilisation::getNom));
-            barreActionsCivilisation.ajouter(actionCivilisation.uuid(), informationType(police, civilisation.getTypesUnites(), civilisation.getReserve().getUnites()));
-            barreActionsCivilisation.ajouter(actionCivilisation.uuid(), informationType(police, civilisation.getTypesTransports(), civilisation.getTransports()));
-            barreActionsCivilisation.ajouter(civilisation.getNom());
+            barreCivilisation.ajouter(actionCivilisation);
+            barreCivilisation.informer(actionCivilisation.uuid(), creerInformations(police, civilisation::getNom));
+            barreCivilisation.informer(actionCivilisation.uuid(), informationType(police, civilisation.getTypesUnites(), civilisation.getReserve().getUnites()));
+            barreCivilisation.informer(actionCivilisation.uuid(), informationType(police, civilisation.getTypesTransports(), civilisation.getTransports()));
+            barreCivilisation.ajouter(civilisation.getNom());
 
             civilisation.getTypeArmees().forEach(type -> {
                 Action<CivilisationTypeArmee> actionArmeeDeployer = actionsArmeesDeployer.identifiable(type);
-                barreActionsGenerale.ajouter(actionCivilisation.uuid(), actionArmeeDeployer);
-                barreActionsGenerale.ajouter(actionArmeeDeployer.uuid(), creerInformations(police, () -> "Deployer une nouvelle armée"));
+                barreGenerale.ajouter(actionCivilisation.uuid(), actionArmeeDeployer);
+                barreGenerale.informer(actionArmeeDeployer.uuid(), creerInformations(police, () -> "Deployer une nouvelle armée"));
             });
 
             civilisation.getTypesTransports().forEach(type -> {
                 Action<CivilisationTypeTransport> actionTransportDeployer = actionsTransportDeployer.identifiable(type);
-                barreActionsGenerale.ajouter(actionCivilisation.uuid(), actionTransportDeployer);
-                barreActionsGenerale.ajouter(actionTransportDeployer.uuid(), creerInformations(police, () -> "Deployer un nouveau transport"));
+                barreGenerale.ajouter(actionCivilisation.uuid(), actionTransportDeployer);
+                barreGenerale.informer(actionTransportDeployer.uuid(), creerInformations(police, () -> "Deployer un nouveau transport"));
             });
         });
     }
 
-    private <T extends Type, O extends Tangible<T>> Action<Void> informationType(NVGPolice police, Collection<T> types, Collection<O> objets) {
+    private <T extends Type, O extends Tangible<T>> Entite informationType(NVGPolice police, Collection<T> types, Collection<O> objets) {
         return creerInformations(police, () -> types.stream().map(type -> MessageFormat.format("{0} ({1}/{2})",
                         type.getLibelle(),
                         objets.stream().filter(objet -> objet.getType() == type).count(),

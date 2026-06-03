@@ -17,6 +17,7 @@ public abstract class Entite implements Survolable {
     protected final List<Survolable> liaisons;
     protected final Dimension dimension;
     protected boolean visible;
+    protected boolean active;
 
     protected Entite() {
         this.uuid = UUID.randomUUID();
@@ -93,6 +94,18 @@ public abstract class Entite implements Survolable {
 
     public int hauteur() {
         return dimension.hauteur();
+    }
+
+    public boolean active() {
+        return active;
+    }
+
+    public void activer() {
+        this.active = true;
+    }
+
+    public void desactiver() {
+        this.active = false;
     }
 
     @Override

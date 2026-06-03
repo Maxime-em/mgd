@@ -8,13 +8,13 @@ import static org.lwjgl.nanovg.NanoVG.*;
 public class ActionImagee<T> extends Action<T> {
     private final NVGImage image;
 
-    public ActionImagee(T objet, int largeur, int hauteur, boolean anime, NVGImage image) {
-        super(objet, largeur, hauteur, anime);
+    public ActionImagee(T objet, int largeur, int hauteur, NVGImage image) {
+        super(objet, largeur, hauteur);
         this.image = image;
     }
 
-    public ActionImagee(int largeur, int hauteur, boolean anime, NVGImage image) {
-        this(null, largeur, hauteur, anime, image);
+    public ActionImagee(int largeur, int hauteur, NVGImage image) {
+        this(null, largeur, hauteur, image);
     }
 
     @Override

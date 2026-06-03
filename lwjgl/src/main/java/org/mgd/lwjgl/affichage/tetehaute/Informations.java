@@ -4,7 +4,7 @@ import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Fenetre.EvenementAmorcages;
 import org.mgd.lwjgl.Fenetre.EvenementSouris;
 import org.mgd.lwjgl.Vision;
-import org.mgd.lwjgl.affichage.tetehaute.composant.Action;
+import org.mgd.lwjgl.affichage.tetehaute.composant.Entite;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Fond;
 import org.mgd.lwjgl.exception.LwjglException;
 
@@ -16,7 +16,7 @@ public class Informations extends AffichageTeteHaute {
     private final int largeur;
     private final int hauteur;
     private final Fond fond;
-    private Action<Void> actionTextutelle;
+    private Entite entite;
 
     public Informations(Fenetre parent, int abcsisse, int ordonnee, int largeur, int hauteur) throws LwjglException {
         super(parent, false, true);
@@ -28,26 +28,24 @@ public class Informations extends AffichageTeteHaute {
         this.fond.placer(abcsisse, ordonnee);
     }
 
-    public void ajouter(Action<Void> actionTextutelle) {
-        this.actionTextutelle = actionTextutelle;
+    public void ajouter(Entite entite) {
+        this.entite = entite;
     }
 
     public void afficher() {
-        if (actionTextutelle != null) {
-            actionTextutelle.dimensionner(contexte);
-            actionTextutelle.afficher();
-            int largeurAction = actionTextutelle.largeur();
-            int hauteurAction = actionTextutelle.hauteur();
-            actionTextutelle.placer(abcsisse + Math.max(largeur - largeurAction, 0) / 2, ordonnee + Math.max(hauteur - hauteurAction, 0) / 2);
+        if (entite != null) {
+            entite.dimensionner(contexte);
+            entite.afficher();
+            entite.placer(abcsisse + Math.max(largeur - entite.largeur(), 0) / 2, ordonnee + Math.max(hauteur - entite.hauteur(), 0) / 2);
         }
     }
 
     @Override
     protected void dessiner() {
-        if (actionTextutelle != null) {
+        if (entite != null) {
             nvgTextAlign(contexte, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
             fond.colorier(contexte, EMERAUDE);
-            actionTextutelle.dessiner(contexte);
+            entite.dessiner(contexte);
         }
     }
 

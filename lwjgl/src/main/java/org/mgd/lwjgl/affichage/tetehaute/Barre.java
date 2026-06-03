@@ -7,7 +7,7 @@ import org.mgd.lwjgl.affichage.tetehaute.Disposition.Alignement;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition.Dimensionnement;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition.Justification;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition.Orientation;
-import org.mgd.lwjgl.affichage.tetehaute.composant.Action;
+import org.mgd.lwjgl.affichage.tetehaute.composant.Entite;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Liste;
 import org.mgd.lwjgl.commun.Animateur;
 import org.mgd.lwjgl.commun.Identifiable;
@@ -17,7 +17,7 @@ import java.util.*;
 
 import static org.lwjgl.nanovg.NanoVG.*;
 
-public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
+public class Barre<G> extends AffichageTeteHaute implements Animateur {
     private static final int MARGE_INFORMATIONS = 5;
     private static final int MARGE_TEXTES = 5;
 
@@ -26,19 +26,14 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
     private final int abcisses;
     private final int ordonnee;
     private final int taille;
-    private final List<Action<?>> persistantes;
-    private final Map<G, Liste<Action<?>>> groupes;
-    private final Map<UUID, Liste<Action<Void>>> informations;
-    private final List<Action<?>> actionsSurvolees;
-    private final List<Action<?>> actionsLiees;
+    private final List<Entite> persistantes;
+    private final Map<G, Liste> groupes;
+    private final Map<UUID, Liste> informations;
+    private final List<Entite> entitesSurvolees;
+    private final List<Entite> entitesLiees;
     private G groupe;
 
-    public BarreActions(Fenetre parent,
-                        Disposition disposition,
-                        Position position,
-                        int abcisses,
-                        int ordonnee,
-                        int taille) throws LwjglException {
+    public Barre(Fenetre parent, Disposition disposition, Position position, int abcisses, int ordonnee, int taille) throws LwjglException {
         super(parent, false, true);
         this.disposition = disposition;
         this.position = position;
@@ -48,15 +43,15 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         this.persistantes = new LinkedList<>();
         this.groupes = new HashMap<>();
         this.informations = new HashMap<>();
-        this.actionsSurvolees = new LinkedList<>();
-        this.actionsLiees = new LinkedList<>();
+        this.entitesSurvolees = new LinkedList<>();
+        this.entitesLiees = new LinkedList<>();
     }
 
-    private Optional<Liste<Action<?>>> liste(boolean force) {
+    private Optional<Liste> liste(boolean force) {
         return Optional.ofNullable(groupes.get(groupe)).map(liste -> force || liste.visible() ? liste : null);
     }
 
-    private Optional<Liste<Action<Void>>> information(UUID uuid, boolean force) {
+    private Optional<Liste> information(UUID uuid, boolean force) {
         return Optional.ofNullable(informations.get(uuid)).map(liste -> force || liste.visible() ? liste : null);
     }
 
@@ -64,21 +59,21 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         liste(false).ifPresent(liste -> {
             liste.dimensionner(contexte);
             liste.placer(abcisses, ordonnee);
-            liste.fluxActionsAffichables().forEach(action -> information(action.uuid(), false).ifPresent(information -> {
+            liste.fluxEntitesAffichables().forEach(entite -> information(entite.uuid(), false).ifPresent(information -> {
                 information.dimensionner(contexte);
                 int epaisseur = switch (disposition.orientation()) {
                     case HORIZONTAL -> liste.hauteur();
                     case VERTICAL -> liste.largeur();
                 };
                 int abscisseInformation = switch (position) {
-                    case HAUT, BAS -> action.abscisse();
+                    case HAUT, BAS -> entite.abscisse();
                     case DROITE -> abcisses + epaisseur + MARGE_INFORMATIONS;
                     case GAUCHE -> abcisses - information.largeur() - MARGE_INFORMATIONS;
                 };
                 int ordonneeInformation = switch (position) {
                     case HAUT -> ordonnee - information.hauteur() - MARGE_INFORMATIONS;
                     case BAS -> ordonnee + epaisseur + MARGE_INFORMATIONS;
-                    case DROITE, GAUCHE -> action.ordonnee();
+                    case DROITE, GAUCHE -> entite.ordonnee();
                 };
 
                 information.placer(abscisseInformation, ordonneeInformation);
@@ -94,18 +89,18 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
     @Override
     public void maj(long accumulateur, Vision vision, EvenementSouris evenementSouris, Fenetre.EvenementAmorcages evenementAmorcagesCourant) throws LwjglException {
         Animateur.super.maj(accumulateur, vision, evenementSouris, evenementAmorcagesCourant);
-        actionsLiees.clear();
+        entitesLiees.clear();
         liste(false).ifPresent(liste ->
-                actionsLiees.addAll(liste
-                        .fluxActionsAffichables()
-                        .filter(action -> action.liaisons().stream().anyMatch(liaison -> liaison.visible() && liaison.survoler(vision, evenementSouris)))
+                entitesLiees.addAll(liste
+                        .fluxEntitesAffichables()
+                        .filter(entite -> entite.liaisons().stream().anyMatch(liaison -> liaison.visible() && liaison.survoler(vision, evenementSouris)))
                         .toList()));
     }
 
     @Override
     public boolean survoler(Vision vision, EvenementSouris evenementSouris) {
-        actionsSurvolees.clear();
-        actionsLiees.clear();
+        entitesSurvolees.clear();
+        entitesLiees.clear();
         if (visible) {
             liste(false).ifPresent(liste -> {
                 if (liste.suivante().survoler(vision, evenementSouris) && evenementSouris.selection()) {
@@ -115,25 +110,25 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
                     liste.pagination().precedent();
                     placer();
                 } else {
-                    actionsSurvolees.addAll(liste
-                            .fluxActionsAffichables()
-                            .filter(actionImagee -> actionImagee.survoler(vision, evenementSouris))
+                    entitesSurvolees.addAll(liste
+                            .fluxEntitesAffichables()
+                            .filter(entite -> entite.survoler(vision, evenementSouris))
                             .toList());
                 }
             });
         }
-        return !actionsSurvolees.isEmpty();
+        return !entitesSurvolees.isEmpty();
     }
 
     @Override
     public void retirer(Vision vision, EvenementSouris evenementSouris) {
-        actionsSurvolees.clear();
-        actionsLiees.clear();
+        entitesSurvolees.clear();
+        entitesLiees.clear();
     }
 
     @Override
     public Collection<Identifiable> amorcer(boolean droite) {
-        return actionsSurvolees.stream().map(Identifiable.class::cast).toList();
+        return entitesSurvolees.stream().map(Identifiable.class::cast).toList();
     }
 
     @Override
@@ -141,61 +136,44 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         nvgTextAlign(contexte, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
         liste(false).ifPresent(liste -> {
             liste.colorier(contexte, AUBURN);
-            liste.fluxActionsAffichables().forEach(action -> action.colorier(contexte, NOIR_A50));
+            liste.fluxEntitesAffichables().forEach(entite -> entite.colorier(contexte, NOIR_A50));
             liste.dessiner(contexte);
-            liste.fluxActionsAffichables()
-                    .filter(action -> action.active() && action.anime())
-                    .forEach(action -> action.colorier(contexte, INDIGO_A50));
+            liste.fluxEntitesAffichables()
+                    .filter(Entite::active)
+                    .forEach(entite -> entite.colorier(contexte, INDIGO_A50));
 
-            actionsSurvolees.forEach(action -> {
-                action.colorier(contexte, ROUGE_COQUELICOT_A50);
-                dessinerInfobulle(action);
+            entitesSurvolees.forEach(entite -> {
+                entite.colorier(contexte, ROUGE_COQUELICOT_A50);
+                dessinerInfobulle(entite);
             });
 
-            actionsLiees.forEach(this::dessinerInfobulle);
+            entitesLiees.forEach(this::dessinerInfobulle);
         });
     }
 
-    private void dessinerInfobulle(Action<?> action) {
-        information(action.uuid(), false).ifPresent(liste -> {
+    private void dessinerInfobulle(Entite entite) {
+        information(entite.uuid(), false).ifPresent(liste -> {
             liste.colorier(contexte, EMERAUDE);
             liste.dessiner(contexte);
         });
     }
 
-    public void ajouter(Action<?> action) {
-        persistantes.add(action);
+    public void ajouter(Entite entite) {
+        persistantes.add(entite);
     }
 
-    public void ajouter(G groupe) {
+    public final void ajouter(G groupe, Entite... entites) {
         groupes.computeIfAbsent(groupe, _ -> {
-            Liste<Action<?>> liste = new Liste<>(parent.contexteNvg(), disposition, taille);
+            Liste liste = new Liste(parent.contexteNvg(), disposition, taille);
             liste.persistantes().addAll(persistantes);
             return liste;
-        });
+        }).entites().addAll(List.of(entites));
     }
 
-    public void ajouter(G groupe, Action<?> action) {
-        groupes.computeIfAbsent(groupe, _ -> {
-            Liste<Action<?>> liste = new Liste<>(parent.contexteNvg(), disposition, taille);
-            liste.persistantes().addAll(persistantes);
-            return liste;
-        }).actions().add(action);
-    }
-
-    @SafeVarargs
-    public final <A extends Action<?>> void ajouter(G groupe, A... actions) {
-        groupes.computeIfAbsent(groupe, _ -> {
-            Liste<Action<?>> liste = new Liste<>(parent.contexteNvg(), disposition, taille);
-            liste.persistantes().addAll(persistantes);
-            return liste;
-        }).actions().addAll(List.of(actions));
-    }
-
-    public void ajouter(UUID uuid, Action<Void> nouveau) {
-        informations.computeIfAbsent(uuid, _ -> new Liste<>(parent.contexteNvg(), new Disposition(Orientation.VERTICAL, Justification.DEBUT, Alignement.DEBUT, Dimensionnement.VARIABLE, 0, MARGE_TEXTES, 0)))
-                .actions()
-                .add(nouveau);
+    public void informer(UUID uuid, Entite entite) {
+        informations.computeIfAbsent(uuid, _ -> new Liste(parent.contexteNvg(), new Disposition(Orientation.VERTICAL, Justification.DEBUT, Alignement.DEBUT, Dimensionnement.VARIABLE, 0, MARGE_TEXTES, 0)))
+                .entites()
+                .add(entite);
     }
 
     public void afficher(G groupe) {
@@ -206,36 +184,36 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         if (force || !Objects.equals(this.groupe, groupe)) {
             liste(true).ifPresent(liste -> {
                 liste.masquer();
-                liste.actions().forEach(action -> {
-                    action.masquer();
-                    information(action.uuid(), true).ifPresent(information -> {
+                liste.entites().forEach(entite -> {
+                    entite.masquer();
+                    information(entite.uuid(), true).ifPresent(information -> {
                         information.masquer();
-                        information.actions().forEach(Action::masquer);
+                        information.entites().forEach(Entite::masquer);
                     });
                 });
-                liste.persistantes().forEach(action -> {
-                    action.masquer();
-                    information(action.uuid(), true).ifPresent(information -> {
+                liste.persistantes().forEach(entite -> {
+                    entite.masquer();
+                    information(entite.uuid(), true).ifPresent(information -> {
                         information.masquer();
-                        information.actions().forEach(Action::masquer);
+                        information.entites().forEach(Entite::masquer);
                     });
                 });
             });
             this.groupe = groupe;
             liste(true).ifPresent(liste -> {
                 liste.afficher();
-                liste.actions().forEach(action -> {
-                    action.afficher();
-                    information(action.uuid(), true).ifPresent(information -> {
+                liste.entites().forEach(entite -> {
+                    entite.afficher();
+                    information(entite.uuid(), true).ifPresent(information -> {
                         information.afficher();
-                        information.actions().forEach(Action::afficher);
+                        information.entites().forEach(Entite::afficher);
                     });
                 });
-                liste.persistantes().forEach(action -> {
-                    action.afficher();
-                    information(action.uuid(), true).ifPresent(information -> {
+                liste.persistantes().forEach(entite -> {
+                    entite.afficher();
+                    information(entite.uuid(), true).ifPresent(information -> {
                         information.afficher();
-                        information.actions().forEach(Action::afficher);
+                        information.entites().forEach(Entite::afficher);
                     });
                 });
             });
@@ -243,7 +221,7 @@ public class BarreActions<G> extends AffichageTeteHaute implements Animateur {
         }
     }
 
-    public void desactiverActions() {
-        groupes.values().stream().flatMap(liste -> liste.actions().stream()).forEach(Action::desactiver);
+    public void desactiverEntites() {
+        groupes.values().stream().flatMap(liste -> liste.entites().stream()).forEach(Entite::desactiver);
     }
 }

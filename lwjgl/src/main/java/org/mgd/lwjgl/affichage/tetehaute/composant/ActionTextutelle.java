@@ -14,7 +14,7 @@ public class ActionTextutelle<T> extends Action<T> {
     private final Supplier<String> texte;
 
     public ActionTextutelle(T objet, float taille, NVGPolice police, NVGCouleur couleur, Supplier<String> texte) {
-        super(objet, false);
+        super(objet);
         this.visible = true;
         this.taille = taille;
         this.police = police;

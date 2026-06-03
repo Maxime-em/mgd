@@ -3,8 +3,8 @@ package org.mgd.lwjgl.affichage.tetehaute;
 import org.mgd.lwjgl.Fenetre;
 import org.mgd.lwjgl.Fenetre.EvenementAmorcages;
 import org.mgd.lwjgl.Vision;
-import org.mgd.lwjgl.affichage.tetehaute.composant.Action;
 import org.mgd.lwjgl.affichage.tetehaute.composant.ActionTextutelle;
+import org.mgd.lwjgl.affichage.tetehaute.composant.Entite;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
 import org.mgd.lwjgl.commun.Animateur;
 import org.mgd.lwjgl.commun.Identifiable;
@@ -23,24 +23,24 @@ public class Menu extends AffichageTeteHaute implements Animateur {
     private final UUID identifiantPremierePage;
     private final Map<UUID, Page> pages;
     private Page pageCourante;
-    private LinkedList<Action<?>> actionsSurvoles;
+    private List<Entite> entitesSurvoles;
 
-    public Menu(Fenetre parent, Collection<Action<?>> titres, Collection<Action<?>> textes) throws LwjglException {
+    public Menu(Fenetre parent, Collection<Entite> titres, Collection<Entite> textes) throws LwjglException {
         super(parent, true, true);
         this.identifiantPremierePage = UUID.randomUUID();
         this.pages = new HashMap<>();
-        this.actionsSurvoles = new LinkedList<>();
+        this.entitesSurvoles = new LinkedList<>();
         this.pageCourante = new Page(new ArrayList<>(titres), new ArrayList<>(textes));
         this.pages.put(this.identifiantPremierePage, pageCourante);
 
         placer(this.pageCourante);
     }
 
-    public <T, U> void ajouterPage(Action<T> declencheur, Collection<Action<U>> textes, NVGPolice police) {
+    public void ajouterPage(Entite declencheur, Collection<Entite> textes, NVGPolice police) {
         Page page = new Page(Collections.emptyList(), new ArrayList<>(textes));
         pages.put(declencheur.uuid(), page);
 
-        Action<Void> retour = new ActionTextutelle<>(24f, police, AffichageTeteHaute.BLANC, () -> "Retour");
+        Entite retour = new ActionTextutelle<>(24f, police, AffichageTeteHaute.BLANC, () -> "Retour");
         page.textes.add(retour);
         pages.put(retour.uuid(), pages.get(this.identifiantPremierePage));
 
@@ -64,12 +64,12 @@ public class Menu extends AffichageTeteHaute implements Animateur {
         AtomicReference<Double> ordonneeCourante = new AtomicReference<>(margeTitres);
         page.titres.forEach(titre -> titre.placer((parent.largeur() - titre.largeur()) / 2, ordonneeCourante.getAndAccumulate(titre.hauteur() + margeTitres, Double::sum).intValue()));
         ordonneeCourante.getAndAccumulate(interligne, Double::sum);
-        page.textes.forEach(action -> action.placer((parent.largeur() - action.largeur()) / 2, ordonneeCourante.getAndAccumulate(action.hauteur() + margeBoutons, Double::sum).intValue()));
+        page.textes.forEach(entite -> entite.placer((parent.largeur() - entite.largeur()) / 2, ordonneeCourante.getAndAccumulate(entite.hauteur() + margeBoutons, Double::sum).intValue()));
     }
 
-    private double hauteur(Action<?> action) {
-        action.dimensionner(contexte);
-        return action.hauteur();
+    private double hauteur(Entite entite) {
+        entite.dimensionner(contexte);
+        return entite.hauteur();
     }
 
     @Override
@@ -80,31 +80,31 @@ public class Menu extends AffichageTeteHaute implements Animateur {
     @Override
     public boolean survoler(Vision vision, Fenetre.EvenementSouris evenementSouris) {
         if (visible) {
-            actionsSurvoles = pageCourante.textes
+            entitesSurvoles = pageCourante.textes
                     .stream()
-                    .filter(action -> evenementSouris.inclus(action.abscisse(), action.ordonnee(), action.largeur(), action.hauteur()))
+                    .filter(entite -> evenementSouris.inclus(entite.abscisse(), entite.ordonnee(), entite.largeur(), entite.hauteur()))
                     .collect(Collectors.toCollection(LinkedList::new));
         } else {
-            actionsSurvoles.clear();
+            entitesSurvoles.clear();
         }
-        return !actionsSurvoles.isEmpty();
+        return !entitesSurvoles.isEmpty();
     }
 
     @Override
     public void retirer(Vision vision, Fenetre.EvenementSouris evenementSouris) {
-        actionsSurvoles.clear();
+        entitesSurvoles.clear();
     }
 
     @Override
     public Collection<Identifiable> amorcer(boolean droite) {
-        return actionsSurvoles.stream().map(Identifiable.class::cast).toList();
+        return entitesSurvoles.stream().map(Identifiable.class::cast).toList();
     }
 
     @Override
     protected void dessiner() {
         nvgTextAlign(contexte, NVG_ALIGN_LEFT | NVG_ALIGN_TOP);
-        pageCourante.titres.forEach(action -> action.dessiner(contexte));
-        pageCourante.textes.forEach(action -> action.dessiner(contexte));
+        pageCourante.titres.forEach(entite -> entite.dessiner(contexte));
+        pageCourante.textes.forEach(entite -> entite.dessiner(contexte));
     }
 
     @Override
@@ -116,6 +116,6 @@ public class Menu extends AffichageTeteHaute implements Animateur {
                 .forEach(amorcage -> pageCourante = pages.get(amorcage.uuid()));
     }
 
-    private record Page(List<Action<?>> titres, List<Action<?>> textes) {
+    private record Page(List<Entite> titres, List<Entite> textes) {
     }
 }
