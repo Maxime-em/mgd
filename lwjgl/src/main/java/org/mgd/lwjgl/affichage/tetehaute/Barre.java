@@ -106,9 +106,11 @@ public class Barre<G> extends AffichageTeteHaute implements Animateur {
                 if (liste.suivante().survoler(vision, evenementSouris) && evenementSouris.selection()) {
                     liste.pagination().suivant();
                     placer();
+                    evenementSouris.comsommer();
                 } else if (liste.precedente().survoler(vision, evenementSouris) && evenementSouris.selection()) {
                     liste.pagination().precedent();
                     placer();
+                    evenementSouris.comsommer();
                 } else {
                     entitesSurvolees.addAll(liste
                             .fluxEntitesAffichables()
