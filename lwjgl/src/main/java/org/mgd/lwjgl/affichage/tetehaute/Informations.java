@@ -1,16 +1,20 @@
 package org.mgd.lwjgl.affichage.tetehaute;
 
 import org.mgd.lwjgl.Fenetre;
-import org.mgd.lwjgl.Fenetre.EvenementAmorcages;
 import org.mgd.lwjgl.Fenetre.EvenementSouris;
 import org.mgd.lwjgl.Vision;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Entite;
 import org.mgd.lwjgl.affichage.tetehaute.composant.Fond;
+import org.mgd.lwjgl.commun.Animateur;
+import org.mgd.lwjgl.commun.Identifiable;
 import org.mgd.lwjgl.exception.LwjglException;
+
+import java.util.Collection;
+import java.util.Collections;
 
 import static org.lwjgl.nanovg.NanoVG.*;
 
-public class Informations extends AffichageTeteHaute {
+public class Informations extends AffichageTeteHaute implements Animateur {
     private final int abcsisse;
     private final int ordonnee;
     private final int largeur;
@@ -50,12 +54,22 @@ public class Informations extends AffichageTeteHaute {
     }
 
     @Override
-    public void maj(long accumulateur, Vision vision, EvenementSouris evenementSouris, EvenementAmorcages evenementAmorcagesCourant) {
+    public boolean survoler(Vision vision, EvenementSouris evenementSouris) {
+        return entite != null && evenementSouris.inclus(abcsisse, ordonnee, largeur, hauteur);
+    }
+
+    @Override
+    public void retirer(Vision vision, EvenementSouris evenementSouris) {
         // Rien à faire
     }
 
     @Override
-    public boolean survoler(Vision vision, EvenementSouris evenementSouris) {
-        return false;
+    public Collection<Identifiable> amorcer(boolean droite) {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public Fenetre parent() {
+        return parent;
     }
 }
