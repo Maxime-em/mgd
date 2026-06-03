@@ -126,17 +126,17 @@ public class Liste extends Entite {
         if (pagination().total() == 1) {
             return Stream.of(persistantes.stream(), entites.stream().filter(Entite::visible)).flatMap(Function.identity());
         } else if (pagination.page() == 0) {
-            return Stream.of(persistantes.stream(), Stream.of(suivante), entites.stream().filter(Entite::visible).limit(pagination.taille() + 1L))
+            return Stream.of(persistantes.stream(), Stream.of(suivante), entites.stream().filter(Entite::visible).limit(pagination.taille()))
                     .flatMap(Function.identity());
         } else if (pagination().page() == pagination.total() - 1) {
             return Stream.of(persistantes.stream(),
-                            entites.stream().filter(Entite::visible).skip((long) pagination.page() * pagination.taille() + 1L).limit(pagination.taille() + 1L),
+                            entites.stream().filter(Entite::visible).skip((long) pagination.page() * pagination.taille()).limit(pagination.taille()),
                             Stream.of(precedente))
                     .flatMap(Function.identity());
         } else {
             return Stream.of(persistantes.stream(),
                             Stream.of(suivante),
-                            entites.stream().filter(Entite::visible).skip((long) pagination.page() * pagination.taille() + 1L).limit(pagination.taille()),
+                            entites.stream().filter(Entite::visible).skip((long) pagination.page() * pagination.taille()).limit(pagination.taille()),
                             Stream.of(precedente))
                     .flatMap(Function.identity());
         }

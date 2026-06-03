@@ -484,7 +484,7 @@ public class GuerresPuniquesApplication extends Application {
                 7);
         barresActionsCivilisations.put(civilisation, barreCivilisation);
 
-        ActionImagee<Civilisation> actionCivilisation = new ActionImagee<>(civilisation, 100, 100, obtenirImage(fenetre.contexteNvg(), identifiantImageCite(civilisation)));
+        Action<Civilisation> actionCivilisation = new ActionImagee<>(civilisation, 100, 100, obtenirImage(fenetre.contexteNvg(), identifiantImageCite(civilisation)));
         actionsCivilisations.ajouter(civilisation, actionCivilisation);
 
         civilisation.getTypeArmees().forEach(type -> {
