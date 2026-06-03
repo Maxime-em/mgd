@@ -22,7 +22,8 @@ public class Barre<G> extends AffichageTeteHaute implements Animateur {
     private static final int MARGE_TEXTES = 5;
 
     private final Disposition disposition;
-    private final Position position;
+    private final Disposition dispositionInfobulle;
+    private final Options options;
     private final int abcisses;
     private final int ordonnee;
     private final int taille;
@@ -33,10 +34,11 @@ public class Barre<G> extends AffichageTeteHaute implements Animateur {
     private final List<Entite> entitesLiees;
     private G groupe;
 
-    public Barre(Fenetre parent, Disposition disposition, Position position, int abcisses, int ordonnee, int taille) throws LwjglException {
+    public Barre(Fenetre parent, Disposition disposition, Options options, int abcisses, int ordonnee, int taille) throws LwjglException {
         super(parent, false, true);
         this.disposition = disposition;
-        this.position = position;
+        this.dispositionInfobulle = new Disposition(Orientation.VERTICAL, Justification.DEBUT, Alignement.DEBUT, Dimensionnement.VARIABLE, 0, MARGE_TEXTES, 0);
+        this.options = options;
         this.abcisses = abcisses;
         this.ordonnee = ordonnee;
         this.taille = taille;
@@ -65,16 +67,18 @@ public class Barre<G> extends AffichageTeteHaute implements Animateur {
                     case HORIZONTAL -> liste.hauteur();
                     case VERTICAL -> liste.largeur();
                 };
-                int abscisseInformation = switch (position) {
+
+                int abscisseInformation = options.positionInfobulle().map(position -> switch (position) {
                     case HAUT, BAS -> entite.abscisse();
                     case DROITE -> abcisses + epaisseur + MARGE_INFORMATIONS;
                     case GAUCHE -> abcisses - information.largeur() - MARGE_INFORMATIONS;
-                };
-                int ordonneeInformation = switch (position) {
+                }).orElse(0);
+
+                int ordonneeInformation = options.positionInfobulle().map(position -> switch (position) {
                     case HAUT -> ordonnee - information.hauteur() - MARGE_INFORMATIONS;
                     case BAS -> ordonnee + epaisseur + MARGE_INFORMATIONS;
                     case DROITE, GAUCHE -> entite.ordonnee();
-                };
+                }).orElse(0);
 
                 information.placer(abscisseInformation, ordonneeInformation);
             }));
@@ -103,12 +107,16 @@ public class Barre<G> extends AffichageTeteHaute implements Animateur {
         entitesLiees.clear();
         if (visible) {
             liste(false).ifPresent(liste -> {
-                if (liste.suivante().survoler(vision, evenementSouris) && evenementSouris.selection()) {
+                if (options.suivante().map(suivante -> suivante.survoler(vision, evenementSouris) && evenementSouris.selection()).orElse(false)) {
                     liste.pagination().suivant();
                     placer();
                     evenementSouris.comsommer();
-                } else if (liste.precedente().survoler(vision, evenementSouris) && evenementSouris.selection()) {
+                } else if (options.precedente().map(precedente -> precedente.survoler(vision, evenementSouris) && evenementSouris.selection()).orElse(false)) {
                     liste.pagination().precedent();
+                    placer();
+                    evenementSouris.comsommer();
+                } else if (options.secondaire().map(secondaire -> secondaire.survoler(vision, evenementSouris) && evenementSouris.selection()).orElse(false)) {
+                    liste.panneauSecondaire();
                     placer();
                     evenementSouris.comsommer();
                 } else {
@@ -166,16 +174,14 @@ public class Barre<G> extends AffichageTeteHaute implements Animateur {
 
     public final void ajouter(G groupe, Entite... entites) {
         groupes.computeIfAbsent(groupe, _ -> {
-            Liste liste = new Liste(parent.contexteNvg(), disposition, taille);
+            Liste liste = new Liste(disposition, options, taille);
             liste.persistantes().addAll(persistantes);
             return liste;
-        }).entites().addAll(List.of(entites));
+        }).ajouter(entites);
     }
 
     public void informer(UUID uuid, Entite entite) {
-        informations.computeIfAbsent(uuid, _ -> new Liste(parent.contexteNvg(), new Disposition(Orientation.VERTICAL, Justification.DEBUT, Alignement.DEBUT, Dimensionnement.VARIABLE, 0, MARGE_TEXTES, 0)))
-                .entites()
-                .add(entite);
+        informations.computeIfAbsent(uuid, _ -> new Liste(dispositionInfobulle, new Options())).ajouter(entite);
     }
 
     public void afficher(G groupe) {
@@ -186,36 +192,36 @@ public class Barre<G> extends AffichageTeteHaute implements Animateur {
         if (force || !Objects.equals(this.groupe, groupe)) {
             liste(true).ifPresent(liste -> {
                 liste.masquer();
-                liste.entites().forEach(entite -> {
+                liste.fluxEntites().forEach(entite -> {
                     entite.masquer();
                     information(entite.uuid(), true).ifPresent(information -> {
                         information.masquer();
-                        information.entites().forEach(Entite::masquer);
+                        information.fluxEntites().forEach(Entite::masquer);
                     });
                 });
                 liste.persistantes().forEach(entite -> {
                     entite.masquer();
                     information(entite.uuid(), true).ifPresent(information -> {
                         information.masquer();
-                        information.entites().forEach(Entite::masquer);
+                        information.fluxEntites().forEach(Entite::masquer);
                     });
                 });
             });
             this.groupe = groupe;
             liste(true).ifPresent(liste -> {
                 liste.afficher();
-                liste.entites().forEach(entite -> {
+                liste.fluxEntites().forEach(entite -> {
                     entite.afficher();
                     information(entite.uuid(), true).ifPresent(information -> {
                         information.afficher();
-                        information.entites().forEach(Entite::afficher);
+                        information.fluxEntites().forEach(Entite::afficher);
                     });
                 });
                 liste.persistantes().forEach(entite -> {
                     entite.afficher();
                     information(entite.uuid(), true).ifPresent(information -> {
                         information.afficher();
-                        information.entites().forEach(Entite::afficher);
+                        information.fluxEntites().forEach(Entite::afficher);
                     });
                 });
             });
@@ -224,6 +230,6 @@ public class Barre<G> extends AffichageTeteHaute implements Animateur {
     }
 
     public void desactiverEntites() {
-        groupes.values().stream().flatMap(liste -> liste.entites().stream()).forEach(Entite::desactiver);
+        groupes.values().stream().flatMap(Liste::fluxEntites).forEach(Entite::desactiver);
     }
 }

@@ -207,7 +207,7 @@ public class GuerresPuniquesApplication extends Application {
             actionCivilisation.lier(actionArmeeAjouterUnite);
         });
 
-        Action<Armee> actionAttaqueArmee = new ActionTextutelle<>(armee, 24f, obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), BLANC, () -> "Attaquer");
+        Action<Armee> actionAttaqueArmee = new ActionTextutelle<>(armee, 24f, police, BLANC, () -> "Attaquer");
         actionsArmeesAttaquer.ajouter(armee, actionAttaqueArmee);
 
         listesActionsArmees.put(armee, new Ephemere(fenetre, 10, 10, actionAttaqueArmee));
@@ -227,7 +227,7 @@ public class GuerresPuniquesApplication extends Application {
         barreCivilisation.ajouter(civilisation.getNom(), actionTransport);
         barreCivilisation.informer(actionTransport.uuid(), creerInformations(police, () -> transport.getType().getNom()));
 
-        Action<Transport> actionAttaqueTransport = new ActionTextutelle<>(transport, 24f, obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), BLANC, () -> "Attaquer");
+        Action<Transport> actionAttaqueTransport = new ActionTextutelle<>(transport, 24f, police, BLANC, () -> "Attaquer");
         actionsTransportsAttaquer.ajouter(transport, actionAttaqueTransport);
 
         listesActionsTransports.put(transport, new Ephemere(fenetre, 10, 10, actionAttaqueTransport));
@@ -463,13 +463,26 @@ public class GuerresPuniquesApplication extends Application {
                         20,
                         0,
                         fenetre.largeur() - 240),
-                Position.HAUT,
+                new Options(nouveauBoutonSuivante(), nouveauBoutonPrecedente(), Position.HAUT),
                 120,
                 fenetre.hauteur() - 110,
                 10);
     }
 
+    private ActionTextutelle<Void> nouveauBoutonSuivante() {
+        return new ActionTextutelle<>(24f, obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), BLANC, () -> "Suivant");
+    }
+
+    private ActionTextutelle<Void> nouveauBoutonPrecedente() {
+        return new ActionTextutelle<>(24f, obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), BLANC, () -> "Précedent");
+    }
+
+    private ActionTextutelle<Void> nouveauBoutonSecondaire() {
+        return new ActionTextutelle<>(12f, obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), BLANC, () -> "Sous-entités");
+    }
+
     private void construireBarreActions(Civilisation civilisation, int ordre) throws LwjglException {
+        Position position = ordre == 0 ? Position.DROITE : Position.GAUCHE;
         Barre<String> barreCivilisation = new Barre<>(fenetre,
                 new Disposition(Orientation.VERTICAL,
                         Justification.DEBUT,
@@ -478,7 +491,7 @@ public class GuerresPuniquesApplication extends Application {
                         30,
                         0,
                         fenetre.hauteur() - 130),
-                ordre == 0 ? Position.DROITE : Position.GAUCHE,
+                new Options(nouveauBoutonSuivante(), nouveauBoutonPrecedente(), position, true, position, nouveauBoutonSecondaire()),
                 ordre == 0 ? 10 : fenetre.largeur() - 110,
                 10,
                 7);

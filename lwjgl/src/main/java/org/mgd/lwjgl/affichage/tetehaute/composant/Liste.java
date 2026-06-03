@@ -1,11 +1,10 @@
 package org.mgd.lwjgl.affichage.tetehaute.composant;
 
-import org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition;
+import org.mgd.lwjgl.affichage.tetehaute.Options;
 import org.mgd.lwjgl.affichage.tetehaute.Pagination;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -14,26 +13,29 @@ import static org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute.BLANC;
 
 public class Liste extends Entite {
     private final Disposition disposition;
+    private final Options options;
     private final List<Entite> persistantes;
     private final List<Entite> entites;
+    private final Map<UUID, List<Entite>> sousentitesParUuid;
     private final Pagination pagination;
-    private final Entite suivante;
-    private final Entite precedente;
+    private final Entite panneau;
     private int espacementDebut;
     private int espacementInterne;
+    private boolean ouvert;
 
-    public Liste(long contexte, Disposition disposition, int taille) {
+    public Liste(Disposition disposition, Options options, int taille) {
         super();
         this.disposition = disposition;
+        this.options = options;
         this.persistantes = new LinkedList<>();
         this.entites = new LinkedList<>();
+        this.sousentitesParUuid = new HashMap<>();
         this.pagination = new Pagination(taille, 0, 1);
-        this.suivante = new ActionTextutelle<Void>(24f, AffichageTeteHaute.obtenirPolice(contexte, "Calibri"), BLANC, () -> "Suivant");
-        this.precedente = new ActionTextutelle<Void>(24f, AffichageTeteHaute.obtenirPolice(contexte, "Calibri"), BLANC, () -> "Précedent");
+        this.panneau = new Fond(0, 0);
     }
 
-    public Liste(long contexte, Disposition disposition) {
-        this(contexte, disposition, Integer.MAX_VALUE);
+    public Liste(Disposition disposition, Options options) {
+        this(disposition, options, Integer.MAX_VALUE);
     }
 
     @Override
@@ -59,6 +61,39 @@ public class Liste extends Entite {
                     case FIN -> largeur() - entite.largeur();
                 };
                 entite.placer(abscisse + disposition.marge() + decalage, ordonnee + hauteurCourante.getAndAdd(espacementInterne + entite.hauteur()));
+            });
+        }
+
+        if (options.sousentites()) {
+            int abscissePanneau = switch (disposition.orientation()) {
+                case HORIZONTAL -> abscisse + persistantes.stream().mapToInt(Entite::largeur).sum();
+                case VERTICAL -> abscisse;
+            };
+
+            int ordonneePanneau = switch (disposition.orientation()) {
+                case HORIZONTAL -> ordonnee;
+                case VERTICAL -> ordonnee + persistantes.stream().mapToInt(Entite::hauteur).sum();
+            };
+
+            options.positionSousentites().ifPresent(position -> {
+                switch (position) {
+                    case HAUT -> {
+                        options.secondaire().ifPresent(secondaire -> secondaire.placer(abscisse + largeur() - secondaire.largeur(), ordonnee));
+                        panneau.placer(abscissePanneau, ordonneePanneau - hauteur());
+                    }
+                    case BAS -> {
+                        options.secondaire().ifPresent(secondaire -> secondaire.placer(abscisse + largeur() - secondaire.largeur(), ordonnee + hauteur() - secondaire.hauteur()));
+                        panneau.placer(abscissePanneau, ordonneePanneau + hauteur());
+                    }
+                    case GAUCHE -> {
+                        options.secondaire().ifPresent(secondaire -> secondaire.placer(abscisse, ordonnee + hauteur() - secondaire.hauteur()));
+                        panneau.placer(abscissePanneau - largeur(), ordonneePanneau);
+                    }
+                    case DROITE -> {
+                        options.secondaire().ifPresent(secondaire -> secondaire.placer(abscisse + largeur() - secondaire.largeur(), ordonnee + hauteur() - secondaire.hauteur()));
+                        panneau.placer(abscissePanneau + largeur(), ordonneePanneau);
+                    }
+                }
             });
         }
     }
@@ -113,52 +148,73 @@ public class Liste extends Entite {
             }
         }
 
-        this.suivante.dimensionner(contexte);
-        this.precedente.dessiner(contexte);
+        options.suivante().ifPresent(suivante -> suivante.dimensionner(contexte));
+        options.precedente().ifPresent(precedente -> precedente.dimensionner(contexte));
+
+        if (options.sousentites()) {
+            options.secondaire().ifPresent(secondaire -> secondaire.dimensionner(contexte));
+
+            switch (disposition.orientation()) {
+                case HORIZONTAL ->
+                        this.panneau.proportionner(largeur() - persistantes.stream().mapToInt(Entite::largeur).sum(), hauteur());
+                case VERTICAL ->
+                        this.panneau.proportionner(largeur(), hauteur() - persistantes.stream().mapToInt(Entite::hauteur).sum());
+            }
+        }
     }
 
     @Override
     public void dessiner(long contexte) {
         fluxEntitesAffichables().forEach(entite -> entite.dessiner(contexte));
+
+        if (options.sousentites()) {
+            options.secondaire().ifPresent(secondaire -> secondaire.dessiner(contexte));
+        }
+
+        if (ouvert) {
+            panneau.colorier(contexte, BLANC);
+            entites.stream()
+                    .filter(Entite::active)
+                    .findFirst()
+                    .map(entite -> sousentitesParUuid.get(entite.uuid))
+                    .ifPresent(sousentites -> sousentites.forEach(entite -> entite.dessiner(contexte)));
+        }
+    }
+
+    public void ajouter(Entite... entites) {
+        this.entites.addAll(Arrays.asList(entites));
+        Arrays.stream(entites).forEach(entite -> sousentitesParUuid.computeIfAbsent(entite.uuid, _ -> new LinkedList<>()));
+    }
+
+    public Stream<Entite> fluxEntites() {
+        return entites.stream();
     }
 
     public Stream<Entite> fluxEntitesAffichables() {
         if (pagination().total() == 1) {
-            return Stream.of(persistantes.stream(), entites.stream().filter(Entite::visible)).flatMap(Function.identity());
+            return Stream.of(persistantes.stream(), fluxEntitesNonPersistantes()).flatMap(Function.identity());
         } else if (pagination.page() == 0) {
-            return Stream.of(persistantes.stream(), Stream.of(suivante), entites.stream().filter(Entite::visible).limit(pagination.taille()))
-                    .flatMap(Function.identity());
+            return Stream.of(persistantes.stream(), options.suivante().stream(), fluxEntitesNonPersistantes()).flatMap(Function.identity());
         } else if (pagination().page() == pagination.total() - 1) {
-            return Stream.of(persistantes.stream(),
-                            entites.stream().filter(Entite::visible).skip((long) pagination.page() * pagination.taille()).limit(pagination.taille()),
-                            Stream.of(precedente))
-                    .flatMap(Function.identity());
+            return Stream.of(persistantes.stream(), fluxEntitesNonPersistantes(), options.precedente().stream()).flatMap(Function.identity());
         } else {
-            return Stream.of(persistantes.stream(),
-                            Stream.of(suivante),
-                            entites.stream().filter(Entite::visible).skip((long) pagination.page() * pagination.taille()).limit(pagination.taille()),
-                            Stream.of(precedente))
-                    .flatMap(Function.identity());
+            return Stream.of(persistantes.stream(), options.suivante().stream(), fluxEntitesNonPersistantes(), options.precedente().stream()).flatMap(Function.identity());
         }
+    }
+
+    private Stream<Entite> fluxEntitesNonPersistantes() {
+        return entites.stream().filter(Entite::visible).skip((long) pagination.page() * pagination.taille()).limit(pagination.taille());
+    }
+
+    public void panneauSecondaire() {
+        ouvert = !ouvert;
     }
 
     public List<Entite> persistantes() {
         return persistantes;
     }
 
-    public List<Entite> entites() {
-        return entites;
-    }
-
     public Pagination pagination() {
         return pagination;
-    }
-
-    public Entite suivante() {
-        return suivante;
-    }
-
-    public Entite precedente() {
-        return precedente;
     }
 }
