@@ -17,6 +17,7 @@ public class TransportJao extends Jao<TransportDto, Transport> {
         TransportDto transportDto = new TransportDto();
         transportDto.setType(new TypeTransportJao().dechargerVersReference(transport.getType(), Partie.class, PartieJao.class));
         transportDto.setOrigine(new CivilisationJao().dechargerVersReference(transport.getOrigine(), Partie.class, PartieJao.class));
+        transportDto.setArmees(new ArmeeJao().dechargerVersReferences(transport.getArmees(), Partie.class, PartieJao.class));
 
         return transportDto;
     }
@@ -26,11 +27,15 @@ public class TransportJao extends Jao<TransportDto, Transport> {
         postChargement(transport, objet -> {
             objet.setType(new TypeTransportJao().chargerParReference(dto.getType()));
             objet.setOrigine(new CivilisationJao().chargerParReference(dto.getOrigine()));
+            objet.getArmees().addAll(new ArmeeJao().chargerParReferences(dto.getArmees()));
         });
     }
 
     @Override
     protected void copier(Transport source, Transport cible) throws JaoExecutionException, JaoParseException {
         cible.setType(new TypeTransportJao().dupliquer(source.getType()));
+        cible.setOrigine(new CivilisationJao().dupliquer(source.getOrigine()));
+        cible.getArmees().clear();
+        cible.getArmees().addAll(new ArmeeJao().dupliquer(source.getArmees()));
     }
 }

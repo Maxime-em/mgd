@@ -11,7 +11,7 @@ import java.util.List;
 public class RegionDto extends Dto {
     private List<AlignementDto> alignements = new ArrayList<>();
     private List<ReferenceDto<PartieDto, Partie, PartieJao>> types = new ArrayList<>();
-    private List<ReferenceDto<PartieDto, Partie, PartieJao>> armee = new ArrayList<>();
+    private List<ReferenceDto<PartieDto, Partie, PartieJao>> armees = new ArrayList<>();
     private List<ReferenceDto<PartieDto, Partie, PartieJao>> transports = new ArrayList<>();
 
     public List<AlignementDto> getAlignements() {
@@ -30,12 +30,12 @@ public class RegionDto extends Dto {
         this.types = types;
     }
 
-    public List<ReferenceDto<PartieDto, Partie, PartieJao>> getArmee() {
-        return armee;
+    public List<ReferenceDto<PartieDto, Partie, PartieJao>> getArmees() {
+        return armees;
     }
 
-    public void setArmee(List<ReferenceDto<PartieDto, Partie, PartieJao>> armee) {
-        this.armee = armee;
+    public void setArmees(List<ReferenceDto<PartieDto, Partie, PartieJao>> armees) {
+        this.armees = armees;
     }
 
     public List<ReferenceDto<PartieDto, Partie, PartieJao>> getTransports() {

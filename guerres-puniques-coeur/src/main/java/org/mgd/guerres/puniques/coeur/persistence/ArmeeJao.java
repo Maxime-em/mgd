@@ -40,8 +40,6 @@ public class ArmeeJao extends Jao<ArmeeDto, Armee> {
         cible.setOrigine(new CivilisationJao().dupliquer(source.getOrigine()));
         cible.getUnites().clear();
         cible.getUnites().addAll(new UniteJao().dupliquer(source.getUnites()));
-        cible.getTransports().clear();
-        cible.getTransports().addAll(new TransportJao().dupliquer(source.getTransports()));
         cible.getDesDegats().clear();
         cible.getDesDegats().addAll(new DesJao().dupliquer(source.getDesDegats()));
     }

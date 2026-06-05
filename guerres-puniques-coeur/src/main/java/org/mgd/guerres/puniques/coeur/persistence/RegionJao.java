@@ -17,7 +17,7 @@ public class RegionJao extends Jao<RegionDto, Region> {
         RegionDto regionDto = new RegionDto();
         regionDto.setAlignements(new AlignementJao().decharger(region.getAlignements()));
         regionDto.setTypes(new TypeRegionJao().dechargerVersReferences(region.getTypes(), Partie.class, PartieJao.class));
-        regionDto.setArmee(new ArmeeJao().dechargerVersReferences(region.getArmees(), Partie.class, PartieJao.class));
+        regionDto.setArmees(new ArmeeJao().dechargerVersReferences(region.getArmees(), Partie.class, PartieJao.class));
         regionDto.setTransports(new TransportJao().dechargerVersReferences(region.getTransports(), Partie.class, PartieJao.class));
 
         return regionDto;
@@ -29,7 +29,7 @@ public class RegionJao extends Jao<RegionDto, Region> {
 
         postChargement(region, objet -> {
             objet.getTypes().addAll(new TypeRegionJao().chargerParReferences(dto.getTypes()));
-            objet.getArmees().addAll(new ArmeeJao().chargerParReferences(dto.getArmee()));
+            objet.getArmees().addAll(new ArmeeJao().chargerParReferences(dto.getArmees()));
             objet.getTransports().addAll(new TransportJao().chargerParReferences(dto.getTransports()));
         });
     }
