@@ -99,9 +99,9 @@ public class Cadrillage extends Element<String> {
     public Forme ajouterJeton(Integer ligneCase, Integer colonneCase, int ligneJeton, int colonneJeton) {
         Quadrilatere jeton = new Quadrilatere(this,
                 "jeton",
-                (ligneCase + 1f) * 0.25f + ligneCase * 0.75f,
-                (colonneCase + 1f) * 0.25f + colonneCase * 0.75f,
-                ligneCase,
+                (nombreLignes - ligneCase - 1f) + 0.25f,
+                colonneCase + 0.25f,
+                nombreLignes - ligneCase - 1f,
                 colonneCase,
                 0f,
                 new float[]{
@@ -110,6 +110,7 @@ public class Cadrillage extends Element<String> {
                         (float) (largeurCarte + colonneJeton * largeurJeton) / largeur, (float) ((ligneJeton + 1) * hauteurJeton) / hauteur,
                         (float) (largeurCarte + (colonneJeton + 1) * largeurJeton) / largeur, (float) ((ligneJeton + 1) * hauteurJeton) / hauteur
                 });
+        jeton.apparaitre();
         String groupe = genererGroupeJetons(ligneCase, colonneCase);
         ajouter(groupe, jeton);
         placer(groupe, ligneCase, colonneCase);

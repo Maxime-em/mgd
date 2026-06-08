@@ -388,7 +388,6 @@ public class GuerresPuniquesApplication extends Application {
                 // Rien à faire
             }
         }
-        jeton.apparaitre();
     }
 
     private void embarquer(Armee armee, Transport transport) {
