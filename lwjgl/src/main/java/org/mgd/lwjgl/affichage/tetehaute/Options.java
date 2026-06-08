@@ -12,8 +12,8 @@ public final class Options {
     private final Entite suivante;
     private final Entite precedente;
     private final Position positionInfobulle;
-    private final boolean sousentites;
-    private final Position positionSousentites;
+    private final boolean sousEntites;
+    private final Position positionSousEntites;
     private final Entite secondaire;
 
     /**
@@ -21,20 +21,20 @@ public final class Options {
      * @param precedente          Entité permettant de passer à la page précédente de la pagination.
      * @param positionInfobulle   Position par rapport à la barre des infobulles.
      * @param sousentites         Booléen indiquant s'il faut activer l'affichage des sous-entités.
-     * @param positionSousentites Position par rapport à la barre du panneau des sous-entités.
+     * @param positionSousEntites Position par rapport à la barre du panneau des sous-entités.
      * @param secondaire          Entité permettant de faire apparaître le panneau des sous-entités
      */
     public Options(Entite suivante,
                    Entite precedente,
                    Position positionInfobulle,
                    boolean sousentites,
-                   Position positionSousentites,
+                   Position positionSousEntites,
                    Entite secondaire) {
         this.suivante = suivante;
         this.precedente = precedente;
         this.positionInfobulle = positionInfobulle;
-        this.sousentites = sousentites;
-        this.positionSousentites = positionSousentites;
+        this.sousEntites = sousentites;
+        this.positionSousEntites = positionSousEntites;
         this.secondaire = secondaire;
     }
 
@@ -59,11 +59,11 @@ public final class Options {
     }
 
     public boolean sousentites() {
-        return sousentites;
+        return sousEntites;
     }
 
-    public Optional<Position> positionSousentites() {
-        return Optional.ofNullable(positionSousentites);
+    public Optional<Position> positionSousEntites() {
+        return Optional.ofNullable(positionSousEntites);
     }
 
     public Optional<Entite> secondaire() {

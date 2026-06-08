@@ -16,7 +16,7 @@ public class Liste extends Entite {
     private final Options options;
     private final List<Entite> persistantes;
     private final List<Entite> entites;
-    private final Map<UUID, List<Entite>> sousentitesParUuid;
+    private final Map<UUID, List<Entite>> sousEntitesParUuid;
     private final Pagination pagination;
     private final Entite panneau;
     private int espacementDebut;
@@ -29,7 +29,7 @@ public class Liste extends Entite {
         this.options = options;
         this.persistantes = new LinkedList<>();
         this.entites = new LinkedList<>();
-        this.sousentitesParUuid = new HashMap<>();
+        this.sousEntitesParUuid = new HashMap<>();
         this.pagination = new Pagination(taille, 0, 1);
         this.panneau = new Fond(0, 0);
     }
@@ -42,6 +42,14 @@ public class Liste extends Entite {
     public void placer(int abscisse, int ordonnee) {
         super.placer(abscisse, ordonnee);
 
+        placerEntites(abscisse, ordonnee);
+
+        if (options.sousentites()) {
+            placerSousEntites(abscisse, ordonnee);
+        }
+    }
+
+    private void placerEntites(int abscisse, int ordonnee) {
         if (disposition.orientation() == Disposition.Orientation.HORIZONTAL) {
             AtomicInteger largeurCourante = new AtomicInteger(espacementDebut);
             fluxEntitesAffichables().forEach(entite -> {
@@ -63,44 +71,53 @@ public class Liste extends Entite {
                 entite.placer(abscisse + disposition.marge() + decalage, ordonnee + hauteurCourante.getAndAdd(espacementInterne + entite.hauteur()));
             });
         }
+    }
 
-        if (options.sousentites()) {
-            int abscissePanneau = switch (disposition.orientation()) {
-                case HORIZONTAL -> abscisse + persistantes.stream().mapToInt(Entite::largeur).sum();
-                case VERTICAL -> abscisse;
-            };
+    private void placerSousEntites(int abscisse, int ordonnee) {
+        int abscissePanneau = switch (disposition.orientation()) {
+            case HORIZONTAL -> abscisse + persistantes.stream().mapToInt(Entite::largeur).sum();
+            case VERTICAL -> abscisse;
+        };
 
-            int ordonneePanneau = switch (disposition.orientation()) {
-                case HORIZONTAL -> ordonnee;
-                case VERTICAL -> ordonnee + persistantes.stream().mapToInt(Entite::hauteur).sum();
-            };
+        int ordonneePanneau = switch (disposition.orientation()) {
+            case HORIZONTAL -> ordonnee;
+            case VERTICAL -> ordonnee + persistantes.stream().mapToInt(Entite::hauteur).sum();
+        };
 
-            options.positionSousentites().ifPresent(position -> {
-                switch (position) {
-                    case HAUT -> {
-                        options.secondaire().ifPresent(secondaire -> secondaire.placer(abscisse + largeur() - secondaire.largeur(), ordonnee));
-                        panneau.placer(abscissePanneau, ordonneePanneau - hauteur());
-                    }
-                    case BAS -> {
-                        options.secondaire().ifPresent(secondaire -> secondaire.placer(abscisse + largeur() - secondaire.largeur(), ordonnee + hauteur() - secondaire.hauteur()));
-                        panneau.placer(abscissePanneau, ordonneePanneau + hauteur());
-                    }
-                    case GAUCHE -> {
-                        options.secondaire().ifPresent(secondaire -> secondaire.placer(abscisse, ordonnee + hauteur() - secondaire.hauteur()));
-                        panneau.placer(abscissePanneau - largeur(), ordonneePanneau);
-                    }
-                    case DROITE -> {
-                        options.secondaire().ifPresent(secondaire -> secondaire.placer(abscisse + largeur() - secondaire.largeur(), ordonnee + hauteur() - secondaire.hauteur()));
-                        panneau.placer(abscissePanneau + largeur(), ordonneePanneau);
-                    }
+        options.positionSousEntites().ifPresent(position -> {
+            switch (position) {
+                case HAUT -> {
+                    options.secondaire().ifPresent(secondaire -> secondaire.placer(abscisse + largeur() - secondaire.largeur(), ordonnee));
+                    panneau.placer(abscissePanneau, ordonneePanneau - hauteur());
                 }
-            });
-        }
+                case BAS -> {
+                    options.secondaire().ifPresent(secondaire -> secondaire.placer(abscisse + largeur() - secondaire.largeur(), ordonnee + hauteur() - secondaire.hauteur()));
+                    panneau.placer(abscissePanneau, ordonneePanneau + hauteur());
+                }
+                case GAUCHE -> {
+                    options.secondaire().ifPresent(secondaire -> secondaire.placer(abscisse, ordonnee + hauteur() - secondaire.hauteur()));
+                    panneau.placer(abscissePanneau - largeur(), ordonneePanneau);
+                }
+                case DROITE -> {
+                    options.secondaire().ifPresent(secondaire -> secondaire.placer(abscisse + largeur() - secondaire.largeur(), ordonnee + hauteur() - secondaire.hauteur()));
+                    panneau.placer(abscissePanneau + largeur(), ordonneePanneau);
+                }
+            }
+        });
     }
 
     @Override
     public void dimensionner(long contexte) {
         pagination.calculer(entites.stream().filter(Entite::visible).count());
+
+        dimensionnerEntites(contexte);
+
+        if (options.sousentites()) {
+            dimensionnerSousEntites(contexte);
+        }
+    }
+
+    private void dimensionnerEntites(long contexte) {
         int nombreEntites = Math.toIntExact(fluxEntitesAffichables().count());
         int longueurEntites = fluxEntitesAffichables().mapToInt(entite -> {
             entite.dimensionner(contexte);
@@ -147,20 +164,19 @@ public class Liste extends Entite {
                 }
             }
         }
+    }
 
-        options.suivante().ifPresent(suivante -> suivante.dimensionner(contexte));
-        options.precedente().ifPresent(precedente -> precedente.dimensionner(contexte));
+    private void dimensionnerSousEntites(long contexte) {
+        options.secondaire().ifPresent(secondaire -> secondaire.dimensionner(contexte));
 
-        if (options.sousentites()) {
-            options.secondaire().ifPresent(secondaire -> secondaire.dimensionner(contexte));
-
-            switch (disposition.orientation()) {
-                case HORIZONTAL ->
-                        this.panneau.proportionner(largeur() - persistantes.stream().mapToInt(Entite::largeur).sum(), hauteur());
-                case VERTICAL ->
-                        this.panneau.proportionner(largeur(), hauteur() - persistantes.stream().mapToInt(Entite::hauteur).sum());
-            }
+        switch (disposition.orientation()) {
+            case HORIZONTAL ->
+                    panneau.proportionner(largeur() - persistantes.stream().mapToInt(Entite::largeur).sum(), hauteur());
+            case VERTICAL ->
+                    panneau.proportionner(largeur(), hauteur() - persistantes.stream().mapToInt(Entite::hauteur).sum());
         }
+
+        fluxSousEntites().forEach(entite -> entite.dimensionner(contexte));
     }
 
     @Override
@@ -173,11 +189,7 @@ public class Liste extends Entite {
 
         if (ouvert) {
             panneau.colorier(contexte, BLANC);
-            entites.stream()
-                    .filter(Entite::active)
-                    .findFirst()
-                    .map(entite -> sousentitesParUuid.get(entite.uuid))
-                    .ifPresent(sousentites -> sousentites.forEach(entite -> entite.dessiner(contexte)));
+            fluxSousEntites().forEach(entite -> entite.dessiner(contexte));
         }
     }
 
@@ -205,13 +217,21 @@ public class Liste extends Entite {
         return entites.stream().filter(Entite::visible).skip((long) pagination.page() * pagination.taille()).limit(pagination.taille());
     }
 
+    private Stream<Entite> fluxSousEntites() {
+        return entites.stream()
+                .filter(Entite::active)
+                .findFirst()
+                .map(entite -> sousEntitesParUuid.getOrDefault(entite.uuid, Collections.emptyList()).stream())
+                .orElseGet(Stream::empty);
+    }
+
     public void panneauSecondaire() {
         ouvert = !ouvert;
     }
 
-    public void hierarchiser(Entite entite, Entite sousentite) {
-        if (entites.remove(sousentite)) {
-            sousentitesParUuid.computeIfAbsent(entite.uuid, _ -> new LinkedList<>()).add(sousentite);
+    public void hierarchiser(Entite entite, Entite sousEntite) {
+        if (entites.remove(sousEntite)) {
+            sousEntitesParUuid.computeIfAbsent(entite.uuid, _ -> new LinkedList<>()).add(sousEntite);
         }
     }
 

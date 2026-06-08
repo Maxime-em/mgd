@@ -233,7 +233,7 @@ public class Barre<G> extends AffichageTeteHaute implements Animateur {
         groupes.values().stream().flatMap(Liste::fluxEntites).forEach(Entite::desactiver);
     }
 
-    public void hierarchiser(G groupe, Entite entite, Entite sousentite) {
-        Optional.ofNullable(groupes.get(groupe)).ifPresent(liste -> liste.hierarchiser(entite, sousentite));
+    public void hierarchiser(G groupe, Entite entite, Entite sousEntite) {
+        Optional.ofNullable(groupes.get(groupe)).ifPresent(liste -> liste.hierarchiser(entite, sousEntite));
     }
 }
