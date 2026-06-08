@@ -16,8 +16,8 @@ public abstract class Entite implements Survolable {
     protected final UUID uuid;
     protected final List<Survolable> liaisons;
     protected final Dimension dimension;
-    protected boolean visible;
     protected boolean active;
+    protected boolean visible;
 
     protected Entite() {
         this.uuid = UUID.randomUUID();
@@ -111,5 +111,15 @@ public abstract class Entite implements Survolable {
     @Override
     public boolean visible() {
         return visible;
+    }
+
+    @Override
+    public void apparaitre() {
+        this.visible = true;
+    }
+
+    @Override
+    public void disparaitre() {
+        this.visible = false;
     }
 }

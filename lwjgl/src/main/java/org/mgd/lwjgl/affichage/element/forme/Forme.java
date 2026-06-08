@@ -37,6 +37,7 @@ public abstract class Forme implements Sujet {
     protected Contour contour;
     protected boolean survole;
     protected boolean active;
+    protected boolean visible;
 
     protected Forme(Element<?> parent, String nom, float[] positions, float[] boite, float[] textures, int[] indices) {
         this.uuid = UUID.randomUUID();
@@ -114,7 +115,17 @@ public abstract class Forme implements Sujet {
 
     @Override
     public boolean visible() {
-        return true;
+        return visible;
+    }
+
+    @Override
+    public void apparaitre() {
+        visible = true;
+    }
+
+    @Override
+    public void disparaitre() {
+        visible = false;
     }
 
     @Override
@@ -133,37 +144,39 @@ public abstract class Forme implements Sujet {
 
     @Override
     public void produire(long ellipse, Vision vision) {
-        Optional<Integer> textureBase = Tisseur.obtenir(parent.identifiant(), Pseudo.PSEUDO_BASE);
-        Optional<Integer> textureSurvole = Tisseur.obtenir(parent.identifiant(), Pseudo.PSEUDO_SURVOLE);
-        Optional<Integer> textureActiver = Tisseur.obtenir(parent.identifiant(), Pseudo.PSEUDO_ACTIVER);
+        if (visible) {
+            Optional<Integer> textureBase = Tisseur.obtenir(parent.identifiant(), Pseudo.PSEUDO_BASE);
+            Optional<Integer> textureSurvole = Tisseur.obtenir(parent.identifiant(), Pseudo.PSEUDO_SURVOLE);
+            Optional<Integer> textureActiver = Tisseur.obtenir(parent.identifiant(), Pseudo.PSEUDO_ACTIVER);
 
-        Ombreur.configurer("deplacement", deplacement);
-        Ombreur.configurer("echantillonneur", 0);
-        if (textureBase.isPresent()) {
-            glActiveTexture(GL_TEXTURE0);
-            if (textureActiver.isPresent() && active) {
-                glBindTexture(GL_TEXTURE_2D, textureActiver.get());
-            } else if (textureSurvole.isPresent() && survole) {
-                glBindTexture(GL_TEXTURE_2D, textureSurvole.get());
-            } else {
-                glBindTexture(GL_TEXTURE_2D, textureBase.get());
+            Ombreur.configurer("deplacement", deplacement);
+            Ombreur.configurer("echantillonneur", 0);
+            if (textureBase.isPresent()) {
+                glActiveTexture(GL_TEXTURE0);
+                if (textureActiver.isPresent() && active) {
+                    glBindTexture(GL_TEXTURE_2D, textureActiver.get());
+                } else if (textureSurvole.isPresent() && survole) {
+                    glBindTexture(GL_TEXTURE_2D, textureSurvole.get());
+                } else {
+                    glBindTexture(GL_TEXTURE_2D, textureBase.get());
+                }
             }
-        }
 
-        Map<String, Programme> programmes = Ombreur.programmes(nom);
-        if (programmes.containsKey(Pseudo.PSEUDO_ACTIVER) && active) {
-            Ombreur.utiliser(programmes.get(Pseudo.PSEUDO_ACTIVER));
-        } else if (programmes.containsKey(Pseudo.PSEUDO_SURVOLE) && survole) {
-            Ombreur.utiliser(programmes.get(Pseudo.PSEUDO_SURVOLE));
-        } else if (programmes.containsKey(Pseudo.PSEUDO_BASE)) {
-            Ombreur.utiliser(programmes.get(Pseudo.PSEUDO_BASE));
-        } else {
-            Ombreur.utiliser(Ombreur.programmes(NOM_OMBRAGE_PAR_DEFAUT).get(Pseudo.PSEUDO_BASE));
-        }
+            Map<String, Programme> programmes = Ombreur.programmes(nom);
+            if (programmes.containsKey(Pseudo.PSEUDO_ACTIVER) && active) {
+                Ombreur.utiliser(programmes.get(Pseudo.PSEUDO_ACTIVER));
+            } else if (programmes.containsKey(Pseudo.PSEUDO_SURVOLE) && survole) {
+                Ombreur.utiliser(programmes.get(Pseudo.PSEUDO_SURVOLE));
+            } else if (programmes.containsKey(Pseudo.PSEUDO_BASE)) {
+                Ombreur.utiliser(programmes.get(Pseudo.PSEUDO_BASE));
+            } else {
+                Ombreur.utiliser(Ombreur.programmes(NOM_OMBRAGE_PAR_DEFAUT).get(Pseudo.PSEUDO_BASE));
+            }
 
-        glBindVertexArray(vecteurs);
-        glDrawElements(GL_TRIANGLES, taille, GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
+            glBindVertexArray(vecteurs);
+            glDrawElements(GL_TRIANGLES, taille, GL_UNSIGNED_INT, 0);
+            glBindVertexArray(0);
+        }
     }
 
     public void deplacer(float[] position, long duree) {

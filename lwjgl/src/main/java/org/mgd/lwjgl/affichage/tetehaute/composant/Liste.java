@@ -183,7 +183,6 @@ public class Liste extends Entite {
 
     public void ajouter(Entite... entites) {
         this.entites.addAll(Arrays.asList(entites));
-        Arrays.stream(entites).forEach(entite -> sousentitesParUuid.computeIfAbsent(entite.uuid, _ -> new LinkedList<>()));
     }
 
     public Stream<Entite> fluxEntites() {
@@ -208,6 +207,12 @@ public class Liste extends Entite {
 
     public void panneauSecondaire() {
         ouvert = !ouvert;
+    }
+
+    public void hierarchiser(Entite entite, Entite sousentite) {
+        if (entites.remove(sousentite)) {
+            sousentitesParUuid.computeIfAbsent(entite.uuid, _ -> new LinkedList<>()).add(sousentite);
+        }
     }
 
     public List<Entite> persistantes() {

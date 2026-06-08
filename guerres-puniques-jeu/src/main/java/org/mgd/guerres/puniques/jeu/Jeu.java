@@ -40,6 +40,7 @@ public class Jeu {
     private final LinkedList<ChangementDeploiement> changementsDeploiement;
     private final LinkedList<ChangementDeplacement> changementsDeplacement;
     private final LinkedList<ChangementAttaque> changementsAttaque;
+    private final LinkedList<ChangementEmbarquement> changementsEmbarquement;
     private final LinkedList<ChangementAttaqueCivilisation> changementsAttaqueCivilisation;
     private final LinkedList<ChangementFinTour> changementsFinTour;
     private final String[] aliass;
@@ -61,6 +62,7 @@ public class Jeu {
             this.changementsDeploiement = new LinkedList<>();
             this.changementsDeplacement = new LinkedList<>();
             this.changementsAttaque = new LinkedList<>();
+            this.changementsEmbarquement = new LinkedList<>();
             this.changementsAttaqueCivilisation = new LinkedList<>();
             this.changementsFinTour = new LinkedList<>();
             this.aliass = obtenirCivilisations();
@@ -433,6 +435,24 @@ public class Jeu {
         }
     }
 
+    public void embarquer(Transport transport) {
+        Objects.requireNonNull(transport);
+        if (selection != null && selection.getType() instanceof TypeArmee) {
+            Armee armee = (Armee) selection;
+            partieEnCours.getMonde()
+                    .fluxRegions()
+                    .filter(region -> region.getTransports().contains(transport))
+                    .findFirst()
+                    .ifPresent(region -> {
+                        if (region.getArmees().contains(armee)) {
+                            region.getArmees().remove(armee);
+                            transport.getArmees().add(armee);
+                            changementsEmbarquement.forEach(changement -> changement.traiter(armee, transport));
+                        }
+                    });
+        }
+    }
+
     public void attaquer(Civilisation civilisation) {
         Objects.requireNonNull(civilisation);
         if (selection != null) {
@@ -482,6 +502,10 @@ public class Jeu {
 
     public void souscription(ChangementDeselection changement) {
         changementsDeselection.add(changement);
+    }
+
+    public void souscription(ChangementEmbarquement changement) {
+        changementsEmbarquement.add(changement);
     }
 
     public void souscription(ChangementAttaqueCivilisation changement) {

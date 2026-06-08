@@ -6,5 +6,9 @@ import org.mgd.lwjgl.Vision;
 public interface Survolable extends Identifiable {
     boolean visible();
 
+    void apparaitre();
+
+    void disparaitre();
+
     boolean survoler(Vision vision, EvenementSouris evenementSouris);
 }

@@ -106,17 +106,15 @@ public abstract class Element<G> extends Primitif implements Animateur {
         ordre.forEach(groupe -> groupes.get(groupe).forEach(Forme::nettoyer));
     }
 
-    public List<Forme> ajouter(G groupe, Forme forme) {
-        List<Forme> formes = groupes.computeIfAbsent(groupe, cle -> {
+    public void ajouter(G groupe, Forme forme) {
+        groupes.computeIfAbsent(groupe, cle -> {
             ordre.addFirst(cle);
             return new LinkedList<>();
-        });
-        formes.add(forme);
-        return formes;
+        }).add(forme);
     }
 
-    public List<Forme> supprimer(G groupe, Forme forme) {
-        return groupes.computeIfPresent(groupe, (_, formes) -> {
+    public void supprimer(G groupe, Forme forme) {
+        groupes.computeIfPresent(groupe, (_, formes) -> {
             formes.remove(forme);
             return formes;
         });
