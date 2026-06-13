@@ -3,35 +3,47 @@ package org.mgd.lwjgl.affichage.tetehaute.composant;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition;
 import org.mgd.lwjgl.affichage.tetehaute.Options;
 import org.mgd.lwjgl.affichage.tetehaute.Pagination;
+import org.mgd.lwjgl.affichage.tetehaute.Position;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute.BLANC;
 
 public class Liste extends Entite {
     private final Disposition disposition;
+    private final Disposition dispositionSousEntites;
     private final Options options;
     private final List<Entite> persistantes;
     private final List<Entite> entites;
     private final Map<UUID, List<Entite>> sousEntitesParUuid;
     private final Pagination pagination;
     private final Entite panneau;
-    private int espacementDebut;
-    private int espacementInterne;
+    private final Espacement espacement;
+    private final Espacement espacementSousEntites;
     private boolean ouvert;
 
     public Liste(Disposition disposition, Options options, int taille) {
         super();
         this.disposition = disposition;
+        this.dispositionSousEntites = new Disposition(disposition.orientation(),
+                disposition.justification(),
+                disposition.alignement(),
+                disposition.dimensionnement(),
+                disposition.marge(),
+                10,
+                0);
         this.options = options;
         this.persistantes = new LinkedList<>();
         this.entites = new LinkedList<>();
         this.sousEntitesParUuid = new HashMap<>();
         this.pagination = new Pagination(taille, 0, 1);
         this.panneau = new Fond(0, 0);
+        this.espacement = new Espacement();
+        this.espacementSousEntites = new Espacement();
     }
 
     public Liste(Disposition disposition, Options options) {
@@ -42,141 +54,127 @@ public class Liste extends Entite {
     public void placer(int abscisse, int ordonnee) {
         super.placer(abscisse, ordonnee);
 
-        placerEntites(abscisse, ordonnee);
+        placerEntites(disposition, espacement, this, this::fluxEntitesAffichables);
 
         if (options.sousentites()) {
-            placerSousEntites(abscisse, ordonnee);
-        }
-    }
-
-    private void placerEntites(int abscisse, int ordonnee) {
-        if (disposition.orientation() == Disposition.Orientation.HORIZONTAL) {
-            AtomicInteger largeurCourante = new AtomicInteger(espacementDebut);
-            fluxEntitesAffichables().forEach(entite -> {
-                int decalage = switch (disposition.alignement()) {
-                    case DEBUT -> 0;
-                    case CENTRAL -> (hauteur() - entite.hauteur()) / 2;
-                    case FIN -> hauteur() - entite.hauteur();
-                };
-                entite.placer(abscisse + largeurCourante.getAndAdd(espacementInterne + entite.largeur()), ordonnee + disposition.marge() + decalage);
-            });
-        } else if (disposition.orientation() == Disposition.Orientation.VERTICAL) {
-            AtomicInteger hauteurCourante = new AtomicInteger(espacementDebut);
-            fluxEntitesAffichables().forEach(entite -> {
-                int decalage = switch (disposition.alignement()) {
-                    case DEBUT -> 0;
-                    case CENTRAL -> (largeur() - entite.largeur()) / 2;
-                    case FIN -> largeur() - entite.largeur();
-                };
-                entite.placer(abscisse + disposition.marge() + decalage, ordonnee + hauteurCourante.getAndAdd(espacementInterne + entite.hauteur()));
+            options.positionSousEntites().ifPresent(position -> {
+                placerPanneauSousEntites(abscisse, ordonnee, position);
+                placerBoutonSecondaire(abscisse, ordonnee, position);
+                placerEntites(dispositionSousEntites, espacementSousEntites, panneau, this::fluxSousEntites);
             });
         }
     }
 
-    private void placerSousEntites(int abscisse, int ordonnee) {
-        int abscissePanneau = switch (disposition.orientation()) {
+    private void placerPanneauSousEntites(int abscisse, int ordonnee, Position position) {
+        int abscisseEntites = switch (disposition.orientation()) {
             case HORIZONTAL -> abscisse + persistantes.stream().mapToInt(Entite::largeur).sum();
             case VERTICAL -> abscisse;
         };
 
-        int ordonneePanneau = switch (disposition.orientation()) {
+        int ordonneeEntites = switch (disposition.orientation()) {
             case HORIZONTAL -> ordonnee;
             case VERTICAL -> ordonnee + persistantes.stream().mapToInt(Entite::hauteur).sum();
         };
 
-        options.positionSousEntites().ifPresent(position -> {
-            switch (position) {
-                case HAUT -> {
+        int abscissePanneau = switch (position) {
+            case HAUT, BAS -> abscisseEntites;
+            case GAUCHE -> abscisseEntites - largeur();
+            case DROITE -> abscisseEntites + largeur();
+        };
+
+        int ordonneePanneau = switch (position) {
+            case HAUT -> abscisseEntites - hauteur();
+            case BAS -> abscisseEntites + hauteur();
+            case GAUCHE, DROITE -> ordonneeEntites;
+        };
+
+        panneau.placer(abscissePanneau, ordonneePanneau);
+    }
+
+    private void placerBoutonSecondaire(int abscisse, int ordonnee, Position position) {
+        switch (position) {
+            case HAUT ->
                     options.secondaire().ifPresent(secondaire -> secondaire.placer(abscisse + largeur() - secondaire.largeur(), ordonnee));
-                    panneau.placer(abscissePanneau, ordonneePanneau - hauteur());
-                }
-                case BAS -> {
+            case BAS, DROITE ->
                     options.secondaire().ifPresent(secondaire -> secondaire.placer(abscisse + largeur() - secondaire.largeur(), ordonnee + hauteur() - secondaire.hauteur()));
-                    panneau.placer(abscissePanneau, ordonneePanneau + hauteur());
-                }
-                case GAUCHE -> {
+            case GAUCHE ->
                     options.secondaire().ifPresent(secondaire -> secondaire.placer(abscisse, ordonnee + hauteur() - secondaire.hauteur()));
-                    panneau.placer(abscissePanneau - largeur(), ordonneePanneau);
-                }
-                case DROITE -> {
-                    options.secondaire().ifPresent(secondaire -> secondaire.placer(abscisse + largeur() - secondaire.largeur(), ordonnee + hauteur() - secondaire.hauteur()));
-                    panneau.placer(abscissePanneau + largeur(), ordonneePanneau);
-                }
+        }
+    }
+
+    private void placerEntites(Disposition disposition, Espacement espacement, Entite panneau, Supplier<Stream<Entite>> entites) {
+        switch (disposition.orientation()) {
+            case HORIZONTAL -> {
+                AtomicInteger largeurCourante = new AtomicInteger(espacement.debut);
+                entites.get().forEach(entite -> {
+                    int decalage = switch (disposition.alignement()) {
+                        case DEBUT -> 0;
+                        case CENTRAL -> (hauteur() - entite.hauteur()) / 2;
+                        case FIN -> hauteur() - entite.hauteur();
+                    };
+                    entite.placer(panneau.abscisse() + largeurCourante.getAndAdd(espacement.interne + entite.largeur()), panneau.ordonnee() + decalage);
+                });
             }
-        });
+            case VERTICAL -> {
+                AtomicInteger hauteurCourante = new AtomicInteger(espacement.debut);
+                entites.get().forEach(entite -> {
+                    int decalage = switch (disposition.alignement()) {
+                        case DEBUT -> 0;
+                        case CENTRAL -> (panneau.largeur() - entite.largeur()) / 2;
+                        case FIN -> panneau.largeur() - entite.largeur();
+                    };
+                    entite.placer(panneau.abscisse() + decalage, panneau.ordonnee() + hauteurCourante.getAndAdd(espacement.interne + entite.hauteur()));
+                });
+            }
+        }
     }
 
     @Override
     public void dimensionner(long contexte) {
         pagination.calculer(entites.stream().filter(Entite::visible).count());
 
-        dimensionnerEntites(contexte);
+        dimensionnerPanneauEntites(contexte);
 
         if (options.sousentites()) {
-            dimensionnerSousEntites(contexte);
+            dimensionnerBoutonSecondaire(contexte);
+            dimensionnerPanneauSousEntites(contexte);
         }
     }
 
-    private void dimensionnerEntites(long contexte) {
-        int nombreEntites = Math.toIntExact(fluxEntitesAffichables().count());
-        int longueurEntites = fluxEntitesAffichables().mapToInt(entite -> {
-            entite.dimensionner(contexte);
-            return switch (disposition.orientation()) {
-                case HORIZONTAL -> entite.largeur();
-                case VERTICAL -> entite.hauteur();
-            };
-        }).sum();
-
-        switch (disposition.dimensionnement()) {
-            case VARIABLE -> {
-                espacementInterne = disposition.espacement();
-                espacementDebut = 0;
-                switch (disposition.orientation()) {
-                    case HORIZONTAL ->
-                            proportionner(fluxEntitesAffichables().mapToInt(Entite::largeur).sum() + espacementDebut + (nombreEntites - 1) * espacementInterne,
-                                    disposition.marge() + fluxEntitesAffichables().mapToInt(Entite::hauteur).max().orElse(0));
-                    case VERTICAL ->
-                            proportionner(disposition.marge() + fluxEntitesAffichables().mapToInt(Entite::largeur).max().orElse(0),
-                                    fluxEntitesAffichables().mapToInt(Entite::hauteur).sum() + espacementDebut + (nombreEntites - 1) * espacementInterne);
-                }
-            }
-            case FIXE -> {
-                int espacementMaximal = nombreEntites > 1 ? (disposition.longueur() - longueurEntites) / (nombreEntites - 1) : 0;
-                switch (disposition.justification()) {
-                    case DEBUT -> {
-                        espacementInterne = Math.min(espacementMaximal, disposition.espacement());
-                        espacementDebut = 0;
-                    }
-                    case CENTRAL -> {
-                        espacementInterne = Math.min(espacementMaximal, disposition.espacement());
-                        espacementDebut = (disposition.longueur() - longueurEntites - (nombreEntites - 1) * espacementInterne) / 2;
-                    }
-                    case ETENDU -> {
-                        espacementInterne = espacementMaximal;
-                        espacementDebut = (disposition.longueur() - longueurEntites - (nombreEntites - 1) * espacementInterne) / 2;
-                    }
-                }
-                switch (disposition.orientation()) {
-                    case HORIZONTAL ->
-                            proportionner(disposition.longueur(), disposition.marge() + fluxEntitesAffichables().mapToInt(Entite::hauteur).max().orElse(0));
-                    case VERTICAL ->
-                            proportionner(disposition.marge() + fluxEntitesAffichables().mapToInt(Entite::largeur).max().orElse(0), disposition.longueur());
-                }
-            }
-        }
+    private void dimensionnerPanneauEntites(long contexte) {
+        espacement.calculer(contexte, disposition, this::fluxEntitesAffichables);
+        dimensionnerPanneau(disposition, espacement, this, this::fluxEntitesAffichables);
     }
 
-    private void dimensionnerSousEntites(long contexte) {
+    private void dimensionnerBoutonSecondaire(long contexte) {
         options.secondaire().ifPresent(secondaire -> secondaire.dimensionner(contexte));
+    }
 
-        switch (disposition.orientation()) {
-            case HORIZONTAL ->
-                    panneau.proportionner(largeur() - persistantes.stream().mapToInt(Entite::largeur).sum(), hauteur());
-            case VERTICAL ->
-                    panneau.proportionner(largeur(), hauteur() - persistantes.stream().mapToInt(Entite::hauteur).sum());
-        }
+    private void dimensionnerPanneauSousEntites(long contexte) {
+        dispositionSousEntites.longueur(switch (disposition.orientation()) {
+            case HORIZONTAL -> largeur() - persistantes.stream().mapToInt(Entite::largeur).sum();
+            case VERTICAL -> hauteur() - persistantes.stream().mapToInt(Entite::hauteur).sum();
+        });
+        espacementSousEntites.calculer(contexte, dispositionSousEntites, this::fluxSousEntites);
+        dimensionnerPanneau(dispositionSousEntites, espacementSousEntites, panneau, this::fluxSousEntites);
+    }
 
-        fluxSousEntites().forEach(entite -> entite.dimensionner(contexte));
+    private void dimensionnerPanneau(Disposition disposition, Espacement espacement, Entite panneau, Supplier<Stream<Entite>> entites) {
+        int largeur = switch (disposition.orientation()) {
+            case HORIZONTAL -> switch (disposition.dimensionnement()) {
+                case VARIABLE -> entites.get().mapToInt(Entite::largeur).sum() + espacement.total;
+                case FIXE -> disposition.longueur();
+            };
+            case VERTICAL -> 2 * disposition.marge() + entites.get().mapToInt(Entite::largeur).max().orElse(0);
+        };
+        int hauteur = switch (disposition.orientation()) {
+            case HORIZONTAL -> disposition.marge() + entites.get().mapToInt(Entite::hauteur).max().orElse(0);
+            case VERTICAL -> switch (disposition.dimensionnement()) {
+                case VARIABLE -> entites.get().mapToInt(Entite::hauteur).sum() + espacement.total;
+                case FIXE -> disposition.longueur();
+            };
+        };
+        panneau.proportionner(largeur, hauteur);
     }
 
     @Override
@@ -241,5 +239,55 @@ public class Liste extends Entite {
 
     public Pagination pagination() {
         return pagination;
+    }
+
+    private class Espacement {
+        private int debut;
+        private int interne;
+        private int total;
+
+        private int nombre(Stream<Entite> entites) {
+            return Math.toIntExact(entites.count());
+        }
+
+        private int longueur(long contexte, Stream<Entite> entites) {
+            return entites.mapToInt(entite -> {
+                entite.dimensionner(contexte);
+                return switch (disposition.orientation()) {
+                    case HORIZONTAL -> entite.largeur();
+                    case VERTICAL -> entite.hauteur();
+                };
+            }).sum();
+        }
+
+        public void calculer(long contexte, Disposition disposition, Supplier<Stream<Entite>> entites) {
+            int nombreEntites = nombre(entites.get());
+            int longueurEntites = longueur(contexte, entites.get());
+
+            switch (disposition.dimensionnement()) {
+                case VARIABLE -> {
+                    interne = disposition.espacement();
+                    debut = 0;
+                }
+                case FIXE -> {
+                    int espacementMaximal = nombreEntites > 1 ? (disposition.longueur() - longueurEntites) / (nombreEntites - 1) : 0;
+                    switch (disposition.justification()) {
+                        case DEBUT -> {
+                            interne = Math.min(espacementMaximal, disposition.espacement());
+                            debut = 0;
+                        }
+                        case CENTRAL -> {
+                            interne = Math.min(espacementMaximal, disposition.espacement());
+                            debut = (disposition.longueur() - longueurEntites - (nombreEntites - 1) * interne) / 2;
+                        }
+                        case ETENDU -> {
+                            interne = espacementMaximal;
+                            debut = (disposition.longueur() - longueurEntites - (nombreEntites - 1) * interne) / 2;
+                        }
+                    }
+                }
+            }
+            total = nombreEntites > 0 ? debut + (nombreEntites - 1) * interne : 0;
+        }
     }
 }

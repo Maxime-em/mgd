@@ -424,6 +424,7 @@ public class GuerresPuniquesApplication extends Application {
             forme.activer();
         }
         action.activer();
+        barresCivilisations.get(objet.getOrigine()).afficher(objet.getOrigine().getNom(), true);
     }
 
     private <T extends Type, U extends Type> void attaquer(Tangible<T> attaquant, Tangible<U> defenseur) {
