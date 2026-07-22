@@ -17,10 +17,7 @@ import org.mgd.lwjgl.affichage.tetehaute.Disposition.Dimensionnement;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition.Justification;
 import org.mgd.lwjgl.affichage.tetehaute.Disposition.Orientation;
 import org.mgd.lwjgl.affichage.tetehaute.Informations;
-import org.mgd.lwjgl.affichage.tetehaute.composant.Action;
-import org.mgd.lwjgl.affichage.tetehaute.composant.ActionImagee;
-import org.mgd.lwjgl.affichage.tetehaute.composant.ActionTextutelle;
-import org.mgd.lwjgl.affichage.tetehaute.composant.Entite;
+import org.mgd.lwjgl.affichage.tetehaute.composant.*;
 import org.mgd.lwjgl.affichage.tetehaute.nvg.NVGPolice;
 import org.mgd.lwjgl.commun.Identifiable;
 import org.mgd.lwjgl.exception.LwjglException;
@@ -491,16 +488,16 @@ public class GuerresPuniquesApplication extends Application {
                 10);
     }
 
-    private ActionTextutelle<Void> nouveauBoutonSuivante() {
+    private Entite nouveauBoutonSuivante() {
         return new ActionTextutelle<>(24f, obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), BLANC, () -> "Suivant");
     }
 
-    private ActionTextutelle<Void> nouveauBoutonPrecedente() {
+    private Entite nouveauBoutonPrecedente() {
         return new ActionTextutelle<>(24f, obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), BLANC, () -> "Précedent");
     }
 
-    private ActionTextutelle<Void> nouveauBoutonSecondaire() {
-        return new ActionTextutelle<>(12f, obtenirPolice(fenetre.contexteNvg(), POLICE_DEFAUT), BLANC, () -> "Sous-entités");
+    private Entite nouveauBoutonSecondaire() {
+        return new Fond(25, 50);
     }
 
     private void construireBarreActions(Civilisation civilisation, int ordre) throws LwjglException {
@@ -513,7 +510,7 @@ public class GuerresPuniquesApplication extends Application {
                         30,
                         0,
                         fenetre.hauteur() - 130),
-                new Options(nouveauBoutonSuivante(), nouveauBoutonPrecedente(), position, true, position, nouveauBoutonSecondaire()),
+                new Options(nouveauBoutonSuivante(), nouveauBoutonPrecedente(), this::nouveauBoutonSecondaire, true, position, position),
                 ordre == 0 ? 10 : fenetre.largeur() - 110,
                 10,
                 7);

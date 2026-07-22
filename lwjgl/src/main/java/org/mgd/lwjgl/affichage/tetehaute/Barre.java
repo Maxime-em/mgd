@@ -106,28 +106,35 @@ public class Barre<G> extends AffichageTeteHaute implements Animateur {
         entitesSurvolees.clear();
         entitesLiees.clear();
         if (visible) {
-            liste(false).ifPresent(liste -> {
-                if (options.suivante().map(suivante -> suivante.survoler(vision, evenementSouris) && evenementSouris.selection()).orElse(false)) {
-                    liste.pagination().suivant();
-                    placer();
-                    evenementSouris.comsommer();
-                } else if (options.precedente().map(precedente -> precedente.survoler(vision, evenementSouris) && evenementSouris.selection()).orElse(false)) {
-                    liste.pagination().precedent();
-                    placer();
-                    evenementSouris.comsommer();
-                } else if (options.secondaire().map(secondaire -> secondaire.survoler(vision, evenementSouris) && evenementSouris.selection()).orElse(false)) {
-                    liste.panneauSecondaire();
-                    placer();
-                    evenementSouris.comsommer();
-                } else {
-                    entitesSurvolees.addAll(liste
-                            .fluxEntitesAffichables()
-                            .filter(entite -> entite.survoler(vision, evenementSouris))
-                            .toList());
-                }
-            });
+            liste(false).ifPresent(liste -> survoler(vision, evenementSouris, liste));
         }
         return !entitesSurvolees.isEmpty();
+    }
+
+    private void survoler(Vision vision, EvenementSouris evenementSouris, Liste liste) {
+        if (options.suivante().map(suivante -> suivante.survoler(vision, evenementSouris) && evenementSouris.selection()).orElse(false)) {
+            liste.pagination().suivant();
+            placer();
+            evenementSouris.comsommer();
+        } else if (options.precedente().map(precedente -> precedente.survoler(vision, evenementSouris) && evenementSouris.selection()).orElse(false)) {
+            liste.pagination().precedent();
+            placer();
+            evenementSouris.comsommer();
+        } else if (options.sousentites() && liste.fluxEntitesSecondaires().anyMatch(entite -> entite.survoler(vision, evenementSouris))) {
+            if (!liste.panneauOuvert()) {
+                liste.ouvrirPanneauSecondaire();
+                placer();
+            }
+            evenementSouris.comsommer();
+        } else {
+            if (liste.panneauOuvert() && !liste.panneau().map(entite -> entite.survoler(vision, evenementSouris)).orElse(false)) {
+                liste.fermerPanneauSecondaire();
+            }
+            entitesSurvolees.addAll(liste
+                    .fluxEntitesAffichables()
+                    .filter(entite -> entite.survoler(vision, evenementSouris))
+                    .toList());
+        }
     }
 
     @Override

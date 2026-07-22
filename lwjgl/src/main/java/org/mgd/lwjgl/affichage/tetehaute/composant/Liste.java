@@ -12,6 +12,7 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import static org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute.BLANC;
+import static org.mgd.lwjgl.affichage.tetehaute.AffichageTeteHaute.EMERAUDE;
 
 public class Liste extends Entite {
     private final Disposition disposition;
@@ -20,6 +21,7 @@ public class Liste extends Entite {
     private final List<Entite> persistantes;
     private final List<Entite> entites;
     private final Map<UUID, List<Entite>> sousEntitesParUuid;
+    private final Map<UUID, Entite> entitesSecondairesParUuid;
     private final Pagination pagination;
     private final Entite panneau;
     private final Espacement espacement;
@@ -40,6 +42,7 @@ public class Liste extends Entite {
         this.persistantes = new LinkedList<>();
         this.entites = new LinkedList<>();
         this.sousEntitesParUuid = new HashMap<>();
+        this.entitesSecondairesParUuid = new HashMap<>();
         this.pagination = new Pagination(taille, 0, 1);
         this.panneau = new Fond(0, 0);
         this.espacement = new Espacement();
@@ -54,13 +57,12 @@ public class Liste extends Entite {
     public void placer(int abscisse, int ordonnee) {
         super.placer(abscisse, ordonnee);
 
-        placerEntites(disposition, espacement, this, this::fluxEntitesAffichables);
+        placerEntites(disposition, espacement, options.positionSousEntites().orElse(Position.DROITE), this, this::fluxEntitesAffichables);
 
         if (options.sousentites()) {
             options.positionSousEntites().ifPresent(position -> {
                 placerPanneauSousEntites(abscisse, ordonnee, position);
-                placerBoutonSecondaire(abscisse, ordonnee, position);
-                placerEntites(dispositionSousEntites, espacementSousEntites, panneau, this::fluxSousEntites);
+                placerEntites(dispositionSousEntites, espacementSousEntites, position, panneau, this::fluxSousEntites);
             });
         }
     }
@@ -91,18 +93,20 @@ public class Liste extends Entite {
         panneau.placer(abscissePanneau, ordonneePanneau);
     }
 
-    private void placerBoutonSecondaire(int abscisse, int ordonnee, Position position) {
-        switch (position) {
-            case HAUT ->
-                    options.secondaire().ifPresent(secondaire -> secondaire.placer(abscisse + largeur() - secondaire.largeur(), ordonnee));
-            case BAS, DROITE ->
-                    options.secondaire().ifPresent(secondaire -> secondaire.placer(abscisse + largeur() - secondaire.largeur(), ordonnee + hauteur() - secondaire.hauteur()));
-            case GAUCHE ->
-                    options.secondaire().ifPresent(secondaire -> secondaire.placer(abscisse, ordonnee + hauteur() - secondaire.hauteur()));
+    private void placerBoutonSecondaire(Entite entite, Position position) {
+        if (entitesSecondairesParUuid.containsKey(entite.uuid)) {
+            Entite entiteSecondaire = entitesSecondairesParUuid.get(entite.uuid);
+            switch (position) {
+                case HAUT -> entiteSecondaire.placer(entite.abscisse(), entite.ordonnee() - entiteSecondaire.hauteur());
+                case BAS -> entiteSecondaire.placer(entite.abscisse(), entite.ordonnee() + entite.hauteur());
+                case DROITE -> entiteSecondaire.placer(entite.abscisse() + entite.largeur(), entite.ordonnee());
+                case GAUCHE ->
+                        entiteSecondaire.placer(entite.abscisse() - entiteSecondaire.largeur(), entite.ordonnee());
+            }
         }
     }
 
-    private void placerEntites(Disposition disposition, Espacement espacement, Entite panneau, Supplier<Stream<Entite>> entites) {
+    private void placerEntites(Disposition disposition, Espacement espacement, Position position, Entite panneau, Supplier<Stream<Entite>> entites) {
         switch (disposition.orientation()) {
             case HORIZONTAL -> {
                 AtomicInteger largeurCourante = new AtomicInteger(espacement.debut);
@@ -113,6 +117,7 @@ public class Liste extends Entite {
                         case FIN -> hauteur() - entite.hauteur();
                     };
                     entite.placer(panneau.abscisse() + largeurCourante.getAndAdd(espacement.interne + entite.largeur()), panneau.ordonnee() + decalage);
+                    placerBoutonSecondaire(entite, position);
                 });
             }
             case VERTICAL -> {
@@ -124,6 +129,7 @@ public class Liste extends Entite {
                         case FIN -> panneau.largeur() - entite.largeur();
                     };
                     entite.placer(panneau.abscisse() + decalage, panneau.ordonnee() + hauteurCourante.getAndAdd(espacement.interne + entite.hauteur()));
+                    placerBoutonSecondaire(entite, position);
                 });
             }
         }
@@ -136,7 +142,6 @@ public class Liste extends Entite {
         dimensionnerPanneauEntites(contexte);
 
         if (options.sousentites()) {
-            dimensionnerBoutonSecondaire(contexte);
             dimensionnerPanneauSousEntites(contexte);
         }
     }
@@ -144,10 +149,6 @@ public class Liste extends Entite {
     private void dimensionnerPanneauEntites(long contexte) {
         espacement.calculer(contexte, disposition, this::fluxEntitesAffichables);
         dimensionnerPanneau(disposition, espacement, this, this::fluxEntitesAffichables);
-    }
-
-    private void dimensionnerBoutonSecondaire(long contexte) {
-        options.secondaire().ifPresent(secondaire -> secondaire.dimensionner(contexte));
     }
 
     private void dimensionnerPanneauSousEntites(long contexte) {
@@ -182,7 +183,7 @@ public class Liste extends Entite {
         fluxEntitesAffichables().forEach(entite -> entite.dessiner(contexte));
 
         if (options.sousentites()) {
-            options.secondaire().ifPresent(secondaire -> secondaire.dessiner(contexte));
+            fluxEntitesSecondaires().forEach(entite -> entite.colorier(contexte, EMERAUDE));
         }
 
         if (ouvert) {
@@ -193,6 +194,11 @@ public class Liste extends Entite {
 
     public void ajouter(Entite... entites) {
         this.entites.addAll(Arrays.asList(entites));
+        options.secondaire().ifPresent(constructeur -> Arrays.stream(entites).forEach(entite -> {
+            Entite entiteSecondaire = constructeur.get();
+            entiteSecondaire.afficher();
+            entitesSecondairesParUuid.put(entite.uuid, entiteSecondaire);
+        }));
     }
 
     public Stream<Entite> fluxEntites() {
@@ -223,13 +229,28 @@ public class Liste extends Entite {
                 .orElseGet(Stream::empty);
     }
 
-    public void panneauSecondaire() {
-        ouvert = !ouvert;
+    public Stream<Entite> fluxEntitesSecondaires() {
+        return fluxEntitesNonPersistantes().filter(entite -> entitesSecondairesParUuid.containsKey(entite.uuid)).map(entite -> entitesSecondairesParUuid.get(entite.uuid)).filter(Entite::visible);
+    }
+
+    public void ouvrirPanneauSecondaire() {
+        ouvert = true;
+    }
+
+    public void fermerPanneauSecondaire() {
+        ouvert = false;
+    }
+
+    public boolean panneauOuvert() {
+        return ouvert;
     }
 
     public void hierarchiser(Entite entite, Entite sousEntite) {
         if (entites.remove(sousEntite)) {
             sousEntitesParUuid.computeIfAbsent(entite.uuid, _ -> new LinkedList<>()).add(sousEntite);
+            if (entitesSecondairesParUuid.containsKey(sousEntite.uuid)) {
+                entitesSecondairesParUuid.get(sousEntite.uuid).masquer();
+            }
         }
     }
 
@@ -239,6 +260,10 @@ public class Liste extends Entite {
 
     public Pagination pagination() {
         return pagination;
+    }
+
+    public Optional<Entite> panneau() {
+        return Optional.ofNullable(panneau);
     }
 
     private class Espacement {
