@@ -107,12 +107,7 @@ public class GuerresPuniquesApplication extends Application {
             for (String ombrage : proprietes.getProperty(APPLICATION_OMBRAGES).split(",")) {
                 String[] description = ombrage.split("#");
                 String[] selecteur = description[0].split(":");
-                Programme.nouveau(
-                        selecteur[0],
-                        selecteur[1],
-                        dossierRacine,
-                        description[1].split(":"),
-                        description[2].split(":"));
+                Programme.nouveau(selecteur[0], selecteur[1], dossierRacine, description[1].split(":"));
             }
 
             LOGGER.info("Autre configuration de l'application.");

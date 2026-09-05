@@ -32,12 +32,7 @@ public abstract class Application {
 
     protected void configurer(Path dossier) {
         LOGGER.info("Initialisation du programme d'ombrage par défaut depuis {}.", dossier);
-        Programme.nouveau(
-                NOM_OMBRAGE_PAR_DEFAUT,
-                Pseudo.PSEUDO_BASE,
-                dossier,
-                new String[]{"vecteur", "fragment"},
-                new String[]{"projection", "vision", "transformation", "echantillonneur"});
+        Programme.nouveau(NOM_OMBRAGE_PAR_DEFAUT, Pseudo.PSEUDO_BASE, dossier, new String[]{"vecteur", "fragment"});
     }
 
     protected abstract void peupler() throws LwjglException;
