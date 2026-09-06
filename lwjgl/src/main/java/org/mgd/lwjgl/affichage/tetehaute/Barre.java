@@ -37,7 +37,7 @@ public class Barre<G> extends AffichageTeteHaute implements Animateur {
     public Barre(Fenetre parent, Disposition disposition, Options options, int abcisses, int ordonnee, int taille) throws LwjglException {
         super(parent, false, true);
         this.disposition = disposition;
-        this.dispositionInfobulle = new Disposition(Orientation.VERTICAL, Justification.DEBUT, Alignement.DEBUT, Dimensionnement.VARIABLE, 0, MARGE_TEXTES, 0);
+        this.dispositionInfobulle = new Disposition(Orientation.VERTICAL, Justification.DEBUT, Alignement.DEBUT, Dimensionnement.VARIABLE, 0, MARGE_TEXTES, 0, 0);
         this.options = options;
         this.abcisses = abcisses;
         this.ordonnee = ordonnee;

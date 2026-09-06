@@ -31,7 +31,7 @@ public class Ephemere extends AffichageTeteHaute implements Animateur {
 
     public Ephemere(Fenetre parent, int espacement, int marge, Entite... entites) throws LwjglException {
         super(parent, false, false);
-        this.liste = new Liste(new Disposition(Orientation.VERTICAL, Justification.DEBUT, Alignement.DEBUT, Dimensionnement.VARIABLE, espacement, marge, 0),
+        this.liste = new Liste(new Disposition(Orientation.VERTICAL, Justification.DEBUT, Alignement.DEBUT, Dimensionnement.VARIABLE, espacement, marge, 0, 0),
                 new Options());
         this.liste.ajouter(entites);
         this.entitesSurvolees = new LinkedList<>();

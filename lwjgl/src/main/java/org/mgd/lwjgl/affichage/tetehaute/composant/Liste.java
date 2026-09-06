@@ -38,8 +38,9 @@ public class Liste extends Entite {
                 disposition.justification(),
                 disposition.alignement(),
                 disposition.dimensionnement(),
-                disposition.marge(),
+                5,
                 10,
+                5,
                 0);
         this.options = options;
         this.persistantes = new LinkedList<>();
@@ -106,7 +107,7 @@ public class Liste extends Entite {
         panneau.placer(abscissePanneau, ordonneePanneau);
     }
 
-    private void placerBoutonSecondaire(Entite entite, Position position) {
+    private void placerEntitesSecondaires(Entite entite, Position position) {
         if (entitesSecondairesParUuid.containsKey(entite.uuid)) {
             Entite entiteSecondaire = entitesSecondairesParUuid.get(entite.uuid);
             switch (position) {
@@ -130,7 +131,7 @@ public class Liste extends Entite {
                         case FIN -> hauteur() - entite.hauteur();
                     };
                     entite.placer(panneau.abscisse() + largeurCourante.getAndAdd(espacement.interne + entite.largeur()), panneau.ordonnee() + decalage);
-                    placerBoutonSecondaire(entite, position);
+                    placerEntitesSecondaires(entite, position);
                 });
             }
             case VERTICAL -> {
@@ -142,7 +143,7 @@ public class Liste extends Entite {
                         case FIN -> panneau.largeur() - entite.largeur();
                     };
                     entite.placer(panneau.abscisse() + decalage, panneau.ordonnee() + hauteurCourante.getAndAdd(espacement.interne + entite.hauteur()));
-                    placerBoutonSecondaire(entite, position);
+                    placerEntitesSecondaires(entite, position);
                 });
             }
         }
@@ -182,7 +183,7 @@ public class Liste extends Entite {
             case VERTICAL -> 2 * disposition.marge() + entites.get().mapToInt(Entite::largeur).max().orElse(0);
         };
         int hauteur = switch (disposition.orientation()) {
-            case HORIZONTAL -> disposition.marge() + entites.get().mapToInt(Entite::hauteur).max().orElse(0);
+            case HORIZONTAL -> 2 * disposition.marge() + entites.get().mapToInt(Entite::hauteur).max().orElse(0);
             case VERTICAL -> switch (disposition.dimensionnement()) {
                 case VARIABLE -> entites.get().mapToInt(Entite::hauteur).sum() + espacement.total;
                 case FIXE -> disposition.longueur();
@@ -333,14 +334,14 @@ public class Liste extends Entite {
             switch (disposition.dimensionnement()) {
                 case VARIABLE -> {
                     interne = disposition.espacement();
-                    debut = 0;
+                    debut = disposition.decalage();
                 }
                 case FIXE -> {
                     int espacementMaximal = nombreEntites > 1 ? (disposition.longueur() - longueurEntites) / (nombreEntites - 1) : 0;
                     switch (disposition.justification()) {
                         case DEBUT -> {
                             interne = Math.min(espacementMaximal, disposition.espacement());
-                            debut = 0;
+                            debut = disposition.decalage();
                         }
                         case CENTRAL -> {
                             interne = Math.min(espacementMaximal, disposition.espacement());
@@ -348,7 +349,7 @@ public class Liste extends Entite {
                         }
                         case ETENDU -> {
                             interne = espacementMaximal;
-                            debut = (disposition.longueur() - longueurEntites - (nombreEntites - 1) * interne) / 2;
+                            debut = (disposition.longueur() - disposition.decalage() - longueurEntites - (nombreEntites - 1) * interne) / 2;
                         }
                     }
                 }

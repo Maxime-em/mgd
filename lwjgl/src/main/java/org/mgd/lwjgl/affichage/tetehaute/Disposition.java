@@ -7,6 +7,7 @@ public final class Disposition {
     private final Dimensionnement dimensionnement;
     private final int espacement;
     private final int marge;
+    private final int decalage;
     private int longueur;
 
     public Disposition(Orientation orientation,
@@ -15,6 +16,7 @@ public final class Disposition {
                        Dimensionnement dimensionnement,
                        int espacement,
                        int marge,
+                       int decalage,
                        int longueur) {
         this.orientation = orientation;
         this.justification = justification;
@@ -22,6 +24,7 @@ public final class Disposition {
         this.dimensionnement = dimensionnement;
         this.espacement = espacement;
         this.marge = marge;
+        this.decalage = decalage;
         this.longueur = longueur;
     }
 
@@ -47,6 +50,10 @@ public final class Disposition {
 
     public int marge() {
         return marge;
+    }
+
+    public int decalage() {
+        return decalage;
     }
 
     public int longueur() {
