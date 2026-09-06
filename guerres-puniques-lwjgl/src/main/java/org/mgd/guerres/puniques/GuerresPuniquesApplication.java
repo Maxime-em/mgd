@@ -293,7 +293,7 @@ public class GuerresPuniquesApplication extends Application {
             cadrillage.desactiverJetons();
         });
         jeu.souscription((ChangementAttaque) this::attaquer);
-        jeu.souscription(this::embarquer);
+        jeu.souscription((Armee armee, Transport transport) -> embarquer(armee, transport, true));
         jeu.souscription((ChangementAttaqueCivilisation) this::attaquer);
         jeu.souscription((ChangementFinTour) () -> System.out.println("Fin de tour"));
 
@@ -373,7 +373,7 @@ public class GuerresPuniquesApplication extends Application {
                 jetonsTransports.ajouter(transport, jeton);
                 for (Armee armee : transport.getArmees()) {
                     placer(armee, region);
-                    embarquer(armee, transport);
+                    embarquer(armee, transport, false);
                 }
             }
             default -> {
@@ -382,20 +382,22 @@ public class GuerresPuniquesApplication extends Application {
         }
     }
 
-    private void embarquer(Armee armee, Transport transport) {
+    private void embarquer(Armee armee, Transport transport, boolean focaliser) {
         Action<CivilisationArmee> actionArmee = actionsArmees.identifiable(armee);
         Action<CivilisationTransport> actionTransport = actionsTransports.identifiable(transport);
         Barre<String> barreCivilisation = barresCivilisations.get(armee.getOrigine());
         barreCivilisation.hierarchiser(armee.getOrigine().getNom(), actionTransport, actionArmee);
-
         jetonsArmees.identifiable(armee).disparaitre();
+
+        if (focaliser) {
+            jeu.amorcer(armee);
+        }
     }
 
     private <T extends Type> void deployer(Civilisation civilisation, Tangible<T> objet, Region region) {
         try {
             placer(objet, region);
             jeu.amorcer(objet);
-            barresCivilisations.get(civilisation).afficher(civilisation.getNom(), true);
         } catch (LwjglException e) {
             LOGGER.error("Impossible de déployer une armée", e);
         }

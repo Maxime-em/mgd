@@ -94,11 +94,16 @@ public class Barre<G> extends AffichageTeteHaute implements Animateur {
     public void maj(long accumulateur, Vision vision, EvenementSouris evenementSouris, Fenetre.EvenementAmorcages evenementAmorcagesCourant) throws LwjglException {
         Animateur.super.maj(accumulateur, vision, evenementSouris, evenementAmorcagesCourant);
         entitesLiees.clear();
-        liste(false).ifPresent(liste ->
-                entitesLiees.addAll(liste
-                        .fluxEntitesAffichables()
-                        .filter(entite -> entite.liaisons().stream().anyMatch(liaison -> liaison.visible() && liaison.survoler(vision, evenementSouris)))
-                        .toList()));
+        liste(false).ifPresent(liste -> {
+            liste.pagination().aChange().ifPresent(_ -> {
+                liste.initialiser();
+                placer();
+            });
+            entitesLiees.addAll(liste
+                    .fluxEntitesAffichables()
+                    .filter(entite -> entite.liaisons().stream().anyMatch(liaison -> liaison.visible() && liaison.survoler(vision, evenementSouris)))
+                    .toList());
+        });
     }
 
     @Override
@@ -114,18 +119,20 @@ public class Barre<G> extends AffichageTeteHaute implements Animateur {
     private void survoler(Vision vision, EvenementSouris evenementSouris, Liste liste) {
         if (options.suivante().map(suivante -> suivante.survoler(vision, evenementSouris) && evenementSouris.selection()).orElse(false)) {
             liste.pagination().suivant();
-            placer();
             evenementSouris.comsommer();
         } else if (options.precedente().map(precedente -> precedente.survoler(vision, evenementSouris) && evenementSouris.selection()).orElse(false)) {
             liste.pagination().precedent();
-            placer();
             evenementSouris.comsommer();
-        } else if (options.sousentites() && liste.fluxEntitesSecondaires().anyMatch(entite -> entite.survoler(vision, evenementSouris))) {
-            if (!liste.panneauOuvert()) {
-                liste.ouvrirPanneauSecondaire();
-                placer();
-            }
-            evenementSouris.comsommer();
+        } else if (options.sousentites() && liste.fluxEntitesSecondaires().anyMatch(entite -> entite.visible() && entite.survoler(vision, evenementSouris))) {
+            liste.fluxEntitesSecondaires()
+                    .filter(entite -> entite.visible() && entite.survoler(vision, evenementSouris))
+                    .findFirst()
+                    .ifPresent(entiteSecondaire -> {
+                        if (!liste.panneauOuvert()) {
+                            liste.ouvrirPanneauSecondaire(entiteSecondaire);
+                        }
+                        evenementSouris.comsommer();
+                    });
         } else {
             if (liste.panneauOuvert() && !liste.panneau().map(entite -> entite.survoler(vision, evenementSouris)).orElse(false)) {
                 liste.fermerPanneauSecondaire();
@@ -155,9 +162,7 @@ public class Barre<G> extends AffichageTeteHaute implements Animateur {
             liste.colorier(contexte, AUBURN);
             liste.fluxEntitesAffichables().forEach(entite -> entite.colorier(contexte, NOIR_A50));
             liste.dessiner(contexte);
-            liste.fluxEntitesAffichables()
-                    .filter(Entite::active)
-                    .forEach(entite -> entite.colorier(contexte, INDIGO_A50));
+            liste.fluxEntitesAffichables().filter(Entite::active).forEach(entite -> entite.colorier(contexte, INDIGO_A50));
 
             entitesSurvolees.forEach(entite -> {
                 entite.colorier(contexte, ROUGE_COQUELICOT_A50);
@@ -199,38 +204,19 @@ public class Barre<G> extends AffichageTeteHaute implements Animateur {
         if (force || !Objects.equals(this.groupe, groupe)) {
             liste(true).ifPresent(liste -> {
                 liste.masquer();
-                liste.fluxEntites().forEach(entite -> {
-                    entite.masquer();
-                    information(entite.uuid(), true).ifPresent(information -> {
-                        information.masquer();
-                        information.fluxEntites().forEach(Entite::masquer);
-                    });
-                });
-                liste.persistantes().forEach(entite -> {
-                    entite.masquer();
-                    information(entite.uuid(), true).ifPresent(information -> {
-                        information.masquer();
-                        information.fluxEntites().forEach(Entite::masquer);
-                    });
-                });
+                liste.fluxPersistantes().forEach(entite -> information(entite.uuid(), true).ifPresent(Entite::masquer));
+                liste.fluxEntites().forEach(entite -> information(entite.uuid(), true).ifPresent(Entite::masquer));
+                liste.fluxSousEntites().forEach(entite -> information(entite.uuid(), true).ifPresent(Entite::masquer));
+                liste.fluxEntitesSecondaires().forEach(Entite::masquer);
             });
             this.groupe = groupe;
             liste(true).ifPresent(liste -> {
+                liste.pagination().initialiser();
+                liste.initialiser();
                 liste.afficher();
-                liste.fluxEntites().forEach(entite -> {
-                    entite.afficher();
-                    information(entite.uuid(), true).ifPresent(information -> {
-                        information.afficher();
-                        information.fluxEntites().forEach(Entite::afficher);
-                    });
-                });
-                liste.persistantes().forEach(entite -> {
-                    entite.afficher();
-                    information(entite.uuid(), true).ifPresent(information -> {
-                        information.afficher();
-                        information.fluxEntites().forEach(Entite::afficher);
-                    });
-                });
+                liste.fluxPersistantes().forEach(entite -> information(entite.uuid(), true).ifPresent(Entite::afficher));
+                liste.fluxEntites().forEach(entite -> information(entite.uuid(), true).ifPresent(Entite::afficher));
+                liste.fluxSousEntites().forEach(entite -> information(entite.uuid(), true).ifPresent(Entite::afficher));
             });
             placer();
         }

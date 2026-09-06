@@ -20,8 +20,11 @@ public class Liste extends Entite {
     private final Options options;
     private final List<Entite> persistantes;
     private final List<Entite> entites;
+    private final List<Entite> sousEntites;
+    private final List<Entite> entitesSecondaires;
     private final Map<UUID, List<Entite>> sousEntitesParUuid;
     private final Map<UUID, Entite> entitesSecondairesParUuid;
+    private final Map<UUID, Entite> entitesParUuidSecondaire;
     private final Pagination pagination;
     private final Entite panneau;
     private final Espacement espacement;
@@ -41,8 +44,11 @@ public class Liste extends Entite {
         this.options = options;
         this.persistantes = new LinkedList<>();
         this.entites = new LinkedList<>();
+        this.sousEntites = new LinkedList<>();
+        this.entitesSecondaires = new LinkedList<>();
         this.sousEntitesParUuid = new HashMap<>();
         this.entitesSecondairesParUuid = new HashMap<>();
+        this.entitesParUuidSecondaire = new HashMap<>();
         this.pagination = new Pagination(taille, 0, 1);
         this.panneau = new Fond(0, 0);
         this.espacement = new Espacement();
@@ -62,7 +68,14 @@ public class Liste extends Entite {
         if (options.sousentites()) {
             options.positionSousEntites().ifPresent(position -> {
                 placerPanneauSousEntites(abscisse, ordonnee, position);
-                placerEntites(dispositionSousEntites, espacementSousEntites, position, panneau, this::fluxSousEntites);
+                entites.stream()
+                        .filter(Entite::visible)
+                        .forEach(entite -> placerEntites(
+                                dispositionSousEntites,
+                                espacementSousEntites,
+                                position,
+                                panneau,
+                                () -> sousEntitesParUuid.getOrDefault(entite.uuid(), Collections.emptyList()).stream()));
             });
         }
     }
@@ -137,7 +150,7 @@ public class Liste extends Entite {
 
     @Override
     public void dimensionner(long contexte) {
-        pagination.calculer(entites.stream().filter(Entite::visible).count());
+        pagination.calculer(entites.size());
 
         dimensionnerPanneauEntites(contexte);
 
@@ -183,12 +196,12 @@ public class Liste extends Entite {
         fluxEntitesAffichables().forEach(entite -> entite.dessiner(contexte));
 
         if (options.sousentites()) {
-            fluxEntitesSecondaires().forEach(entite -> entite.colorier(contexte, EMERAUDE));
+            entitesSecondaires.stream().filter(Entite::visible).forEach(entite -> entite.colorier(contexte, EMERAUDE));
         }
 
         if (ouvert) {
             panneau.colorier(contexte, BLANC);
-            fluxSousEntites().forEach(entite -> entite.dessiner(contexte));
+            sousEntites.stream().filter(Entite::visible).forEach(entite -> entite.dessiner(contexte));
         }
     }
 
@@ -198,6 +211,8 @@ public class Liste extends Entite {
             Entite entiteSecondaire = constructeur.get();
             entiteSecondaire.afficher();
             entitesSecondairesParUuid.put(entite.uuid, entiteSecondaire);
+            entitesParUuidSecondaire.put(entiteSecondaire.uuid, entite);
+            entitesSecondaires.add(entiteSecondaire);
         }));
     }
 
@@ -206,38 +221,56 @@ public class Liste extends Entite {
     }
 
     public Stream<Entite> fluxEntitesAffichables() {
-        if (pagination().total() == 1) {
-            return Stream.of(persistantes.stream(), fluxEntitesNonPersistantes()).flatMap(Function.identity());
+        if (pagination.total() == 1) {
+            return Stream.of(persistantes.stream(), entites.stream().filter(Entite::visible)).flatMap(Function.identity());
         } else if (pagination.page() == 0) {
-            return Stream.of(persistantes.stream(), options.suivante().stream(), fluxEntitesNonPersistantes()).flatMap(Function.identity());
-        } else if (pagination().page() == pagination.total() - 1) {
-            return Stream.of(persistantes.stream(), fluxEntitesNonPersistantes(), options.precedente().stream()).flatMap(Function.identity());
+            return Stream.of(persistantes.stream(), options.suivante().stream(), entites.stream().filter(Entite::visible)).flatMap(Function.identity());
+        } else if (pagination.page() == pagination.total() - 1) {
+            return Stream.of(persistantes.stream(), entites.stream().filter(Entite::visible), options.precedente().stream()).flatMap(Function.identity());
         } else {
-            return Stream.of(persistantes.stream(), options.suivante().stream(), fluxEntitesNonPersistantes(), options.precedente().stream()).flatMap(Function.identity());
+            return Stream.of(persistantes.stream(), options.suivante().stream(), entites.stream().filter(Entite::visible), options.precedente().stream()).flatMap(Function.identity());
         }
     }
 
-    private Stream<Entite> fluxEntitesNonPersistantes() {
-        return entites.stream().filter(Entite::visible).skip((long) pagination.page() * pagination.taille()).limit(pagination.taille());
+    public Stream<Entite> fluxPersistantes() {
+        return persistantes.stream();
     }
 
-    private Stream<Entite> fluxSousEntites() {
-        return entites.stream()
-                .filter(Entite::active)
-                .findFirst()
-                .map(entite -> sousEntitesParUuid.getOrDefault(entite.uuid, Collections.emptyList()).stream())
-                .orElseGet(Stream::empty);
+    public Stream<Entite> fluxSousEntites() {
+        return sousEntites.stream();
     }
 
     public Stream<Entite> fluxEntitesSecondaires() {
-        return fluxEntitesNonPersistantes().filter(entite -> entitesSecondairesParUuid.containsKey(entite.uuid)).map(entite -> entitesSecondairesParUuid.get(entite.uuid)).filter(Entite::visible);
+        return entitesSecondaires.stream();
     }
 
-    public void ouvrirPanneauSecondaire() {
+    public void initialiser() {
+        persistantes.forEach(Entite::afficher);
+        entites.forEach(Entite::masquer);
+        sousEntites.forEach(Entite::masquer);
+        entitesSecondaires.forEach(Entite::masquer);
+
+        entites.stream()
+                .skip((long) pagination.page() * pagination.taille())
+                .limit(pagination.taille())
+                .forEach(Entite::afficher);
+
+        if (options.sousentites()) {
+            entites.stream()
+                    .filter(Entite::visible)
+                    .forEach(entite -> Optional.ofNullable(entitesSecondairesParUuid.get(entite.uuid)).ifPresent(Entite::afficher));
+        }
+    }
+
+    public void ouvrirPanneauSecondaire(Entite entiteSecondaire) {
+        if (entitesParUuidSecondaire.containsKey(entiteSecondaire.uuid)) {
+            Optional.ofNullable(sousEntitesParUuid.get(entitesParUuidSecondaire.get(entiteSecondaire.uuid).uuid)).ifPresent(element -> element.forEach(Entite::afficher));
+        }
         ouvert = true;
     }
 
     public void fermerPanneauSecondaire() {
+        sousEntites.forEach(Entite::masquer);
         ouvert = false;
     }
 
@@ -247,6 +280,7 @@ public class Liste extends Entite {
 
     public void hierarchiser(Entite entite, Entite sousEntite) {
         if (entites.remove(sousEntite)) {
+            sousEntites.add(sousEntite);
             sousEntitesParUuid.computeIfAbsent(entite.uuid, _ -> new LinkedList<>()).add(sousEntite);
             if (entitesSecondairesParUuid.containsKey(sousEntite.uuid)) {
                 entitesSecondairesParUuid.get(sousEntite.uuid).masquer();
