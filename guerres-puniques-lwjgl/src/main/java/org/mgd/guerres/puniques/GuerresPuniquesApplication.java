@@ -390,7 +390,7 @@ public class GuerresPuniquesApplication extends Application {
         jetonsArmees.identifiable(armee).disparaitre();
 
         if (focaliser) {
-            jeu.amorcer(armee);
+            jeu.amorcer(transport);
         }
     }
 
@@ -418,7 +418,7 @@ public class GuerresPuniquesApplication extends Application {
             forme.activer();
         }
         action.activer();
-        barresCivilisations.get(objet.getOrigine()).afficher(objet.getOrigine().getNom(), true);
+        barresCivilisations.get(objet.getOrigine()).afficher(objet.getOrigine().getNom(), true, action);
     }
 
     private <T extends Type, U extends Type> void attaquer(Tangible<T> attaquant, Tangible<U> defenseur) {

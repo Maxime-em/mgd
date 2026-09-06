@@ -262,6 +262,13 @@ public class Liste extends Entite {
         }
     }
 
+    public void focaliser(Entite focal) {
+        int index = entites.indexOf(focal);
+        if (index >= 0) {
+            pagination.seRendre(index);
+        }
+    }
+
     public void ouvrirPanneauSecondaire(Entite entiteSecondaire) {
         if (entitesParUuidSecondaire.containsKey(entiteSecondaire.uuid)) {
             Optional.ofNullable(sousEntitesParUuid.get(entitesParUuidSecondaire.get(entiteSecondaire.uuid).uuid)).ifPresent(element -> element.forEach(Entite::afficher));

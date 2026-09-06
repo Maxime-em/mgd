@@ -30,6 +30,11 @@ public final class Pagination {
         aChange = true;
     }
 
+    public void seRendre(int index) {
+        page = index / taille;
+        aChange = true;
+    }
+
     public void calculer(long quantite) {
         total = Math.max(Math.toIntExact(quantite / taille + (quantite % taille > 0 ? 1 : 0)), 1);
         if (page >= total) {

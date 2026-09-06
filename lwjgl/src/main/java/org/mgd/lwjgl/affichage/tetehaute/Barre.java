@@ -197,10 +197,10 @@ public class Barre<G> extends AffichageTeteHaute implements Animateur {
     }
 
     public void afficher(G groupe) {
-        afficher(groupe, false);
+        afficher(groupe, false, null);
     }
 
-    public void afficher(G groupe, boolean force) {
+    public void afficher(G groupe, boolean force, Entite focal) {
         if (force || !Objects.equals(this.groupe, groupe)) {
             liste(true).ifPresent(liste -> {
                 liste.masquer();
@@ -212,6 +212,7 @@ public class Barre<G> extends AffichageTeteHaute implements Animateur {
             this.groupe = groupe;
             liste(true).ifPresent(liste -> {
                 liste.pagination().initialiser();
+                liste.focaliser(focal);
                 liste.initialiser();
                 liste.afficher();
                 liste.fluxPersistantes().forEach(entite -> information(entite.uuid(), true).ifPresent(Entite::afficher));
