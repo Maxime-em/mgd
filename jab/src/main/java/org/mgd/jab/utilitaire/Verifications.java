@@ -45,21 +45,28 @@ public class Verifications {
     }
 
     public static void nonBorne(Long nombre, Long minimum, Long maximum, String message) throws VerificationException {
-        if (nombre == null || nombre < minimum || nombre > maximum) {
+        if (nombre == null || minimum == null || maximum == null || nombre < minimum || nombre > maximum) {
             throw new VerificationException(MessageFormat.format(message, nombre, minimum, maximum));
         }
     }
 
     public static void nonBorne(Integer nombre, Integer minimum, Integer maximum, String message) throws VerificationException {
-        nonBorne(Long.valueOf(nombre), Long.valueOf(minimum), Long.valueOf(maximum), message);
+        nonBorne(enLong(nombre), enLong(minimum), enLong(maximum), message);
     }
 
     public static void nonAnnee(Integer nombre, String message) throws VerificationException {
-        nonBorne(Long.valueOf(nombre), Long.valueOf(LocalDate.MIN.getYear()), Long.valueOf(LocalDate.MAX.getYear()), message);
+        nonBorne(enLong(nombre), (long) LocalDate.MIN.getYear(), (long) LocalDate.MAX.getYear(), message);
     }
 
     public static void nonSemaine(Integer nombre, Integer annee, String message) throws VerificationException {
-        nonBorne(Long.valueOf(nombre), 1L, LocalDate.of(annee, Month.DECEMBER, 1).range(IsoFields.WEEK_OF_WEEK_BASED_YEAR).getMaximum(), message);
+        if (annee == null || annee < LocalDate.MIN.getYear() || annee > LocalDate.MAX.getYear()) {
+            throw new VerificationException(MessageFormat.format(message, nombre, 1, annee));
+        }
+        nonBorne(enLong(nombre), 1L, LocalDate.of(annee, Month.DECEMBER, 1).range(IsoFields.WEEK_OF_WEEK_BASED_YEAR).getMaximum(), message);
+    }
+
+    private static Long enLong(Integer nombre) {
+        return nombre == null ? null : nombre.longValue();
     }
 
     public static <T> void nonMultiple(Collection<T> objets, BiPredicate<T, T> predicat, String message) throws VerificationException {

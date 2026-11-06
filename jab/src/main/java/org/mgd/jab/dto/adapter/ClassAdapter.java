@@ -31,10 +31,11 @@ public class ClassAdapter extends TypeAdapter<Class<?>> {
             in.nextNull();
             return null;
         } else {
+            String nom = in.nextString();
             try {
-                return Class.forName(in.nextString());
+                return Class.forName(nom);
             } catch (ClassNotFoundException e) {
-                throw new DtoAdaptateurRuntimeException(MessageFormat.format("Impossible de récupérer la classe nommer {0}", in.nextString()), e);
+                throw new DtoAdaptateurRuntimeException(MessageFormat.format("Impossible de récupérer la classe nommée {0}", nom), e);
             }
         }
     }

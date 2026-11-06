@@ -109,8 +109,9 @@ public abstract class Jao<D extends Dto, O extends Jo> {
 
     @SuppressWarnings("unchecked")
     public D[][] decharger(O[][] objets) {
-        D[][] dtos = (D[][]) Array.newInstance(classeDto, objets.length, objets[0].length);
+        D[][] dtos = (D[][]) Array.newInstance(classeDto, objets.length, 0);
         for (int i = 0; i < objets.length; i++) {
+            dtos[i] = (D[]) Array.newInstance(classeDto, objets[i].length);
             for (int j = 0; j < objets[i].length; j++) {
                 dtos[i][j] = decharger(objets[i][j]);
             }
@@ -150,8 +151,9 @@ public abstract class Jao<D extends Dto, O extends Jo> {
 
     @SuppressWarnings("unchecked")
     public O[][] dupliquer(O[][] sources) throws JaoExecutionException, JaoParseException {
-        O[][] nouveaux = (O[][]) Array.newInstance(classeDto, sources.length, sources[0].length);
+        O[][] nouveaux = (O[][]) Array.newInstance(classeJo, sources.length, 0);
         for (int i = 0; i < sources.length; i++) {
+            nouveaux[i] = (O[]) Array.newInstance(classeJo, sources[i].length);
             for (int j = 0; j < sources[i].length; j++) {
                 nouveaux[i][j] = dupliquer(sources[i][j]);
             }
