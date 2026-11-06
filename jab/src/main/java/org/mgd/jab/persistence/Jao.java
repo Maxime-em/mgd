@@ -278,8 +278,9 @@ public abstract class Jao<D extends Dto, O extends Jo> {
 
     @SuppressWarnings("unchecked")
     public O[][] charger(D[][] dtos, Jo parent) throws JaoParseException, JaoExecutionException {
-        O[][] objets = (O[][]) Array.newInstance(classeJo, dtos.length, dtos[0].length);
+        O[][] objets = (O[][]) Array.newInstance(classeJo, dtos.length, 0);
         for (int ligne = 0; ligne < dtos.length; ligne++) {
+            objets[ligne] = (O[]) Array.newInstance(classeJo, dtos[ligne].length);
             for (int colonne = 0; colonne < dtos[ligne].length; colonne++) {
                 objets[ligne][colonne] = charger(dtos[ligne][colonne], parent);
                 if (objets[ligne][colonne] instanceof Tabulable element) {
